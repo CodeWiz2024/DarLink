@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin - Pending Payouts</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        .payout-card {
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            margin-bottom: 16px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        .payout-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+        .amount {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #28a745;
+        }
+        .owner-info {
+            background: #f8f9fa;
+            padding: 12px;
+            border-radius: 8px;
+            margin: 12px 0;
+        }
+        .btn-payout {
+            padding: 10px 20px;
+            background: #28a745;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+        }
+        .btn-payout:hover {
+            background: #218838;
+        }
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        .stat-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 24px;
+            border-radius: 12px;
+            text-align: center;
+        }
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+        .stat-label {
+            font-size: 0.9rem;
+            opacity: 0.9;
+        }
+    </style>
+</head>
+<body class="page-wrapper">
+    <div class="page-container">
+        <div class="page-header">
+            <h1><i class="fa-solid fa-money-bill-transfer"></i> Pending Payouts</h1>
+            <p>Manage owner payouts</p>
+        </div>
+
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-number" id="totalPayouts">0</div>
+                <div class="stat-label">Pending Payouts</div>
+            </div>
+            <div class="stat-card" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);">
+                <div class="stat-number" id="totalAmount">0 DZD</div>
+                <div class="stat-label">Total to Pay Out</div>
+            </div>
+            <div class="stat-card" style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);">
+                <div class="stat-number" id="platformProfit">0 DZD</div>
+                <div class="stat-label">Platform Profit</div>
+            </div>
+        </div>
+
+        <div id="loading" style="text-align: center; padding: 40px;">
+            <i class="fa-solid fa-spinner fa-spin" style="font-size: 2rem;"></i>
+            <p>Loading pending payouts...</p>
+        </div>
+
+        <div id="payoutsList"></div>
+
+        <div id="emptyState" style="display: none; text-align: center; padding: 60px; color: #666;">
+            <i class="fa-solid fa-check-circle" style="font-size: 4rem; color: #28a745; margin-bottom: 20px;"></i>
+            <h3>All Caught Up!</h3>
+            <p>No pending payouts at the moment.</p>
+        </div>
+    </div>
+
+    <script>
+        const API_URL = 'http://localhost:5000/api';
+
+        async function loadPendingPayouts() {
+            try {
+                const response = await fetch(`${API_URL}/admin/pending-payouts`);
+                const data = await response.json();
+
+                document.getElementById('loading').style.display = 'none';
+
+                if (!data.payouts || data.payouts.length === 0) {
+                    document.getElementById('emptyState').style.display = 'block';
+                    return;
+                }
+
+                // Update stats
+                document.getElementById('totalPayouts').textContent = data.summary.count;
+                document.getElementById('totalAmount').textContent = 
+                    Number(data.summary.totalOwnerPayouts).toLocaleString() + ' DZD';
+                document.getElementById('platformProfit').textContent = 
+                    Number(data.summary.totalPlatformProfit).toLocaleString() + ' DZD';
+
+                // Display payouts
+                document.getElementById('payoutsList').innerHTML = data.payouts.map(payout => `
+                    <div class="payout-card">
+                        <div class="payout-header">
+                            <div>
+                                <h3>${payout.PropertyTitle}</h3>
+                                <small style="color: #666;">Booking #${payout.BookingId}</small>
+                            </div>
+                            <div class="amount">${Number(payout.OwnerShare).toLocaleString()} DZD</div>
+                        </div>
+
+                        <div class="owner-info">
+                            <strong>${payout.OwnerName}</strong><br>
+                            📧 ${payout.OwnerEmail}<br>
+                            📞 ${payout.OwnerPhone || 'N/A'}
+                        </div>
+
+                        <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin: 12px 0; font-size: 0.9rem;">
+                            <div>
+                                <strong>Check-in:</strong><br>
+                                ${new Date(payout.StartDate).toLocaleDateString()}
+                            </div>
+                            <div>
+                                <strong>Check-out:</strong><br>
+                                ${new Date(payout.EndDate).toLocaleDateString()}
+                            </div>
+                            <div>
+                                <strong>Renter:</strong><br>
+                                ${payout.RenterName}
+                            </div>
+                        </div>
+
+                        <div style="background: #fff3cd; padding: 10px; border-radius: 8px; margin: 12px 0; font-size: 0.9rem;">
+                            <strong>Payment Breakdown:</strong><br>
+                            Total Paid: ${Number(payout.TotalPrice).toLocaleString()} DZD<br>
+                            Owner Share (90%): ${Number(payout.OwnerShare).toLocaleString()} DZD<br>
+                            Platform Fee (10%): ${Number(payout.PlatformFee).toLocaleString()} DZD
+                        </div>
+
+                        <div style="display: flex; gap: 10px; justify-content: flex-end;">
+                            <button class="btn-payout" onclick="markPaidOut(${payout.BookingId}, '${payout.OwnerName}')">
+                                <i class="fa-solid fa-check"></i> Mark as Paid Out
+                            </button>
+                        </div>
+                    </div>
+                `).join('');
+
+            } catch (error) {
+                console.error('Error loading payouts:', error);
+                document.getElementById('loading').style.display = 'none';
+                document.getElementById('payoutsList').innerHTML = 
+                    '<div style="text-align: center; color: red; padding: 40px;">Error loading payouts</div>';
+            }
+        }
+
+        async function markPaidOut(bookingId, ownerName) {
+            const method = prompt(`How did you pay ${ownerName}? (e.g., Bank Transfer, CCP, Cash)`);
+            if (!method) return;
+
+            const reference = prompt('Enter transaction reference (optional):');
+
+            if (!confirm(`Confirm you have paid out this booking?\n\nBooking ID: ${bookingId}\nOwner: ${ownerName}\nMethod: ${method}`)) {
+                return;
+            }
+
+            try {
+                const response = await fetch(`${API_URL}/admin/mark-payout-complete`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        bookingId: bookingId,
+                        payoutMethod: method,
+                        payoutReference: reference
+                    })
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    alert('✅ Payout marked as complete!');
+                    loadPendingPayouts(); // Reload list
+                } else {
+                    alert('Error: ' + data.error);
+                }
+
+            } catch (error) {
+                alert('Network error');
+            }
+        }
+
+        loadPendingPayouts();
+    </script>
+</body>
+</html>

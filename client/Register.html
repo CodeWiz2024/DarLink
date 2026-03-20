@@ -1,0 +1,736 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register · DarLink</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <script src="lang.js"></script>
+    <script src="js/theme.js"></script>
+    <style>
+        .id-upload { display: grid; grid-template-columns: 1fr; gap: 16px; margin: 12px 0; }
+        .upload-box { background: rgba(255,255,255,0.3); backdrop-filter: blur(12px); border: 1px dashed rgba(0,122,255,0.5); border-radius: 16px; padding: 20px 12px 12px; text-align: center; transition: all 0.2s; }
+        .upload-box.uploaded { border-color: #34C759; background: rgba(52,199,89,0.1); }
+        .upload-box h4 { margin-bottom: 12px; color: #1d1d1f; font-weight: 500; font-size: 0.95rem; }
+        .upload-box input[type="file"] { display: none; }
+        .file-label { display: inline-block; padding: 10px 16px; background: var(--primary); color: white; border-radius: 12px; font-size: 0.9rem; font-weight: 500; cursor: pointer; transition: background 0.2s; margin-bottom: 12px; }
+        .file-label:hover { background: var(--primary-dark); }
+        .preview { margin-top: 12px; border-radius: 12px; overflow: hidden; display: none; }
+        .preview img { width: 100%; height: 120px; object-fit: cover; border-radius: 10px; }
+        .note { font-size: 0.85rem; color: #8e8e93; margin: -8px 0 16px; }
+        .ocr-status { display: none; margin: 16px 0; padding: 16px; background: rgba(255,255,255,0.3); backdrop-filter: blur(12px); border-radius: 14px; }
+        .progress { height: 6px; background: rgba(0,0,0,0.1); border-radius: 3px; margin-top: 10px; overflow: hidden; }
+        .progress-bar { height: 100%; background: var(--primary); width: 0%; transition: width 0.3s; }
+        #manualBtn { margin-bottom: 16px; background: #6c757d; color: white; border: none; border-radius: 12px; padding: 12px; font-size: 0.95rem; font-weight: 500; cursor: pointer; transition: background 0.2s; width: 100%; }
+        #manualBtn:hover { background: #5a6268; }
+        .form-box { max-width: 550px; width: 100%; }
+        
+        /* Password container styles */
+        .password-container {
+            position: relative;
+            width: 100%;
+            margin-bottom: 15px;
+        }
+        
+        .password-container input {
+            width: 100%;
+            padding-right: 40px;
+        }
+        
+        .toggle-password {
+            position: absolute;
+            right: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            cursor: pointer;
+            color: #8e8e93;
+            font-size: 1.2rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 30px;
+            height: 30px;
+        }
+        
+        .toggle-password:hover {
+            color: var(--primary);
+        }
+        
+        /* Required field star */
+        .required-star { color: #ff3b30; margin-left: 4px; font-weight: bold; }
+        [dir="rtl"] .required-star { margin-left: 0; margin-right: 4px; }
+        
+        @media (max-width: 600px) { .id-upload { grid-template-columns: 1fr; } }
+        [data-theme="dark"] .upload-box h4 { color: #f5f5f7; }
+        [data-theme="dark"] .note { color: #98989d; }
+        [data-theme="dark"] #ocrText { color: #f5f5f7; }
+        [data-theme="dark"] .user-btn { background: rgba(255,255,255,0.08); border-color: rgba(255,255,255,0.2); color: #0a84ff; }
+        [data-theme="dark"] .user-btn.active { background: #0a84ff; color: #fff; }
+        [data-theme="dark"] #manualBtn { background: #4a4a4e; }
+        [data-theme="dark"] #manualBtn:hover { background: #5a5a5e; }
+        [data-theme="dark"] .required-star { color: #ff453a; }
+        [data-theme="dark"] .toggle-password { color: #98989d; }
+        [data-theme="dark"] .toggle-password:hover { color: #0a84ff; }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <span class="logo">
+            <i class="fa-solid fa-house logo-icon"></i>
+            <span class="logo-text" data-i18n="nav_logo_text">DarLink</span>
+        </span>
+        <div class="links">
+                   <button class="theme-btn" onclick="toggleTheme()" id="themeToggle">
+                   <i class="fa-regular fa-moon" id="themeIcon"></i>
+                   </button>
+            <a href="index.html" data-i18n="nav_home">Home</a>
+            <a href="login.html" data-i18n="nav_login">Login</a>
+            <a href="Register.html" class="primary" data-i18n="nav_register">Register</a>
+            <div class="lang-switch">
+                <button type="button" class="lang-btn" data-lang="en">EN</button>
+                <button type="button" class="lang-btn" data-lang="ar">عربي</button>
+            </div>
+        </div>
+    </nav>
+
+    <div class="form-page">
+        <div class="form-box">
+            <h1 data-i18n="register_title">Register</h1>
+            <div id="message"></div>
+
+            <form id="registerForm" enctype="multipart/form-data">
+                <label><span data-i18n="register_firstname_label">First Name</span><span class="required-star">*</span></label>
+                <input type="text" id="FirstName" name="first_name" placeholder="Enter your first name" data-i18n-placeholder="register_firstname_placeholder" required>
+                <div id="firstNameValidation" class="validation-message" style="font-size: 13px; margin-top: -10px; margin-bottom: 10px;"></div>
+
+                <label><span data-i18n="register_lastname_label">Last Name</span><span class="required-star">*</span></label>
+                <input type="text" id="LastName" name="last_name" placeholder="Enter your last name" data-i18n-placeholder="register_lastname_placeholder" required>
+                <div id="lastNameValidation" class="validation-message" style="font-size: 13px; margin-top: -10px; margin-bottom: 10px;"></div>
+
+                <label><span data-i18n="register_email_label">Email</span><span class="required-star">*</span></label>
+                <input type="email" id="Email" placeholder="Enter your email" data-i18n-placeholder="register_email_placeholder" required>
+                <div id="emailValidation" class="validation-message" style="font-size: 13px; margin-top: -10px; margin-bottom: 10px;"></div>
+
+                <label><span data-i18n="register_phone_label">Phone Number</span><span class="required-star">*</span></label>
+                <input type="tel" id="PhoneNumber" placeholder="Enter your phone number" data-i18n-placeholder="register_phone_placeholder" required>
+                <div id="phoneValidation" class="validation-message" style="font-size: 13px; margin-top: -10px; margin-bottom: 10px;"></div>
+
+                <label><span data-i18n="register_id_images_label">ID Card Image (Front Side)</span></label>
+                <div class="note" data-i18n="register_id_note">Upload a clear photo of the front of your ID card (Optional)</div>
+                
+                <div class="id-upload">
+                    <div class="upload-box" id="frontBox">
+                        <h4 data-i18n="register_front_side">Front Side</h4>
+                        <input type="file" id="IDCardFront" accept="image/*">
+                        <label for="IDCardFront" class="file-label" data-i18n="register_upload_btn">📤 Click to Upload</label>
+                        <div class="preview" id="frontPreview">
+                            <img id="frontImg" alt="Front">
+                        </div>
+                    </div>
+                </div>
+
+                <div id="ocrStatus" class="ocr-status">
+                    <div id="ocrText" data-i18n="register_scanning">Scanning...</div>
+                    <div class="progress">
+                        <div class="progress-bar" id="progressBar"></div>
+                    </div>
+                </div>
+
+                <label><span data-i18n="register_id_number_label">ID Card Number</span><span class="required-star">*</span></label>
+                <div class="note" data-i18n="register_id_number_note">Will be extracted automatically from front image</div>
+                <input type="text" id="IDCardNumber" placeholder="18 digits" data-i18n-placeholder="register_id_number_placeholder" required readonly>
+                
+                <button type="button" id="manualBtn" data-i18n="register_manual_btn">✏️ Edit Manually</button>
+
+                <label><span data-i18n="register_password_label">Password</span><span class="required-star">*</span></label>
+                <div class="password-container">
+                    <input type="password" id="Password" minlength="6" placeholder="Minimum 6 characters" data-i18n-placeholder="register_password_placeholder" required>
+                    <span class="toggle-password" onclick="togglePasswordVisibility('Password', this)">
+                        <i class="fa fa-eye"></i>
+                    </span>
+                </div>
+
+                <!-- Password requirements message box -->
+                <div id="passwordMessage" style="display: none; background: rgba(255,255,255,0.1); padding: 10px; border-radius: 8px; margin-bottom: 15px;">
+                    <p style="margin: 0 0 5px 0; font-size: 13px;">Password must contain:</p>
+                    <p id="letter" class="invalid" style="margin: 2px 0; font-size: 12px; color: red;">✓ A <b>lowercase</b> letter</p>
+                    <p id="capital" class="invalid" style="margin: 2px 0; font-size: 12px; color: red;">✓ An <b>uppercase</b> letter</p>
+                    <p id="number" class="invalid" style="margin: 2px 0; font-size: 12px; color: red;">✓ A <b>number</b></p>
+                    <p id="length" class="invalid" style="margin: 2px 0; font-size: 12px; color: red;">✓ Minimum <b>8 characters</b></p>
+                </div>
+
+                <label><span data-i18n="register_confirm_password_label">Confirm Password</span><span class="required-star">*</span></label>
+                <div class="password-container">
+                    <input type="password" id="ConfirmPassword" minlength="6" placeholder="Re-enter your password" data-i18n-placeholder="register_confirm_password_placeholder" required>
+                    <span class="toggle-password" onclick="togglePasswordVisibility('ConfirmPassword', this)">
+                        <i class="fa fa-eye"></i>
+                    </span>
+                </div>
+                <div id="confirmPasswordValidation" class="validation-message" style="font-size: 13px; margin-top: -10px; margin-bottom: 10px;"></div>
+
+                <label><span data-i18n="register_user_type_label">User Type</span><span class="required-star">*</span></label>
+                <div class="user-type-container">
+                    <button type="button" class="user-btn" onclick="selectUserType('Renter')" data-i18n="register_renter_btn">Renter</button>
+                    <button type="button" class="user-btn" onclick="selectUserType('Owner')" data-i18n="register_owner_btn">Owner</button>
+                </div>
+                <input type="hidden" id="UserType" required>
+
+                <button type="submit" id="submitBtn" data-i18n="register_submit">Register</button>
+            </form>
+
+            <p style="text-align: center; margin-top: 20px;">
+                <span data-i18n="register_have_account">Already have an account?</span>
+                <a href="login.html" data-i18n="register_login_link">Login</a>
+            </p>
+        </div>
+    </div>
+
+    <script src='https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js'></script>
+    <script>
+        window.I18N_MESSAGES = {
+            nav_logo_text: { en: 'DarLink', ar: 'إيجار العطلات' },
+            nav_home: { en: 'Home', ar: 'الرئيسية' },
+            nav_login: { en: 'Login', ar: 'تسجيل الدخول' },
+            nav_register: { en: 'Register', ar: 'إنشاء حساب' },
+            register_title: { en: 'Register', ar: 'إنشاء حساب' },
+            register_firstname_label: { en: 'First Name', ar: 'الاسم' },
+            register_firstname_placeholder: { en: 'Enter your first name', ar: 'أدخل اسمك' },
+            register_lastname_label: { en: 'Last Name', ar: 'اللقب' },
+            register_lastname_placeholder: { en: 'Enter your last name', ar: 'أدخل لقبك' },
+            register_email_label: { en: 'Email', ar: 'البريد الإلكتروني' },
+            register_email_placeholder: { en: 'Enter your email', ar: 'أدخل بريدك الإلكتروني' },
+            register_phone_label: { en: 'Phone Number', ar: 'رقم الهاتف' },
+            register_phone_placeholder: { en: 'Enter your phone number', ar: 'أدخل رقم هاتفك' },
+            register_id_images_label: { en: 'ID Card Image (Front Side)', ar: 'صورة بطاقة الهوية (الوجه الأمامي)' },
+            register_id_note: { en: 'Upload a clear photo of the front of your ID card', ar: 'قم برفع صورة واضحة للوجه الأمامي لبطاقة الهوية' },
+            register_front_side: { en: 'Front Side', ar: 'الوجه الأمامي' },
+            register_upload_btn: { en: '📤 Click to Upload', ar: '📤 اضغط للرفع' },
+            register_scanning: { en: 'Scanning...', ar: 'جاري المسح...' },
+            register_id_number_label: { en: 'ID Card Number', ar: 'رقم بطاقة الهوية' },
+            register_id_number_note: { en: 'Will be extracted automatically from front image', ar: 'سيتم استخراجه تلقائياً من صورة الوجه الأمامي' },
+            register_id_number_placeholder: { en: '18 digits', ar: '18 رقماً' },
+            register_manual_btn: { en: '✏️ Edit Manually', ar: '✏️ تعديل يدوياً' },
+            register_password_label: { en: 'Password', ar: 'كلمة المرور' },
+            register_password_placeholder: { en: 'Minimum 6 characters', ar: 'ستة أحرف على الأقل' },
+            register_confirm_password_label: { en: 'Confirm Password', ar: 'تأكيد كلمة المرور' },
+            register_confirm_password_placeholder: { en: 'Re-enter your password', ar: 'أعد إدخال كلمة المرور' },
+            register_user_type_label: { en: 'User Type', ar: 'نوع المستخدم' },
+            register_renter_btn: { en: 'Renter', ar: 'مستأجر' },
+            register_owner_btn: { en: 'Owner', ar: 'مالك' },
+            register_submit: { en: 'Register', ar: 'إنشاء حساب' },
+            register_have_account: { en: 'Already have an account?', ar: 'لديك حساب مسبقاً؟' },
+            register_login_link: { en: 'Login', ar: 'تسجيل الدخول' },
+            register_manual_enabled: { en: '✅ Editing Enabled', ar: '✅ تم تفعيل التعديل اليدوي' },
+            register_ocr_id_detected: { en: '✅ ID detected: ', ar: '✅ تم التعرف على الرقم: ' },
+            register_ocr_could_not_detect: { en: '⚠️ Could not detect ID. Please enter manually.', ar: '⚠️ تعذر التعرف على الرقم. يرجى إدخاله يدوياً.' },
+            register_ocr_failed: { en: '❌ OCR failed. Please enter manually.', ar: '❌ فشل التعرف الضوئي. يرجى الإدخال يدوياً.' },
+            register_file_too_large: { en: '❌ File too large', ar: '❌ الملف كبير جداً' },
+            register_select_user_type_error: { en: '❌ Please select user type', ar: '❌ يرجى اختيار نوع المستخدم' },
+            register_upload_front_image_error: { en: '❌ Please upload your ID card image', ar: '❌ يرجى رفع صورة بطاقة التعريف' },
+            register_password_mismatch: { en: '❌ Passwords do not match', ar: '❌ كلمتا المرور غير متطابقتين' },
+            register_password_too_short: { en: '❌ Password must be at least 6 characters', ar: '❌ يجب أن تكون كلمة المرور من 6 أحرف على الأقل' },
+            register_registering: { en: 'Registering...', ar: 'جاري إنشاء الحساب...' },
+            register_network_error: { en: '❌ Network error', ar: '❌ خطأ في الشبكة' },
+            register_default_error_prefix: { en: '❌ ', ar: '❌ ' }
+        };
+
+        const API_URL = 'http://localhost:5000/api';
+        let frontFile = null;
+
+       function toggleTheme() {
+    const current = document.documentElement.getAttribute('data-theme');
+    const newTheme = current === 'dark' ? 'light' : 'dark';
+    document.documentElement.setAttribute('data-theme', newTheme);
+    localStorage.setItem('site_theme', newTheme);
+    const icon = document.getElementById('themeIcon');
+    if (icon) {
+        icon.className = newTheme === 'dark' ? 'fa-solid fa-sun' : 'fa-regular fa-moon';
+    }
+}
+
+// Set initial theme icon based on saved theme
+const initialTheme = document.documentElement.getAttribute('data-theme') || 'light';
+const initialIcon = document.getElementById('themeIcon');
+if (initialIcon) {
+    initialIcon.className = initialTheme === 'dark' ? 'fa-solid fa-sun' : 'fa-regular fa-moon';
+}
+
+        // Toggle password visibility function with icon switching (same logic as login page)
+        function togglePasswordVisibility(inputId, element) {
+            const input = document.getElementById(inputId);
+            const icon = element.querySelector('i');
+            
+            if (input.type === 'password') {
+                input.type = 'text';
+                icon.className = 'fa fa-eye-slash';
+            } else {
+                input.type = 'password';
+                icon.className = 'fa fa-eye';
+            }
+        }
+
+        function selectUserType(type) {
+            UserType.value = type;
+            document.querySelectorAll('.user-btn').forEach(b => b.classList.remove('active'));
+            event.target.classList.add('active');
+        }
+
+        manualBtn.onclick = function() {
+            IDCardNumber.readOnly = false;
+            IDCardNumber.focus();
+            const lang = window.I18N ? window.I18N.getCurrentLang() : 'en';
+            const dict = window.I18N_MESSAGES || {};
+            const label = (dict.register_manual_enabled && dict.register_manual_enabled[lang]) || '✅ Editing Enabled';
+            this.textContent = label;
+            this.style.background = '#ffc107';
+        };
+
+        function extractID(text) {
+            console.log('Raw OCR text:', text);
+            const clean = text.replace(/[\s\-_\.]/g, '');
+            const patterns = [
+                /\b\d{18}\b/,
+                /\b1\d{17}\b/,
+                /(?:^|\D)(\d{18})(?:\D|$)/,
+                /\b\d{2}0+\d{13,15}\b/
+            ];
+            
+            for (let pattern of patterns) {
+                const match = clean.match(pattern);
+                if (match) {
+                    const id = match[1] || match[0];
+                    console.log('Found ID with pattern:', pattern, '→', id);
+                    return id.replace(/\D/g, '');
+                }
+            }
+            
+            const allNumbers = clean.match(/\d{15,}/g);
+            if (allNumbers && allNumbers.length > 0) {
+                const longest = allNumbers.reduce((a, b) => a.length > b.length ? a : b);
+                console.log('Using longest number found:', longest);
+                return longest;
+            }
+            
+            console.log('No ID pattern found');
+            return null;
+        }
+
+        async function runOCR(file) {
+            ocrStatus.style.display = 'block';
+            const lang = window.I18N ? window.I18N.getCurrentLang() : 'en';
+            const dict = window.I18N_MESSAGES || {};
+            ocrText.textContent = (dict.register_scanning && dict.register_scanning[lang]) || 'Scanning...';
+            
+            try {
+                const { data: { text } } = await Tesseract.recognize(file, 'eng+fra', {
+                    logger: info => {
+                        if (info.status === 'recognizing text') {
+                            const progress = Math.round(info.progress * 100);
+                            progressBar.style.width = progress + '%';
+                            ocrText.textContent = `Scanning... ${progress}%`;
+                        }
+                    }
+                });
+
+                const idNumber = extractID(text);
+                if (idNumber) {
+                    IDCardNumber.value = idNumber;
+                    const label = (dict.register_ocr_id_detected && dict.register_ocr_id_detected[lang]) || '✅ ID detected: ';
+                    message.innerHTML = '<div class="message success">' + label + idNumber + '</div>';
+                } else {
+                    const textMsg = (dict.register_ocr_could_not_detect && dict.register_ocr_could_not_detect[lang]) || '⚠️ Could not detect ID. Please enter manually.';
+                    message.innerHTML = '<div class="message">' + textMsg + '</div>';
+                    manualBtn.click();
+                }
+            } catch (error) {
+                const errMsg = (dict.register_ocr_failed && dict.register_ocr_failed[lang]) || '❌ OCR failed. Please enter manually.';
+                message.innerHTML = '<div class="message error">' + errMsg + '</div>';
+                manualBtn.click();
+            }
+            
+            setTimeout(() => ocrStatus.style.display = 'none', 2000);
+        }
+
+        IDCardFront.onchange = async function(e) {
+            const file = e.target.files[0];
+            if (!file) return;
+            if (file.size > 5*1024*1024) {
+                const lang = window.I18N ? window.I18N.getCurrentLang() : 'en';
+                const dict = window.I18N_MESSAGES || {};
+                const txt = (dict.register_file_too_large && dict.register_file_too_large[lang]) || '❌ File too large';
+                message.innerHTML = '<div class="message error">' + txt + '</div>';
+                return;
+            }
+
+            frontFile = file;
+            frontBox.classList.add('uploaded');
+            const reader = new FileReader();
+            reader.onload = e => {frontImg.src = e.target.result; frontPreview.style.display = 'block';};
+            reader.readAsDataURL(file);
+            await runOCR(file);
+        };
+
+        registerForm.onsubmit = async function(e) {
+            e.preventDefault();
+
+            const lang = window.I18N ? window.I18N.getCurrentLang() : 'en';
+            const dict = window.I18N_MESSAGES || {};
+            const first = FirstName.value.trim();
+            const last = LastName.value.trim();
+            const pwd = Password.value;
+            const confirmPwd = ConfirmPassword.value;
+
+            // Check if all validations pass
+            const isFirstNameValid = /^[a-zA-Z]+$/.test(first);
+            const isLastNameValid = /^[a-zA-Z]+$/.test(last);
+            const isEmailValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(Email.value.trim());
+            const isPhoneValid = PhoneNumber.value.trim().length >= 10; // Basic phone validation
+            
+            // Password validation
+            const hasLower = /[a-z]/g.test(pwd);
+            const hasUpper = /[A-Z]/g.test(pwd);
+            const hasNumber = /[0-9]/g.test(pwd);
+            const hasLength = pwd.length >= 8;
+            const isPasswordValid = hasLower && hasUpper && hasNumber && hasLength;
+
+            if (!isFirstNameValid) {
+                message.innerHTML = '<div class="message error">❌ First name should contain only letters</div>';
+                FirstName.focus();
+                return;
+            }
+
+            if (!isLastNameValid) {
+                message.innerHTML = '<div class="message error">❌ Last name should contain only letters</div>';
+                LastName.focus();
+                return;
+            }
+
+            if (!isEmailValid) {
+                message.innerHTML = '<div class="message error">❌ Please enter a valid email address</div>';
+                Email.focus();
+                return;
+            }
+
+            if (!isPhoneValid) {
+                message.innerHTML = '<div class="message error">❌ Please enter a valid phone number</div>';
+                PhoneNumber.focus();
+                return;
+            }
+
+            if (!isPasswordValid) {
+                message.innerHTML = '<div class="message error">❌ Password must contain at least 8 characters with uppercase, lowercase and number</div>';
+                Password.focus();
+                return;
+            }
+
+            if (pwd !== confirmPwd) {
+                const txt = (dict.register_password_mismatch && dict.register_password_mismatch[lang]) || '❌ Passwords do not match';
+                message.innerHTML = '<div class="message error">' + txt + '</div>';
+                ConfirmPassword.focus();
+                return;
+            }
+
+            if (!UserType.value) {
+                const txt = (dict.register_select_user_type_error && dict.register_select_user_type_error[lang]) || '❌ Please select user type';
+                message.innerHTML = '<div class="message error">' + txt + '</div>';
+                return;
+            }
+
+            submitBtn.disabled = true;
+            submitBtn.textContent = (dict.register_registering && dict.register_registering[lang]) || 'Registering...';
+
+            const fullName = (first + ' ' + last).trim();
+            const formData = new FormData();
+            formData.append('FullName', fullName);
+            formData.append('Email', Email.value.trim());
+            formData.append('PhoneNumber', PhoneNumber.value.trim());
+            formData.append('IDCardNumber', IDCardNumber.value.trim());
+            formData.append('Password', pwd);
+            formData.append('UserType', UserType.value);
+            
+            // Only append images if they were uploaded
+            if (frontFile) {
+                formData.append('IDCardFront', frontFile);
+                formData.append('IDCardBack', frontFile); // Send same image as back
+            }
+
+            try {
+                const res = await fetch(API_URL + '/users/register', {method: 'POST', body: formData});
+                const data = await res.json();
+
+                if (res.ok) {
+                    message.innerHTML = '<div class="message success">✅ ' + data.message + '</div>';
+                    registerForm.reset();
+                    frontFile = null;
+                    frontBox.classList.remove('uploaded');
+                    frontPreview.style.display = 'none';
+                    document.querySelectorAll('.user-btn').forEach(b => b.classList.remove('active'));
+                    setTimeout(() => location.href = 'login.html', 2000);
+                } else {
+                    message.innerHTML = '<div class="message error">❌ ' + (data.error || '') + '</div>';
+                }
+            } catch (error) {
+                const txt = (dict.register_network_error && dict.register_network_error[lang]) || '❌ Network error';
+                message.innerHTML = '<div class="message error">' + txt + '</div>';
+            } finally {
+                submitBtn.disabled = false;
+                const currentLang = window.I18N ? window.I18N.getCurrentLang() : 'en';
+                const label = (window.I18N_MESSAGES.register_submit && window.I18N_MESSAGES.register_submit[currentLang]) || 'Register';
+                submitBtn.textContent = label;
+            }
+        };
+    </script>
+
+    <!-- Client-side validation scripts -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Get form elements
+            const firstNameInput = document.getElementById('FirstName');
+            const lastNameInput = document.getElementById('LastName');
+            const emailInput = document.getElementById('Email');
+            const phoneInput = document.getElementById('PhoneNumber');
+            const passwordInput = document.getElementById('Password');
+            const confirmPasswordInput = document.getElementById('ConfirmPassword');
+            const submitBtn = document.getElementById('submitBtn');
+            
+            // Get validation message containers
+            const firstNameValidation = document.getElementById('firstNameValidation');
+            const lastNameValidation = document.getElementById('lastNameValidation');
+            const emailValidation = document.getElementById('emailValidation');
+            const phoneValidation = document.getElementById('phoneValidation');
+            const confirmPasswordValidation = document.getElementById('confirmPasswordValidation');
+            
+            // Get password message elements
+            const passwordMessage = document.getElementById('passwordMessage');
+            const letter = document.getElementById('letter');
+            const capital = document.getElementById('capital');
+            const number = document.getElementById('number');
+            const length = document.getElementById('length');
+
+            // Name validation function - only letters (a-z, A-Z)
+            function validateName(name) {
+                return /^[a-zA-Z]+$/.test(name);
+            }
+
+            // Email validation function
+            function validateEmail(email) {
+                return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+            }
+
+            // Phone validation function (basic - at least 10 digits)
+            function validatePhone(phone) {
+                const digits = phone.replace(/\D/g, '');
+                return digits.length >= 10;
+            }
+
+            // First Name validation
+            firstNameInput.addEventListener('input', function() {
+                const value = firstNameInput.value.trim();
+                
+                if (value === '') {
+                    firstNameValidation.textContent = '';
+                    firstNameInput.style.borderColor = '#ccc';
+                } else if (validateName(value)) {
+                    firstNameValidation.textContent = '✓ Valid first name';
+                    firstNameValidation.style.color = 'green';
+                    firstNameInput.style.borderColor = 'green';
+                } else {
+                    firstNameValidation.textContent = '✗ First name should contain only letters';
+                    firstNameValidation.style.color = 'red';
+                    firstNameInput.style.borderColor = 'red';
+                }
+            });
+
+            // Last Name validation
+            lastNameInput.addEventListener('input', function() {
+                const value = lastNameInput.value.trim();
+                
+                if (value === '') {
+                    lastNameValidation.textContent = '';
+                    lastNameInput.style.borderColor = '#ccc';
+                } else if (validateName(value)) {
+                    lastNameValidation.textContent = '✓ Valid last name';
+                    lastNameValidation.style.color = 'green';
+                    lastNameInput.style.borderColor = 'green';
+                } else {
+                    lastNameValidation.textContent = '✗ Last name should contain only letters';
+                    lastNameValidation.style.color = 'red';
+                    lastNameInput.style.borderColor = 'red';
+                }
+            });
+
+            // Email validation
+            emailInput.addEventListener('input', function() {
+                const email = emailInput.value.trim();
+                
+                if (email === '') {
+                    emailValidation.textContent = '';
+                    emailInput.style.borderColor = '#ccc';
+                } else if (validateEmail(email)) {
+                    emailValidation.textContent = '✓ Valid email';
+                    emailValidation.style.color = 'green';
+                    emailInput.style.borderColor = 'green';
+                } else {
+                    emailValidation.textContent = '✗ Invalid email format';
+                    emailValidation.style.color = 'red';
+                    emailInput.style.borderColor = 'red';
+                }
+            });
+
+            // Phone validation
+            phoneInput.addEventListener('input', function() {
+                const phone = phoneInput.value.trim();
+                
+                if (phone === '') {
+                    phoneValidation.textContent = '';
+                    phoneInput.style.borderColor = '#ccc';
+                } else if (validatePhone(phone)) {
+                    phoneValidation.textContent = '✓ Valid phone number';
+                    phoneValidation.style.color = 'green';
+                    phoneInput.style.borderColor = 'green';
+                } else {
+                    phoneValidation.textContent = '✗ Phone number should have at least 10 digits';
+                    phoneValidation.style.color = 'red';
+                    phoneInput.style.borderColor = 'red';
+                }
+            });
+
+            // Password validation
+            passwordInput.onfocus = function() {
+                passwordMessage.style.display = "block";
+            }
+            
+            passwordInput.onblur = function() {
+                if (passwordInput.value === "") {
+                    passwordMessage.style.display = "none";
+                }
+            }
+            
+            passwordInput.onkeyup = function() {
+                const pwd = passwordInput.value;
+                const lowerCaseLetters = /[a-z]/g;
+                const upperCaseLetters = /[A-Z]/g;
+                const numbers = /[0-9]/g;
+                
+                // Validate lowercase letters
+                if (pwd.match(lowerCaseLetters)) {
+                    letter.classList.remove("invalid");
+                    letter.classList.add("valid");
+                    letter.style.color = "green";
+                } else {
+                    letter.classList.remove("valid");
+                    letter.classList.add("invalid");
+                    letter.style.color = "red";
+                }
+                
+                // Validate uppercase letters
+                if (pwd.match(upperCaseLetters)) {
+                    capital.classList.remove("invalid");
+                    capital.classList.add("valid");
+                    capital.style.color = "green";
+                } else {
+                    capital.classList.remove("valid");
+                    capital.classList.add("invalid");
+                    capital.style.color = "red";
+                }
+                
+                // Validate numbers
+                if (pwd.match(numbers)) {
+                    number.classList.remove("invalid");
+                    number.classList.add("valid");
+                    number.style.color = "green";
+                } else {
+                    number.classList.remove("valid");
+                    number.classList.add("invalid");
+                    number.style.color = "red";
+                }
+                
+                // Validate length
+                if (pwd.length >= 8) {
+                    length.classList.remove("invalid");
+                    length.classList.add("valid");
+                    length.style.color = "green";
+                } else {
+                    length.classList.remove("valid");
+                    length.classList.add("invalid");
+                    length.style.color = "red";
+                }
+            }
+
+            // Confirm password validation
+            confirmPasswordInput.addEventListener('input', function() {
+                const pwd = passwordInput.value;
+                const confirmPwd = confirmPasswordInput.value;
+                
+                if (confirmPwd === '') {
+                    confirmPasswordValidation.textContent = '';
+                    confirmPasswordInput.style.borderColor = '#ccc';
+                } else if (pwd === confirmPwd) {
+                    confirmPasswordValidation.textContent = '✓ Passwords match';
+                    confirmPasswordValidation.style.color = 'green';
+                    confirmPasswordInput.style.borderColor = 'green';
+                } else {
+                    confirmPasswordValidation.textContent = '✗ Passwords do not match';
+                    confirmPasswordValidation.style.color = 'red';
+                    confirmPasswordInput.style.borderColor = 'red';
+                }
+            });
+
+            // Real-time form validation for submit button
+            function checkFormValidity() {
+                const firstName = firstNameInput.value.trim();
+                const lastName = lastNameInput.value.trim();
+                const email = emailInput.value.trim();
+                const phone = phoneInput.value.trim();
+                const pwd = passwordInput.value;
+                const confirmPwd = confirmPasswordInput.value;
+                
+                const isFirstNameValid = firstName !== '' && validateName(firstName);
+                const isLastNameValid = lastName !== '' && validateName(lastName);
+                const isEmailValid = email !== '' && validateEmail(email);
+                const isPhoneValid = phone !== '' && validatePhone(phone);
+                
+                const hasLower = /[a-z]/g.test(pwd);
+                const hasUpper = /[A-Z]/g.test(pwd);
+                const hasNumber = /[0-9]/g.test(pwd);
+                const hasLength = pwd.length >= 8;
+                const isPasswordValid = hasLower && hasUpper && hasNumber && hasLength;
+                
+                const isConfirmValid = pwd === confirmPwd && confirmPwd !== '';
+                
+                if (isFirstNameValid && isLastNameValid && isEmailValid && isPhoneValid && 
+                    isPasswordValid && isConfirmValid && UserType.value) {
+                    submitBtn.disabled = false;
+                    submitBtn.style.backgroundColor = "";
+                    submitBtn.style.cursor = "pointer";
+                } else {
+                    submitBtn.disabled = true;
+                    submitBtn.style.backgroundColor = "gray";
+                    submitBtn.style.cursor = "not-allowed";
+                }
+            }
+
+            // Add input event listeners for all fields
+            firstNameInput.addEventListener('input', checkFormValidity);
+            lastNameInput.addEventListener('input', checkFormValidity);
+            emailInput.addEventListener('input', checkFormValidity);
+            phoneInput.addEventListener('input', checkFormValidity);
+            passwordInput.addEventListener('keyup', checkFormValidity);
+            confirmPasswordInput.addEventListener('input', checkFormValidity);
+            
+            // Override selectUserType to check form validity
+            const originalSelectUserType = selectUserType;
+            selectUserType = function(type) {
+                originalSelectUserType(type);
+                checkFormValidity();
+            };
+
+            // Initialize button state
+            submitBtn.disabled = true;
+            submitBtn.style.backgroundColor = "gray";
+            submitBtn.style.cursor = "not-allowed";
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,595 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - DarLink</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <script src="js/i18n-dashboard.js"></script>
+    <script src="lang.js"></script>
+    <script src="js/theme.js"></script>
+    <style>
+        body { margin: 0; background: var(--bg-gradient); min-height: 100vh; }
+
+        /* ===== SIDEBAR ===== */
+        .side-nav {
+            width: 270px; flex-shrink: 0;
+            background: var(--glass-bg);
+            backdrop-filter: saturate(180%) blur(24px);
+            -webkit-backdrop-filter: saturate(180%) blur(24px);
+            border-right: 1px solid var(--glass-border);
+            display: flex; flex-direction: column;
+            position: fixed; top: 0; left: 0; height: 100vh; z-index: 100;
+            transition: transform 0.3s ease;
+            box-shadow: 4px 0 24px rgba(0,0,0,0.06);
+        }
+        .side-nav-logo { padding: 24px 22px 20px; display: flex; align-items: center; gap: 12px; border-bottom: 1px solid var(--glass-border); }
+        .side-nav-logo img { height: 42px; border-radius: 10px; }
+        .side-nav-logo span { font-size: 1.2rem; font-weight: 800; color: var(--primary); letter-spacing: -0.02em; }
+        .side-nav-user { padding: 18px 22px; display: flex; align-items: center; gap: 12px; border-bottom: 1px solid var(--glass-border); background: rgba(10,132,255,0.04); }
+        .side-user-avatar { width: 42px; height: 42px; border-radius: 50%; background: var(--primary); color: white; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 1.1rem; flex-shrink: 0; overflow: hidden; }
+        .side-user-info .name { font-weight: 700; font-size: 0.95rem; color: var(--text-main); }
+        .side-user-info .role { font-size: 0.8rem; color: var(--text-muted); margin-top: 2px; }
+        .side-nav-links { flex: 1; overflow-y: auto; padding: 16px 12px; display: flex; flex-direction: column; gap: 4px; }
+        .side-link { display: flex; align-items: center; gap: 13px; padding: 13px 16px; border-radius: 14px; text-decoration: none; color: var(--text-muted); font-weight: 500; font-size: 0.95rem; transition: all 0.2s ease; }
+        .side-link i { width: 22px; text-align: center; font-size: 1rem; }
+        .side-link:hover { background: rgba(10,132,255,0.07); color: var(--primary); text-decoration: none; transform: translateX(3px); }
+        .side-link.active { background: var(--primary); color: white; box-shadow: 0 4px 14px rgba(10,132,255,0.35); }
+        .side-link.active i { color: white; }
+        .side-nav-section-label { font-size: 0.74rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--text-muted); padding: 12px 16px 4px; }
+        .side-nav-footer { padding: 16px 12px; border-top: 1px solid var(--glass-border); display: flex; flex-direction: column; gap: 8px; }
+        .side-footer-actions { display: flex; gap: 8px; align-items: center; }
+        .theme-toggle-side { flex: 1; display: flex; align-items: center; gap: 10px; padding: 10px 14px; border-radius: 12px; border: 1px solid var(--glass-border); background: transparent; color: var(--text-muted); font-size: 0.88rem; font-weight: 500; cursor: pointer; transition: all 0.2s; }
+        .theme-toggle-side:hover { background: rgba(0,0,0,0.05); color: var(--text-main); }
+        .lang-side { display: flex; gap: 4px; }
+        .lang-side button { padding: 8px 12px; border: 1px solid var(--glass-border); border-radius: 10px; background: transparent; color: var(--text-muted); font-size: 0.82rem; font-weight: 600; cursor: pointer; transition: all 0.2s; }
+        .lang-side button:hover, .lang-side button.active { background: var(--primary); color: white; border-color: var(--primary); }
+        .btn-logout-side { display: flex; align-items: center; gap: 10px; padding: 10px 14px; border-radius: 12px; background: rgba(255,59,48,0.08); color: #ff3b30; font-size: 0.88rem; font-weight: 600; cursor: pointer; border: none; transition: all 0.2s; text-decoration: none; }
+        .btn-logout-side:hover { background: #ff3b30; color: white; }
+
+        /* MOBILE TOGGLE */
+        .sidebar-toggle { display: none; position: fixed; top: 16px; left: 16px; z-index: 200; width: 44px; height: 44px; border-radius: 12px; background: var(--primary); color: white; border: none; cursor: pointer; font-size: 1.1rem; box-shadow: 0 4px 14px rgba(10,132,255,0.4); align-items: center; justify-content: center; }
+        .side-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.4); backdrop-filter: blur(4px); z-index: 99; }
+
+        /* MAIN */
+        .dash-main { margin-left: 270px; flex: 1; padding: 36px 40px; min-height: 100vh; }
+
+        /* WELCOME BANNER */
+        .welcome-banner {
+            background: linear-gradient(135deg, var(--primary) 0%, #0062D1 100%);
+            border-radius: var(--radius-lg);
+            padding: 32px 36px;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 28px;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 8px 32px rgba(10,132,255,0.3);
+        }
+        .welcome-banner::before {
+            content: '';
+            position: absolute;
+            top: -50%; right: -10%;
+            width: 400px; height: 400px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.07);
+        }
+        .welcome-banner::after {
+            content: '';
+            position: absolute;
+            bottom: -30%; right: 20%;
+            width: 200px; height: 200px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.05);
+        }
+        .welcome-text { position: relative; z-index: 1; }
+        .welcome-text h1 { font-size: 2rem; font-weight: 800; margin: 0 0 8px; }
+        .welcome-text p { font-size: 1rem; opacity: 0.85; margin: 0; }
+        .welcome-icon { font-size: 5rem; opacity: 0.15; position: absolute; right: 36px; bottom: -10px; }
+
+        /* STATS GRID */
+        .stats-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 28px;
+        }
+        .stat-box {
+            background: var(--glass-bg);
+            backdrop-filter: saturate(180%) blur(20px);
+            -webkit-backdrop-filter: saturate(180%) blur(20px);
+            border-radius: var(--radius-lg);
+            padding: 24px;
+            border: 1px solid var(--glass-border);
+            box-shadow: var(--card-shadow);
+            display: flex;
+            align-items: center;
+            gap: 18px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .stat-box:hover { transform: translateY(-4px); box-shadow: var(--card-hover-shadow); }
+        .stat-icon {
+            width: 54px; height: 54px; border-radius: 16px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 1.5rem; flex-shrink: 0;
+        }
+        .stat-info .label { font-size: 0.82rem; color: var(--text-muted); font-weight: 500; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 4px; }
+        .stat-info .value { font-size: 2rem; font-weight: 800; color: var(--text-main); line-height: 1; }
+        .stat-info .sub { font-size: 0.8rem; color: var(--text-muted); margin-top: 4px; }
+
+        /* QUICK ACTIONS */
+        .section-title { font-size: 1.2rem; font-weight: 700; color: var(--text-main); margin: 0 0 16px; display: flex; align-items: center; gap: 10px; }
+
+        .actions-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 18px;
+            margin-bottom: 28px;
+        }
+        .action-card {
+            background: var(--glass-bg);
+            backdrop-filter: saturate(180%) blur(20px);
+            -webkit-backdrop-filter: saturate(180%) blur(20px);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius-lg);
+            padding: 28px 24px;
+            text-align: center;
+            text-decoration: none;
+            display: flex; flex-direction: column; align-items: center; gap: 14px;
+            box-shadow: var(--card-shadow);
+            transition: all 0.3s ease;
+        }
+        .action-card:hover { transform: translateY(-6px); box-shadow: var(--card-hover-shadow); text-decoration: none; }
+        .action-icon { width: 64px; height: 64px; border-radius: 20px; display: flex; align-items: center; justify-content: center; font-size: 1.8rem; }
+        .action-title { font-size: 1rem; font-weight: 700; color: var(--text-main); }
+        .action-desc { font-size: 0.85rem; color: var(--text-muted); line-height: 1.4; }
+
+        /* RECENT BOOKINGS TABLE */
+        .content-card {
+            background: var(--glass-bg);
+            backdrop-filter: saturate(180%) blur(20px);
+            -webkit-backdrop-filter: saturate(180%) blur(20px);
+            border-radius: var(--radius-lg);
+            border: 1px solid var(--glass-border);
+            box-shadow: var(--card-shadow);
+            overflow: hidden;
+        }
+        .content-card-header { padding: 20px 24px; border-bottom: 1px solid var(--glass-border); display: flex; align-items: center; justify-content: space-between; }
+        .content-card-header h3 { font-size: 1rem; font-weight: 700; color: var(--text-main); margin: 0; }
+        .booking-item { display: flex; align-items: center; gap: 14px; padding: 16px 24px; border-bottom: 1px solid var(--glass-border); transition: background 0.2s; }
+        .booking-item:last-child { border-bottom: none; }
+        .booking-item:hover { background: rgba(10,132,255,0.03); }
+        .booking-avatar { width: 40px; height: 40px; border-radius: 50%; background: var(--primary); color: white; display: flex; align-items: center; justify-content: center; font-weight: 700; flex-shrink: 0; }
+        .booking-info { flex: 1; min-width: 0; }
+        .booking-name { font-weight: 600; font-size: 0.9rem; color: var(--text-main); }
+        .booking-prop { font-size: 0.8rem; color: var(--text-muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .booking-amount { font-weight: 700; color: var(--primary); font-size: 0.9rem; }
+        .booking-badge { padding: 3px 10px; border-radius: 12px; font-size: 0.75rem; font-weight: 600; }
+        .badge-confirmed { background: rgba(52,199,89,0.12); color: #1a6b2e; }
+        .badge-pending { background: rgba(255,149,0,0.12); color: #c07000; }
+        .badge-completed { background: rgba(10,132,255,0.12); color: var(--primary); }
+        [data-theme="dark"] .badge-confirmed { color: #34C759; }
+        [data-theme="dark"] .badge-pending { color: #FF9500; }
+        [data-theme="dark"] .badge-completed { color: #0A84FF; }
+
+        /* Empty/Loading */
+        .empty-hint { padding: 30px 24px; text-align: center; color: var(--text-muted); font-size: 0.9rem; }
+
+        @media (max-width: 900px) {
+            .side-nav { transform: translateX(-100%); }
+            .side-nav.open { transform: translateX(0); }
+            .side-overlay.show { display: block; }
+            .dash-main { margin-left: 0; padding: 80px 20px 30px; }
+            .sidebar-toggle { display: flex; }
+            .welcome-banner { padding: 24px; }
+            .welcome-text h1 { font-size: 1.4rem; }
+        }
+        [data-theme="dark"] .side-nav { background: rgba(28,28,30,0.92); border-right-color: rgba(255,255,255,0.08); }
+        [data-theme="dark"] .side-link { color: rgba(255,255,255,0.6); }
+        [data-theme="dark"] .side-link:hover { background: rgba(255,255,255,0.07); color: white; }
+        [data-theme="dark"] .theme-toggle-side { color: rgba(255,255,255,0.6); }
+        [data-theme="dark"] .theme-toggle-side:hover { color: white; background: rgba(255,255,255,0.07); }
+    </style>
+</head>
+<body>
+
+<button class="sidebar-toggle" onclick="toggleSidebar()"><i class="fa-solid fa-bars"></i></button>
+<div class="side-overlay" id="sideOverlay" onclick="closeSidebar()"></div>
+
+<!-- ===== SIDEBAR ===== -->
+<aside class="side-nav" id="sideNav">
+    <div class="side-nav-logo">
+       <span class="logo">
+            <i class="fa-solid fa-house logo-icon"></i>
+            <span class="logo-text" data-i18n="nav_logo_text">DarLink</span>
+        </span>
+    </div>
+    <div class="side-nav-user">
+        <div class="side-user-avatar" id="userAvatarSide">U</div>
+        <div class="side-user-info">
+            <div class="name" id="userNameSide">Loading...</div>
+            <div class="role" data-i18n="role-owner">Property Owner</div>
+        </div>
+    </div>
+    <div class="side-nav-links">
+        <div class="side-nav-section-label" data-i18n="nav-management">Management</div>
+        <a href="AddHome.html" class="side-link active"><i class="fa-solid fa-gauge"></i> <span data-i18n="link-dashboard">Dashboard</span></a>
+        <a href="add-new-home.html" class="side-link"><i class="fa-solid fa-plus"></i> <span data-i18n="link-add-property">Add New Property</span></a>
+        <a href="my-property.html" class="side-link"><i class="fa-solid fa-list"></i> <span data-i18n="link-my-properties">My Properties</span></a>
+        <a href="bookings.html" class="side-link"><i class="fa-regular fa-calendar-check"></i> <span data-i18n="link-bookings">Bookings</span></a>
+        <a href="Statistics.html" class="side-link"><i class="fa-solid fa-chart-line"></i> <span data-i18n="link-statistics">Statistics</span></a>
+        <div class="side-nav-section-label" style="margin-top: 8px;" data-i18n="nav-account">Account</div>
+        <a href="index.html" class="side-link"><i class="fa-solid fa-house"></i> <span data-i18n="link-home">Back to Home</span></a>
+        <a href="profile.html" class="side-link"><i class="fa-solid fa-user"></i> <span data-i18n="link-profile">Profile Settings</span></a>
+    </div>
+    <div class="side-nav-footer">
+        <div class="side-footer-actions">
+            <button class="theme-toggle-side" onclick="toggleTheme()">
+                <i class="fa-regular fa-moon" id="themeIcon"></i>
+                <span id="themeLabel" data-i18n="theme-dark">Dark Mode</span>
+            </button>
+            <div class="lang-side">
+                <button class="lang-btn" data-lang="en">EN</button>
+                <button class="lang-btn" data-lang="ar">ع</button>
+            </div>
+        </div>
+        <button class="btn-logout-side" onclick="logout()"><i class="fa-solid fa-right-from-bracket"></i> <span data-i18n="link-logout">Log Out</span></button>
+    </div>
+</aside>
+
+<!-- ===== MAIN CONTENT ===== -->
+<main class="dash-main">
+
+    <!-- Welcome Banner -->
+    <div class="welcome-banner">
+        <div class="welcome-text">
+            <h1><span data-i18n="welcome-back">Welcome back</span>, <span id="ownerName">Owner</span>!</h1>
+            <p data-i18n="welcome-subtitle">Here's what's happening with your properties today.</p>
+        </div>
+        <i class="fa-solid fa-shield-halved welcome-icon"></i>
+    </div>
+
+    <!-- Stats Row -->
+    <div class="stats-row">
+        <div class="stat-box">
+            <div class="stat-icon" style="background: rgba(10,132,255,0.12);">
+                <i class="fa-solid fa-house" style="color: var(--primary);"></i>
+            </div>
+            <div class="stat-info">
+                <div class="label" data-i18n="stat-properties">Properties</div>
+                <div class="value" id="statProperties">0</div>
+                <div class="sub" id="statActiveProps">Loading...</div>
+            </div>
+        </div>
+        <div class="stat-box">
+            <div class="stat-icon" style="background: rgba(52,199,89,0.12);">
+                <i class="fa-regular fa-calendar-check" style="color: #34C759;"></i>
+            </div>
+            <div class="stat-info">
+                <div class="label" data-i18n="stat-bookings">Total Bookings</div>
+                <div class="value" id="statBookings">0</div>
+                <div class="sub" id="statBookingsSub">Loading...</div>
+            </div>
+        </div>
+        <div class="stat-box">
+            <div class="stat-icon" style="background: rgba(255,149,0,0.12);">
+                <i class="fa-solid fa-money-bill-wave" style="color: #FF9500;"></i>
+            </div>
+            <div class="stat-info">
+                <div class="label" data-i18n="stat-revenue">Total Revenue</div>
+                <div class="value" id="statRevenue">0</div>
+                <div class="sub" data-i18n="stat-revenue-sub">DZD from all bookings</div>
+            </div>
+        </div>
+        <div class="stat-box">
+            <div class="stat-icon" style="background: rgba(175,82,222,0.12);">
+                <i class="fa-regular fa-star" style="color: #AF52DE;"></i>
+            </div>
+            <div class="stat-info">
+                <div class="label" data-i18n="stat-rating">Avg. Rating</div>
+                <div class="value" id="statRating">0.0</div>
+                <div class="sub" data-i18n="stat-rating-sub">From guest reviews</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Quick Actions -->
+    <div class="section-title">
+        <i class="fa-solid fa-bolt" style="color: var(--primary);"></i> <span data-i18n="quick-actions">Quick Actions</span>
+    </div>
+    <div class="actions-grid">
+        <a href="add-new-home.html" class="action-card">
+            <div class="action-icon" style="background: rgba(52,199,89,0.12);">
+                <i class="fa-solid fa-house-circle-plus" style="color: #34C759;"></i>
+            </div>
+            <div class="action-title" data-i18n="action-add-title">Add New Property</div>
+            <div class="action-desc" data-i18n="action-add-desc">List a new home and start earning from guests.</div>
+        </a>
+        <a href="my-property.html" class="action-card">
+            <div class="action-icon" style="background: rgba(10,132,255,0.12);">
+                <i class="fa-solid fa-list-check" style="color: var(--primary);"></i>
+            </div>
+            <div class="action-title" data-i18n="action-manage-title">Manage Properties</div>
+            <div class="action-desc" data-i18n="action-manage-desc">Edit availability, prices, and features.</div>
+        </a>
+        <a href="bookings.html" class="action-card">
+            <div class="action-icon" style="background: rgba(255,149,0,0.12);">
+                <i class="fa-solid fa-user-tie" style="color: #FF9500;"></i>
+            </div>
+            <div class="action-title" data-i18n="action-bookings-title">Review Bookings</div>
+            <div class="action-desc" data-i18n="action-bookings-desc">Check incoming requests and review guests.</div>
+        </a>
+        <a href="Statistics.html" class="action-card">
+            <div class="action-icon" style="background: rgba(175,82,222,0.12);">
+                <i class="fa-solid fa-chart-pie" style="color: #AF52DE;"></i>
+            </div>
+            <div class="action-title" data-i18n="action-stats-title">Statistics</div>
+            <div class="action-desc" data-i18n="action-stats-desc">Detailed performance metrics and reports.</div>
+        </a>
+    </div>
+
+    <!-- Recent Bookings -->
+    <div class="section-title" style="margin-top: 4px;">
+        <i class="fa-solid fa-clock-rotate-left" style="color: var(--primary);"></i> <span data-i18n="recent-bookings">Recent Bookings</span>
+    </div>
+    <div class="content-card">
+        <div class="content-card-header">
+            <h3 data-i18n="latest-activity">Latest Activity</h3>
+            <a href="bookings.html" style="font-size: 0.85rem; color: var(--primary); font-weight: 600; text-decoration: none;"><span data-i18n="view-all">View All</span> →</a>
+        </div>
+        <div id="recentBookings">
+            <div class="empty-hint">
+                <i class="fa-solid fa-spinner fa-spin" style="font-size: 1.5rem; color: var(--primary); margin-bottom: 10px; display: block;"></i>
+                <span data-i18n="loading">Loading...</span>
+            </div>
+        </div>
+    </div>
+
+</main>
+
+<script>
+    // Translation messages
+    window.I18N_MESSAGES = {
+        logout: { en: "Logout", ar: "تسجيل الخروج" },
+        "role-owner": { en: "Property Owner", ar: "مالك العقار" },
+        "nav-management": { en: "Management", ar: "الإدارة" },
+        "link-dashboard": { en: "Dashboard", ar: "لوحة التحكم" },
+        "link-add-property": { en: "Add New Property", ar: "إضافة عقار جديد" },
+        "link-my-properties": { en: "My Properties", ar: "عقاراتي" },
+        "link-bookings": { en: "Bookings", ar: "الحجوزات" },
+        "link-statistics": { en: "Statistics", ar: "الإحصائيات" },
+        "nav-account": { en: "Account", ar: "الحساب" },
+        "link-home": { en: "Back to Home", ar: "العودة للرئيسية" },
+        "link-profile": { en: "Profile Settings", ar: "إعدادات الملف الشخصي" },
+        "theme-dark": { en: "Dark Mode", ar: "الوضع الداكن" },
+        "theme-light": { en: "Light Mode", ar: "الوضع الفاتح" },
+        "link-logout": { en: "Log Out", ar: "تسجيل الخروج" },
+        "welcome-back": { en: "Welcome back", ar: "مرحبًا بعودتك" },
+        "welcome-subtitle": { en: "Here's what's happening with your properties today.", ar: "إليك ما يحدث مع عقاراتك اليوم." },
+        "stat-properties": { en: "Properties", ar: "العقارات" },
+        "stat-bookings": { en: "Total Bookings", ar: "إجمالي الحجوزات" },
+        "stat-revenue": { en: "Total Revenue", ar: "إجمالي الإيرادات" },
+        "stat-revenue-sub": { en: "DZD from all bookings", ar: "دينار من جميع الحجوزات" },
+        "stat-rating": { en: "Avg. Rating", ar: "متوسط التقييم" },
+        "stat-rating-sub": { en: "From guest reviews", ar: "من تقييمات الضيوف" },
+        "quick-actions": { en: "Quick Actions", ar: "إجراءات سريعة" },
+        "action-add-title": { en: "Add New Property", ar: "إضافة عقار جديد" },
+        "action-add-desc": { en: "List a new home and start earning from guests.", ar: "أضف منزلاً جديدًا وابدأ في تحقيق الأرباح." },
+        "action-manage-title": { en: "Manage Properties", ar: "إدارة العقارات" },
+        "action-manage-desc": { en: "Edit availability, prices, and features.", ar: "تعديل التوافر والأسعار والميزات." },
+        "action-bookings-title": { en: "Review Bookings", ar: "مراجعة الحجوزات" },
+        "action-bookings-desc": { en: "Check incoming requests and review guests.", ar: "تحقق من الطلبات الواردة وراجع الضيوف." },
+        "action-stats-title": { en: "Statistics", ar: "الإحصائيات" },
+        "action-stats-desc": { en: "Detailed performance metrics and reports.", ar: "مقاييس الأداء التفصيلية والتقارير." },
+        "recent-bookings": { en: "Recent Bookings", ar: "الحجوزات الأخيرة" },
+        "latest-activity": { en: "Latest Activity", ar: "آخر النشاطات" },
+        "view-all": { en: "View All", ar: "عرض الكل" },
+        "loading": { en: "Loading...", ar: "جاري التحميل..." }
+    };
+
+    const SERVER_URL = window.location.hostname === 'localhost' ? 'http://localhost:5000' : `http://${window.location.hostname}:5000`;
+    const API_URL = `${SERVER_URL}/api`;
+    const user = JSON.parse(localStorage.getItem('user') || 'null');
+
+    if (!user || user.UserType !== 'Owner') {
+        alert('Please login as an owner to access this page');
+        window.location.href = 'login.html';
+    }
+
+    // Set user info
+    const firstName = user ? (user.FirstName || user.FullName || 'Owner') : 'Owner';
+    const fullName = user ? `${firstName} ${user.LastName || ''}`.trim() : 'Owner';
+
+    document.getElementById('ownerName').textContent = firstName;
+    document.getElementById('userNameSide').textContent = fullName;
+
+    const avatarEl = document.getElementById('userAvatarSide');
+    if (user && user.ProfilePicturePath) {
+        avatarEl.innerHTML = `<img src="${user.ProfilePicturePath}" style="width:100%;height:100%;border-radius:50%;object-fit:cover;">`;
+    } else {
+        avatarEl.textContent = firstName.charAt(0).toUpperCase();
+    }
+
+    // Theme functions
+    function toggleTheme() {
+        const current = document.documentElement.getAttribute('data-theme') || 'light';
+        const newTheme = current === 'dark' ? 'light' : 'dark';
+        document.documentElement.setAttribute('data-theme', newTheme);
+        localStorage.setItem('site_theme', newTheme);
+        
+        const icon = document.getElementById('themeIcon');
+        const label = document.getElementById('themeLabel');
+        const currentLang = localStorage.getItem('site_lang') || 'en';
+        
+        if (newTheme === 'dark') {
+            icon.className = 'fa-solid fa-sun';
+            label.textContent = window.I18N_MESSAGES['theme-light'][currentLang];
+        } else {
+            icon.className = 'fa-regular fa-moon';
+            label.textContent = window.I18N_MESSAGES['theme-dark'][currentLang];
+        }
+    }
+
+    // Initialize theme
+    const savedTheme = localStorage.getItem('site_theme') || 'light';
+    document.documentElement.setAttribute('data-theme', savedTheme);
+    const icon = document.getElementById('themeIcon');
+    const label = document.getElementById('themeLabel');
+    const currentLang = localStorage.getItem('site_lang') || 'en';
+    
+    if (savedTheme === 'dark') {
+        icon.className = 'fa-solid fa-sun';
+        label.textContent = window.I18N_MESSAGES['theme-light'][currentLang];
+    } else {
+        icon.className = 'fa-regular fa-moon';
+        label.textContent = window.I18N_MESSAGES['theme-dark'][currentLang];
+    }
+
+    // Language functions
+    function setLanguage(lang) {
+        localStorage.setItem('site_lang', lang);
+        document.documentElement.setAttribute('dir', lang === 'ar' ? 'rtl' : 'ltr');
+        
+        // Update all elements with data-i18n
+        document.querySelectorAll('[data-i18n]').forEach(el => {
+            const key = el.getAttribute('data-i18n');
+            if (window.I18N_MESSAGES[key] && window.I18N_MESSAGES[key][lang]) {
+                if (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA') {
+                    el.placeholder = window.I18N_MESSAGES[key][lang];
+                } else {
+                    el.textContent = window.I18N_MESSAGES[key][lang];
+                }
+            }
+        });
+
+        // Update active button state
+        document.querySelectorAll('.lang-btn').forEach(btn => {
+            btn.classList.remove('active');
+            if (btn.getAttribute('data-lang') === lang) {
+                btn.classList.add('active');
+            }
+        });
+
+        // Update theme label
+        const savedTheme = localStorage.getItem('site_theme') || 'light';
+        const themeLabel = document.getElementById('themeLabel');
+        if (themeLabel) {
+            themeLabel.textContent = savedTheme === 'dark' 
+                ? window.I18N_MESSAGES['theme-light'][lang]
+                : window.I18N_MESSAGES['theme-dark'][lang];
+        }
+    }
+
+    // Initialize language
+    const savedLang = localStorage.getItem('site_lang') || 'en';
+    setLanguage(savedLang);
+
+    // Add language button event listeners
+    document.querySelectorAll('.lang-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+            const lang = btn.getAttribute('data-lang');
+            setLanguage(lang);
+        });
+    });
+
+    // Sidebar functions
+    function toggleSidebar() { 
+        document.getElementById('sideNav').classList.toggle('open'); 
+        document.getElementById('sideOverlay').classList.toggle('show'); 
+    }
+    
+    function closeSidebar() { 
+        document.getElementById('sideNav').classList.remove('open'); 
+        document.getElementById('sideOverlay').classList.remove('show'); 
+    }
+    
+    function logout() { 
+        localStorage.removeItem('user'); 
+        window.location.href = 'index.html'; 
+    }
+
+    async function loadDashboard() {
+        try {
+            // Load properties
+            const propsRes = await fetch(`${API_URL}/properties/owner/${user.UserId}`);
+            const properties = await propsRes.json();
+
+            const total = properties.length;
+            const active = properties.filter(p => p.AvailabilityStatus === 'Active').length;
+            document.getElementById('statProperties').textContent = total;
+            document.getElementById('statActiveProps').textContent = `${active} active, ${total - active} inactive`;
+
+            // Load bookings from all properties
+            let allBookings = [];
+            let totalRevenue = 0;
+            for (const property of properties) {
+                try {
+                    const bookingsRes = await fetch(`${API_URL}/bookings/property/${property.PropertyId}`);
+                    const bookings = await bookingsRes.json();
+                    const withTitle = bookings.map(b => ({ ...b, PropertyTitle: property.Title }));
+                    allBookings = allBookings.concat(withTitle);
+                    bookings.forEach(b => {
+                        if (b.BookingStatus === 'Completed') {
+                            totalRevenue += Number(b.TotalPrice) || 0;
+                        }
+                    });
+                } catch(e) {}
+            }
+
+            document.getElementById('statBookings').textContent = allBookings.length;
+            const confirmed = allBookings.filter(b => b.BookingStatus === 'Confirmed').length;
+            document.getElementById('statBookingsSub').textContent = `${confirmed} confirmed`;
+            document.getElementById('statRevenue').textContent = totalRevenue > 0 ? totalRevenue.toLocaleString() : '0';
+
+            // Load rating
+            try {
+                const ratingRes = await fetch(`${API_URL}/users/${user.UserId}`);
+                const userData = await ratingRes.json();
+                const rating = userData.AverageRating;
+                if (rating && rating > 0) {
+                    document.getElementById('statRating').textContent = Number(rating).toFixed(1);
+                } else {
+                    document.getElementById('statRating').textContent = '0.0';
+                }
+            } catch(e) {
+                document.getElementById('statRating').textContent = '0.0';
+            }
+
+            // Recent bookings (last 5)
+            const recentDiv = document.getElementById('recentBookings');
+            if (allBookings.length === 0) {
+                recentDiv.innerHTML = '<div class="empty-hint"><i class="fa-regular fa-calendar-xmark" style="font-size:2rem;display:block;margin-bottom:10px;"></i>No bookings yet</div>';
+                return;
+            }
+
+            allBookings.sort((a, b) => new Date(b.StartDate) - new Date(a.StartDate));
+            const recent = allBookings.slice(0, 6);
+
+            recentDiv.innerHTML = recent.map(b => {
+                const renterName = b.RenterName || 'Guest';
+                const statusClass = b.BookingStatus === 'Confirmed' ? 'badge-confirmed' : b.BookingStatus === 'Completed' ? 'badge-completed' : 'badge-pending';
+                return `
+                <div class="booking-item">
+                    <div class="booking-avatar">${renterName[0].toUpperCase()}</div>
+                    <div class="booking-info">
+                        <div class="booking-name">${renterName}</div>
+                        <div class="booking-prop">${b.PropertyTitle} · ${new Date(b.StartDate).toLocaleDateString()} → ${new Date(b.EndDate).toLocaleDateString()}</div>
+                    </div>
+                    <span class="booking-amount">${Number(b.TotalPrice).toLocaleString()} DZD</span>
+                    <span class="booking-badge ${statusClass}">${b.BookingStatus}</span>
+                </div>`;
+            }).join('');
+
+        } catch (error) {
+            console.error('Dashboard error:', error);
+            document.getElementById('recentBookings').innerHTML = '<div class="empty-hint" style="color:#ff3b30;">Failed to load data</div>';
+        }
+    }
+
+    loadDashboard();
+</script>
+</body>
+</html>

@@ -1,0 +1,500 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Property Reviews</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        .review-container {
+            max-width: 800px;
+            margin: 40px auto;
+            padding: 24px;
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(20px);
+            border-radius: 16px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+        .property-header {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            margin-bottom: 24px;
+            padding-bottom: 16px;
+            border-bottom: 1px solid #eee;
+        }
+        .property-image {
+            width: 80px;
+            height: 80px;
+            border-radius: 8px;
+            object-fit: cover;
+            background: #f0f0f0;
+        }
+        .property-title {
+            font-size: 1.4rem;
+            font-weight: 600;
+            color: #333;
+        }
+        .rating-summary {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 12px;
+            margin-bottom: 24px;
+            display: flex;
+            align-items: center;
+            gap: 24px;
+        }
+        .average-rating {
+            text-align: center;
+        }
+        .average-number {
+            font-size: 3rem;
+            font-weight: 700;
+            color: var(--primary);
+        }
+        .stars {
+            color: #ffc107;
+            font-size: 1.2rem;
+        }
+        .review-card {
+            padding: 20px;
+            border-bottom: 1px solid #eee;
+        }
+        .review-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+        .reviewer-name {
+            font-weight: 600;
+            color: #333;
+        }
+        .review-date {
+            color: #999;
+            font-size: 0.9rem;
+        }
+        .review-rating {
+            color: #ffc107;
+            margin-bottom: 10px;
+        }
+        .review-comment {
+            color: #666;
+            line-height: 1.6;
+        }
+        .btn-write-review {
+            display: inline-block;
+            padding: 12px 24px;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1rem;
+            margin-bottom: 20px;
+            margin-right: 10px;
+        }
+        .btn-write-review:hover {
+            background: var(--primary-dark);
+        }
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+        .modal-content {
+            background: white;
+            padding: 30px;
+            border-radius: 16px;
+            max-width: 500px;
+            width: 90%;
+        }
+        .rating-select {
+            display: flex;
+            gap: 10px;
+            margin: 20px 0;
+            justify-content: center;
+        }
+        .rating-star {
+            font-size: 2rem;
+            color: #ddd;
+            cursor: pointer;
+            transition: color 0.2s;
+        }
+        .rating-star:hover,
+        .rating-star.selected {
+            color: #ffc107;
+        }
+        textarea {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            margin: 20px 0;
+            min-height: 100px;
+            font-family: Arial, sans-serif;
+        }
+        .modal-buttons {
+            display: flex;
+            gap: 10px;
+            justify-content: flex-end;
+        }
+        .back-btn {
+            display: inline-block;
+            padding: 10px 20px;
+            background: rgba(255,255,255,0.9);
+            color: var(--primary);
+            text-decoration: none;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="review-container">
+        <a href="javascript:history.back()" class="back-btn">← Back</a>
+
+        <div class="property-header" id="propertyHeader">
+            <!-- Will be filled by JavaScript -->
+        </div>
+
+        <div id="reviewButtonContainer">
+            <!-- Review buttons will appear here if user can review -->
+        </div>
+
+        <div class="rating-summary" id="ratingSummary">
+            <!-- Will be filled by JavaScript -->
+        </div>
+
+        <div id="reviewsList">
+            <!-- Reviews will be loaded here -->
+        </div>
+    </div>
+
+    <!-- Review Modal -->
+    <div id="reviewModal" class="modal">
+        <div class="modal-content">
+            <h2 id="modalTitle">Write a Review</h2>
+            <input type="hidden" id="reviewType">
+            <input type="hidden" id="bookingId">
+            <input type="hidden" id="reviewedUserId">
+            
+            <div class="rating-select" id="ratingSelect">
+                <i class="fa-regular fa-star rating-star" data-rating="1"></i>
+                <i class="fa-regular fa-star rating-star" data-rating="2"></i>
+                <i class="fa-regular fa-star rating-star" data-rating="3"></i>
+                <i class="fa-regular fa-star rating-star" data-rating="4"></i>
+                <i class="fa-regular fa-star rating-star" data-rating="5"></i>
+            </div>
+
+            <textarea id="reviewComment" placeholder="Share your experience..."></textarea>
+
+            <div class="modal-buttons">
+                <button onclick="closeReviewModal()" style="padding: 10px 20px; background: #6c757d; color: white; border: none; border-radius: 6px; cursor: pointer;">Cancel</button>
+                <button onclick="submitReview()" style="padding: 10px 20px; background: var(--primary); color: white; border: none; border-radius: 6px; cursor: pointer;">Submit Review</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const API_URL = 'http://localhost:5000/api';
+        const urlParams = new URLSearchParams(window.location.search);
+        const propertyId = urlParams.get('propertyId');
+        const user = JSON.parse(localStorage.getItem('user'));
+
+        let selectedRating = 0;
+        let propertyData = null;
+
+        // Validate inputs
+        if (!user) {
+            alert('Please login to view reviews');
+            window.location.href = 'login.html';
+        }
+
+        if (!propertyId) {
+            alert('Missing property ID. Please use: property-review.html?propertyId=1');
+            window.history.back();
+        }
+
+        // Load property details and reviews
+        async function loadPropertyReviews() {
+            try {
+                console.log('Loading property:', propertyId);
+                
+                // Load property details
+                const propertyRes = await fetch(`${API_URL}/properties/${propertyId}`);
+                if (!propertyRes.ok) {
+                    throw new Error('Property not found');
+                }
+                propertyData = await propertyRes.json();
+                
+                console.log('Property loaded:', propertyData);
+
+                document.getElementById('propertyHeader').innerHTML = `
+                    <img src="${propertyData.MainImage || 'https://via.placeholder.com/80'}" class="property-image" alt="${propertyData.Title}">
+                    <div>
+                        <div class="property-title">${propertyData.Title}</div>
+                        <div>${propertyData.City}, ${propertyData.Wilaya}</div>
+                    </div>
+                `;
+
+                // Check if user can review
+                await checkCanReview();
+
+                // Load reviews for this property
+                const reviewsRes = await fetch(`${API_URL}/reviews/property/${propertyId}`);
+                const data = await reviewsRes.json();
+
+                // Update rating summary
+                document.getElementById('ratingSummary').innerHTML = `
+                    <div class="average-rating">
+                        <div class="average-number">${data.averageRating ? data.averageRating.toFixed(1) : '0.0'}</div>
+                        <div class="stars">${getStarRating(data.averageRating || 0)}</div>
+                    </div>
+                    <div>Based on ${data.totalReviews || 0} review${data.totalReviews !== 1 ? 's' : ''}</div>
+                `;
+
+                // Display reviews
+                if (!data.reviews || data.reviews.length === 0) {
+                    document.getElementById('reviewsList').innerHTML = '<p style="text-align: center; padding: 40px; color: #666;">No reviews yet. Be the first to review!</p>';
+                } else {
+                    document.getElementById('reviewsList').innerHTML = data.reviews.map(review => `
+                        <div class="review-card">
+                            <div class="review-header">
+                                <span class="reviewer-name">${review.ReviewerName}</span>
+                                <span class="review-date">${new Date(review.ReviewDate).toLocaleDateString()}</span>
+                            </div>
+                            <div class="review-rating">${getStarRating(review.Rating)}</div>
+                            <div class="review-comment">${review.Comment || ''}</div>
+                        </div>
+                    `).join('');
+                }
+
+            } catch (error) {
+                console.error('Error loading reviews:', error);
+                document.getElementById('propertyHeader').innerHTML = '<p style="color: red;">Error loading property. Please check the property ID.</p>';
+                document.getElementById('ratingSummary').innerHTML = '<p>Could not load reviews</p>';
+            }
+        }
+
+        function getStarRating(rating) {
+            let stars = '';
+            for (let i = 1; i <= 5; i++) {
+                if (i <= Math.floor(rating)) {
+                    stars += '<i class="fa-solid fa-star" style="color: #ffc107;"></i>';
+                } else if (i - 0.5 <= rating) {
+                    stars += '<i class="fa-solid fa-star-half-stroke" style="color: #ffc107;"></i>';
+                } else {
+                    stars += '<i class="fa-regular fa-star" style="color: #ffc107;"></i>';
+                }
+            }
+            return stars;
+        }
+
+        function showReviewModal(type, bookingId = null, reviewedUserId = null, title = 'Write a Review') {
+            document.getElementById('reviewModal').style.display = 'flex';
+            document.getElementById('modalTitle').textContent = title;
+            document.getElementById('reviewType').value = type;
+            if (bookingId) document.getElementById('bookingId').value = bookingId;
+            if (reviewedUserId) document.getElementById('reviewedUserId').value = reviewedUserId;
+            selectedRating = 0;
+            document.querySelectorAll('.rating-star').forEach(star => {
+                star.classList.remove('selected', 'fa-solid');
+                star.classList.add('fa-regular');
+                star.style.color = '#ddd';
+            });
+        }
+
+        // Check if user can review
+        async function checkCanReview() {
+            try {
+                const container = document.getElementById('reviewButtonContainer');
+                container.innerHTML = '';
+
+                // Only renters can review
+                if (user.UserType !== 'Renter') {
+                    return;
+                }
+
+                // Check if user has completed bookings for this property
+                const bookingsRes = await fetch(`${API_URL}/bookings/user/${user.UserId}`);
+                const bookings = await bookingsRes.json();
+                
+                console.log('User bookings:', bookings);
+                
+                const completedBookings = bookings.filter(b => 
+                    b.PropertyId == propertyId && 
+                    (b.BookingStatus === 'Completed' || new Date(b.EndDate) < new Date())
+                );
+
+                console.log('Completed bookings for this property:', completedBookings);
+
+                if (completedBookings.length === 0) {
+                    container.innerHTML = '<p style="color: #666; padding: 10px;">You must complete a booking to review this property</p>';
+                    return;
+                }
+
+                // Check if already reviewed property
+                const reviewsRes = await fetch(`${API_URL}/reviews/property/${propertyId}`);
+                const reviewsData = await reviewsRes.json();
+                const alreadyReviewedProperty = reviewsData.reviews.some(r => r.ReviewerId === user.UserId);
+
+                console.log('Already reviewed property:', alreadyReviewedProperty);
+
+                if (!alreadyReviewedProperty) {
+                    container.innerHTML += `
+                        <button class="btn-write-review" onclick="showReviewModal('property', ${completedBookings[0].BookingId}, null, 'Review Property')">
+                            <i class="fa-regular fa-star"></i> Review Property
+                        </button>
+                    `;
+                }
+
+                // Check if already reviewed owner
+                const ownerReviewsRes = await fetch(`${API_URL}/reviews/user/${propertyData.OwnerId}`);
+                const ownerReviews = await ownerReviewsRes.json();
+                const alreadyReviewedOwner = ownerReviews.reviews.some(r => r.ReviewerId === user.UserId);
+
+                console.log('Already reviewed owner:', alreadyReviewedOwner);
+
+                if (!alreadyReviewedOwner) {
+                    container.innerHTML += `
+                        <button class="btn-write-review" style="background:#ffa500;" onclick="showReviewModal('owner', ${completedBookings[0].BookingId}, ${propertyData.OwnerId}, 'Review Owner')">
+                            <i class="fa-regular fa-user"></i> Review Owner
+                        </button>
+                    `;
+                }
+
+            } catch (err) {
+                console.error('checkCanReview error:', err);
+            }
+        }
+
+        function closeReviewModal() {
+            document.getElementById('reviewModal').style.display = 'none';
+            selectedRating = 0;
+            document.getElementById('reviewComment').value = '';
+        }
+
+        // Handle star rating selection
+        document.querySelectorAll('.rating-star').forEach(star => {
+            star.addEventListener('click', function() {
+                selectedRating = parseInt(this.dataset.rating);
+                
+                document.querySelectorAll('.rating-star').forEach(s => {
+                    const starRating = parseInt(s.dataset.rating);
+                    if (starRating <= selectedRating) {
+                        s.classList.remove('fa-regular');
+                        s.classList.add('fa-solid', 'selected');
+                        s.style.color = '#ffc107';
+                    } else {
+                        s.classList.remove('fa-solid', 'selected');
+                        s.classList.add('fa-regular');
+                        s.style.color = '#ddd';
+                    }
+                });
+            });
+
+            star.addEventListener('mouseover', function() {
+                const rating = parseInt(this.dataset.rating);
+                document.querySelectorAll('.rating-star').forEach(s => {
+                    if (parseInt(s.dataset.rating) <= rating) {
+                        s.style.color = '#ffc107';
+                    }
+                });
+            });
+
+            star.addEventListener('mouseout', function() {
+                document.querySelectorAll('.rating-star').forEach(s => {
+                    const starRating = parseInt(s.dataset.rating);
+                    if (starRating <= selectedRating) {
+                        s.style.color = '#ffc107';
+                    } else {
+                        s.style.color = '#ddd';
+                    }
+                });
+            });
+        });
+
+        async function submitReview() {
+            if (!selectedRating) {
+                alert('Please select a rating');
+                return;
+            }
+
+            const comment = document.getElementById('reviewComment').value.trim();
+            if (!comment) {
+                alert('Please write a comment');
+                return;
+            }
+
+            const reviewType = document.getElementById('reviewType').value;
+            const bookingIdVal = document.getElementById('bookingId').value;
+            const reviewedUserIdVal = document.getElementById('reviewedUserId').value;
+
+            try {
+                let reviewData;
+                
+                if (reviewType === 'property') {
+                    // Review property
+                    reviewData = {
+                        reviewerId: user.UserId,
+                        reviewedUserId: propertyData.OwnerId,
+                        propertyId: parseInt(propertyId),
+                        bookingId: parseInt(bookingIdVal),
+                        rating: selectedRating,
+                        comment: comment,
+                        reviewerType: 'Renter',
+                        reviewedRole: 'Property'
+                    };
+                } else if (reviewType === 'owner') {
+                    // Review owner
+                    reviewData = {
+                        reviewerId: user.UserId,
+                        reviewedUserId: parseInt(reviewedUserIdVal),
+                        propertyId: parseInt(propertyId),
+                        bookingId: parseInt(bookingIdVal),
+                        rating: selectedRating,
+                        comment: comment,
+                        reviewerType: 'Renter',
+                        reviewedRole: 'Owner'
+                    };
+                }
+
+                console.log('Submitting review:', reviewData);
+
+                const response = await fetch(`${API_URL}/reviews`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(reviewData)
+                });
+
+                const data = await response.json();
+                console.log('Review response:', data);
+
+                if (response.ok) {
+                    alert('âœ… Review submitted successfully!');
+                    closeReviewModal();
+                    loadPropertyReviews(); // Reload to show new review
+                } else {
+                    alert('Error: ' + (data.error || 'Failed to submit review'));
+                }
+            } catch (error) {
+                console.error('Submit error:', error);
+                alert('Network error. Please try again.');
+            }
+        }
+
+        // Load on page load - only if propertyId exists
+        if (propertyId) {
+            loadPropertyReviews();
+        }
+    </script>
+</body>
+</html>

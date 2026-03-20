@@ -1,0 +1,212 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payment Cancelled - DarLink</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            max-width: 500px;
+            width: 100%;
+            text-align: center;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+
+        .icon {
+            width: 80px;
+            height: 80px;
+            background: #ff4757;
+            border-radius: 50%;
+            margin: 0 auto 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 40px;
+            color: white;
+        }
+
+        h1 {
+            color: #2d3436;
+            font-size: 28px;
+            margin-bottom: 15px;
+        }
+
+        p {
+            color: #636e72;
+            font-size: 16px;
+            line-height: 1.6;
+            margin-bottom: 30px;
+        }
+
+        .status {
+            background: #f1f3f5;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            font-size: 14px;
+            color: #495057;
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            flex: 1;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .btn-primary {
+            background: #667eea;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #5568d3;
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary {
+            background: #e9ecef;
+            color: #495057;
+        }
+
+        .btn-secondary:hover {
+            background: #dee2e6;
+        }
+
+        .spinner {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid #667eea;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-right: 10px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .processing {
+            display: none;
+            color: #667eea;
+            font-weight: 600;
+            margin-bottom: 15px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="icon">✕</div>
+        <h1>Payment Cancelled</h1>
+        <p>Your payment was cancelled. Don't worry, no charges were made to your account.</p>
+        
+        <div class="status">
+            <div id="processingMsg" class="processing">
+                <div class="spinner"></div>
+                Cleaning up booking...
+            </div>
+            <div id="statusMsg">
+                <strong>Status:</strong> <span id="bookingStatus">Checking booking status...</span>
+            </div>
+        </div>
+
+        <div class="btn-group">
+            <a href="index.html" class="btn btn-secondary">Back to Home</a>
+            <button onclick="retryBooking()" class="btn btn-primary" id="retryBtn">Try Again</button>
+        </div>
+    </div>
+
+    <script>
+        const urlParams = new URLSearchParams(window.location.search);
+        const bookingId = urlParams.get('bookingId');
+        const SERVER_URL = 'http://localhost:5000';
+
+        async function deleteFailedBooking() {
+            if (!bookingId) {
+                document.getElementById('statusMsg').innerHTML = 
+                    '<strong>Error:</strong> No booking ID found';
+                return;
+            }
+
+            try {
+                document.getElementById('processingMsg').style.display = 'block';
+                
+                console.log('🗑️ Deleting cancelled booking:', bookingId);
+
+                // Delete the booking via API
+                const response = await fetch(`${SERVER_URL}/api/bookings/cancel/${bookingId}`, {
+                    method: 'DELETE',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                });
+
+                const result = await response.json();
+
+                document.getElementById('processingMsg').style.display = 'none';
+
+                if (response.ok) {
+                    console.log('✅ Booking deleted successfully');
+                    document.getElementById('bookingStatus').textContent = 
+                        'Booking cancelled and removed. Dates are now available again.';
+                    document.getElementById('bookingStatus').style.color = '#00b894';
+                } else {
+                    console.log('⚠️ Booking already cancelled or not found');
+                    document.getElementById('bookingStatus').textContent = 
+                        result.message || 'Booking has been handled.';
+                }
+
+            } catch (error) {
+                console.error('❌ Error deleting booking:', error);
+                document.getElementById('processingMsg').style.display = 'none';
+                document.getElementById('bookingStatus').textContent = 
+                    'Could not verify booking status. Please check your bookings page.';
+            }
+        }
+
+        function retryBooking() {
+            // Redirect to property search/home page
+            window.location.href = 'index.html';
+        }
+
+        // Automatically delete the booking when page loads
+        window.addEventListener('DOMContentLoaded', () => {
+            deleteFailedBooking();
+        });
+    </script>
+</body>
+</html>

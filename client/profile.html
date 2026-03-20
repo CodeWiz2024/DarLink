@@ -1,0 +1,556 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Profile - DarLink</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <script src="js/i18n-dashboard.js"></script>
+    <script src="lang.js"></script>
+    <script src="js/theme.js"></script>
+    <style>
+        body { margin: 0; background: var(--bg-gradient); min-height: 100vh; }
+        .dash-layout { display: flex; min-height: 100vh; }
+
+        /* ===== SIDEBAR ===== */
+        .side-nav {
+            width: 270px; flex-shrink: 0;
+            background: var(--glass-bg);
+            backdrop-filter: saturate(180%) blur(24px);
+            -webkit-backdrop-filter: saturate(180%) blur(24px);
+            border-right: 1px solid var(--glass-border);
+            display: flex; flex-direction: column;
+            position: fixed; top: 0; left: 0; height: 100vh; z-index: 100;
+            transition: transform 0.3s ease;
+            box-shadow: 4px 0 24px rgba(0,0,0,0.06);
+        }
+        .side-nav-logo { padding: 24px 22px 20px; display: flex; align-items: center; gap: 12px; border-bottom: 1px solid var(--glass-border); }
+        .side-nav-logo img { height: 42px; border-radius: 10px; }
+        .side-nav-logo span { font-size: 1.2rem; font-weight: 800; color: var(--primary); letter-spacing: -0.02em; }
+        .side-nav-user { padding: 18px 22px; display: flex; align-items: center; gap: 12px; border-bottom: 1px solid var(--glass-border); background: rgba(10,132,255,0.04); }
+        .side-user-avatar { width: 42px; height: 42px; border-radius: 50%; background: var(--primary); color: white; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 1.1rem; flex-shrink: 0; overflow: hidden; }
+        .side-user-info .name { font-weight: 700; font-size: 0.95rem; color: var(--text-main); }
+        .side-user-info .role { font-size: 0.8rem; color: var(--text-muted); margin-top: 2px; }
+        .side-nav-links { flex: 1; overflow-y: auto; padding: 16px 12px; display: flex; flex-direction: column; gap: 4px; }
+        .side-link { display: flex; align-items: center; gap: 13px; padding: 13px 16px; border-radius: 14px; text-decoration: none; color: var(--text-muted); font-weight: 500; font-size: 0.95rem; transition: all 0.2s ease; }
+        .side-link i { width: 22px; text-align: center; font-size: 1rem; }
+        .side-link:hover { background: rgba(10,132,255,0.07); color: var(--primary); text-decoration: none; transform: translateX(3px); }
+        .side-link.active { background: var(--primary); color: white; box-shadow: 0 4px 14px rgba(10,132,255,0.35); }
+        .side-link.active i { color: white; }
+        .side-nav-section-label { font-size: 0.74rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--text-muted); padding: 12px 16px 4px; }
+        .side-nav-footer { padding: 16px 12px; border-top: 1px solid var(--glass-border); display: flex; flex-direction: column; gap: 8px; }
+        .side-footer-actions { display: flex; gap: 8px; align-items: center; }
+        .theme-toggle-side { flex: 1; display: flex; align-items: center; gap: 10px; padding: 10px 14px; border-radius: 12px; border: 1px solid var(--glass-border); background: transparent; color: var(--text-muted); font-size: 0.88rem; font-weight: 500; cursor: pointer; transition: all 0.2s; }
+        .theme-toggle-side:hover { background: rgba(0,0,0,0.05); color: var(--text-main); }
+        .lang-side { display: flex; gap: 4px; }
+        .lang-side button { padding: 8px 12px; border: 1px solid var(--glass-border); border-radius: 10px; background: transparent; color: var(--text-muted); font-size: 0.82rem; font-weight: 600; cursor: pointer; transition: all 0.2s; }
+        .lang-side button:hover, .lang-side button.active { background: var(--primary); color: white; border-color: var(--primary); }
+        .btn-logout-side { display: flex; align-items: center; gap: 10px; padding: 10px 14px; border-radius: 12px; background: rgba(255,59,48,0.08); color: #ff3b30; font-size: 0.88rem; font-weight: 600; cursor: pointer; border: none; transition: all 0.2s; text-decoration: none; }
+        .btn-logout-side:hover { background: #ff3b30; color: white; }
+
+        .sidebar-toggle { display: none; position: fixed; top: 16px; left: 16px; z-index: 200; width: 44px; height: 44px; border-radius: 12px; background: var(--primary); color: white; border: none; cursor: pointer; font-size: 1.1rem; box-shadow: 0 4px 14px rgba(10,132,255,0.4); align-items: center; justify-content: center; }
+        .side-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.4); backdrop-filter: blur(4px); z-index: 99; }
+
+        /* MAIN */
+        .dash-main { margin-left: 270px; flex: 1; padding: 32px 36px; min-height: 100vh; }
+        .dash-topbar { margin-bottom: 28px; }
+        .dash-page-title h1 { font-size: 1.7rem; font-weight: 800; color: var(--text-main); margin: 0 0 4px; }
+        .dash-page-title p { color: var(--text-muted); font-size: 0.95rem; margin: 0; }
+
+        /* PROFILE SPECIFIC */
+        .profile-wrapper { display: grid; gap: 24px; max-width: 800px; }
+        
+        .profile-card-main {
+            background: var(--glass-bg);
+            backdrop-filter: saturate(180%) blur(20px);
+            -webkit-backdrop-filter: saturate(180%) blur(20px);
+            border-radius: var(--radius-lg);
+            padding: 32px;
+            box-shadow: var(--card-shadow);
+            border: 1px solid var(--glass-border);
+            text-align: center;
+        }
+        .profile-avatar-large {
+            width: 100px; height: 100px;
+            border-radius: 50%;
+            background: var(--primary);
+            color: white;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 16px;
+            box-shadow: 0 10px 20px rgba(10,132,255,0.3);
+            object-fit: cover;
+        }
+        .profile-name-large { font-size: 1.4rem; font-weight: 800; color: var(--text-main); margin-bottom: 4px; }
+        .profile-role-large { font-size: 0.95rem; color: var(--text-muted); font-weight: 500; }
+
+        .profile-section {
+            background: var(--glass-bg);
+            backdrop-filter: saturate(180%) blur(20px);
+            -webkit-backdrop-filter: saturate(180%) blur(20px);
+            border-radius: var(--radius-lg);
+            padding: 32px;
+            box-shadow: var(--card-shadow);
+            border: 1px solid var(--glass-border);
+        }
+        .section-header { margin-bottom: 24px; display: flex; align-items: center; gap: 10px; font-size: 1.2rem; font-weight: 700; color: var(--text-main); }
+        .info-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; }
+        .info-item { display: flex; flex-direction: column; gap: 6px; }
+        .info-label { font-size: 0.8rem; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em; }
+        .info-val { font-size: 1.05rem; font-weight: 600; color: var(--text-main); padding: 12px 16px; background: rgba(0,0,0,0.03); border-radius: 12px; border: 1px solid transparent; transition: all 0.2s; }
+        [data-theme="dark"] .info-val { background: rgba(255,255,255,0.05); }
+
+        /* Edit Mode Styles */
+        .info-val.editable { background: var(--glass-bg); border-color: var(--primary); color: var(--text-main); outline: none; }
+        .info-val.editable:focus { box-shadow: 0 0 0 4px rgba(10,132,255,0.15); }
+
+        .btn-group { display: flex; gap: 12px; margin-top: 32px; flex-wrap: wrap; }
+        .btn-save { display: none; background: #34C759; }
+        .btn-save:hover { background: #2EAF4E; }
+
+        .id-card-image { max-width: 100%; border-radius: 12px; margin-top: 10px; border: 1px solid var(--glass-border); }
+        
+        @media (max-width: 900px) {
+            .side-nav { transform: translateX(-100%); }
+            .side-nav.open { transform: translateX(0); }
+            .side-overlay.show { display: block; }
+            .dash-main { margin-left: 0; padding: 80px 20px 30px; }
+            .sidebar-toggle { display: flex; }
+        }
+        [data-theme="dark"] .side-nav { background: rgba(28,28,30,0.92); border-right-color: rgba(255,255,255,0.08); }
+        [data-theme="dark"] .side-link { color: rgba(255,255,255,0.6); }
+        [data-theme="dark"] .side-link:hover { background: rgba(255,255,255,0.07); color: white; }
+        [data-theme="dark"] .theme-toggle-side { color: rgba(255,255,255,0.6); }
+        [data-theme="dark"] .theme-toggle-side:hover { color: white; background: rgba(255,255,255,0.07); }
+    </style>
+</head>
+<body>
+
+<button class="sidebar-toggle" onclick="toggleSidebar()"><i class="fa-solid fa-bars"></i></button>
+<div class="side-overlay" id="sideOverlay" onclick="closeSidebar()"></div>
+
+<aside class="side-nav" id="sideNav">
+    <div class="side-nav-logo">
+        <span class="logo">
+            <i class="fa-solid fa-house logo-icon"></i>
+            <span class="logo-text" data-i18n="nav_logo_text">DarLink</span>
+        </span>
+    </div>
+    <div class="side-nav-user">
+        <div class="side-user-avatar" id="userAvatarSide">U</div>
+        <div class="side-user-info">
+            <div class="name" id="userNameSide">Loading...</div>
+            <div class="role" id="userRoleSide">User</div>
+        </div>
+    </div>
+    <div class="side-nav-links" id="sidebarLinks">
+        <!-- Links dynamically generated based on user role -->
+    </div>
+    <div class="side-nav-footer">
+        <div class="side-footer-actions">
+            <button class="theme-toggle-side" onclick="toggleTheme()">
+                <i class="fa-regular fa-moon" id="themeIcon"></i>
+                <span id="themeLabel">Dark Mode</span>
+            </button>
+            <div class="lang-side">
+                <button class="lang-btn" data-lang="en">EN</button>
+                <button class="lang-btn" data-lang="ar">ع</button>
+            </div>
+        </div>
+        <button class="btn-logout-side" onclick="logout()"><i class="fa-solid fa-right-from-bracket"></i> <span id="logoutText">Log Out</span></button>
+    </div>
+</aside>
+
+<main class="dash-main">
+    <div class="dash-topbar">
+        <div class="dash-page-title">
+            <h1><i class="fa-solid fa-user" style="color: var(--primary);"></i> <span id="pageTitle">Profile Settings</span></h1>
+            <p id="pageSubtitle">View and update your account information</p>
+        </div>
+    </div>
+
+    <div class="profile-wrapper">
+        <div id="messageBox"></div>
+
+        <!-- Top Card -->
+        <div class="profile-card-main">
+            <div class="profile-avatar-large" id="profileAvatarLg">U</div>
+            <div class="profile-name-large" id="profileNameLg">Loading...</div>
+            <div class="profile-role-large" id="profileRoleLg">User</div>
+        </div>
+
+        <!-- Info Section -->
+        <div class="profile-section">
+            <div class="section-header"><i class="fa-solid fa-address-card" style="color:var(--primary);"></i> <span id="personalInfoTitle">Personal Information</span></div>
+            
+            <div class="info-grid">
+                <div class="info-item">
+                    <span class="info-label" id="firstNameLabel">First Name</span>
+                    <input type="text" class="info-val" id="inp-firstName" readonly>
+                </div>
+                <div class="info-item">
+                    <span class="info-label" id="lastNameLabel">Last Name</span>
+                    <input type="text" class="info-val" id="inp-lastName" readonly>
+                </div>
+                <div class="info-item">
+                    <span class="info-label" id="emailLabel">Email Address</span>
+                    <input type="email" class="info-val" id="inp-email" readonly>
+                </div>
+                <div class="info-item">
+                    <span class="info-label" id="phoneLabel">Phone Number</span>
+                    <input type="tel" class="info-val" id="inp-phone" readonly>
+                </div>
+            </div>
+
+            <div class="btn-group">
+                <button class="btn" id="btnEdit" onclick="enterEditMode()"><i class="fa-solid fa-pen"></i> <span id="editBtnText">Edit Profile</span></button>
+                <button class="btn btn-save" id="btnSave" onclick="saveProfile()"><i class="fa-solid fa-check"></i> <span id="saveBtnText">Save Changes</span></button>
+                <button class="btn" style="background: rgba(255,59,48,0.1); color: #c00; box-shadow: none;" onclick="deleteAccount()"><i class="fa-solid fa-trash"></i> <span id="deleteBtnText">Delete Account</span></button>
+            </div>
+        </div>
+
+        <!-- ID Card Section (Owners only) -->
+        <div class="profile-section" id="idCardSection" style="display: none;">
+             <div class="section-header"><i class="fa-solid fa-id-badge" style="color:var(--primary);"></i> <span id="idCardTitle">ID Card Details</span></div>
+             <div class="info-grid">
+                 <div class="info-item">
+                    <span class="info-label" id="idNumberLabel">ID Number</span>
+                    <div class="info-val" id="idCardNumber"></div>
+                 </div>
+                 <div class="info-item">
+                     <span class="info-label" id="uploadedDocLabel">Uploaded Document</span>
+                     <p id="noIdImage" style="color: var(--text-muted); font-size: 0.9rem;">No ID card image uploaded</p>
+                     <img id="idCardImage" class="id-card-image" style="display:none">
+                 </div>
+             </div>
+        </div>
+
+    </div>
+</main>
+
+<script>
+    // ===== TRANSLATIONS =====
+    window.I18N_MESSAGES = {
+        // Sidebar - Owner
+        management: { en: "Management", ar: "الإدارة" },
+        add_property: { en: "Add New Property", ar: "إضافة عقار جديد" },
+        my_properties: { en: "My Properties", ar: "عقاراتي" },
+        bookings: { en: "Bookings", ar: "الحجوزات" },
+        statistics: { en: "Statistics", ar: "الإحصائيات" },
+        
+        // Sidebar - Renter
+        explore_houses: { en: "Explore Houses", ar: "استكشف المنازل" },
+        my_bookings: { en: "My Bookings", ar: "حجوزاتي" },
+        dashboard: { en: "Dashboard", ar: "لوحة التحكم" },
+        
+        // Sidebar - Common
+        account: { en: "Account", ar: "الحساب" },
+        back_to_home: { en: "Back to Home", ar: "العودة للرئيسية" },
+        profile_settings: { en: "Profile Settings", ar: "إعدادات الملف الشخصي" },
+        log_out: { en: "Log Out", ar: "تسجيل الخروج" },
+        dark_mode: { en: "Dark Mode", ar: "الوضع الداكن" },
+        light_mode: { en: "Light Mode", ar: "الوضع الفاتح" },
+        
+        // User Roles
+        property_owner: { en: "Property Owner", ar: "مالك عقار" },
+        renter: { en: "Renter", ar: "مستأجر" },
+        
+        // Page Header
+        page_title: { en: "Profile Settings", ar: "إعدادات الملف الشخصي" },
+        page_subtitle: { en: "View and update your account information", ar: "عرض وتحديث معلومات حسابك" },
+        
+        // Personal Information Section
+        personal_info: { en: "Personal Information", ar: "المعلومات الشخصية" },
+        first_name: { en: "First Name", ar: "الاسم الأول" },
+        last_name: { en: "Last Name", ar: "اللقب" },
+        email_address: { en: "Email Address", ar: "البريد الإلكتروني" },
+        phone_number: { en: "Phone Number", ar: "رقم الهاتف" },
+        
+        // Buttons
+        edit_profile: { en: "Edit Profile", ar: "تعديل الملف الشخصي" },
+        save_changes: { en: "Save Changes", ar: "حفظ التغييرات" },
+        delete_account: { en: "Delete Account", ar: "حذف الحساب" },
+        
+        // ID Card Section
+        id_card_details: { en: "ID Card Details", ar: "تفاصيل بطاقة الهوية" },
+        id_number: { en: "ID Number", ar: "رقم الهوية" },
+        uploaded_document: { en: "Uploaded Document", ar: "المستند المرفوع" },
+        no_id_image: { en: "No ID card image uploaded", ar: "لم يتم رفع صورة بطاقة الهوية" },
+        
+        // Messages
+        profile_load_failed: { en: "Failed to load profile", ar: "فشل تحميل الملف الشخصي" },
+        profile_updated: { en: "Profile successfully updated!", ar: "تم تحديث الملف الشخصي بنجاح!" },
+        update_failed: { en: "Failed to update", ar: "فشل التحديث" },
+        network_error: { en: "Network Error", ar: "خطأ في الشبكة" },
+        delete_confirm: { en: "Are you sure you want to delete your account permanently? This cannot be undone.", ar: "هل أنت متأكد أنك تريد حذف حسابك نهائياً؟ لا يمكن التراجع عن هذا الإجراء." },
+        delete_failed: { en: "Failed to delete account", ar: "فشل حذف الحساب" },
+        login_required: { en: "Please login first", ar: "يرجى تسجيل الدخول أولاً" }
+    };
+
+    // ===== LANGUAGE FUNCTIONS =====
+    function getCurrentLang() {
+        return localStorage.getItem('site_lang') || 'en';
+    }
+
+    function setLanguage(lang) {
+        localStorage.setItem('site_lang', lang);
+        document.documentElement.setAttribute('dir', lang === 'ar' ? 'rtl' : 'ltr');
+        document.documentElement.setAttribute('lang', lang);
+        updatePageText();
+        
+        document.querySelectorAll('.lang-btn').forEach(btn => {
+            btn.classList.toggle('active', btn.getAttribute('data-lang') === lang);
+        });
+    }
+
+    function t(key) {
+        const lang = getCurrentLang();
+        return window.I18N_MESSAGES[key] ? window.I18N_MESSAGES[key][lang] : key;
+    }
+
+    function updatePageText() {
+        // Sidebar for Owner
+        if (user.UserType === 'Owner') {
+            document.querySelector('.side-nav-section-label:first-of-type').textContent = t('management').toUpperCase();
+            const links = document.querySelectorAll('#sidebarLinks .side-link');
+            links[0].innerHTML = `<i class="fa-solid fa-plus"></i> <span>${t('add_property')}</span>`;
+            links[1].innerHTML = `<i class="fa-solid fa-list"></i> <span>${t('my_properties')}</span>`;
+            links[2].innerHTML = `<i class="fa-regular fa-calendar-check"></i> <span>${t('bookings')}</span>`;
+            links[3].innerHTML = `<i class="fa-solid fa-chart-line"></i> <span>${t('statistics')}</span>`;
+            document.querySelector('.side-nav-section-label:last-of-type').textContent = t('account').toUpperCase();
+            links[4].innerHTML = `<i class="fa-solid fa-house"></i> <span>${t('back_to_home')}</span>`;
+            links[5].innerHTML = `<i class="fa-solid fa-user"></i> <span>${t('profile_settings')}</span>`;
+            links[6].innerHTML = `<i class="fa-solid fa-gauge"></i> <span>${t('dashboard')}</span>`;
+        } else {
+            // Sidebar for Renter
+            document.querySelector('.side-nav-section-label').textContent = t('account').toUpperCase();
+            const links = document.querySelectorAll('#sidebarLinks .side-link');
+            links[0].innerHTML = `<i class="fa-solid fa-magnifying-glass"></i> ${t('explore_houses')}`;
+            links[1].innerHTML = `<i class="fa-solid fa-suitcase-rolling"></i> ${t('my_bookings')}`;
+            links[2].innerHTML = `<i class="fa-solid fa-user"></i> <span>${t('profile_settings')}</span>`;
+            links[3].innerHTML = `<i class="fa-solid fa-gauge"></i> <span>${t('dashboard')}</span>`;
+        }
+        
+        document.getElementById('logoutText').textContent = t('log_out');
+        document.getElementById('userRoleSide').textContent = user.UserType === 'Owner' ? t('property_owner') : t('renter');
+        document.getElementById('profileRoleLg').textContent = user.UserType === 'Owner' ? t('property_owner') : t('renter');
+        
+        // Page Header
+        document.getElementById('pageTitle').textContent = t('page_title');
+        document.getElementById('pageSubtitle').textContent = t('page_subtitle');
+        
+        // Personal Information Section
+        document.getElementById('personalInfoTitle').textContent = t('personal_info');
+        document.getElementById('firstNameLabel').textContent = t('first_name');
+        document.getElementById('lastNameLabel').textContent = t('last_name');
+        document.getElementById('emailLabel').textContent = t('email_address');
+        document.getElementById('phoneLabel').textContent = t('phone_number');
+        
+        // Buttons
+        document.getElementById('editBtnText').textContent = t('edit_profile');
+        document.getElementById('saveBtnText').textContent = t('save_changes');
+        document.getElementById('deleteBtnText').textContent = t('delete_account');
+        
+        // ID Card Section
+        if (document.getElementById('idCardSection').style.display !== 'none') {
+            document.getElementById('idCardTitle').textContent = t('id_card_details');
+            document.getElementById('idNumberLabel').textContent = t('id_number');
+            document.getElementById('uploadedDocLabel').textContent = t('uploaded_document');
+            document.getElementById('noIdImage').textContent = t('no_id_image');
+        }
+        
+        // Theme Label
+        const currentTheme = document.documentElement.getAttribute('data-theme') || 'light';
+        document.getElementById('themeLabel').textContent = currentTheme === 'dark' ? t('light_mode') : t('dark_mode');
+    }
+
+    // ===== INITIALIZATION =====
+    const SERVER_URL = window.location.hostname === 'localhost' ? 'http://localhost:5000' : `http://${window.location.hostname}:5000`;
+    const API_URL = `${SERVER_URL}/api`;
+    const user = JSON.parse(localStorage.getItem('user') || 'null');
+
+    if (!user) {
+        alert(t('login_required'));
+        window.location.href = 'login.html';
+    } else {
+        // Setup initial UI
+        document.getElementById('userNameSide').textContent = `${user.FirstName || ''} ${user.LastName || ''}`.trim() || 'User';
+        
+        // Generate Sidebar links dynamically
+        const sidebarLinks = document.getElementById('sidebarLinks');
+        if(user.UserType === 'Owner') {
+            sidebarLinks.innerHTML = `
+                <div class="side-nav-section-label">Management</div>
+                <a href="add-new-home.html" class="side-link"><i class="fa-solid fa-plus"></i> <span>Add New Property</span></a>
+                <a href="my-property.html" class="side-link"><i class="fa-solid fa-list"></i> <span>My Properties</span></a>
+                <a href="bookings.html" class="side-link"><i class="fa-regular fa-calendar-check"></i> <span>Bookings</span></a>
+                <a href="Statistics.html" class="side-link"><i class="fa-solid fa-chart-line"></i> <span>Statistics</span></a>
+                <div class="side-nav-section-label" style="margin-top: 8px;">Account</div>
+                <a href="index.html" class="side-link"><i class="fa-solid fa-house"></i> <span>Back to Home</span></a>
+                <a href="profile.html" class="side-link active"><i class="fa-solid fa-user"></i> <span>Profile Settings</span></a>
+                <a href="AddHome.html" class="side-link"><i class="fa-solid fa-gauge"></i> <span>Dashboard</span></a>
+            `;
+        } else {
+            sidebarLinks.innerHTML = `
+                <div class="side-nav-section-label">Account</div>
+                <a href="index.html" class="side-link"><i class="fa-solid fa-magnifying-glass"></i> Explore Houses</a>
+                <a href="my-bookings.html" class="side-link"><i class="fa-solid fa-suitcase-rolling"></i> My Bookings</a>
+                <a href="profile.html" class="side-link active"><i class="fa-solid fa-user"></i> <span>Profile Settings</span></a>
+                <a href="Rent.html" class="side-link"><i class="fa-solid fa-gauge"></i> <span>Dashboard</span></a>
+            `;
+        }
+    }
+
+    // Initialize language
+    const savedLang = getCurrentLang();
+    document.documentElement.setAttribute('dir', savedLang === 'ar' ? 'rtl' : 'ltr');
+    document.documentElement.setAttribute('lang', savedLang);
+    updatePageText();
+    
+    document.querySelectorAll('.lang-btn').forEach(btn => {
+        btn.classList.toggle('active', btn.getAttribute('data-lang') === savedLang);
+        btn.addEventListener('click', () => setLanguage(btn.getAttribute('data-lang')));
+    });
+
+    function toggleTheme() {
+        const current = document.documentElement.getAttribute('data-theme') || 'light';
+        const newTheme = current === 'dark' ? 'light' : 'dark';
+        document.documentElement.setAttribute('data-theme', newTheme);
+        localStorage.setItem('site_theme', newTheme);
+        document.getElementById('themeIcon').className = newTheme === 'dark' ? 'fa-solid fa-sun' : 'fa-regular fa-moon';
+        document.getElementById('themeLabel').textContent = newTheme === 'dark' ? t('light_mode') : t('dark_mode');
+    }
+    
+    const savedTheme = localStorage.getItem('site_theme') || 'light';
+    document.documentElement.setAttribute('data-theme', savedTheme);
+    if (savedTheme === 'dark') {
+        document.getElementById('themeIcon').className = 'fa-solid fa-sun';
+        document.getElementById('themeLabel').textContent = t('light_mode');
+    }
+
+    function toggleSidebar() { document.getElementById('sideNav').classList.toggle('open'); document.getElementById('sideOverlay').classList.toggle('show'); }
+    function closeSidebar() { document.getElementById('sideNav').classList.remove('open'); document.getElementById('sideOverlay').classList.remove('show'); }
+    function logout() { localStorage.removeItem('user'); window.location.href = 'index.html'; }
+
+    async function loadProfile() {
+        try {
+            const response = await fetch(`${API_URL}/users/${user.UserId}`);
+            if (!response.ok) throw new Error("Failed to load profile");
+            const userData = await response.json();
+
+            const fullName = `${userData.FirstName || ''} ${userData.LastName || ''}`.trim();
+            const initials = (userData.FirstName?.[0] || 'U') + (userData.LastName?.[0] || '');
+
+            const setAvatar = (el) => {
+                if (userData.ProfilePicturePath) {
+                    el.innerHTML = `<img src="${userData.ProfilePicturePath.startsWith('http') ? userData.ProfilePicturePath : SERVER_URL + userData.ProfilePicturePath}" style="width:100%;height:100%;border-radius:50%;object-fit:cover;">`;
+                } else {
+                    el.textContent = initials.toUpperCase();
+                }
+            };
+            setAvatar(document.getElementById('userAvatarSide'));
+            setAvatar(document.getElementById('profileAvatarLg'));
+
+            document.getElementById('profileNameLg').textContent = fullName;
+
+            document.getElementById('inp-firstName').value = userData.FirstName || '';
+            document.getElementById('inp-lastName').value = userData.LastName || '';
+            document.getElementById('inp-email').value = userData.Email || '';
+            document.getElementById('inp-phone').value = userData.PhoneNumber || '';
+
+            if (userData.IDCardNumber) {
+                document.getElementById('idCardSection').style.display = 'block';
+                document.getElementById('idCardNumber').textContent = userData.IDCardNumber;
+                if (userData.IDCardFrontURL) {
+                    document.getElementById('idCardImage').src = userData.IDCardFrontURL;
+                    document.getElementById('idCardImage').style.display = 'block';
+                    document.getElementById('noIdImage').style.display = 'none';
+                }
+                updatePageText(); // Update ID section translations after showing it
+            }
+        } catch (error) {
+            document.getElementById('messageBox').innerHTML = `<div style="padding:16px; background:rgba(255,59,48,0.1); color:#c00; border-radius:12px; margin-bottom:20px; text-align:center;"><i class="fa-solid fa-triangle-exclamation"></i> ${t('profile_load_failed')}</div>`;
+        }
+    }
+
+    function enterEditMode() {
+        document.getElementById('btnEdit').style.display = 'none';
+        document.getElementById('btnSave').style.display = 'inline-flex';
+        
+        ['inp-firstName', 'inp-lastName', 'inp-email', 'inp-phone'].forEach(id => {
+            const el = document.getElementById(id);
+            el.removeAttribute('readonly');
+            el.classList.add('editable');
+        });
+        document.getElementById('inp-firstName').focus();
+    }
+
+    async function saveProfile() {
+        const updatedData = {
+            UserId: user.UserId,
+            FirstName: document.getElementById('inp-firstName').value.trim(),
+            LastName: document.getElementById('inp-lastName').value.trim(),
+            Email: document.getElementById('inp-email').value.trim(),
+            PhoneNumber: document.getElementById('inp-phone').value.trim()
+        };
+
+        try {
+            const response = await fetch(`${API_URL}/users/${user.UserId}`, {
+                method: "PUT",
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(updatedData)
+            });
+            const data = await response.json();
+
+            if (response.ok) {
+                document.getElementById('messageBox').innerHTML = `<div style="padding:16px; background:rgba(52,199,89,0.1); color:#1a6b2e; border-radius:12px; margin-bottom:20px; text-align:center;"><i class="fa-solid fa-check-circle"></i> ${t('profile_updated')}</div>`;
+                
+                const mergedUser = { ...user, ...updatedData };
+                localStorage.setItem('user', JSON.stringify(mergedUser));
+                
+                document.getElementById('btnSave').style.display = 'none';
+                document.getElementById('btnEdit').style.display = 'inline-flex';
+                ['inp-firstName', 'inp-lastName', 'inp-email', 'inp-phone'].forEach(id => {
+                    const el = document.getElementById(id);
+                    el.setAttribute('readonly', true);
+                    el.classList.remove('editable');
+                });
+                
+                document.getElementById('userNameSide').textContent = `${updatedData.FirstName} ${updatedData.LastName}`;
+                document.getElementById('profileNameLg').textContent = `${updatedData.FirstName} ${updatedData.LastName}`;
+
+            } else {
+                alert(data.error || t('update_failed'));
+            }
+        } catch (err) {
+            alert(t('network_error'));
+        }
+    }
+
+    async function deleteAccount() {
+        if (!confirm(t('delete_confirm'))) return;
+        try {
+            const response = await fetch(`${API_URL}/users/${user.UserId}`, { 
+                method: "DELETE",
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ UserId: user.UserId })
+            });
+            if (response.ok) {
+                localStorage.removeItem("user");
+                window.location.href = "index.html";
+            } else {
+                alert(t('delete_failed'));
+            }
+        } catch {
+            alert(t('network_error'));
+        }
+    }
+
+    loadProfile();
+</script>
+</body>
+</html>

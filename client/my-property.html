@@ -1,0 +1,761 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Properties - DarLink</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <script src="js/i18n-dashboard.js"></script>
+    <script src="lang.js"></script>
+    <script src="js/theme.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { margin: 0; background: var(--bg-gradient); min-height: 100vh; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif; }
+
+        .dash-layout {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* ===== SIDEBAR ===== */
+        .side-nav {
+            width: 270px;
+            flex-shrink: 0;
+            background: var(--glass-bg);
+            backdrop-filter: saturate(180%) blur(24px);
+            -webkit-backdrop-filter: saturate(180%) blur(24px);
+            border-right: 1px solid var(--glass-border);
+            display: flex;
+            flex-direction: column;
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 100vh;
+            z-index: 100;
+            transition: transform 0.3s ease;
+            box-shadow: 4px 0 24px rgba(0,0,0,0.06);
+        }
+
+        .side-nav-logo {
+            padding: 24px 22px 20px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            border-bottom: 1px solid var(--glass-border);
+        }
+
+        .side-nav-logo img { height: 42px; border-radius: 10px; }
+        .side-nav-logo span {
+            font-size: 1.2rem;
+            font-weight: 800;
+            color: var(--primary);
+            letter-spacing: -0.02em;
+        }
+
+        .side-nav-user {
+            padding: 18px 22px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            border-bottom: 1px solid var(--glass-border);
+            background: rgba(10,132,255,0.04);
+        }
+
+        .side-user-avatar {
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            background: var(--primary);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 1.1rem;
+            flex-shrink: 0;
+            overflow: hidden;
+        }
+
+        .side-user-info .name { font-weight: 700; font-size: 0.95rem; color: var(--text-main); }
+        .side-user-info .role { font-size: 0.8rem; color: var(--text-muted); margin-top: 2px; }
+
+        .side-nav-links {
+            flex: 1;
+            overflow-y: auto;
+            padding: 16px 12px;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .side-link {
+            display: flex;
+            align-items: center;
+            gap: 13px;
+            padding: 13px 16px;
+            border-radius: 14px;
+            text-decoration: none;
+            color: var(--text-muted);
+            font-weight: 500;
+            font-size: 0.95rem;
+            transition: all 0.2s ease;
+        }
+
+        .side-link i {
+            width: 22px;
+            text-align: center;
+            font-size: 1rem;
+        }
+
+        .side-link:hover {
+            background: rgba(10,132,255,0.07);
+            color: var(--primary);
+            text-decoration: none;
+            transform: translateX(3px);
+        }
+
+        .side-link.active {
+            background: var(--primary);
+            color: white;
+            box-shadow: 0 4px 14px rgba(10,132,255,0.35);
+        }
+        .side-link.active i { color: white; }
+
+        .side-nav-section-label {
+            font-size: 0.74rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: var(--text-muted);
+            padding: 12px 16px 4px;
+        }
+
+        .side-nav-footer {
+            padding: 16px 12px;
+            border-top: 1px solid var(--glass-border);
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .side-footer-actions {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+        }
+
+        .theme-toggle-side {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 14px;
+            border-radius: 12px;
+            border: 1px solid var(--glass-border);
+            background: transparent;
+            color: var(--text-muted);
+            font-size: 0.88rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .theme-toggle-side:hover { background: rgba(0,0,0,0.05); color: var(--text-main); }
+
+        .lang-side {
+            display: flex;
+            gap: 4px;
+        }
+        .lang-side button {
+            padding: 8px 12px;
+            border: 1px solid var(--glass-border);
+            border-radius: 10px;
+            background: transparent;
+            color: var(--text-muted);
+            font-size: 0.82rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .lang-side button:hover,
+        .lang-side button.active { background: var(--primary); color: white; border-color: var(--primary); }
+
+        .btn-logout-side {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 14px;
+            border-radius: 12px;
+            background: rgba(255,59,48,0.08);
+            color: #ff3b30;
+            font-size: 0.88rem;
+            font-weight: 600;
+            cursor: pointer;
+            border: none;
+            transition: all 0.2s;
+            text-decoration: none;
+        }
+        .btn-logout-side:hover { background: #ff3b30; color: white; }
+
+        /* ===== MOBILE TOGGLE ===== */
+        .sidebar-toggle {
+            display: none;
+            position: fixed;
+            top: 16px;
+            left: 16px;
+            z-index: 200;
+            width: 44px;
+            height: 44px;
+            border-radius: 12px;
+            background: var(--primary);
+            color: white;
+            border: none;
+            cursor: pointer;
+            font-size: 1.1rem;
+            box-shadow: 0 4px 14px rgba(10,132,255,0.4);
+            align-items: center;
+            justify-content: center;
+        }
+
+        .side-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.4);
+            backdrop-filter: blur(4px);
+            z-index: 99;
+        }
+
+        /* ===== MAIN CONTENT ===== */
+        .dash-main {
+            margin-left: 270px;
+            flex: 1;
+            padding: 32px 36px;
+            min-height: 100vh;
+        }
+
+        .dash-topbar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 28px;
+            flex-wrap: wrap;
+            gap: 16px;
+        }
+
+        .dash-page-title h1 {
+            font-size: 1.8rem;
+            font-weight: 800;
+            color: var(--text-main);
+            margin: 0 0 6px;
+        }
+        .dash-page-title p { color: var(--text-muted); font-size: 1rem; margin: 0; }
+
+        /* ===== PROPERTY CARDS ===== */
+        .property-card-list {
+            background: var(--glass-bg);
+            backdrop-filter: saturate(180%) blur(20px);
+            -webkit-backdrop-filter: saturate(180%) blur(20px);
+            border-radius: var(--radius-lg);
+            border: 1px solid var(--glass-border);
+            box-shadow: var(--card-shadow);
+            padding: 22px 24px;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: flex-start;
+            gap: 20px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .property-card-list:hover { transform: translateY(-2px); box-shadow: var(--card-hover-shadow); }
+
+        .prop-img {
+            width: 110px;
+            height: 110px;
+            border-radius: 14px;
+            object-fit: cover;
+            flex-shrink: 0;
+        }
+        .prop-img-placeholder {
+            width: 110px;
+            height: 110px;
+            border-radius: 14px;
+            background: rgba(0,0,0,0.06);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            color: var(--text-muted);
+            font-size: 2rem;
+        }
+        .property-info { flex: 1; min-width: 0; }
+        .property-title-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+        .property-title { font-size: 1.1rem; font-weight: 700; color: var(--text-main); }
+        .status-badge { padding: 4px 14px; border-radius: 20px; font-size: 0.82rem; font-weight: 600; }
+        .status-active { background: rgba(52,199,89,0.12); color: #1a6b2e; }
+        .status-inactive { background: rgba(255,59,48,0.12); color: #c00; }
+        [data-theme="dark"] .status-active { color: #34C759; }
+        [data-theme="dark"] .status-inactive { color: #FF6B6B; }
+
+        .property-meta {
+            display: flex;
+            gap: 18px;
+            flex-wrap: wrap;
+            font-size: 0.88rem;
+            color: var(--text-muted);
+            margin-bottom: 14px;
+        }
+        .property-meta span { display: flex; align-items: center; gap: 5px; }
+
+        .property-actions { display: flex; gap: 8px; flex-wrap: wrap; }
+        .btn-action {
+            padding: 7px 14px;
+            border-radius: 10px;
+            border: none;
+            cursor: pointer;
+            font-size: 0.83rem;
+            font-weight: 600;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .btn-action:hover { transform: translateY(-1px); }
+        .btn-toggle { background: rgba(10,132,255,0.1); color: var(--primary); }
+        .btn-toggle:hover { background: var(--primary); color: white; }
+        .btn-edit { background: rgba(52,199,89,0.12); color: #1a6b2e; }
+        .btn-edit:hover { background: #34C759; color: white; }
+        [data-theme="dark"] .btn-edit { color: #34C759; }
+        .btn-packages { background: rgba(255,149,0,0.1); color: #c07000; }
+        .btn-packages:hover { background: #FF9500; color: white; }
+        [data-theme="dark"] .btn-packages { color: #FF9500; }
+        .btn-msg { background: rgba(52,199,89,0.1); color: #1a6b2e; }
+        .btn-msg:hover { background: #34C759; color: white; }
+        [data-theme="dark"] .btn-msg { color: #34C759; }
+        .btn-del { background: rgba(255,59,48,0.1); color: #c00; }
+        .btn-del:hover { background: #ff3b30; color: white; }
+        [data-theme="dark"] .btn-del { color: #FF6B6B; }
+
+        .loading-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: var(--text-muted);
+        }
+        .loading-state i { font-size: 3rem; animation: spin 1s linear infinite; margin-bottom: 16px; }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+
+        .empty-state-card {
+            background: var(--glass-bg);
+            backdrop-filter: saturate(180%) blur(20px);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius-lg);
+            padding: 60px 30px;
+            text-align: center;
+        }
+        .empty-state-card i { font-size: 4rem; color: var(--text-muted); opacity: 0.3; margin-bottom: 20px; }
+        .empty-state-card h3 { font-size: 1.5rem; color: var(--text-main); margin-bottom: 10px; }
+        .empty-state-card p { color: var(--text-muted); margin-bottom: 24px; }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 900px) {
+            .side-nav { transform: translateX(-100%); }
+            .side-nav.open { transform: translateX(0); }
+            .side-overlay.show { display: block; }
+            .dash-main { margin-left: 0; padding: 80px 20px 30px; }
+            .sidebar-toggle { display: flex; }
+            .property-card-list { flex-direction: column; }
+            .prop-img, .prop-img-placeholder { width: 100%; height: 200px; }
+        }
+
+        /* ===== DARK MODE ===== */
+        [data-theme="dark"] .side-nav {
+            background: rgba(28,28,30,0.92);
+            border-right-color: rgba(255,255,255,0.08);
+        }
+        [data-theme="dark"] .side-link { color: rgba(255,255,255,0.6); }
+        [data-theme="dark"] .side-link:hover { background: rgba(255,255,255,0.07); color: white; }
+        [data-theme="dark"] .theme-toggle-side { color: rgba(255,255,255,0.6); }
+        [data-theme="dark"] .theme-toggle-side:hover { color: white; background: rgba(255,255,255,0.07); }
+        [data-theme="dark"] .prop-img-placeholder { background: rgba(255,255,255,0.05); }
+    </style>
+</head>
+<body>
+
+<!-- Mobile Toggle -->
+<button class="sidebar-toggle" onclick="toggleSidebar()">
+    <i class="fa-solid fa-bars"></i>
+</button>
+<div class="side-overlay" id="sideOverlay" onclick="closeSidebar()"></div>
+
+<!-- SIDEBAR -->
+<aside class="side-nav" id="sideNav">
+    <div class="side-nav-logo">
+        <span class="logo">
+            <i class="fa-solid fa-house logo-icon"></i>
+            <span class="logo-text" data-i18n="nav_logo_text">DarLink</span>
+        </span>
+    </div>
+
+    <div class="side-nav-user">
+        <div class="side-user-avatar" id="userAvatarSide">O</div>
+        <div class="side-user-info">
+            <div class="name" id="userNameSide">Loading...</div>
+            <div class="role" id="userRoleSide">Property Owner</div>
+        </div>
+    </div>
+
+    <div class="side-nav-links">
+        <div class="side-nav-section-label" id="managementLabel">Management</div>
+        <a href="add-new-home.html" class="side-link">
+            <i class="fa-solid fa-plus"></i> <span id="linkAddProperty">Add New Property</span>
+        </a>
+        <a href="my-property.html" class="side-link active">
+            <i class="fa-solid fa-list"></i> <span id="linkMyProperties">My Properties</span>
+        </a>
+        <a href="bookings.html" class="side-link">
+            <i class="fa-regular fa-calendar-check"></i> <span id="linkBookings">Bookings</span>
+        </a>
+        <a href="Statistics.html" class="side-link">
+            <i class="fa-solid fa-chart-line"></i> <span id="linkStatistics">Statistics</span>
+        </a>
+
+        <div class="side-nav-section-label" style="margin-top: 8px;" id="accountLabel">Account</div>
+        <a href="index.html" class="side-link">
+            <i class="fa-solid fa-house"></i> <span id="linkBackHome">Back to Home</span>
+        </a>
+        <a href="profile.html" class="side-link">
+            <i class="fa-solid fa-user"></i> <span id="linkProfile">Profile Settings</span>
+        </a>
+        <a href="AddHome.html" class="side-link">
+            <i class="fa-solid fa-gauge"></i> <span id="linkDashboard">Dashboard</span>
+        </a>
+    </div>
+
+    <div class="side-nav-footer">
+        <div class="side-footer-actions">
+            <button class="theme-toggle-side" onclick="toggleTheme()">
+                <i class="fa-regular fa-moon" id="themeIcon"></i>
+                <span id="themeLabel">Dark Mode</span>
+            </button>
+            <div class="lang-side">
+                <button class="lang-btn" data-lang="en">EN</button>
+                <button class="lang-btn" data-lang="ar">ع</button>
+            </div>
+        </div>
+        <button class="btn-logout-side" onclick="logout()">
+            <i class="fa-solid fa-right-from-bracket"></i> <span id="logoutText">Log Out</span>
+        </button>
+    </div>
+</aside>
+
+<!-- MAIN CONTENT -->
+<main class="dash-main">
+    <div class="dash-topbar">
+        <div class="dash-page-title">
+            <h1><i class="fa-solid fa-house" style="color: var(--primary);"></i> <span id="pageTitle">My Properties</span></h1>
+            <p id="pageSubtitle">Manage your vacation rental properties</p>
+        </div>
+        <a href="add-new-home.html" class="btn" style="display: flex; align-items: center; gap: 8px;">
+            <i class="fa-solid fa-plus"></i> <span id="btnAddNew">Add New</span>
+        </a>
+    </div>
+
+    <div id="loading" class="loading-state">
+        <i class="fa-solid fa-spinner" style="display: block;"></i>
+        <span id="loadingText">Loading your properties...</span>
+    </div>
+    <div id="propertiesGrid"></div>
+    <div id="emptyState" class="empty-state-card" style="display: none;">
+        <i class="fa-solid fa-house-crack"></i>
+        <h3 id="emptyTitle">No Properties Yet</h3>
+        <p id="emptyText">Start by adding your first property!</p>
+        <a href="add-new-home.html" class="btn"><i class="fa-solid fa-plus"></i> <span id="emptyBtnText">Add Property</span></a>
+    </div>
+</main>
+
+<script>
+    // ===== TRANSLATIONS =====
+    window.I18N_MESSAGES = {
+        // Sidebar
+        management: { en: "Management", ar: "الإدارة" },
+        add_property: { en: "Add New Property", ar: "إضافة عقار جديد" },
+        my_properties: { en: "My Properties", ar: "عقاراتي" },
+        bookings: { en: "Bookings", ar: "الحجوزات" },
+        statistics: { en: "Statistics", ar: "الإحصائيات" },
+        account: { en: "Account", ar: "الحساب" },
+        back_to_home: { en: "Back to Home", ar: "العودة للرئيسية" },
+        profile_settings: { en: "Profile Settings", ar: "إعدادات الملف الشخصي" },
+        dashboard: { en: "Dashboard", ar: "لوحة التحكم" },
+        dark_mode: { en: "Dark Mode", ar: "الوضع الداكن" },
+        light_mode: { en: "Light Mode", ar: "الوضع الفاتح" },
+        log_out: { en: "Log Out", ar: "تسجيل الخروج" },
+        property_owner: { en: "Property Owner", ar: "مالك عقار" },
+        
+        // Page Header
+        page_title: { en: "My Properties", ar: "عقاراتي" },
+        page_subtitle: { en: "Manage your vacation rental properties", ar: "إدارة عقارات الإيجار السياحي الخاصة بك" },
+        btn_add_new: { en: "Add New", ar: "إضافة جديد" },
+        
+        // Property Card
+        rooms: { en: "rooms", ar: "غرف" },
+        night: { en: "night", ar: "ليلة" },
+        active: { en: "Active", ar: "متاح" },
+        inactive: { en: "Inactive", ar: "غير متاح" },
+        
+        // Actions
+        action_deactivate: { en: "Deactivate", ar: "إلغاء التفعيل" },
+        action_activate: { en: "Activate", ar: "تفعيل" },
+        action_edit: { en: "Edit", ar: "تعديل" },
+        action_packages: { en: "Packages", ar: "الباقات" },
+        action_messages: { en: "Messages", ar: "الرسائل" },
+        action_delete: { en: "Delete", ar: "حذف" },
+        
+        // States
+        loading_props: { en: "Loading your properties...", ar: "جاري تحميل عقاراتك..." },
+        no_props_yet: { en: "No Properties Yet", ar: "لا توجد عقارات بعد" },
+        start_adding_prop: { en: "Start by adding your first property!", ar: "ابدأ بإضافة عقارك الأول!" },
+        add_property_btn: { en: "Add Property", ar: "أضف عقار" },
+        
+        // Alerts
+        login_required: { en: "Please login as an owner", ar: "يرجى تسجيل الدخول كمالك" },
+        update_status_failed: { en: "Failed to update status", ar: "فشل تحديث الحالة" },
+        delete_confirm: { en: "Are you sure you want to delete this property?", ar: "هل أنت متأكد أنك تريد حذف هذا العقار؟" },
+        delete_failed: { en: "Failed to delete property", ar: "فشل حذف العقار" },
+        network_error: { en: "Network error", ar: "خطأ في الشبكة" }
+    };
+
+    // ===== LANGUAGE FUNCTIONS =====
+    function getCurrentLang() {
+        return localStorage.getItem('site_lang') || 'en';
+    }
+
+    function setLanguage(lang) {
+        localStorage.setItem('site_lang', lang);
+        document.documentElement.setAttribute('dir', lang === 'ar' ? 'rtl' : 'ltr');
+        document.documentElement.setAttribute('lang', lang);
+        updatePageText();
+        loadProperties(); // Reload to translate property cards
+        
+        document.querySelectorAll('.lang-btn').forEach(btn => {
+            btn.classList.toggle('active', btn.getAttribute('data-lang') === lang);
+        });
+    }
+
+    function t(key) {
+        const lang = getCurrentLang();
+        return window.I18N_MESSAGES[key] ? window.I18N_MESSAGES[key][lang] : key;
+    }
+
+    function updatePageText() {
+        // Sidebar
+        document.getElementById('managementLabel').textContent = t('management').toUpperCase();
+        document.getElementById('linkAddProperty').textContent = t('add_property');
+        document.getElementById('linkMyProperties').textContent = t('my_properties');
+        document.getElementById('linkBookings').textContent = t('bookings');
+        document.getElementById('linkStatistics').textContent = t('statistics');
+        document.getElementById('accountLabel').textContent = t('account').toUpperCase();
+        document.getElementById('linkBackHome').textContent = t('back_to_home');
+        document.getElementById('linkProfile').textContent = t('profile_settings');
+        document.getElementById('linkDashboard').textContent = t('dashboard');
+        document.getElementById('logoutText').textContent = t('log_out');
+        document.getElementById('userRoleSide').textContent = t('property_owner');
+        
+        // Page Header
+        document.getElementById('pageTitle').textContent = t('page_title');
+        document.getElementById('pageSubtitle').textContent = t('page_subtitle');
+        document.getElementById('btnAddNew').textContent = t('btn_add_new');
+        
+        // States
+        document.getElementById('loadingText').textContent = t('loading_props');
+        document.getElementById('emptyTitle').textContent = t('no_props_yet');
+        document.getElementById('emptyText').textContent = t('start_adding_prop');
+        document.getElementById('emptyBtnText').textContent = t('add_property_btn');
+        
+        // Theme Label
+        const currentTheme = document.documentElement.getAttribute('data-theme') || 'light';
+        document.getElementById('themeLabel').textContent = currentTheme === 'dark' ? t('light_mode') : t('dark_mode');
+    }
+
+    // ===== INITIALIZATION =====
+    const SERVER_URL = window.location.hostname === 'localhost' ? 'http://localhost:5000' : `http://${window.location.hostname}:5000`;
+    const API_URL = `${SERVER_URL}/api`;
+    const user = JSON.parse(localStorage.getItem('user') || 'null');
+
+    if (!user || user.UserType !== 'Owner') {
+        alert(t('login_required'));
+        window.location.href = 'login.html';
+    } else {
+        const fullName = `${user.FirstName || ''} ${user.LastName || ''}`.trim() || 'Owner';
+        document.getElementById('userNameSide').textContent = fullName;
+        const initials = (user.FirstName?.[0] || 'O') + (user.LastName?.[0] || '');
+        const avatar = document.getElementById('userAvatarSide');
+        if (user.ProfilePicturePath) {
+            avatar.innerHTML = `<img src="${user.ProfilePicturePath}" style="width:100%;height:100%;border-radius:50%;object-fit:cover;">`;
+        } else {
+            avatar.textContent = initials.toUpperCase();
+        }
+    }
+
+    // Initialize language
+    const savedLang = getCurrentLang();
+    document.documentElement.setAttribute('dir', savedLang === 'ar' ? 'rtl' : 'ltr');
+    document.documentElement.setAttribute('lang', savedLang);
+    updatePageText();
+    
+    document.querySelectorAll('.lang-btn').forEach(btn => {
+        btn.classList.toggle('active', btn.getAttribute('data-lang') === savedLang);
+        btn.addEventListener('click', () => setLanguage(btn.getAttribute('data-lang')));
+    });
+
+    // Theme functions
+    function toggleTheme() {
+        const current = document.documentElement.getAttribute('data-theme') || 'light';
+        const newTheme = current === 'dark' ? 'light' : 'dark';
+        document.documentElement.setAttribute('data-theme', newTheme);
+        localStorage.setItem('site_theme', newTheme);
+        document.getElementById('themeIcon').className = newTheme === 'dark' ? 'fa-solid fa-sun' : 'fa-regular fa-moon';
+        document.getElementById('themeLabel').textContent = newTheme === 'dark' ? t('light_mode') : t('dark_mode');
+    }
+
+    const savedTheme = localStorage.getItem('site_theme') || 'light';
+    document.documentElement.setAttribute('data-theme', savedTheme);
+    if (savedTheme === 'dark') {
+        document.getElementById('themeIcon').className = 'fa-solid fa-sun';
+        document.getElementById('themeLabel').textContent = t('light_mode');
+    }
+
+    function toggleSidebar() {
+        document.getElementById('sideNav').classList.toggle('open');
+        document.getElementById('sideOverlay').classList.toggle('show');
+    }
+    
+    function closeSidebar() {
+        document.getElementById('sideNav').classList.remove('open');
+        document.getElementById('sideOverlay').classList.remove('show');
+    }
+
+    function logout() {
+        localStorage.removeItem('user');
+        window.location.href = 'index.html';
+    }
+
+    // ===== PROPERTIES LOGIC =====
+    async function loadProperties() {
+        try {
+            const response = await fetch(`${API_URL}/properties/owner/${user.UserId}`);
+            const properties = await response.json();
+
+            document.getElementById('loading').style.display = 'none';
+
+            if (!properties || properties.length === 0) {
+                document.getElementById('emptyState').style.display = 'block';
+                return;
+            }
+
+            const grid = document.getElementById('propertiesGrid');
+            grid.innerHTML = properties.map(p => {
+                const imgUrl = p.MainImage ? (p.MainImage.startsWith('http') ? p.MainImage : SERVER_URL + p.MainImage) : null;
+                const isActive = p.AvailabilityStatus === 'Active';
+                
+                return `
+                <div class="property-card-list">
+                    ${imgUrl 
+                        ? `<img src="${imgUrl}" alt="${p.Title}" class="prop-img">` 
+                        : `<div class="prop-img-placeholder"><i class="fa-solid fa-house"></i></div>`}
+                    <div class="property-info">
+                        <div class="property-title-row">
+                            <div class="property-title">${p.Title}</div>
+                            <span class="status-badge ${isActive ? 'status-active' : 'status-inactive'}">
+                                <i class="fa-solid ${isActive ? 'fa-circle-check' : 'fa-circle-xmark'}"></i>
+                                ${t(isActive ? 'active' : 'inactive')}
+                            </span>
+                        </div>
+                        <div class="property-meta">
+                            <span><i class="fa-solid fa-location-dot"></i> ${p.City}, ${p.Wilaya}</span>
+                            <span><i class="fa-solid fa-house"></i> ${p.PropertyType}</span>
+                            <span><i class="fa-solid fa-bed"></i> ${p.NumofRooms} ${t('rooms')}</span>
+                            <span style="color: var(--primary); font-weight: 700;"><i class="fa-solid fa-money-bill"></i> ${Number(p.PricePerNight).toLocaleString()} DZD/${t('night')}</span>
+                        </div>
+                        ${p.Features && p.Features.length ? `<div style="font-size:0.83rem; color: var(--text-muted); margin-bottom: 12px;"><i class="fa-solid fa-star" style="color:#ffc107;"></i> ${p.Features.map(f=>f.FeatureName).join(' ⬢ ')}</div>` : ''}
+                        <div class="property-actions">
+                            <button class="btn-action btn-toggle" onclick="toggleStatus(${p.PropertyId}, '${p.AvailabilityStatus}')">
+                                <i class="fa-solid fa-toggle-${isActive ? 'on' : 'off'}"></i>
+                                ${t(isActive ? 'action_deactivate' : 'action_activate')}
+                            </button>
+                            <button class="btn-action btn-edit" onclick="editProperty(${p.PropertyId})">
+                                <i class="fa-solid fa-pen"></i> ${t('action_edit')}
+                            </button>
+                            <button class="btn-action btn-packages" onclick="window.location.href='packages.html?propertyId=${p.PropertyId}'">
+                                <i class="fa-solid fa-box"></i> ${t('action_packages')}
+                            </button>
+                            <button class="btn-action btn-msg" onclick="viewPropertyMessages(${p.PropertyId})">
+                                <i class="fa-solid fa-comment-dots"></i> ${t('action_messages')}
+                            </button>
+                            <button class="btn-action btn-del" onclick="deleteProperty(${p.PropertyId})">
+                                <i class="fa-solid fa-trash"></i> ${t('action_delete')}
+                            </button>
+                        </div>
+                    </div>
+                </div>`;
+            }).join('');
+
+        } catch (error) {
+            document.getElementById('loading').style.display = 'none';
+            console.error('Error:', error);
+        }
+    }
+
+    async function toggleStatus(propertyId, currentStatus) {
+        const newStatus = currentStatus === 'Active' ? 'Inactive' : 'Active';
+        try {
+            const response = await fetch(`${API_URL}/properties/${propertyId}`, {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ AvailabilityStatus: newStatus, OwnerId: user.UserId })
+            });
+            if (response.ok) { 
+                loadProperties(); 
+            } else { 
+                alert(t('update_status_failed')); 
+            }
+        } catch (error) { 
+            alert(t('network_error')); 
+        }
+    }
+
+    function editProperty(propertyId) {
+        window.location.href = `edit-property.html?id=${propertyId}`;
+    }
+
+    async function deleteProperty(propertyId) {
+        if (!confirm(t('delete_confirm'))) return;
+        try {
+            const response = await fetch(`${API_URL}/properties/${propertyId}`, {
+                method: 'DELETE',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ OwnerId: user.UserId })
+            });
+            if (response.ok) { 
+                loadProperties(); 
+            } else { 
+                alert(t('delete_failed')); 
+            }
+        } catch (error) { 
+            alert(t('network_error')); 
+        }
+    }
+
+    function viewPropertyMessages(propertyId) {
+        window.location.href = `property-messages.html?propertyId=${propertyId}`;
+    }
+
+    loadProperties();
+</script>
+</body>
+</html>

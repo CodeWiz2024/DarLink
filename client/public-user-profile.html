@@ -1,0 +1,359 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Profile & Reviews</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        .profile-container {
+            max-width: 900px;
+            margin: 40px auto;
+            padding: 24px;
+        }
+        .profile-card {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(20px);
+            border-radius: 16px;
+            padding: 40px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .profile-avatar {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+            font-weight: 700;
+            margin: 0 auto 20px;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.2);
+        }
+        .profile-name {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #333;
+            margin-bottom: 8px;
+        }
+        .profile-type {
+            display: inline-block;
+            padding: 8px 20px;
+            background: var(--primary);
+            color: white;
+            border-radius: 20px;
+            font-weight: 600;
+            margin-bottom: 20px;
+        }
+        .rating-overview {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-top: 30px;
+        }
+        .rating-stat {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 12px;
+            text-align: center;
+        }
+        .rating-number {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--primary);
+        }
+        .rating-stars {
+            color: #ffc107;
+            font-size: 1.5rem;
+            margin: 10px 0;
+        }
+        .rating-label {
+            color: #666;
+            font-size: 0.9rem;
+        }
+        .reviews-section {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(20px);
+            border-radius: 16px;
+            padding: 30px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+        .section-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #333;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .review-card {
+            background: white;
+            border: 1px solid #eee;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 16px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+        .review-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: start;
+            margin-bottom: 12px;
+        }
+        .reviewer-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .reviewer-avatar {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 1.1rem;
+        }
+        .reviewer-name {
+            font-weight: 600;
+            color: #333;
+            font-size: 1.05rem;
+        }
+        .reviewer-type {
+            display: inline-block;
+            padding: 3px 10px;
+            background: #e3f2fd;
+            color: #1976d2;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            margin-top: 4px;
+        }
+        .review-rating {
+            color: #ffc107;
+            font-size: 1.3rem;
+        }
+        .review-comment {
+            color: #555;
+            line-height: 1.6;
+            margin: 12px 0;
+        }
+        .review-meta {
+            color: #999;
+            font-size: 0.85rem;
+            margin-top: 12px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        .property-link {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 500;
+        }
+        .property-link:hover {
+            text-decoration: underline;
+        }
+        .back-btn {
+            display: inline-block;
+            padding: 10px 20px;
+            background: var(--primary);
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: 600;
+            margin-bottom: 20px;
+        }
+        .back-btn:hover { background: var(--primary-dark); }
+        .empty-reviews {
+            text-align: center;
+            padding: 60px 20px;
+            color: #666;
+        }
+        .empty-reviews i {
+            font-size: 4rem;
+            color: #ddd;
+            margin-bottom: 20px;
+        }
+        .verified-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            padding: 4px 10px;
+            background: #4caf50;
+            color: white;
+            border-radius: 12px;
+            font-size: 0.8rem;
+            margin-left: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="profile-container">
+        <a href="javascript:history.back()" class="back-btn">
+            <i class="fa-solid fa-arrow-left"></i> Back
+        </a>
+
+        <div class="profile-card" id="profileCard">
+            <!-- Profile info will be loaded here -->
+        </div>
+
+        <div class="reviews-section">
+            <div class="section-title">
+                <i class="fa-solid fa-star"></i>
+                <span>Reviews</span>
+            </div>
+            
+            <div id="loading" style="text-align: center; padding: 40px; color: #666;">
+                <i class="fa-solid fa-spinner fa-spin"></i> Loading reviews...
+            </div>
+
+            <div id="reviewsList"></div>
+
+            <div id="emptyReviews" class="empty-reviews" style="display: none;">
+                <i class="fa-regular fa-star"></i>
+                <h3>No Reviews Yet</h3>
+                <p>This user hasn't received any reviews yet.</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const API_URL = 'http://localhost:5000/api';
+        const urlParams = new URLSearchParams(window.location.search);
+        const userId = urlParams.get('userId');
+
+        if (!userId) {
+            alert('User ID is required');
+            window.history.back();
+        }
+
+        async function loadUserProfile() {
+            try {
+                // Load user info
+                const userRes = await fetch(`${API_URL}/users/${userId}`);
+                const userData = await userRes.json();
+
+                console.log('User data:', userData);
+
+                const firstLetter = userData.FirstName ? userData.FirstName.charAt(0).toUpperCase() : '?';
+                const fullName = `${userData.FirstName} ${userData.LastName}`;
+
+                // Load reviews about this user
+                const reviewsRes = await fetch(`${API_URL}/reviews/user/${userId}`);
+                const reviewsData = await reviewsRes.json();
+
+                console.log('Reviews data:', reviewsData);
+
+                // Display profile
+                document.getElementById('profileCard').innerHTML = `
+                    <div class="profile-avatar">${firstLetter}</div>
+                    <div class="profile-name">${fullName}</div>
+                    <div class="profile-type">
+                        <i class="fa-solid fa-${userData.UserType === 'Owner' ? 'home' : 'user'}"></i>
+                        ${userData.UserType}
+                    </div>
+
+                    <div class="rating-overview">
+                        <div class="rating-stat">
+                            <div class="rating-number">${reviewsData.averageRating ? reviewsData.averageRating.toFixed(1) : '0.0'}</div>
+                            <div class="rating-stars">${getStars(reviewsData.averageRating || 0)}</div>
+                            <div class="rating-label">Average Rating</div>
+                        </div>
+                        <div class="rating-stat">
+                            <div class="rating-number">${reviewsData.totalReviews || 0}</div>
+                            <div class="rating-stars">
+                                <i class="fa-solid fa-comment"></i>
+                            </div>
+                            <div class="rating-label">Total Reviews</div>
+                        </div>
+                    </div>
+                `;
+
+                // Display reviews
+                document.getElementById('loading').style.display = 'none';
+
+                if (!reviewsData.reviews || reviewsData.reviews.length === 0) {
+                    document.getElementById('emptyReviews').style.display = 'block';
+                    return;
+                }
+
+                document.getElementById('reviewsList').innerHTML = reviewsData.reviews.map(review => {
+                    const reviewerLetter = review.ReviewerName ? review.ReviewerName.charAt(0).toUpperCase() : '?';
+                    
+                    return `
+                        <div class="review-card">
+                            <div class="review-header">
+                                <div class="reviewer-info">
+                                    <div class="reviewer-avatar">${reviewerLetter}</div>
+                                    <div>
+                                        <div class="reviewer-name">${review.ReviewerName}</div>
+                                        <span class="reviewer-type">
+                                            ${review.ReviewerType === 'Owner' ? '🏠 Property Owner' : '👤 Renter'}
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="review-rating">
+                                    ${getStars(review.Rating)}
+                                </div>
+                            </div>
+                            <div class="review-comment">${review.Comment || 'No comment provided'}</div>
+                            <div class="review-meta">
+                                <span>
+                                    <i class="fa-regular fa-clock"></i>
+                                    ${new Date(review.ReviewDate).toLocaleDateString('en-US', { 
+                                        year: 'numeric', 
+                                        month: 'long', 
+                                        day: 'numeric' 
+                                    })}
+                                </span>
+                                ${review.PropertyTitle ? `
+                                    <span>
+                                        <i class="fa-solid fa-home"></i>
+                                        <a href="property-review.html?propertyId=${review.PropertyId}" class="property-link">
+                                            ${review.PropertyTitle}
+                                        </a>
+                                    </span>
+                                ` : ''}
+                            </div>
+                        </div>
+                    `;
+                }).join('');
+
+            } catch (error) {
+                console.error('Error loading profile:', error);
+                document.getElementById('loading').style.display = 'none';
+                document.getElementById('reviewsList').innerHTML = `
+                    <div style="text-align: center; padding: 40px; color: #c00;">
+                        <p>Failed to load user profile. Please try again.</p>
+                    </div>
+                `;
+            }
+        }
+
+        function getStars(rating) {
+            let stars = '';
+            for (let i = 1; i <= 5; i++) {
+                if (i <= Math.floor(rating)) {
+                    stars += '<i class="fa-solid fa-star"></i>';
+                } else if (i - 0.5 <= rating) {
+                    stars += '<i class="fa-solid fa-star-half-stroke"></i>';
+                } else {
+                    stars += '<i class="fa-regular fa-star"></i>';
+                }
+            }
+            return stars;
+        }
+
+        loadUserProfile();
+    </script>
+</body>
+</html>

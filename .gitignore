@@ -1,0 +1,23 @@
+# Node modules
+node_modules/
+Server/node_modules/
+
+# Environment variables
+.env
+Server/.env
+
+# Uploads (will be stored on Railway volume)
+uploads/
+Server/uploads/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+
+# Logs
+*.log
+npm-debug.log*

@@ -1,0 +1,629 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Property</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .form-container { max-width: 800px; margin: 40px auto; padding: 30px; background: white; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
+        .form-group { margin-bottom: 20px; }
+        .form-group label { display: block; margin-bottom: 8px; font-weight: 600; }
+        .form-group input, .form-group textarea, .form-group select { width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px; font-size: 1rem; }
+        .form-group textarea { min-height: 100px; font-family: Arial; }
+        .btn-submit { width: 100%; padding: 16px; background: #007AFF; color: white; border: none; border-radius: 8px; font-size: 1.1rem; font-weight: 600; cursor: pointer; margin-top: 20px; }
+        .btn-submit:hover { background: #0056b3; }
+        .btn-submit:disabled { background: #ccc; cursor: not-allowed; }
+        
+        /* PROMOTION SECTION */
+        .promo-section {
+            background: linear-gradient(135deg, #00C851 0%, #007E33 100%);
+            border-radius: 16px;
+            padding: 30px;
+            margin: 30px 0;
+            color: white;
+        }
+        
+        .promo-section h2 {
+            margin: 0 0 20px 0;
+            font-size: 1.8rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .promo-content {
+            background: white;
+            border-radius: 12px;
+            padding: 25px;
+            color: #333;
+        }
+        
+        .promo-status {
+            padding: 20px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+        }
+        
+        .promo-status.active {
+            background: rgba(0,200,81,0.1);
+            border: 2px solid #00C851;
+        }
+        
+        .promo-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin: 15px 0;
+        }
+        
+        .promo-item {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .promo-item strong {
+            color: #666;
+            font-size: 0.9rem;
+            margin-bottom: 5px;
+        }
+        
+        .promo-item span {
+            font-size: 1.1rem;
+            font-weight: 600;
+        }
+        
+        .promo-form .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+        
+        .promo-btn {
+            padding: 14px 28px;
+            border: none;
+            border-radius: 10px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .promo-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+        
+        .promo-btn.create {
+            background: #00C851;
+            color: white;
+        }
+        
+        .promo-btn.create:hover {
+            background: #00A844;
+        }
+        
+        .promo-btn.delete {
+            background: #FF4757;
+            color: white;
+        }
+        
+        .promo-btn.delete:hover {
+            background: #E63946;
+        }
+        
+        .promo-preview {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 12px;
+            margin-top: 20px;
+        }
+        
+        .promo-preview h4 {
+            margin: 0 0 15px 0;
+        }
+        
+        .price-breakdown {
+            background: rgba(255,255,255,0.1);
+            padding: 15px;
+            border-radius: 8px;
+            margin: 10px 0;
+        }
+        
+        .price-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.2);
+        }
+        
+        .price-row:last-child {
+            border-bottom: none;
+            font-weight: 700;
+            font-size: 1.2rem;
+            margin-top: 10px;
+        }
+        
+        .price-label {
+            opacity: 0.9;
+        }
+        
+        .price-value {
+            font-weight: 600;
+        }
+        
+        .discount-badge {
+            background: #FF4757;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 700;
+            display: inline-block;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="form-container">
+        <h1>✏️ Edit Property</h1>
+        <a href="my-property.html" style="display: inline-block; margin-bottom: 20px;">← Back to My Properties</a>
+
+        <!-- PROPERTY EDIT FORM -->
+        <form id="editForm" onsubmit="updateProperty(event)">
+            <div class="form-group">
+                <label>Property Title *</label>
+                <input type="text" id="title" required>
+            </div>
+
+            <div class="form-group">
+                <label>Description</label>
+                <textarea id="description"></textarea>
+            </div>
+
+            <div class="form-group">
+                <label>Property Type *</label>
+                <select id="propertyType" required>
+                    <option value="Apartment">Apartment</option>
+                    <option value="House">House</option>
+                    <option value="Room">Room</option>
+                    <option value="Cottage">Cottage</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label>Number of Rooms *</label>
+                <input type="number" id="numRooms" min="1" required>
+            </div>
+
+            <div class="form-group">
+                <label>Price Per Night (DZD) *</label>
+                <input type="number" id="price" min="0" step="0.01" required onchange="updatePreview()">
+                <small style="color: #666;">This is YOUR price. A 10% platform fee will be added for renters.</small>
+            </div>
+
+            <div class="form-group">
+                <label>Address *</label>
+                <input type="text" id="address" required>
+            </div>
+
+            <div class="form-group">
+                <label>City *</label>
+                <input type="text" id="city" required>
+            </div>
+
+            <div class="form-group">
+                <label>Wilaya *</label>
+                <input type="text" id="wilaya" required>
+            </div>
+
+            <div class="form-group">
+                <label>Status *</label>
+                <select id="status" required>
+                    <option value="Active">Active</option>
+                    <option value="Inactive">Inactive</option>
+                </select>
+            </div>
+
+            <button type="submit" class="btn-submit">Update Property</button>
+        </form>
+
+        <!-- PROMOTION MANAGEMENT SECTION -->
+        <div class="promo-section">
+            <h2>🔥 Promotion Management</h2>
+            
+            <!-- CURRENT PROMOTION STATUS -->
+            <div id="promoStatus" style="display: none;"></div>
+            
+            <!-- CREATE/EDIT PROMOTION FORM -->
+            <div id="promoFormContainer" class="promo-content" style="display: none;">
+                <h3 style="margin-top: 0;">Create New Promotion</h3>
+                <form id="promoForm" onsubmit="savePromotion(event)">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Promotion Type</label>
+                            <select id="promoType" required>
+                                <option value="SpecialOffer">Special Offer</option>
+                                <option value="Seasonal">Seasonal</option>
+                                <option value="LongStay">Long Stay</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Discount Type</label>
+                            <select id="discountType" required onchange="updatePreview()">
+                                <option value="Percentage">Percentage (%)</option>
+                                <option value="FixedAmount">Fixed Amount (DZD)</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Discount Value</label>
+                            <input type="number" id="discountValue" min="1" required oninput="updatePreview()" placeholder="e.g., 20">
+                        </div>
+                        <div class="form-group">
+                            <label>Minimum Stay (Days)</label>
+                            <input type="number" id="minStay" min="1" value="1" required>
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Start Date</label>
+                            <input type="date" id="startDate" required>
+                        </div>
+                        <div class="form-group">
+                            <label>End Date</label>
+                            <input type="date" id="endDate" required>
+                        </div>
+                    </div>
+                    
+                    <!-- PRICE PREVIEW WITH BREAKDOWN -->
+                    <div id="pricePreview" class="promo-preview" style="display: none;">
+                        <h4>📊 Price Calculation Breakdown</h4>
+                        <div class="price-breakdown">
+                            <div class="price-row">
+                                <span class="price-label">Your Base Price:</span>
+                                <span class="price-value" id="previewBasePrice">0 DZD</span>
+                            </div>
+                            <div class="price-row">
+                                <span class="price-label">After Discount (<span id="previewDiscountPercent">0%</span>):</span>
+                                <span class="price-value" id="previewAfterDiscount">0 DZD</span>
+                            </div>
+                            <div class="price-row">
+                                <span class="price-label">Platform Fee (+10%):</span>
+                                <span class="price-value" id="previewPlatformFee">0 DZD</span>
+                            </div>
+                            <div class="price-row">
+                                <span class="price-label">Final Renter Price:</span>
+                                <span class="price-value" id="previewFinalPrice">0 DZD</span>
+                            </div>
+                        </div>
+                        <div class="discount-badge" id="previewSavings">Renters save 0 DZD!</div>
+                    </div>
+                    
+                    <button type="submit" class="promo-btn create" style="margin-top: 20px;">
+                        💾 Create Promotion
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const API_URL = 'http://localhost:5000/api';
+        const user = JSON.parse(localStorage.getItem('user'));
+        const propertyId = new URLSearchParams(window.location.search).get('id');
+
+        if (!user || user.UserType !== 'Owner') {
+            alert('Please login as an owner');
+            window.location.href = 'login.html';
+        }
+
+        if (!propertyId) {
+            alert('Invalid property');
+            window.location.href = 'my-property.html';
+        }
+
+        let property = null;
+        let currentPromotion = null;
+
+        // ==================== LOAD PROPERTY ====================
+        async function loadProperty() {
+            try {
+                const response = await fetch(`${API_URL}/properties/${propertyId}`);
+                property = await response.json();
+
+                if (property.OwnerId !== user.UserId) {
+                    alert('You do not own this property');
+                    window.location.href = 'my-property.html';
+                    return;
+                }
+
+                // Fill form
+                document.getElementById('title').value = property.Title;
+                document.getElementById('description').value = property.Description || '';
+                document.getElementById('propertyType').value = property.PropertyType;
+                document.getElementById('numRooms').value = property.NumofRooms;
+                document.getElementById('price').value = (property.PricePerNight / 1.1).toFixed(2);
+                document.getElementById('address').value = property.Address;
+                document.getElementById('city').value = property.City;
+                document.getElementById('wilaya').value = property.Wilaya;
+                document.getElementById('status').value = property.AvailabilityStatus;
+
+                // Load promotion
+                await loadPromotion();
+
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Failed to load property');
+                window.location.href = 'my-property.html';
+            }
+        }
+
+        // ==================== UPDATE PROPERTY ====================
+        async function updateProperty(event) {
+            event.preventDefault();
+
+            const btn = document.querySelector('.btn-submit');
+            btn.disabled = true;
+            btn.textContent = 'Updating...';
+
+            try {
+                const data = {
+                    Title: document.getElementById('title').value,
+                    Description: document.getElementById('description').value,
+                    PropertyType: document.getElementById('propertyType').value,
+                    NumofRooms: parseInt(document.getElementById('numRooms').value),
+                    PricePerNight: parseFloat(document.getElementById('price').value),
+                    Address: document.getElementById('address').value,
+                    City: document.getElementById('city').value,
+                    Wilaya: document.getElementById('wilaya').value,
+                    AvailabilityStatus: document.getElementById('status').value,
+                    OwnerId: user.UserId
+                };
+
+                const response = await fetch(`${API_URL}/properties/${propertyId}`, {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(data)
+                });
+
+                if (response.ok) {
+                    alert('✅ Property updated successfully!');
+                    window.location.href = 'my-property.html';
+                } else {
+                    const error = await response.json();
+                    alert('Failed to update property: ' + (error.error || 'Unknown error'));
+                }
+
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Failed to update property');
+            } finally {
+                btn.disabled = false;
+                btn.textContent = 'Update Property';
+            }
+        }
+
+        // ==================== PROMOTION MANAGEMENT ====================
+        async function loadPromotion() {
+            try {
+                const response = await fetch(`${API_URL}/properties/${propertyId}/promotion`);
+                
+                if (!response.ok) {
+                    throw new Error('Failed to load promotion');
+                }
+                
+                const data = await response.json();
+                
+                if (data.hasPromotion && data.promotion) {
+                    currentPromotion = data.promotion;
+                    showCurrentPromotion();
+                } else {
+                    showCreatePromoForm();
+                }
+            } catch (error) {
+                console.error('Error loading promotion:', error);
+                showCreatePromoForm();
+            }
+        }
+
+        function showCurrentPromotion() {
+            const statusDiv = document.getElementById('promoStatus');
+            const formDiv = document.getElementById('promoFormContainer');
+            
+            statusDiv.style.display = 'block';
+            statusDiv.className = 'promo-content promo-status active';
+            statusDiv.innerHTML = `
+                <h3 style="color: #00C851; margin: 0 0 15px 0;">✅ Active Promotion</h3>
+                <div class="promo-grid">
+                    <div class="promo-item">
+                        <strong>Discount</strong>
+                        <span>${currentPromotion.DiscountValue}${currentPromotion.DiscountType === 'Percentage' ? '%' : ' DZD'}</span>
+                    </div>
+                    <div class="promo-item">
+                        <strong>Type</strong>
+                        <span>${currentPromotion.PromotionType}</span>
+                    </div>
+                    <div class="promo-item">
+                        <strong>Start Date</strong>
+                        <span>${new Date(currentPromotion.PromoStartDate).toLocaleDateString()}</span>
+                    </div>
+                    <div class="promo-item">
+                        <strong>End Date</strong>
+                        <span>${new Date(currentPromotion.PromoEndDate).toLocaleDateString()}</span>
+                    </div>
+                </div>
+                <button onclick="deletePromotion()" class="promo-btn delete" style="margin-top: 20px;">
+                    🗑️ Delete Promotion
+                </button>
+            `;
+            formDiv.style.display = 'none';
+        }
+
+        function showCreatePromoForm() {
+            document.getElementById('promoStatus').style.display = 'none';
+            document.getElementById('promoFormContainer').style.display = 'block';
+            
+            // Set min date to today
+            const today = new Date().toISOString().split('T')[0];
+            document.getElementById('startDate').min = today;
+            document.getElementById('endDate').min = today;
+        }
+
+        /**
+         * CORRECT PRICE CALCULATION:
+         * 1. Owner sets base price: 10,000 DZD
+         * 2. Apply discount to BASE: 10,000 - 10% = 9,000 DZD (owner gets this)
+         * 3. Add platform fee: 9,000 + 10% = 9,900 DZD (renter pays this)
+         * 
+         * Without promotion:
+         * - Owner price: 10,000
+         * - With markup: 11,000 (renter pays)
+         * - Owner gets: 10,000
+         * - Platform gets: 1,000
+         * 
+         * With 10% promotion:
+         * - Owner price after discount: 9,000
+         * - With markup: 9,900 (renter pays)
+         * - Owner gets: 9,000
+         * - Platform gets: 900
+         * - Renter saves: 1,100 DZD!
+         */
+        function updatePreview() {
+            const discountType = document.getElementById('discountType').value;
+            const discountValue = parseFloat(document.getElementById('discountValue').value) || 0;
+            const basePrice = parseFloat(document.getElementById('price').value) || 0;
+            
+            if (discountValue > 0 && basePrice > 0) {
+                document.getElementById('pricePreview').style.display = 'block';
+                
+                let priceAfterDiscount;
+                let discountAmount;
+                
+                if (discountType === 'Percentage') {
+                    discountAmount = basePrice * (discountValue / 100);
+                    priceAfterDiscount = basePrice - discountAmount;
+                } else {
+                    discountAmount = discountValue;
+                    priceAfterDiscount = basePrice - discountValue;
+                }
+                
+                const platformFee = priceAfterDiscount * 0.10;
+                const finalPrice = priceAfterDiscount + platformFee;
+                
+                // Calculate savings for renter
+                const normalPrice = basePrice * 1.1;
+                const savings = normalPrice - finalPrice;
+                
+                // Update display
+                document.getElementById('previewBasePrice').textContent = Math.round(basePrice).toLocaleString() + ' DZD';
+                document.getElementById('previewAfterDiscount').textContent = Math.round(priceAfterDiscount).toLocaleString() + ' DZD';
+                document.getElementById('previewPlatformFee').textContent = Math.round(platformFee).toLocaleString() + ' DZD';
+                document.getElementById('previewFinalPrice').textContent = Math.round(finalPrice).toLocaleString() + ' DZD';
+                
+                if (discountType === 'Percentage') {
+                    document.getElementById('previewDiscountPercent').textContent = discountValue + '%';
+                } else {
+                    document.getElementById('previewDiscountPercent').textContent = discountValue + ' DZD';
+                }
+                
+                document.getElementById('previewSavings').textContent = `Renters save ${Math.round(savings).toLocaleString()} DZD!`;
+            } else {
+                document.getElementById('pricePreview').style.display = 'none';
+            }
+        }
+
+        async function savePromotion(event) {
+            event.preventDefault();
+            
+            const promoData = {
+                PromotionType: document.getElementById('promoType').value,
+                MinStayDays: parseInt(document.getElementById('minStay').value),
+                DiscountType: document.getElementById('discountType').value,
+                DiscountValue: parseFloat(document.getElementById('discountValue').value),
+                StartDate: document.getElementById('startDate').value,
+                EndDate: document.getElementById('endDate').value
+            };
+
+            // Validate dates
+            const startDate = new Date(promoData.StartDate);
+            const endDate = new Date(promoData.EndDate);
+            
+            if (endDate <= startDate) {
+                alert('❌ End date must be after start date');
+                return;
+            }
+
+            try {
+                // 1. Create promotion
+                console.log('Creating promotion:', promoData);
+                
+                const promoRes = await fetch(`${API_URL}/promotions`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(promoData)
+                });
+
+                const promoResult = await promoRes.json();
+                
+                if (!promoRes.ok) {
+                    throw new Error(promoResult.error || 'Failed to create promotion');
+                }
+
+                console.log('Promotion created:', promoResult);
+
+                // 2. Link to property
+                const linkRes = await fetch(`${API_URL}/promotions/${promoResult.PromotionId}/link-property`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ propertyId: parseInt(propertyId) })
+                });
+
+                const linkResult = await linkRes.json();
+                
+                if (!linkRes.ok) {
+                    // If linking fails, delete the promotion we just created
+                    await fetch(`${API_URL}/promotions/${promoResult.PromotionId}`, {
+                        method: 'DELETE'
+                    });
+                    throw new Error(linkResult.error || 'Failed to link promotion');
+                }
+
+                console.log('Promotion linked:', linkResult);
+
+                alert('✅ Promotion created successfully!');
+                await loadPromotion();
+
+            } catch (error) {
+                console.error('Promotion error:', error);
+                alert('❌ Failed to create promotion: ' + error.message);
+            }
+        }
+
+        async function deletePromotion() {
+            if (!confirm('Are you sure you want to delete this promotion?')) return;
+
+            try {
+                const response = await fetch(`${API_URL}/promotions/${currentPromotion.PromotionId}`, {
+                    method: 'DELETE'
+                });
+
+                if (!response.ok) throw new Error('Failed to delete promotion');
+
+                alert('✅ Promotion deleted successfully!');
+                currentPromotion = null;
+                showCreatePromoForm();
+
+            } catch (error) {
+                alert('❌ Failed to delete promotion: ' + error.message);
+                console.error(error);
+            }
+        }
+
+        loadProperty();
+    </script>
+</body>
+</html>

@@ -1,0 +1,195 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Write Review</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .review-container { max-width: 600px; margin: 40px auto; padding: 30px; background: white; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
+        .rating-stars { font-size: 2.5rem; cursor: pointer; margin: 20px 0; }
+        .rating-stars span { color: #ddd; transition: color 0.2s; }
+        .rating-stars span.active, .rating-stars span:hover { color: #ffc107; }
+        textarea { width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px; min-height: 120px; font-family: Arial; font-size: 1rem; }
+        .btn-submit { width: 100%; padding: 16px; background: #007AFF; color: white; border: none; border-radius: 8px; font-size: 1.1rem; font-weight: 600; cursor: pointer; margin-top: 20px; }
+        .btn-submit:hover { background: #0056b3; }
+        .btn-submit:disabled { background: #ccc; cursor: not-allowed; }
+    </style>
+</head>
+<body>
+    <div class="review-container">
+        <h1>âœï¸ Write a Review</h1>
+        <a href="my-bookings.html" style="display: inline-block; margin-bottom: 20px;">â† Back to <span data-i18n="link-bookings">Bookings</span></a>
+
+        <div id="bookingInfo" style="background: #f8f9fa; padding: 15px; border-radius: 8px; margin: 20px 0;"></div>
+
+        <div id="propertySection">
+            <h3>Rate the Property</h3>
+            <div class="rating-stars" id="propertyRating">
+                <span data-rating="1">â˜…</span>
+                <span data-rating="2">â˜…</span>
+                <span data-rating="3">â˜…</span>
+                <span data-rating="4">â˜…</span>
+                <span data-rating="5">â˜…</span>
+            </div>
+            <textarea id="propertyComment" placeholder="Tell us about your stay..."></textarea>
+        </div>
+
+        <div id="ownerSection" style="margin-top: 30px;">
+            <h3>Rate the Owner</h3>
+            <div class="rating-stars" id="ownerRating">
+                <span data-rating="1">â˜…</span>
+                <span data-rating="2">â˜…</span>
+                <span data-rating="3">â˜…</span>
+                <span data-rating="4">â˜…</span>
+                <span data-rating="5">â˜…</span>
+            </div>
+            <textarea id="ownerComment" placeholder="How was your experience with the owner?"></textarea>
+        </div>
+
+        <button class="btn-submit" onclick="submitReview()">Submit Review</button>
+    </div>
+
+    <script>
+        const API_URL = 'http://localhost:5000/api';
+        const user = JSON.parse(localStorage.getItem('user'));
+        const bookingId = new URLSearchParams(window.location.search).get('bookingId');
+
+        let propertyRatingValue = 0;
+        let ownerRatingValue = 0;
+        let bookingData = null;
+
+        if (!user) {
+            window.location.href = 'login.html';
+        }
+
+        // Setup rating stars
+        setupRatingStars('propertyRating', (rating) => { propertyRatingValue = rating; });
+        setupRatingStars('ownerRating', (rating) => { ownerRatingValue = rating; });
+
+        function setupRatingStars(containerId, callback) {
+            const container = document.getElementById(containerId);
+            const stars = container.querySelectorAll('span');
+
+            stars.forEach(star => {
+                star.addEventListener('click', () => {
+                    const rating = parseInt(star.dataset.rating);
+                    callback(rating);
+                    updateStars(container, rating);
+                });
+
+                star.addEventListener('mouseover', () => {
+                    updateStars(container, parseInt(star.dataset.rating));
+                });
+            });
+
+            container.addEventListener('mouseleave', () => {
+                const currentRating = containerId === 'propertyRating' ? propertyRatingValue : ownerRatingValue;
+                updateStars(container, currentRating);
+            });
+        }
+
+        function updateStars(container, rating) {
+            const stars = container.querySelectorAll('span');
+            stars.forEach((star, index) => {
+                if (index < rating) {
+                    star.classList.add('active');
+                } else {
+                    star.classList.remove('active');
+                }
+            });
+        }
+
+        async function loadBookingInfo() {
+            try {
+                const response = await fetch(`${API_URL}/bookings/${bookingId}/can-review?userId=${user.UserId}`);
+                const data = await response.json();
+
+                if (!data.canReview) {
+                    alert(data.reason || 'Cannot review this booking');
+                    window.location.href = 'my-bookings.html';
+                    return;
+                }
+
+                bookingData = data.booking;
+
+                document.getElementById('bookingInfo').innerHTML = `
+                    <strong>${bookingData.PropertyTitle}</strong><br>
+                    ${new Date(bookingData.StartDate).toLocaleDateString()} - ${new Date(bookingData.EndDate).toLocaleDateString()}
+                `;
+
+                // Hide sections already reviewed
+                if (!data.canReviewProperty) {
+                    document.getElementById('propertySection').style.display = 'none';
+                }
+                if (!data.canReviewOwner) {
+                    document.getElementById('ownerSection').style.display = 'none';
+                }
+
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Failed to load booking info');
+            }
+        }
+
+        async function submitReview() {
+            if (propertyRatingValue === 0 && ownerRatingValue === 0) {
+                alert('Please provide at least one rating');
+                return;
+            }
+
+            const btn = document.querySelector('.btn-submit');
+            btn.disabled = true;
+            btn.textContent = 'Submitting...';
+
+            try {
+                // Submit property review
+                if (propertyRatingValue > 0) {
+                    await fetch(`${API_URL}/reviews`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            reviewerId: user.UserId,
+                            reviewedUserId: bookingData.OwnerId,
+                            propertyId: bookingData.PropertyId,
+                            bookingId: bookingId,
+                            rating: propertyRatingValue,
+                            comment: document.getElementById('propertyComment').value,
+                            reviewerType: 'Renter',
+                            reviewedRole: 'Property'
+                        })
+                    });
+                }
+
+                // Submit owner review
+                if (ownerRatingValue > 0) {
+                    await fetch(`${API_URL}/reviews`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            reviewerId: user.UserId,
+                            reviewedUserId: bookingData.OwnerId,
+                            propertyId: bookingData.PropertyId,
+                            bookingId: bookingId,
+                            rating: ownerRatingValue,
+                            comment: document.getElementById('ownerComment').value,
+                            reviewerType: 'Renter',
+                            reviewedRole: 'Owner'
+                        })
+                    });
+                }
+
+                alert('âœ… Review submitted successfully!');
+                window.location.href = 'my-bookings.html';
+
+            } catch (error) {
+                alert('Failed to submit review');
+                btn.disabled = false;
+                btn.textContent = 'Submit Review';
+            }
+        }
+
+        loadBookingInfo();
+    </script>
+</body>
+</html>

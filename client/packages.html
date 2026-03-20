@@ -1,0 +1,171 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Property Packages</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .packages-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 24px;
+            margin: 30px 0;
+        }
+        .package-card {
+            background: white;
+            border-radius: 16px;
+            padding: 24px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            text-align: center;
+            transition: transform 0.3s;
+        }
+        .package-card:hover {
+            transform: translateY(-5px);
+        }
+        .package-price {
+            font-size: 2rem;
+            color: var(--primary);
+            font-weight: bold;
+            margin: 15px 0;
+        }
+        .package-features {
+            list-style: none;
+            padding: 0;
+            margin: 20px 0;
+        }
+        .package-features li {
+            padding: 8px 0;
+            border-bottom: 1px solid #eee;
+        }
+        .btn-pay {
+            width: 100%;
+            padding: 14px;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 1rem;
+            cursor: pointer;
+        }
+        .btn-pay:hover {
+            background: var(--primary-dark);
+        }
+        .property-info {
+            background: rgba(0,122,255,0.1);
+            padding: 20px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body class="page-wrapper">
+    <div class="page-container">
+        <div class="page-header">
+            <h1>Upgrade Your Property</h1>
+            <p>Choose a package to boost your property visibility</p>
+        </div>
+
+        <div id="propertyInfo" class="property-info" style="display:none;">
+            <h2 id="propertyTitle"></h2>
+            <p>📍 <span id="propertyLocation"></span></p>
+        </div>
+
+        <div id="packagesGrid" class="packages-grid"></div>
+        <div id="message"></div>
+    </div>
+
+    <script>
+        const API_URL = 'http://localhost:5000/api';
+        const urlParams = new URLSearchParams(window.location.search);
+        const propertyId = urlParams.get('propertyId');
+        
+        // Check if owner is logged in
+        const user = JSON.parse(localStorage.getItem('user') || 'null');
+        if (!user || user.UserType !== 'Owner') {
+            alert('Please login as an owner');
+            window.location.href = 'login.html';
+        }
+
+        // Load property info
+        async function loadPropertyInfo() {
+            if (!propertyId) return;
+            
+            try {
+                const response = await fetch(`${API_URL}/properties/${propertyId}`);
+                const property = await response.json();
+                
+                document.getElementById('propertyInfo').style.display = 'block';
+                document.getElementById('propertyTitle').textContent = property.Title;
+                document.getElementById('propertyLocation').textContent = `${property.City}, ${property.Wilaya}`;
+            } catch (error) {
+                console.error('Error loading property:', error);
+            }
+        }
+
+        // Load packages
+        async function loadPackages() {
+            try {
+                const response = await fetch(`${API_URL}/packages`);
+                const packages = await response.json();
+
+                const grid = document.getElementById('packagesGrid');
+                grid.innerHTML = packages.map(pkg => `
+                    <div class="package-card">
+                        <h2>${pkg.PackageName}</h2>
+                        <div class="package-price">${pkg.Price} DZD</div>
+                        <ul class="package-features">
+                            <li>📸 ${pkg.MaxImages} Images</li>
+                            <li>⏱️ ${pkg.DurationDays} Days</li>
+                            ${pkg.PackageType === 'Premium' ? '<li>⭐ Featured Property</li>' : ''}
+                            ${pkg.PackageType === 'Boost' ? '<li>🚀 Boosted Visibility</li>' : ''}
+                        </ul>
+                        <button class="btn-pay" onclick="payForPackage(${pkg.PackageId})">
+                            Select Package
+                        </button>
+                    </div>
+                `).join('');
+
+            } catch (error) {
+                console.error('Error loading packages:', error);
+            }
+        }
+
+        // Pay for package
+        async function payForPackage(packageId) {
+            if (!propertyId) {
+                alert('Property ID not found');
+                return;
+            }
+
+            try {
+                const response = await fetch(`${API_URL}/payment/create-checkout`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        propertyId: parseInt(propertyId),
+                        packageId: packageId,
+                        ownerId: user.UserId
+                    })
+                });
+
+                const data = await response.json();
+
+                if (data.success && data.checkoutUrl) {
+                    // Redirect to Chargily payment page
+                    window.location.href = data.checkoutUrl;
+                } else {
+                    document.getElementById('message').innerHTML = 
+                        `<div class="message error">❌ ${data.error || 'Payment failed'}</div>`;
+                }
+            } catch (error) {
+                document.getElementById('message').innerHTML = 
+                    '<div class="message error">❌ Network error</div>';
+            }
+        }
+
+        loadPropertyInfo();
+        loadPackages();
+    </script>
+</body>
+</html>

@@ -1,0 +1,113 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Reviews</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        .reviews-container {
+            max-width: 800px;
+            margin: 40px auto;
+            padding: 24px;
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+        .rating-summary {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 12px;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+        .average-rating {
+            font-size: 3rem;
+            font-weight: 700;
+            color: var(--primary);
+        }
+        .review-card {
+            padding: 20px;
+            border-bottom: 1px solid #eee;
+        }
+        .reviewer-type {
+            display: inline-block;
+            padding: 2px 8px;
+            background: #e9ecef;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            margin-left: 10px;
+        }
+        .reviewed-role {
+            display: inline-block;
+            font-size: 0.8rem;
+            color: #555;
+            margin-left: 4px;
+        }
+    </style>
+</head>
+<body>
+    <div class="reviews-container">
+        <h1><i class="fa-regular fa-star"></i> My Reviews</h1>
+        <a href="profile.html" style="display: inline-block; margin-bottom: 20px;"> Back to Profile</a>
+
+        <div id="ratingSummary" class="rating-summary">
+            <!-- Will be filled by JavaScript -->
+        </div>
+
+        <div id="reviewsList">
+            <!-- Reviews will be loaded here -->
+        </div>
+    </div>
+
+    <script>
+        const API_URL = 'http://localhost:5000/api';
+        const user = JSON.parse(localStorage.getItem('user'));
+
+        if (!user) {
+            window.location.href = 'login.html';
+        }
+
+        async function loadUserReviews() {
+            try {
+                const response = await fetch(`${API_URL}/reviews/user/${user.UserId}`);
+                const data = await response.json();
+
+                document.getElementById('ratingSummary').innerHTML = `
+                    <div class="average-rating">${data.averageRating.toFixed(1)}</div>
+                    <div>Based on ${data.totalReviews} review${data.totalReviews !== 1 ? 's' : ''}</div>
+                `;
+
+                if (data.reviews.length === 0) {
+                    document.getElementById('reviewsList').innerHTML = '<p style="text-align: center; padding: 40px; color: #666;">No reviews yet</p>';
+                } else {
+                    document.getElementById('reviewsList').innerHTML = data.reviews.map(review => `
+                        <div class="review-card">
+                            <div style="display: flex; justify-content: space-between; align-items: center;">
+                                <strong>${review.ReviewerName}</strong>
+                                <div style="display: flex; gap:6px; align-items:center;">
+                                    <span class="reviewer-type">${review.ReviewerType}</span>
+                                    <span class="reviewed-role" style="font-size:0.8rem; color:#555;">(as ${review.ReviewedRole})</span>
+                                </div>
+                            </div>
+                            <div style="color: #ffc107; margin: 8px 0;">
+                                ${'â˜…'.repeat(Math.floor(review.Rating))}${'â˜†'.repeat(5 - Math.floor(review.Rating))}
+                            </div>
+                            <div style="color: #666;">${review.Comment}</div>
+                            <div style="color: #999; font-size: 0.9rem; margin-top: 8px;">
+                                ${new Date(review.ReviewDate).toLocaleDateString()}
+                            </div>
+                        </div>
+                    `).join('');
+                }
+
+            } catch (error) {
+                console.error('Error loading reviews:', error);
+            }
+        }
+
+        loadUserReviews();
+    </script>
+</body>
+</html>

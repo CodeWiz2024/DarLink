@@ -1,0 +1,744 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Property Details - DarLink</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
+    <script src="js/i18n-dashboard.js"></script><script src="lang.js"></script>
+    <script src="js/theme.js"></script>
+    <style>
+        :root {
+            --glass-bg: rgba(255, 255, 255, 0.7);
+            --glass-border: rgba(255, 255, 255, 0.3);
+            --glass-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.15);
+        }
+
+        [data-theme="dark"] {
+            --glass-bg: rgba(20, 20, 25, 0.7);
+            --glass-border: rgba(255, 255, 255, 0.1);
+        }
+
+        body {
+            font-family: 'Inter', 'Cairo', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            transition: background 0.3s, color 0.3s;
+            margin: 0;
+            padding: 0;
+        }
+
+        .details-container {
+            max-width: 1200px;
+            margin: 100px auto 50px;
+            padding: 0 20px;
+        }
+
+        .glass-card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--glass-shadow);
+            padding: 30px;
+            margin-bottom: 30px;
+        }
+
+        /* Property Gallery */
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 15px;
+            height: 500px;
+            margin-bottom: 30px;
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+        }
+
+        .main-img-container {
+            height: 100%;
+            position: relative;
+        }
+
+        .main-img-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .side-imgs-container {
+            display: grid;
+            grid-template-rows: 1fr 1fr;
+            gap: 15px;
+            height: 100%;
+        }
+
+        .side-imgs-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        /* Content Layout */
+        .property-layout {
+            display: grid;
+            grid-template-columns: 1.8fr 1.2fr;
+            gap: 30px;
+        }
+
+        @media (max-width: 900px) {
+            .property-layout { grid-template-columns: 1fr; }
+            .gallery-grid { grid-template-columns: 1fr; height: 350px; }
+            .side-imgs-container { display: none; }
+        }
+
+        .info-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 20px;
+        }
+
+        .property-badge {
+            display: inline-block;
+            padding: 6px 12px;
+            background: var(--accent);
+            color: white;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 0.85rem;
+            margin-bottom: 10px;
+        }
+
+        .price-tag {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        .feature-icon {
+            width: 40px;
+            height: 40px;
+            background: rgba(10, 132, 255, 0.1);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary);
+            margin-right: 12px;
+        }
+
+        /* Booking Card */
+        .booking-card {
+            position: sticky;
+            top: 100px;
+        }
+
+        .input-group {
+            margin-bottom: 20px;
+        }
+
+        .input-group label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .input-group input {
+            width: 100%;
+            padding: 14px;
+            border: 1px solid var(--glass-border);
+            border-radius: 12px;
+            background: var(--bg);
+            color: var(--text);
+            font-family: inherit;
+        }
+
+        .book-btn {
+            width: 100%;
+            padding: 16px;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 14px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .book-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(10, 132, 255, 0.4);
+        }
+
+        /* Review Section */
+        .reviews-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+        }
+
+        .review-card {
+            padding: 24px;
+            border-radius: 16px;
+            background: var(--bg);
+            border: 1px solid var(--glass-border);
+            margin-bottom: 20px;
+        }
+
+        .review-meta {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .reviewer-avatar {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            background: var(--primary);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            margin-right: 15px;
+        }
+
+        .stars { color: #FFCC00; }
+
+        /* Review Form */
+        .review-form-container {
+            margin-top: 40px;
+            padding-top: 30px;
+            border-top: 1px solid var(--glass-border);
+        }
+
+        .star-rating {
+            display: flex;
+            gap: 10px;
+            margin: 15px 0;
+        }
+
+        .star-rating i {
+            font-size: 2rem;
+            cursor: pointer;
+            color: #ddd;
+            transition: color 0.2s;
+        }
+
+        .star-rating i.active, .star-rating i:hover {
+            color: #FFCC00;
+        }
+
+        .review-textarea {
+            width: 100%;
+            padding: 15px;
+            border: 1px solid var(--glass-border);
+            border-radius: 15px;
+            background: var(--bg);
+            color: var(--text);
+            min-height: 120px;
+            margin-bottom: 20px;
+            font-family: inherit;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+         <span class="logo">
+            <i class="fa-solid fa-house logo-icon"></i>
+            <span class="logo-text" data-i18n="nav_logo_text">DarLink</span>
+        </span>
+        <div class="links">
+            <button type="button" class="theme-btn" onclick="toggleTheme()">
+                <i class="fa-regular fa-moon" id="themeIcon"></i>
+            </button>
+            <a href="index.html" data-i18n="nav_home">Home</a>
+            <div class="lang-switch">
+                <button type="button" class="lang-btn" data-lang="en">EN</button>
+                <button type="button" class="lang-btn" data-lang="ar">عربي</button>
+            </div>
+            <span id="userGreeting"></span>
+        </div>
+    </nav>
+
+    <main class="details-container">
+        <div id="loading" style="text-align: center; padding: 50px;">
+            <div class="spinner"></div>
+            <p data-i18n="loading">Loading details...</p>
+        </div>
+
+        <div id="propertyContent" style="display: none;">
+            <div id="gallery" class="gallery-grid">
+                <!-- Populated by JS -->
+            </div>
+
+            <div class="property-layout">
+                <div class="main-info">
+                    <div class="glass-card">
+                        <div class="info-header">
+                            <div>
+                                <span class="property-badge" id="propTypeBadge">Apartment</span>
+                                <h1 id="propTitle" style="margin: 0; font-size: 2.2rem;"></h1>
+                                <p id="propLocation" style="color: #666; font-size: 1.1rem; margin: 10px 0;"></p>
+                            </div>
+                            <div class="price-tag">
+                                <span id="propPrice"></span> <span style="font-size: 0.9rem; font-weight: 500;">/ <span data-i18n="night">night</span></span>
+                            </div>
+                        </div>
+
+                        <div style="display: flex; gap: 30px; margin: 25px 0; padding: 20px 0; border-top: 1px solid var(--glass-border); border-bottom: 1px solid var(--glass-border);">
+                            <div style="display: flex; align-items: center;">
+                                <div class="feature-icon"><i class="fa-solid fa-door-open"></i></div>
+                                <div><b id="propRooms"></b> <span data-i18n="rooms">Rooms</span></div>
+                            </div>
+                            <div style="display: flex; align-items: center;">
+                                <div class="feature-icon"><i class="fa-solid fa-star"></i></div>
+                                <div><b id="propRating"></b> <span id="propReviewsCount"></span></div>
+                            </div>
+                        </div>
+
+                        <h3>📝 Description</h3>
+                        <p id="propDescription" style="line-height: 1.7; color: var(--text); opacity: 0.9;"></p>
+
+                        <div style="margin-top: 30px;">
+                            <h3>✨ Features</h3>
+                            <div id="propFeatures" style="display: flex; flex-wrap: wrap; gap: 10px;"></div>
+                        </div>
+                    </div>
+
+                    <!-- REVIEWS SECTION -->
+                    <div class="glass-card">
+                        <div class="reviews-header">
+                            <h2>⭐ Guest Reviews</h2>
+                            <div id="summaryStars" class="stars"></div>
+                        </div>
+
+                        <div id="reviewsList">
+                            <!-- Populated by JS -->
+                        </div>
+
+                        <div id="reviewFormArea" class="review-form-container">
+                            <!-- Conditional Form or Message -->
+                        </div>
+                    </div>
+                </div>
+
+                <div class="sidebar">
+                    <div class="glass-card booking-card">
+                        <h2>📅 Book This Stay</h2>
+                        <form id="bookingForm">
+                            <div class="input-group">
+                                <label data-i18n="check_in">📅 Check-in</label>
+                                <input type="date" id="startDate" required>
+                            </div>
+                            <div class="input-group">
+                                <label data-i18n="check_out">📅 Check-out</label>
+                                <input type="date" id="endDate" required>
+                            </div>
+                            <div class="input-group">
+                                <label data-i18n="phone">📞 Phone Number</label>
+                                <input type="tel" id="phoneNumber" placeholder="06XXXXXXXX" required>
+                            </div>
+
+                            <div id="pricePriceCalculation" style="background: rgba(10,132,255,0.05); padding: 15px; border-radius: 10px; margin-bottom: 20px; display: none;">
+                                <div style="display: flex; justify-content: space-between;">
+                                    <span data-i18n="total">💰 Total</span>
+                                    <b id="calcTotal">0 DZD</b>
+                                </div>
+                                <div style="font-size: 0.85rem; color: #666; margin-top: 5px;">
+                                    <span id="calcNights">0</span> <span data-i18n="nights">nights</span>
+                                </div>
+                            </div>
+
+                            <button type="submit" class="book-btn" id="bookBtn" data-i18n="confirm_btn">✅ Confirm Booking</button>
+                        </form>
+
+                        <div style="margin-top: 25px; padding-top: 20px; border-top: 1px solid var(--glass-border);">
+                            <div style="display: flex; align-items: center; gap: 15px;">
+                                <div id="ownerAvatar" class="reviewer-avatar"></div>
+                                <div>
+                                    <div style="font-size: 0.8rem; color: #666;" data-i18n="hosted_by">🏠 Hosted by</div>
+                                    <b id="ownerName"></b>
+                                </div>
+                            </div>
+                            <button class="btn" style="width: 100%; margin-top: 15px; background: rgba(10,132,255,0.1); color: var(--primary);" onclick="openChat(property.OwnerId, property.OwnerName, property.PropertyId)">
+                                <i class="fa-solid fa-message"></i> <span data-i18n="chat_owner">💬 Message Owner</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="js/i18n-dashboard.js"></script>    <script src="lang.js"></script>
+    <script src="theme.js"></script>
+    <script>
+        window.I18N_MESSAGES = {
+            nav_home: { en: "Home", ar: "الرئيسية" },
+            loading: { en: "Loading details...", ar: "جاري تحميل التفاصيل..." },
+            night: { en: "night", ar: "ليلة" },
+            rooms: { en: "Rooms", ar: "الغرف" },
+            nights: { en: "nights", ar: "ليالي" },
+            sec_reviews: { en: "Guest Reviews", ar: "تقييمات الضيوف" },
+            book_title: { en: "Book This Stay", ar: "احجز هذه الإقامة" },
+            check_in: { en: "Check-in Date", ar: "تاريخ الوصول" },
+            check_out: { en: "Check-out Date", ar: "تاريخ المغادرة" },
+            phone: { en: "Phone Number", ar: "رقم الهاتف" },
+            total: { en: "Estimated Total", ar: "الإجمالي المقدر" },
+            confirm_btn: { en: "Confirm & Pay", ar: "تأكيد ودفع" },
+            hosted_by: { en: "Hosted by", ar: "المضيف:" },
+            chat_owner: { en: "Message Owner", ar: "مراسلة المالك" },
+            no_reviews: { en: "No reviews yet.", ar: "لا توجد تقييمات بعد." },
+            write_review: { en: "Share your experience", ar: "شارك تجربتك" },
+            submit_review: { en: "Submit Review", ar: "إرسال التقييم" },
+            review_placeholder: { en: "Tell others about your stay...", ar: "أخبر الآخرين عن إقامتك..." },
+            must_book: { en: "Only verified guests who completed their stay can leave a review.", ar: "فقط الضيوف الذين أكملوا إقامتهم يمكنهم ترك تقييم." },
+            login_to_review: { en: "Please login to leave a review.", ar: "يرجى تسجيل الدخول للتقييم." }
+        };
+
+        const user = JSON.parse(localStorage.getItem('user') || 'null');
+        const urlParams = new URLSearchParams(window.location.search);
+        const propertyId = urlParams.get('id');
+        const SERVER_URL = window.location.hostname === 'localhost' ? 'http://localhost:5000' : `http://${window.location.hostname}:5000`;
+        const API_URL = `${SERVER_URL}/api`;
+        let property = null;
+        let currentUser = null;
+        let selectedStars = 0;
+
+        if (!propertyId) {
+            window.location.href = 'index.html';
+        }
+
+        async function init() {
+            try {
+                const res = await fetch(`${API_URL}/properties/${propertyId}`);
+                if (!res.ok) throw new Error('Not found');
+                property = await res.json();
+                
+                renderDetails();
+                loadReviews();
+                checkReviewPermission();
+                
+                document.getElementById('loading').style.display = 'none';
+                document.getElementById('propertyContent').style.display = 'block';
+            } catch (err) {
+                document.getElementById('loading').innerHTML = `<h2 style="color:red">Property Not Found</h2><a href="index.html">Back Home</a>`;
+            }
+        }
+
+function renderDetails() {
+    document.getElementById('propTitle').textContent = property.Title;
+    document.getElementById('propLocation').textContent = `📍 ${property.Address}, ${property.City}, ${property.Wilaya}`;
+    
+    // ✅ FIX: Calculate promotional price correctly
+    let displayPrice = parseFloat(property.PricePerNight);
+    let hasPromotion = false;
+    let promoLabel = '';
+    
+    // Check if property has active promotion
+    if (property.HasPromotion && (parseFloat(property.DiscountPercentage) > 0 || parseFloat(property.DiscountAmount) > 0)) {
+        hasPromotion = true;
+        const priceInDB = parseFloat(property.PricePerNight); // Has 10% markup
+        
+        // Step 1: Remove 10% markup
+        const ownerBasePrice = priceInDB / 1.1;
+        
+        // Step 2: Apply discount
+        let ownerPriceAfterDiscount = ownerBasePrice;
+        
+        if (property.DiscountType === 'Percentage' && parseFloat(property.DiscountPercentage) > 0) {
+            const discountPercent = parseFloat(property.DiscountPercentage);
+            ownerPriceAfterDiscount = ownerBasePrice * (1 - discountPercent / 100);
+            promoLabel = `🔥 ${discountPercent}% OFF`;
+        } else if (property.DiscountType === 'FixedAmount' && parseFloat(property.DiscountAmount) > 0) {
+            const discountAmount = parseFloat(property.DiscountAmount);
+            ownerPriceAfterDiscount = ownerBasePrice - discountAmount;
+            promoLabel = `🔥 ${discountAmount.toLocaleString()} DZD OFF`;
+        }
+        
+        // Step 3: Add 10% markup back
+        displayPrice = ownerPriceAfterDiscount * 1.1;
+    }
+    
+    // Display price with promotion badge if applicable
+    const priceHTML = hasPromotion ? `
+        <div style="display: flex; flex-direction: column; align-items: flex-end;">
+            <div style="background: #FF4757; color: white; padding: 4px 12px; border-radius: 12px; font-size: 0.85rem; margin-bottom: 5px;">${promoLabel}</div>
+            <div style="text-decoration: line-through; color: #999; font-size: 1.2rem;">${Math.round(parseFloat(property.PricePerNight)).toLocaleString()} DZD</div>
+            <div style="color: #00C851; font-size: 1.8rem; font-weight: 700;">${Math.round(displayPrice).toLocaleString()} DZD</div>
+        </div>
+    ` : `${Math.round(displayPrice).toLocaleString()} DZD`;
+    
+    document.getElementById('propPrice').innerHTML = priceHTML;
+    
+    document.getElementById('propTypeBadge').textContent = property.PropertyType;
+    document.getElementById('propRooms').textContent = property.NumofRooms;
+    document.getElementById('propRating').textContent = property.AverageRating ? Number(property.AverageRating).toFixed(1) : 'New';
+    document.getElementById('propReviewsCount').textContent = `(${property.TotalReviews || 0} reviews)`;
+    document.getElementById('propDescription').textContent = property.Description;
+    document.getElementById('ownerName').textContent = property.OwnerName;
+ 
+    const avatar = document.getElementById('ownerAvatar');
+    avatar.textContent = property.OwnerName.charAt(0);
+    if (property.OwnerAvatar) {
+        avatar.innerHTML = `<img src="${property.OwnerAvatar}" style="width:100%; height:100%; border-radius:50%; object-fit:cover;">`;
+    }
+ 
+    // Gallery
+    const gallery = document.getElementById('gallery');
+    if (property.Images && property.Images.length > 0) {
+        const getFullImg = (url) => url.startsWith('http') ? url : `${SERVER_URL}${url}`;
+        let html = `<div class="main-img-container"><img src="${getFullImg(property.Images[0].ImageURL)}"></div>`;
+        if (property.Images.length > 1) {
+            html += `<div class="side-imgs-container">
+                <img src="${getFullImg(property.Images[1].ImageURL)}">
+                <img src="${property.Images[2] ? getFullImg(property.Images[2].ImageURL) : getFullImg(property.Images[1].ImageURL)}">
+            </div>`;
+        }
+        gallery.innerHTML = html;
+    }
+ 
+    // Features
+    document.getElementById('propFeatures').innerHTML = (property.Features || []).map(f => `
+        <div style="background:rgba(128,128,128,0.1); padding:8px 15px; border-radius:10px; font-size:0.9rem;">
+            <i class="fa-solid fa-check" style="color:var(--primary); margin-right:8px;"></i> ${f.FeatureName}
+        </div>
+    `).join('');
+    
+    // Set date constraints
+    const today = new Date().toISOString().split('T')[0];
+    document.getElementById('startDate').min = today;
+    document.getElementById('endDate').min = today;
+    
+    // ✅ IMPORTANT: Store the actual display price for booking calculation
+    property.ActualDisplayPrice = displayPrice;
+}
+ 
+// ✅ FIX: Update booking form calculation to use promotional price
+['startDate', 'endDate'].forEach(id => {
+    document.getElementById(id).addEventListener('change', () => {
+        const s = new Date(document.getElementById('startDate').value);
+        const e = new Date(document.getElementById('endDate').value);
+        if (s && e && e > s) {
+            const nights = Math.ceil((e - s) / (86400000));
+            // Use the display price (with promotion applied)
+            const pricePerNight = property.ActualDisplayPrice || property.PricePerNight;
+            const total = nights * pricePerNight;
+            document.getElementById('pricePriceCalculation').style.display = 'block';
+            document.getElementById('calcTotal').textContent = `${Math.round(total).toLocaleString()} DZD`;
+            document.getElementById('calcNights').textContent = nights;
+        }
+    });
+});
+ 
+// ✅ FIX: Update booking submission to use promotional price
+document.getElementById('bookingForm').onsubmit = async (e) => {
+    e.preventDefault();
+    if (!user) { window.location.href = 'login.html'; return; }
+    
+    const btn = document.getElementById('bookBtn');
+    btn.disabled = true;
+    btn.textContent = 'Processing...';
+ 
+    try {
+        const sDate = document.getElementById('startDate').value;
+        const eDate = document.getElementById('endDate').value;
+        const nights = Math.ceil((new Date(eDate) - new Date(sDate)) / 86400000);
+        
+        // Use promotional price if available
+        const pricePerNight = property.ActualDisplayPrice || property.PricePerNight;
+        const totalPrice = nights * pricePerNight;
+        
+        const bookingRes = await fetch(`${API_URL}/bookings`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                UserId: user.UserId,
+                PropertyId: property.PropertyId,
+                StartDate: sDate,
+                EndDate: eDate,
+                LengthOfStay: nights,
+                TotalPrice: totalPrice,
+                BasePrice: totalPrice,
+                PhoneNumber: document.getElementById('phoneNumber').value,
+                BookingStatus: 'Pending'
+            })
+        });
+ 
+        const bookingData = await bookingRes.json();
+        if (!bookingRes.ok) throw new Error(bookingData.error);
+ 
+        // Create payment
+        const payRes = await fetch(`${API_URL}/payment/create-booking-payment`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ bookingId: bookingData.bookingId })
+        });
+        const payData = await payRes.json();
+        if (payRes.ok) window.location.href = payData.checkoutUrl;
+        else throw new Error(payData.error);
+ 
+    } catch (err) {
+        alert(err.message);
+        btn.disabled = false;
+        btn.textContent = 'Confirm Booking';
+    }
+};
+ 
+
+        async function loadReviews() {
+            const res = await fetch(`${API_URL}/reviews/property/${propertyId}`);
+            const data = await res.json();
+            const list = document.getElementById('reviewsList');
+            
+            if (!data.reviews || data.reviews.length === 0) {
+                list.innerHTML = `<div style="text-align:center; padding:30px; color:#999;" data-i18n="no_reviews">📝 No reviews yet.</div>`;
+                if (window.I18N) window.I18N.applyTranslations();
+                return;
+            }
+
+            list.innerHTML = data.reviews.map(r => `
+                <div class="review-card">
+                    <div class="review-meta">
+                        <div class="reviewer-avatar">${r.ReviewerName.charAt(0)}</div>
+                        <div>
+                            <div style="font-weight:600">${r.ReviewerName}</div>
+                            <div class="stars">${getStarHtml(r.Rating)}</div>
+                        </div>
+                        <div style="margin-left:auto; font-size:0.85rem; color:#888;">📅 ${new Date(r.ReviewDate).toLocaleDateString()}</div>
+                    </div>
+                    <p style="margin:0; opacity:0.8;">💬 ${r.Comment}</p>
+                </div>
+            `).join('');
+            
+            document.getElementById('summaryStars').innerHTML = getStarHtml(property.AverageRating || 0);
+        }
+
+        function getStarHtml(rating) {
+            let html = '';
+            for(let i=1; i<=5; i++) {
+                if(i <= Math.floor(rating)) html += '<i class="fa-solid fa-star"></i>';
+                else if(i === Math.ceil(rating) && rating % 1 !== 0) html += '<i class="fa-solid fa-star-half-stroke"></i>';
+                else html += '<i class="fa-regular fa-star"></i>';
+            }
+            return html;
+        }
+
+        async function checkReviewPermission() {
+            const area = document.getElementById('reviewFormArea');
+            if (!user) {
+                area.innerHTML = `<p style="text-align:center; color:var(--primary);" data-i18n="login_to_review">🔒 Login to review</p>`;
+                if (window.I18N) window.I18N.applyTranslations();
+                return;
+            }
+
+            try {
+                // Check all user bookings to see if any completed for THIS property
+                const res = await fetch(`${API_URL}/bookings/user/${user.UserId}`);
+                const bookings = await res.json();
+                
+                const validBooking = bookings.find(b => 
+                    b.PropertyId == propertyId && 
+                    (b.BookingStatus === 'Completed' || new Date(b.EndDate) < new Date())
+                );
+
+                if (validBooking) {
+                    // Check if already reviewed
+                    const checkRes = await fetch(`${API_URL}/bookings/${validBooking.BookingId}/can-review?userId=${user.UserId}`);
+                    const check = await checkRes.json();
+                    
+                    if (check.canReviewProperty) {
+                        renderReviewForm(validBooking.BookingId);
+                    } else {
+                        area.innerHTML = `<p style="text-align:center; color:#28a745;"><i class="fa-solid fa-circle-check"></i> ✅ Thank you for your review!</p>`;
+                    }
+                } else {
+                    area.innerHTML = `<p style="text-align:center; color:#888; font-size:0.9rem;" data-i18n="must_book">📋 Must complete a booking to review</p>`;
+                }
+            } catch (e) {
+                console.error(e);
+            }
+            if (window.I18N) window.I18N.applyTranslations();
+        }
+
+        function renderReviewForm(bookingId) {
+            const area = document.getElementById('reviewFormArea');
+            area.innerHTML = `
+                <h3 data-i18n="write_review">✍️ Share your experience</h3>
+                <div class="star-rating" id="starInput">
+                    <i class="fa-regular fa-star" data-val="1"></i>
+                    <i class="fa-regular fa-star" data-val="2"></i>
+                    <i class="fa-regular fa-star" data-val="3"></i>
+                    <i class="fa-regular fa-star" data-val="4"></i>
+                    <i class="fa-regular fa-star" data-val="5"></i>
+                </div>
+                <textarea class="review-textarea" id="reviewComment" data-i18n-placeholder="review_placeholder" placeholder="Tell others..."></textarea>
+                <button class="book-btn" onclick="submitReview(${bookingId})" data-i18n="submit_review">📝 Submit Review</button>
+            `;
+
+            const stars = area.querySelectorAll('.star-rating i');
+            stars.forEach(s => {
+                s.onclick = () => {
+                    selectedStars = parseInt(s.dataset.val);
+                    stars.forEach(st => {
+                        st.classList.remove('fa-solid', 'active');
+                        st.classList.add('fa-regular');
+                        if(parseInt(st.dataset.val) <= selectedStars) {
+                            st.classList.add('fa-solid', 'active');
+                            st.classList.remove('fa-regular');
+                        }
+                    });
+                };
+            });
+            if (window.I18N) window.I18N.applyTranslations();
+        }
+
+        async function submitReview(bookingId) {
+            const comment = document.getElementById('reviewComment').value;
+            if (!selectedStars || !comment) return alert('Please provide rating and comment');
+
+            const res = await fetch(`${API_URL}/reviews`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    reviewerId: user.UserId,
+                    reviewedUserId: property.OwnerId,
+                    propertyId: property.PropertyId,
+                    bookingId: bookingId,
+                    rating: selectedStars,
+                    comment: comment,
+                    reviewerType: user.UserType,
+                    reviewedRole: 'Property'
+                })
+            });
+
+            if (res.ok) {
+                alert('✅ Review saved!');
+                location.reload();
+            } else {
+                alert('Failed to save review');
+            }
+        }
+
+        function openChat(ownerId, ownerName, propId) {
+            if (!user) { window.location.href = 'login.html'; return; }
+            if (user.UserId === ownerId) { alert("You can't message yourself."); return; }
+            
+            // This assumes unified sidebar on index.html. For standalone, we trigger a redirect or similar.
+            // Since we unified it on index.html, we'll store the intent in session and go back to index
+            sessionStorage.setItem('openChatIntent', JSON.stringify({ ownerId, ownerName, propId }));
+            window.location.href = 'index.html';
+        }
+
+        init();
+    </script>
+</body>
+</html>
