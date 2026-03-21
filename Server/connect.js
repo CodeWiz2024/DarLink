@@ -17,4 +17,4 @@ pool.query('SELECT 1').then(()=>{
     });
 // test the database connection by executing a simple query and log the result
 export default pool;
-// export the connection pool for use in other parts of the application
+// export the connection pool for use in other parts of the application// Force redeploy 
