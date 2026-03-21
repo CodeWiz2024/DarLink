@@ -11,9 +11,14 @@ import { fileURLToPath } from 'url';
 import fs from 'fs';
 import pool from './connect.js';
 import { extractIDFromImage, validateAlgerianID, parseAlgerianID } from './ocr.js';
-import chargily from './chargily-config.js'; 
+import chargily from './chargily-config.js';
+import { initDatabase } from './init-db.js';
 
 dotenv.config();
+
+// Initialise the database schema before anything else.
+// initDatabase() never throws – it logs errors and resolves regardless.
+await initDatabase();
 
 const app = express();
 
