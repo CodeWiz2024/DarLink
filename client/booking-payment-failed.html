@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -130,7 +130,7 @@
 </head>
 <body>
     <div class="container">
-        <div class="icon">✕</div>
+        <div class="icon">?</div>
         <h1>Payment Cancelled</h1>
         <p>Your payment was cancelled. Don't worry, no charges were made to your account.</p>
         
@@ -153,7 +153,7 @@
     <script>
         const urlParams = new URLSearchParams(window.location.search);
         const bookingId = urlParams.get('bookingId');
-        const SERVER_URL = 'http://localhost:5000';
+        const SERVER_URL = 'https://darlink-production.up.railway.app';
 
         async function deleteFailedBooking() {
             if (!bookingId) {
@@ -165,7 +165,7 @@
             try {
                 document.getElementById('processingMsg').style.display = 'block';
                 
-                console.log('🗑️ Deleting cancelled booking:', bookingId);
+                console.log('??? Deleting cancelled booking:', bookingId);
 
                 // Delete the booking via API
                 const response = await fetch(`${SERVER_URL}/api/bookings/cancel/${bookingId}`, {
@@ -180,18 +180,18 @@
                 document.getElementById('processingMsg').style.display = 'none';
 
                 if (response.ok) {
-                    console.log('✅ Booking deleted successfully');
+                    console.log('? Booking deleted successfully');
                     document.getElementById('bookingStatus').textContent = 
                         'Booking cancelled and removed. Dates are now available again.';
                     document.getElementById('bookingStatus').style.color = '#00b894';
                 } else {
-                    console.log('⚠️ Booking already cancelled or not found');
+                    console.log('?? Booking already cancelled or not found');
                     document.getElementById('bookingStatus').textContent = 
                         result.message || 'Booking has been handled.';
                 }
 
             } catch (error) {
-                console.error('❌ Error deleting booking:', error);
+                console.error('? Error deleting booking:', error);
                 document.getElementById('processingMsg').style.display = 'none';
                 document.getElementById('bookingStatus').textContent = 
                     'Could not verify booking status. Please check your bookings page.';

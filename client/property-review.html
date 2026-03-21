@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -159,7 +159,7 @@
 </head>
 <body>
     <div class="review-container">
-        <a href="javascript:history.back()" class="back-btn">← Back</a>
+        <a href="javascript:history.back()" class="back-btn">? Back</a>
 
         <div class="property-header" id="propertyHeader">
             <!-- Will be filled by JavaScript -->
@@ -204,7 +204,7 @@
     </div>
 
     <script>
-        const API_URL = 'http://localhost:5000/api';
+        const API_URL = 'https://darlink-production.up.railway.app/api';
         const urlParams = new URLSearchParams(window.location.search);
         const propertyId = urlParams.get('propertyId');
         const user = JSON.parse(localStorage.getItem('user'));
@@ -479,7 +479,7 @@
                 console.log('Review response:', data);
 
                 if (response.ok) {
-                    alert('âœ… Review submitted successfully!');
+                    alert('✅ Review submitted successfully!');
                     closeReviewModal();
                     loadPropertyReviews(); // Reload to show new review
                 } else {

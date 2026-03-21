@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -18,19 +18,19 @@
 </head>
 <body>
     <div class="review-container">
-        <h1>âœï¸ Write a Review</h1>
-        <a href="my-bookings.html" style="display: inline-block; margin-bottom: 20px;">â† Back to <span data-i18n="link-bookings">Bookings</span></a>
+        <h1>✍️ Write a Review</h1>
+        <a href="my-bookings.html" style="display: inline-block; margin-bottom: 20px;">← Back to <span data-i18n="link-bookings">Bookings</span></a>
 
         <div id="bookingInfo" style="background: #f8f9fa; padding: 15px; border-radius: 8px; margin: 20px 0;"></div>
 
         <div id="propertySection">
             <h3>Rate the Property</h3>
             <div class="rating-stars" id="propertyRating">
-                <span data-rating="1">â˜…</span>
-                <span data-rating="2">â˜…</span>
-                <span data-rating="3">â˜…</span>
-                <span data-rating="4">â˜…</span>
-                <span data-rating="5">â˜…</span>
+                <span data-rating="1">★</span>
+                <span data-rating="2">★</span>
+                <span data-rating="3">★</span>
+                <span data-rating="4">★</span>
+                <span data-rating="5">★</span>
             </div>
             <textarea id="propertyComment" placeholder="Tell us about your stay..."></textarea>
         </div>
@@ -38,11 +38,11 @@
         <div id="ownerSection" style="margin-top: 30px;">
             <h3>Rate the Owner</h3>
             <div class="rating-stars" id="ownerRating">
-                <span data-rating="1">â˜…</span>
-                <span data-rating="2">â˜…</span>
-                <span data-rating="3">â˜…</span>
-                <span data-rating="4">â˜…</span>
-                <span data-rating="5">â˜…</span>
+                <span data-rating="1">★</span>
+                <span data-rating="2">★</span>
+                <span data-rating="3">★</span>
+                <span data-rating="4">★</span>
+                <span data-rating="5">★</span>
             </div>
             <textarea id="ownerComment" placeholder="How was your experience with the owner?"></textarea>
         </div>
@@ -51,7 +51,7 @@
     </div>
 
     <script>
-        const API_URL = 'http://localhost:5000/api';
+        const API_URL = 'https://darlink-production.up.railway.app/api';
         const user = JSON.parse(localStorage.getItem('user'));
         const bookingId = new URLSearchParams(window.location.search).get('bookingId');
 
@@ -179,7 +179,7 @@
                     });
                 }
 
-                alert('âœ… Review submitted successfully!');
+                alert('✅ Review submitted successfully!');
                 window.location.href = 'my-bookings.html';
 
             } catch (error) {

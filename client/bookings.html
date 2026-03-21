@@ -202,7 +202,7 @@
 </div>
 
 <script>
-    const SERVER_URL = window.location.hostname === 'localhost' ? 'http://localhost:5000' : `http://${window.location.hostname}:5000`;
+    const SERVER_URL = window.location.hostname === 'localhost' ? 'https://darlink-production.up.railway.app' : `http://${window.location.hostname}:5000`;
     const API_URL = `${SERVER_URL}/api`;
     const user = JSON.parse(localStorage.getItem('user') || 'null');
 

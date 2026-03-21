@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -166,8 +166,8 @@
 </head>
 <body>
     <div class="form-container">
-        <h1>✏️ Edit Property</h1>
-        <a href="my-property.html" style="display: inline-block; margin-bottom: 20px;">← Back to My Properties</a>
+        <h1>?? Edit Property</h1>
+        <a href="my-property.html" style="display: inline-block; margin-bottom: 20px;">? Back to My Properties</a>
 
         <!-- PROPERTY EDIT FORM -->
         <form id="editForm" onsubmit="updateProperty(event)">
@@ -230,7 +230,7 @@
 
         <!-- PROMOTION MANAGEMENT SECTION -->
         <div class="promo-section">
-            <h2>🔥 Promotion Management</h2>
+            <h2>?? Promotion Management</h2>
             
             <!-- CURRENT PROMOTION STATUS -->
             <div id="promoStatus" style="display: none;"></div>
@@ -281,7 +281,7 @@
                     
                     <!-- PRICE PREVIEW WITH BREAKDOWN -->
                     <div id="pricePreview" class="promo-preview" style="display: none;">
-                        <h4>📊 Price Calculation Breakdown</h4>
+                        <h4>?? Price Calculation Breakdown</h4>
                         <div class="price-breakdown">
                             <div class="price-row">
                                 <span class="price-label">Your Base Price:</span>
@@ -304,7 +304,7 @@
                     </div>
                     
                     <button type="submit" class="promo-btn create" style="margin-top: 20px;">
-                        💾 Create Promotion
+                        ?? Create Promotion
                     </button>
                 </form>
             </div>
@@ -312,7 +312,7 @@
     </div>
 
     <script>
-        const API_URL = 'http://localhost:5000/api';
+        const API_URL = 'https://darlink-production.up.railway.app/api';
         const user = JSON.parse(localStorage.getItem('user'));
         const propertyId = new URLSearchParams(window.location.search).get('id');
 
@@ -391,7 +391,7 @@
                 });
 
                 if (response.ok) {
-                    alert('✅ Property updated successfully!');
+                    alert('? Property updated successfully!');
                     window.location.href = 'my-property.html';
                 } else {
                     const error = await response.json();
@@ -437,7 +437,7 @@
             statusDiv.style.display = 'block';
             statusDiv.className = 'promo-content promo-status active';
             statusDiv.innerHTML = `
-                <h3 style="color: #00C851; margin: 0 0 15px 0;">✅ Active Promotion</h3>
+                <h3 style="color: #00C851; margin: 0 0 15px 0;">? Active Promotion</h3>
                 <div class="promo-grid">
                     <div class="promo-item">
                         <strong>Discount</strong>
@@ -457,7 +457,7 @@
                     </div>
                 </div>
                 <button onclick="deletePromotion()" class="promo-btn delete" style="margin-top: 20px;">
-                    🗑️ Delete Promotion
+                    ??? Delete Promotion
                 </button>
             `;
             formDiv.style.display = 'none';
@@ -553,7 +553,7 @@
             const endDate = new Date(promoData.EndDate);
             
             if (endDate <= startDate) {
-                alert('❌ End date must be after start date');
+                alert('? End date must be after start date');
                 return;
             }
 
@@ -594,12 +594,12 @@
 
                 console.log('Promotion linked:', linkResult);
 
-                alert('✅ Promotion created successfully!');
+                alert('? Promotion created successfully!');
                 await loadPromotion();
 
             } catch (error) {
                 console.error('Promotion error:', error);
-                alert('❌ Failed to create promotion: ' + error.message);
+                alert('? Failed to create promotion: ' + error.message);
             }
         }
 
@@ -613,12 +613,12 @@
 
                 if (!response.ok) throw new Error('Failed to delete promotion');
 
-                alert('✅ Promotion deleted successfully!');
+                alert('? Promotion deleted successfully!');
                 currentPromotion = null;
                 showCreatePromoForm();
 
             } catch (error) {
-                alert('❌ Failed to delete promotion: ' + error.message);
+                alert('? Failed to delete promotion: ' + error.message);
                 console.error(error);
             }
         }

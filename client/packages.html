@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -68,7 +68,7 @@
 
         <div id="propertyInfo" class="property-info" style="display:none;">
             <h2 id="propertyTitle"></h2>
-            <p>📍 <span id="propertyLocation"></span></p>
+            <p>?? <span id="propertyLocation"></span></p>
         </div>
 
         <div id="packagesGrid" class="packages-grid"></div>
@@ -76,7 +76,7 @@
     </div>
 
     <script>
-        const API_URL = 'http://localhost:5000/api';
+        const API_URL = 'https://darlink-production.up.railway.app/api';
         const urlParams = new URLSearchParams(window.location.search);
         const propertyId = urlParams.get('propertyId');
         
@@ -115,10 +115,10 @@
                         <h2>${pkg.PackageName}</h2>
                         <div class="package-price">${pkg.Price} DZD</div>
                         <ul class="package-features">
-                            <li>📸 ${pkg.MaxImages} Images</li>
-                            <li>⏱️ ${pkg.DurationDays} Days</li>
-                            ${pkg.PackageType === 'Premium' ? '<li>⭐ Featured Property</li>' : ''}
-                            ${pkg.PackageType === 'Boost' ? '<li>🚀 Boosted Visibility</li>' : ''}
+                            <li>?? ${pkg.MaxImages} Images</li>
+                            <li>?? ${pkg.DurationDays} Days</li>
+                            ${pkg.PackageType === 'Premium' ? '<li>? Featured Property</li>' : ''}
+                            ${pkg.PackageType === 'Boost' ? '<li>?? Boosted Visibility</li>' : ''}
                         </ul>
                         <button class="btn-pay" onclick="payForPackage(${pkg.PackageId})">
                             Select Package
@@ -156,11 +156,11 @@
                     window.location.href = data.checkoutUrl;
                 } else {
                     document.getElementById('message').innerHTML = 
-                        `<div class="message error">❌ ${data.error || 'Payment failed'}</div>`;
+                        `<div class="message error">? ${data.error || 'Payment failed'}</div>`;
                 }
             } catch (error) {
                 document.getElementById('message').innerHTML = 
-                    '<div class="message error">❌ Network error</div>';
+                    '<div class="message error">? Network error</div>';
             }
         }
 

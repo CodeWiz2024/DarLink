@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -77,7 +77,7 @@
             </div>
             <div class="detail-row">
                 <span>Payment Status:</span>
-                <strong style="color: #28a745;">✓ Confirmed</strong>
+                <strong style="color: #28a745;">? Confirmed</strong>
             </div>
         </div>
 
@@ -89,7 +89,7 @@
             <a href="my-bookings.html" class="btn">
                 <i class="fa-regular fa-calendar"></i> View My Bookings
             </a>
-            <a href="index.html" class="btn" style="background: #6c757d;">ðŸ  Home Page</a>
+            <a href="index.html" class="btn" style="background: #6c757d;">🏠 Home Page</a>
         </div>
     </div>
 
@@ -101,7 +101,7 @@
             document.getElementById('bookingId').textContent = '#' + bookingId;
 
             // Fetch booking details
-            fetch(`http://localhost:5000/api/payment/booking-status/${bookingId}`)
+            fetch(`https://darlink-production.up.railway.app/api/payment/booking-status/${bookingId}`)
                 .then(res => res.json())
                 .then(data => {
                     document.getElementById('totalAmount').textContent = 
