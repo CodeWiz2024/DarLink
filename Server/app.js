@@ -1420,7 +1420,10 @@ app.get('/api/properties', async (req, res) => {
             );
             
             if (images.length > 0) {
-                property.MainImage = `http://localhost:${process.env.PORT}${images[0].ImageURL}`;
+                const baseUrl = process.env.NODE_ENV === 'production' 
+               ? 'https://darlink-production.up.railway.app' 
+                : `http://localhost:${process.env.PORT}`;
+                  property.MainImage = `${baseUrl}${images[0].ImageURL}`;
             } else {
                 property.MainImage = null;
             }
