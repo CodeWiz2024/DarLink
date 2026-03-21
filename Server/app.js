@@ -1406,7 +1406,7 @@ app.get('/api/properties', async (req, res) => {
              LEFT JOIN Promotion pr ON bf.PromotionId = pr.PromotionId 
                  AND CURDATE() BETWEEN pr.StartDate AND pr.EndDate
              WHERE p.AvailabilityStatus = 'Active'
-             GROUP BY p.PropertyId
+             GROUP BY p.PropertyId, pr.PromotionId, pr.PromotionType, pr.DiscountType, pr.DiscountValue, pr.StartDate, pr.EndDate
              ORDER BY HasPromotion DESC, p.IsFeatured DESC, p.IsBoosted DESC, p.ViewCount DESC, p.PropertyId DESC`
         );
 
