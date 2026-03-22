@@ -695,13 +695,13 @@
                     formData.append('Title', document.getElementById('title').value);
                     formData.append('Description', document.getElementById('description').value);
                     formData.append('PropertyType', document.getElementById('propertyType').value);
-                    formData.append('NumofRooms', document.getElementById('numRooms').value);
-                    formData.append('PricePerNight', document.getElementById('price').value);
+                    formData.append('NumofRooms', parseInt(document.getElementById('numRooms').value));
+                    formData.append('PricePerNight', parseFloat(document.getElementById('price').value));
                     formData.append('Address', document.getElementById('address').value);
                     formData.append('City', document.getElementById('city').value);
                     formData.append('Wilaya', document.getElementById('wilaya').value);
                     formData.append('AvailabilityStatus', document.getElementById('status').value);
-                    formData.append('OwnerId', user.UserId);
+                    formData.append('OwnerId', parseInt(user.UserId));
                     
                     const lat = document.getElementById('latitude').value;
                     const lng = document.getElementById('longitude').value;

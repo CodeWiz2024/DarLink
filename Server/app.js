@@ -466,6 +466,8 @@ app.put('/api/properties/:id', propertyUpload.array('images', 10), async (req, r
             PricePerNight, AvailabilityStatus, NumofRooms, OwnerId,
             FeatureIds, Latitude, Longitude
         } = req.body;
+        // Parse OwnerId as integer (FormData sends strings)
+        OwnerId = parseInt(OwnerId);
 
         // apply 10% profit on price if provided
         if (PricePerNight !== undefined) {
