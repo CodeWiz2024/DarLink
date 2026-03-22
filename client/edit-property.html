@@ -684,46 +684,83 @@
             btn.textContent = 'Updating...';
 
             try {
-                const formData = new FormData();
-                
-                // Basic data
-                formData.append('Title', document.getElementById('title').value);
-                formData.append('Description', document.getElementById('description').value);
-                formData.append('PropertyType', document.getElementById('propertyType').value);
-                formData.append('NumofRooms', document.getElementById('numRooms').value);
-                formData.append('PricePerNight', document.getElementById('price').value);
-                formData.append('Address', document.getElementById('address').value);
-                formData.append('City', document.getElementById('city').value);
-                formData.append('Wilaya', document.getElementById('wilaya').value);
-                formData.append('AvailabilityStatus', document.getElementById('status').value);
-                formData.append('OwnerId', user.UserId);
-                
-                // Location
-                const lat = document.getElementById('latitude').value;
-                const lng = document.getElementById('longitude').value;
-                if (lat) formData.append('Latitude', lat);
-                if (lng) formData.append('Longitude', lng);
-                
-                // Features
-                formData.append('FeatureIds', JSON.stringify(selectedFeatures));
-                
-                // New images
+                // Check if there are new images
                 const newImages = document.getElementById('newImages').files;
-                for (let i = 0; i < newImages.length; i++) {
-                    formData.append('images', newImages[i]);
-                }
+                const hasNewImages = newImages && newImages.length > 0;
 
-                const response = await fetch(`${API_URL}/properties/${propertyId}`, {
-                    method: 'PUT',
-                    body: formData
-                });
+                if (hasNewImages) {
+                    // USE FORMDATA FOR IMAGE UPLOAD
+                    const formData = new FormData();
+                    
+                    formData.append('Title', document.getElementById('title').value);
+                    formData.append('Description', document.getElementById('description').value);
+                    formData.append('PropertyType', document.getElementById('propertyType').value);
+                    formData.append('NumofRooms', document.getElementById('numRooms').value);
+                    formData.append('PricePerNight', document.getElementById('price').value);
+                    formData.append('Address', document.getElementById('address').value);
+                    formData.append('City', document.getElementById('city').value);
+                    formData.append('Wilaya', document.getElementById('wilaya').value);
+                    formData.append('AvailabilityStatus', document.getElementById('status').value);
+                    formData.append('OwnerId', user.UserId);
+                    
+                    const lat = document.getElementById('latitude').value;
+                    const lng = document.getElementById('longitude').value;
+                    if (lat) formData.append('Latitude', lat);
+                    if (lng) formData.append('Longitude', lng);
+                    
+                    formData.append('FeatureIds', JSON.stringify(selectedFeatures));
+                    
+                    for (let i = 0; i < newImages.length; i++) {
+                        formData.append('images', newImages[i]);
+                    }
 
-                if (response.ok) {
-                    alert('✅ Property updated successfully!');
-                    window.location.href = 'my-property.html';
+                    const response = await fetch(`${API_URL}/properties/${propertyId}`, {
+                        method: 'PUT',
+                        body: formData
+                    });
+
+                    if (response.ok) {
+                        alert('✅ Property updated successfully with new images!');
+                        window.location.href = 'my-property.html';
+                    } else {
+                        const error = await response.json();
+                        alert('Failed to update: ' + (error.error || 'Unknown error'));
+                    }
+
                 } else {
-                    const error = await response.json();
-                    alert('Failed to update: ' + (error.error || 'Unknown error'));
+                    // USE JSON FOR NO IMAGES
+                    const data = {
+                        Title: document.getElementById('title').value,
+                        Description: document.getElementById('description').value,
+                        PropertyType: document.getElementById('propertyType').value,
+                        NumofRooms: parseInt(document.getElementById('numRooms').value),
+                        PricePerNight: parseFloat(document.getElementById('price').value),
+                        Address: document.getElementById('address').value,
+                        City: document.getElementById('city').value,
+                        Wilaya: document.getElementById('wilaya').value,
+                        AvailabilityStatus: document.getElementById('status').value,
+                        OwnerId: user.UserId,
+                        FeatureIds: selectedFeatures
+                    };
+
+                    const lat = document.getElementById('latitude').value;
+                    const lng = document.getElementById('longitude').value;
+                    if (lat) data.Latitude = parseFloat(lat);
+                    if (lng) data.Longitude = parseFloat(lng);
+
+                    const response = await fetch(`${API_URL}/properties/${propertyId}`, {
+                        method: 'PUT',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(data)
+                    });
+
+                    if (response.ok) {
+                        alert('✅ Property updated successfully!');
+                        window.location.href = 'my-property.html';
+                    } else {
+                        const error = await response.json();
+                        alert('Failed to update: ' + (error.error || 'Unknown error'));
+                    }
                 }
 
             } catch (error) {
