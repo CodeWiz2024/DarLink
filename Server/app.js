@@ -458,13 +458,13 @@ app.get('/api/properties/:id', async (req, res) => {
         res.status(500).json({ error: error.message });
     }
 });
-app.put('/api/properties/:id', async (req, res) => {
+app.put('/api/properties/:id', propertyUpload.array('images', 10), async (req, res) => {
     try {
         const { id } = req.params;
         let { 
             Title, Description, Address, City, Wilaya, PropertyType, 
             PricePerNight, AvailabilityStatus, NumofRooms, OwnerId,
-            FeatureIds
+            FeatureIds, Latitude, Longitude
         } = req.body;
 
         // apply 10% profit on price if provided
@@ -503,10 +503,24 @@ app.put('/api/properties/:id', async (req, res) => {
         await pool.query(
             `UPDATE Property 
              SET Title = ?, Description = ?, Address = ?, City = ?, Wilaya = ?, 
-                 PropertyType = ?, PricePerNight = ?, AvailabilityStatus = ?, NumofRooms = ?
+                 PropertyType = ?, PricePerNight = ?, AvailabilityStatus = ?, NumofRooms = ?,
+                 Latitude = ?, Longitude = ?
              WHERE PropertyId = ?`,
-            [Title, Description, Address, City, Wilaya, PropertyType, PricePerNight, AvailabilityStatus, NumofRooms, id]
+            [Title, Description, Address, City, Wilaya, PropertyType, PricePerNight, AvailabilityStatus, NumofRooms, Latitude || null, Longitude || null, id]
         );
+
+        // Handle new images if uploaded
+        if (req.files && req.files.length > 0) {
+            const imageInsertPromises = req.files.map((file, index) => {
+                const imageURL = '/uploads/' + file.filename;
+                const caption = `Image ${index + 1}`;
+                return pool.query(
+                    'INSERT INTO PROPERTY_Image (PropertyId, ImageURL, Caption) VALUES (?, ?, ?)',
+                    [id, imageURL, caption]
+                );
+            });
+            await Promise.all(imageInsertPromises);
+        }
 
         // sync features if array provided
         if (featureIdsArray && featureIdsArray.length > 0) {
