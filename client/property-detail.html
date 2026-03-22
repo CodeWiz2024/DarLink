@@ -407,7 +407,7 @@
         const user = JSON.parse(localStorage.getItem('user') || 'null');
         const urlParams = new URLSearchParams(window.location.search);
         const propertyId = urlParams.get('id');
-        const SERVER_URL = window.location.hostname === 'localhost' ? 'https://darlink-production.up.railway.app' : `http://${window.location.hostname}:5000`;
+        const SERVER_URL = 'https://darlink-production.up.railway.app' ? 'https://darlink-production.up.railway.app' : `http://${window.location.hostname}:5000`;
         const API_URL = `${SERVER_URL}/api`;
         let property = null;
         let currentUser = null;
