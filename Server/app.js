@@ -426,10 +426,13 @@ app.get('/api/properties/:id', async (req, res) => {
         );
  
         // Add full URLs for all images
-        property.Images = images.map(img => ({
+        const baseUrl = process.env.NODE_ENV === 'production' 
+    ? 'https://darlink-production.up.railway.app' 
+    : `http://localhost:${process.env.PORT}`;
+         property.Images = images.map(img => ({
             ...img,
-            ImageURL: `http://localhost:${process.env.PORT}${img.ImageURL}`
-        }));
+         ImageURL: `${baseUrl}${img.ImageURL}`
+         }));
         
         // Set main image
         property.MainImage = property.Images.length > 0 ? property.Images[0].ImageURL : null;
@@ -909,7 +912,10 @@ app.get('/api/users/:id', async (req, res) => {
         }
 
         const user = users[0];
-        user.IDCardFrontURL = user.IDCardFrontPath ? `http://localhost:${process.env.PORT}${user.IDCardFrontPath}` : null;
+        const baseUrl = process.env.NODE_ENV === 'production' 
+    ? 'https://darlink-production.up.railway.app' 
+    : `http://localhost:${process.env.PORT}`;
+user.IDCardFrontURL = user.IDCardFrontPath ? `${baseUrl}${user.IDCardFrontPath}` : null;
 
         res.json(user);
     } catch (error) {
@@ -1083,7 +1089,7 @@ app.post('/api/payment/create-checkout', async (req, res) => {
         );
 
         const dbTransactionId = result.insertId;
-         const CLIENT_URL = 'http://localhost/www/PFE/client';
+         const CLIENT_URL = 'https://darlink-production.up.railway.app';
         
         const checkoutData = {
             amount: Math.round(pkg.Price * 100),
@@ -1272,7 +1278,7 @@ app.get('/api/test-chargily-custom', async (req, res) => {
         const baseURL = 'https://pay.chargily.net/api/v2';
         
         console.log('Testing custom Chargily URL:', baseURL);
-        const CLIENT_URL = 'http://localhost/www/PFE/client';
+        const CLIENT_URL = 'https://darlink-production.up.railway.app';
         const testData = {
             amount: 10000,
             currency: "dzd",
@@ -1307,7 +1313,7 @@ app.get('/api/test-chargily-custom', async (req, res) => {
 app.get('/api/test-chargily-new', async (req, res) => {
     try {
         const apiKey = process.env.CHARGILY_SECRET_KEY;
-        const CLIENT_URL = 'http://localhost/www/PFE/client';
+        const CLIENT_URL = 'https://darlink-production.up.railway.app';
         // Test creating a simple checkout
         const testData = {
             amount: 5000, // 50 DZD in cents
@@ -1419,14 +1425,14 @@ app.get('/api/properties', async (req, res) => {
                 [property.PropertyId]
             );
             
-            if (images.length > 0) {
-                const baseUrl = process.env.NODE_ENV === 'production' 
-               ? 'https://darlink-production.up.railway.app' 
-                : `http://localhost:${process.env.PORT}`;
-                  property.MainImage = `${baseUrl}${images[0].ImageURL}`;
-            } else {
-                property.MainImage = null;
-            }
+           if (images.length > 0) {
+    const baseUrl = process.env.NODE_ENV === 'production' 
+        ? 'https://darlink-production.up.railway.app' 
+        : `http://localhost:${process.env.PORT}`;
+    property.MainImage = `${baseUrl}${images[0].ImageURL}`;
+      } else {
+    property.MainImage = null;
+             }
 
             const [feats] = await pool.query(
                 `SELECT f.FeatureId, f.FeatureName
@@ -1992,7 +1998,7 @@ app.post('/api/payment/create-booking-payment', async (req, res) => {
         );
 
         // Create Chargily checkout
-         const CLIENT_URL = 'http://localhost/www/PFE/Client'; 
+         const CLIENT_URL = 'https://darlink-production.up.railway.app'; 
 
 const checkoutData = {
     amount: Math.round(totalAmount * 100),
