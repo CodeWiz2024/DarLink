@@ -5,14 +5,86 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login · DarLink</title>
     <link rel="stylesheet" href="styles.css">
-    <!-- Icon library for monochrome icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <script src="js/i18n-dashboard.js"></script>   <script src="lang.js"></script>
+    <script src="js/i18n-dashboard.js"></script>
+    <script src="lang.js"></script>
     <script src="js/theme.js"></script>
     <style>
         .form-box { max-width: 420px; }
         .register-link { text-align: center; margin-top: 24px; color: #666; font-size: 0.95rem; }
         [data-theme="dark"] .register-link { color: #98989d; }
+
+        /* ===== HAMBURGER ===== */
+        .nav-hamburger {
+            display: none;
+            flex-direction: column;
+            gap: 5px;
+            cursor: pointer;
+            padding: 8px;
+            border-radius: 10px;
+            border: none;
+            background: transparent;
+        }
+        .nav-hamburger span {
+            display: block;
+            width: 22px;
+            height: 2px;
+            background: var(--text-main, #1d1d1f);
+            border-radius: 2px;
+            transition: all 0.3s ease;
+        }
+
+        @media (max-width: 768px) {
+            .nav-hamburger { display: flex; }
+            .navbar .links {
+                display: none;
+                position: fixed;
+                top: 0; left: 0;
+                width: 100%; height: 100vh;
+                background: var(--glass-bg, rgba(255,255,255,0.97));
+                backdrop-filter: blur(24px);
+                -webkit-backdrop-filter: blur(24px);
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                gap: 16px;
+                z-index: 1050;
+                padding: 40px 24px;
+            }
+            .navbar .links.mobile-open { display: flex; }
+            .navbar .links a,
+            .navbar .links button:not(.nav-hamburger) {
+                width: 100%;
+                max-width: 280px;
+                text-align: center;
+                padding: 14px 20px;
+                font-size: 1rem;
+                border-radius: 12px;
+            }
+            .navbar .links .lang-switch { margin: 8px 0 0; }
+
+            .mobile-close-btn {
+                position: absolute;
+                top: 20px;
+                right: 20px;
+                background: none;
+                border: none;
+                font-size: 1.6rem;
+                cursor: pointer;
+                color: var(--text-muted, #8e8e93);
+            }
+
+            /* Form */
+            .form-page { padding: 16px; align-items: flex-start; padding-top: 30px; }
+            .form-box { padding: 24px 16px; }
+            .form-box h1 { font-size: 1.4rem; margin-bottom: 20px; }
+
+            /* prevent iOS zoom on inputs */
+            .form-box input,
+            .form-box select { font-size: 16px; }
+        }
+
+        [data-theme="dark"] .navbar .links { background: rgba(28,28,30,0.97); }
     </style>
 </head>
 <body>
@@ -21,13 +93,20 @@
             <i class="fa-solid fa-house logo-icon"></i>
             <span class="logo-text" data-i18n="nav_logo_text">DarLink</span>
         </span>
-        <div class="links">
+        <!-- Hamburger button -->
+        <button class="nav-hamburger" id="navHamburger" aria-label="Open menu" onclick="toggleMobileNav()">
+            <span></span><span></span><span></span>
+        </button>
+        <div class="links" id="navLinks">
+            <button class="mobile-close-btn" onclick="toggleMobileNav()" aria-label="Close menu">
+                <i class="fa-solid fa-times"></i>
+            </button>
             <button class="theme-btn" onclick="toggleTheme()" id="themeToggle">
                 <i class="fa-regular fa-moon" id="themeIcon"></i>
             </button>
-            <a href="index.html" data-i18n="nav_home">Home</a>
-            <a href="login.html" class="primary" data-i18n="nav_login">Login</a>
-            <a href="Register.html" data-i18n="nav_register">Register</a>
+            <a href="index.html" data-i18n="nav_home" onclick="closeMobileNav()">Home</a>
+            <a href="login.html" class="primary" data-i18n="nav_login" onclick="closeMobileNav()">Login</a>
+            <a href="Register.html" data-i18n="nav_register" onclick="closeMobileNav()">Register</a>
             <div class="lang-switch">
                 <button type="button" class="lang-btn" data-lang="en">EN</button>
                 <button type="button" class="lang-btn" data-lang="ar">عربي</button>
@@ -71,6 +150,14 @@
     </div>
 
     <script>
+        // Mobile nav toggle
+        function toggleMobileNav() {
+            document.getElementById('navLinks').classList.toggle('mobile-open');
+        }
+        function closeMobileNav() {
+            document.getElementById('navLinks').classList.remove('mobile-open');
+        }
+
         // Page translation strings
         window.I18N_MESSAGES = {
             nav_logo_text: { en: "DarLink", ar: "إيجار العطلات" },
@@ -99,14 +186,21 @@
         const messageDiv = document.getElementById('message');
         const submitBtn = document.getElementById('submitBtn');
 
-        const initialTheme = window.getTheme ? window.getTheme() : 'light';
+        const initialTheme = window.getTheme ? window.getTheme() : (localStorage.getItem('site_theme') || 'light');
         document.documentElement.setAttribute('data-theme', initialTheme);
         const initialIcon = document.getElementById('themeIcon');
         if (initialIcon) {
             initialIcon.className = initialTheme === 'dark' ? 'fa-solid fa-sun' : 'fa-regular fa-moon';
         }
 
-        // Toggle password visibility and update icon
+        function toggleTheme() {
+            const current = document.documentElement.getAttribute('data-theme') || 'light';
+            const newTheme = current === 'dark' ? 'light' : 'dark';
+            document.documentElement.setAttribute('data-theme', newTheme);
+            localStorage.setItem('site_theme', newTheme);
+            document.getElementById('themeIcon').className = newTheme === 'dark' ? 'fa-solid fa-sun' : 'fa-regular fa-moon';
+        }
+
         function togglePasswordVisibility() {
             const pwd = document.getElementById('Password');
             const icon = document.getElementById('passwordToggleIcon');
@@ -119,16 +213,13 @@
             }
         }
 
-        // Form submit
         form.addEventListener('submit', async (e) => {
             e.preventDefault();
-
             const loginData = {
                 Email: Email.value.trim(),
                 Password: Password.value,
                 UserType: UserType.value
             };
-
             if (!loginData.UserType) {
                 const lang = window.I18N ? window.I18N.getCurrentLang() : 'en';
                 const dict = window.I18N_MESSAGES || {};
@@ -136,38 +227,30 @@
                 messageDiv.innerHTML = `<div class="message error">${msg}</div>`;
                 return;
             }
-
             submitBtn.disabled = true;
             const lang = window.I18N ? window.I18N.getCurrentLang() : 'en';
             const dict = window.I18N_MESSAGES || {};
             submitBtn.textContent = (dict.login_logging_in && dict.login_logging_in[lang]) || 'Logging in...';
-
             try {
                 const response = await fetch(`${API_URL}/users/login`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(loginData)
                 });
-
                 const data = await response.json();
-
                 if (response.ok) {
                     localStorage.setItem('user', JSON.stringify(data.user));
                     messageDiv.innerHTML = `<div class="message success">✔️ ${data.message}</div>`;
-                    
                     setTimeout(() => {
-                        if (data.user.UserType === 'Owner') {
-                            window.location.href = 'AddHome.html';
-                        } else {
-                            window.location.href = 'Rent.html';
-                        }
+                        if (data.user.UserType === 'Owner') { window.location.href = 'AddHome.html'; }
+                        else { window.location.href = 'Rent.html'; }
                     }, 1500);
                 } else {
                     const fallback = (dict.login_failed_fallback && dict.login_failed_fallback[lang]) || 'Login failed';
                     messageDiv.innerHTML = `<div class="message error">❌ ${data.error || fallback}</div>`;
                 }
             } catch (error) {
-                const net = (dict.login_network_error && dict.login_network_error[lang]) || '❌ Network error. Check if server is running.';
+                const net = (dict.login_network_error && dict.login_network_error[lang]) || '❌ Network error.';
                 messageDiv.innerHTML = `<div class="message error">${net}</div>`;
                 console.error('Error:', error);
             } finally {
