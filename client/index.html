@@ -11,215 +11,167 @@
     <script src="lang.js"></script>
     <script src="js/theme.js"></script>
     <style>
-        /* PROMOTION CAROUSEL SECTION */
-        .promo-carousel-container {
-            background: linear-gradient(135deg, #00C851 0%, #007E33 100%);
-            border-radius: 30px;
-            padding: 30px 20px;
-            margin: 30px 0;
-            overflow: hidden;
-            box-shadow: 0 8px 24px rgba(0,200,81,0.3);
+        /* ── Promo Carousel ── */
+        .promo-carousel-container { background: linear-gradient(135deg, #00C851 0%, #007E33 100%); border-radius: 30px; padding: 30px 20px; margin: 30px 0; overflow: hidden; box-shadow: 0 8px 24px rgba(0,200,81,0.3); }
+        .promo-carousel-header { text-align: center; color: white; margin-bottom: 25px; }
+        .promo-carousel-header h2 { font-size: 2rem; margin: 0 0 10px 0; }
+        .promo-carousel { display: flex; gap: 20px; overflow-x: auto; scroll-behavior: smooth; padding: 10px; -webkit-overflow-scrolling: touch; }
+        .promo-carousel::-webkit-scrollbar { height: 8px; }
+        .promo-carousel::-webkit-scrollbar-track { background: rgba(255,255,255,0.2); border-radius: 10px; }
+        .promo-carousel::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.5); border-radius: 10px; }
+        .promo-card { min-width: 280px; background: white; border-radius: 20px; overflow: hidden; box-shadow: 0 4px 12px rgba(0,0,0,0.1); transition: transform 0.3s ease; cursor: pointer; position: relative; }
+        .promo-card:hover { transform: translateY(-5px); }
+        .promo-card-img { width: 100%; height: 180px; object-fit: cover; }
+        .promo-discount-badge { position: absolute; top: 10px; right: 10px; background: #FF4757; color: white; padding: 8px 15px; border-radius: 20px; font-weight: 700; font-size: 1rem; box-shadow: 0 2px 8px rgba(0,0,0,0.2); }
+        .promo-card-body { padding: 15px; }
+        .promo-card-body h3 { margin: 0 0 10px 0; font-size: 1.1rem; }
+        .promo-price-container { margin: 10px 0; }
+        .promo-old-price { text-decoration: line-through; color: #999; font-size: 0.9rem; }
+        .promo-new-price { color: #00C851; font-size: 1.4rem; font-weight: 700; }
+
+        /* ── Tier sections ── */
+        .tier-section { margin: 50px 0; }
+        .tier-header { display: flex; align-items: center; gap: 15px; margin-bottom: 25px; padding: 15px 25px; border-radius: 16px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; }
+        .tier-header.featured { background: linear-gradient(135deg, #FFD700 0%, #FFA500 100%); color: #000; }
+        .tier-header.boosted { background: linear-gradient(135deg, #FF6B6B 0%, #FF4757 100%); }
+        .tier-header.popular { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
+        .tier-header h2 { margin: 0; font-size: 1.8rem; flex: 1; }
+        .tier-count { background: rgba(255,255,255,0.3); padding: 8px 16px; border-radius: 20px; font-weight: 600; }
+
+        /* ── Footer ── */
+        .footer { background: #1d1d1f; color: white; padding: 40px 20px; margin-top: 80px; }
+        .footer-content { max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 30px; }
+        .footer-section h3 { margin: 0 0 15px 0; font-size: 1.2rem; }
+        .footer-links { list-style: none; padding: 0; margin: 0; }
+        .footer-links li { margin: 10px 0; }
+        .footer-links a { color: #ccc; text-decoration: none; transition: color 0.2s; }
+        .footer-links a:hover { color: #007AFF; }
+        .social-links { display: flex; gap: 15px; margin-top: 15px; }
+        .social-links a { width: 40px; height: 40px; background: rgba(255,255,255,0.1); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; text-decoration: none; transition: all 0.3s; }
+        .social-links a:hover { background: #007AFF; transform: translateY(-3px); }
+
+        /* ── Hamburger: hidden on desktop ── */
+        .nav-hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; padding: 8px; border-radius: 10px; border: none; background: transparent; }
+        .nav-hamburger span { display: block; width: 22px; height: 2px; background: var(--text-main, #1d1d1f); border-radius: 2px; transition: all 0.3s ease; }
+        .mobile-close-btn { display: none !important; }
+
+        /* ── Filter toggle: hidden on desktop ── */
+        .filter-toggle-btn { display: none; }
+
+        /* ══════════ DESKTOP ══════════ */
+        @media (min-width: 769px) {
+            .navbar .links { display: flex !important; position: static; height: auto; width: auto; background: transparent; backdrop-filter: none; -webkit-backdrop-filter: none; flex-direction: row; justify-content: flex-end; align-items: center; gap: 6px; padding: 0; z-index: auto; overflow: visible; }
+            .navbar .links a, .navbar .links button:not(.nav-hamburger) { width: auto; max-width: none; padding: 10px 18px; font-size: 0.95rem; border: none; background: transparent; }
+            .navbar .links .lang-switch { margin: 0 0 0 8px; }
         }
-        
-        .promo-carousel-header {
-            text-align: center;
-            color: white;
-            margin-bottom: 25px;
+
+        /* ══════════ MOBILE ══════════ */
+        @media (max-width: 768px) {
+            /* Hamburger */
+            .nav-hamburger { display: flex; }
+
+            /* Close button */
+            .mobile-close-btn {
+                display: flex !important;
+                position: absolute; top: 18px; right: 18px;
+                width: 42px; height: 42px; border-radius: 50%;
+                background: rgba(0,0,0,0.06); border: none;
+                font-size: 1.1rem; cursor: pointer;
+                color: var(--text-muted, #8e8e93);
+                align-items: center; justify-content: center;
+                transition: all 0.2s; z-index: 10;
+            }
+            .mobile-close-btn:hover { background: rgba(255,59,48,0.12); color: #ff3b30; }
+
+            /* Full-screen nav overlay */
+            .navbar .links {
+                display: none; position: fixed; top: 0; left: 0;
+                width: 100%; height: 100vh;
+                background: var(--glass-bg, rgba(255,255,255,0.97));
+                backdrop-filter: saturate(180%) blur(28px);
+                -webkit-backdrop-filter: saturate(180%) blur(28px);
+                flex-direction: column; justify-content: center; align-items: center;
+                gap: 10px; z-index: 1050; padding: 80px 28px 40px; overflow-y: auto;
+            }
+            .navbar .links.mobile-open { display: flex; }
+
+            /* Link pills */
+            .navbar .links a {
+                display: flex; align-items: center; justify-content: center;
+                width: 100%; max-width: 320px; padding: 15px 24px;
+                font-size: 1.05rem; font-weight: 600; border-radius: 16px;
+                border: 1px solid rgba(0,0,0,0.07); background: rgba(255,255,255,0.7);
+                color: var(--text-main, #1d1d1f); text-decoration: none;
+                transition: all 0.2s; box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+            }
+            .navbar .links a:hover { background: rgba(10,132,255,0.08); color: var(--primary, #0A84FF); border-color: rgba(10,132,255,0.2); transform: translateY(-1px); }
+            .navbar .links a.primary { background: var(--primary, #0A84FF); color: white; border-color: transparent; box-shadow: 0 4px 16px rgba(10,132,255,0.35); }
+            .navbar .links a.primary:hover { background: var(--primary-dark, #0062D1); transform: translateY(-1px); }
+            .navbar .links button.theme-btn { display: flex; align-items: center; justify-content: center; gap: 10px; width: 100%; max-width: 320px; padding: 15px 24px; font-size: 1.05rem; font-weight: 600; border-radius: 16px; border: 1px solid rgba(0,0,0,0.07); background: rgba(255,255,255,0.7); color: var(--text-main, #1d1d1f); box-shadow: 0 2px 8px rgba(0,0,0,0.04); cursor: pointer; transition: all 0.2s; }
+            .navbar .links button.theme-btn:hover { background: rgba(0,0,0,0.05); }
+            .navbar .links .lang-switch { display: flex; gap: 10px; margin-top: 4px; }
+            .navbar .links .lang-switch .lang-btn { padding: 12px 28px; border-radius: 14px; font-size: 0.95rem; font-weight: 700; }
+
+            /* Layout stacks */
+            .main-layout { flex-direction: column; padding: 0 4% 30px; }
+
+            /* Filter toggle button */
+            .filter-toggle-btn {
+                display: flex;
+                width: 100%; padding: 14px 18px;
+                background: var(--glass-bg); border: 1px solid var(--glass-border);
+                border-radius: 14px; font-size: 1rem; font-weight: 600;
+                color: var(--primary); cursor: pointer; margin-bottom: 12px;
+                align-items: center; gap: 10px;
+                order: -1;
+            }
+
+            /* Filter sidebar collapses */
+            .sidebar {
+                flex: none; width: 100%; position: static; order: -1;
+                max-height: 0; overflow: hidden; padding: 0 24px;
+                transition: max-height 0.4s ease, padding 0.3s ease;
+                border-radius: 14px;
+            }
+            .sidebar.filter-open { max-height: 800px; padding: 24px; }
+
+            /* Tier headers shrink */
+            .tier-header { padding: 12px 16px; gap: 10px; }
+            .tier-header h2 { font-size: 1.2rem; }
+            .tier-header span:first-child { font-size: 1.4rem; }
+
+            /* Promo */
+            .promo-carousel-container { border-radius: 20px; padding: 20px 12px; margin: 20px 0; }
+            .promo-carousel-header h2 { font-size: 1.4rem; }
+            .promo-card { min-width: 240px; }
+            .promo-card-img { height: 150px; }
+
+            /* Dashboard buttons */
+            #dashButtons { flex-direction: column; width: 100%; }
+            #dashButtons a { width: 100%; text-align: center; justify-content: center; }
+
+            /* Messaging */
+            .msg-toggle-btn { bottom: 20px; right: 16px; width: 52px; height: 52px; font-size: 1.2rem; }
+
+            /* Footer */
+            .footer { padding: 30px 16px; margin-top: 40px; }
+            .footer-content { grid-template-columns: 1fr; gap: 20px; }
         }
-        
-        .promo-carousel-header h2 {
-            font-size: 2rem;
-            margin: 0 0 10px 0;
+
+        @media (max-width: 480px) {
+            .tier-header h2 { font-size: 1rem; }
+            .promo-card { min-width: 200px; }
         }
-        
-        .promo-carousel {
-            display: flex;
-            gap: 20px;
-            overflow-x: auto;
-            scroll-behavior: smooth;
-            padding: 10px;
-            -webkit-overflow-scrolling: touch;
-        }
-        
-        .promo-carousel::-webkit-scrollbar {
-            height: 8px;
-        }
-        
-        .promo-carousel::-webkit-scrollbar-track {
-            background: rgba(255,255,255,0.2);
-            border-radius: 10px;
-        }
-        
-        .promo-carousel::-webkit-scrollbar-thumb {
-            background: rgba(255,255,255,0.5);
-            border-radius: 10px;
-        }
-        
-        .promo-card {
-            min-width: 280px;
-            background: white;
-            border-radius: 20px;
-            overflow: hidden;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-            transition: transform 0.3s ease;
-            cursor: pointer;
-            position: relative;
-        }
-        
-        .promo-card:hover {
-            transform: translateY(-5px);
-        }
-        
-        .promo-card-img {
-            width: 100%;
-            height: 180px;
-            object-fit: cover;
-        }
-        
-        .promo-discount-badge {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            background: #FF4757;
-            color: white;
-            padding: 8px 15px;
-            border-radius: 20px;
-            font-weight: 700;
-            font-size: 1rem;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
-        }
-        
-        .promo-card-body {
-            padding: 15px;
-        }
-        
-        .promo-card-body h3 {
-            margin: 0 0 10px 0;
-            font-size: 1.1rem;
-        }
-        
-        .promo-price-container {
-            margin: 10px 0;
-        }
-        
-        .promo-old-price {
-            text-decoration: line-through;
-            color: #999;
-            font-size: 0.9rem;
-        }
-        
-        .promo-new-price {
-            color: #00C851;
-            font-size: 1.4rem;
-            font-weight: 700;
-        }
-        
-        /* TIER SECTIONS */
-        .tier-section {
-            margin: 50px 0;
-        }
-        
-        .tier-header {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            margin-bottom: 25px;
-            padding: 15px 25px;
-            border-radius: 16px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-        }
-        
-        .tier-header.featured {
-            background: linear-gradient(135deg, #FFD700 0%, #FFA500 100%);
-            color: #000;
-        }
-        
-        .tier-header.boosted {
-            background: linear-gradient(135deg, #FF6B6B 0%, #FF4757 100%);
-        }
-        
-        .tier-header.popular {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        }
-        
-        .tier-header h2 {
-            margin: 0;
-            font-size: 1.8rem;
-            flex: 1;
-        }
-        
-        .tier-count {
-            background: rgba(255,255,255,0.3);
-            padding: 8px 16px;
-            border-radius: 20px;
-            font-weight: 600;
-        }
-        
-        /* FOOTER */
-        .footer {
-            background: #1d1d1f;
-            color: white;
-            padding: 40px 20px;
-            margin-top: 80px;
-        }
-        
-        .footer-content {
-            max-width: 1200px;
-            margin: 0 auto;
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 30px;
-        }
-        
-        .footer-section h3 {
-            margin: 0 0 15px 0;
-            font-size: 1.2rem;
-        }
-        
-        .footer-links {
-            list-style: none;
-            padding: 0;
-            margin: 0;
-        }
-        
-        .footer-links li {
-            margin: 10px 0;
-        }
-        
-        .footer-links a {
-            color: #ccc;
-            text-decoration: none;
-            transition: color 0.2s;
-        }
-        
-        .footer-links a:hover {
-            color: #007AFF;
-        }
-        
-        .social-links {
-            display: flex;
-            gap: 15px;
-            margin-top: 15px;
-        }
-        
-        .social-links a {
-            width: 40px;
-            height: 40px;
-            background: rgba(255,255,255,0.1);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            text-decoration: none;
-            transition: all 0.3s;
-        }
-        
-        .social-links a:hover {
-            background: #007AFF;
-            transform: translateY(-3px);
-        }
+
+        /* dark mode */
+        [data-theme="dark"] .navbar .links { background: rgba(20,20,22,0.97); }
+        [data-theme="dark"] .navbar .links a { background: rgba(255,255,255,0.06); border-color: rgba(255,255,255,0.08); color: #f5f5f7; }
+        [data-theme="dark"] .navbar .links a:hover { background: rgba(255,255,255,0.12); color: #fff; }
+        [data-theme="dark"] .navbar .links a.primary { background: #0A84FF; color: white; }
+        [data-theme="dark"] .navbar .links button.theme-btn { background: rgba(255,255,255,0.06); border-color: rgba(255,255,255,0.08); color: #f5f5f7; }
+        [data-theme="dark"] .mobile-close-btn { background: rgba(255,255,255,0.08); color: #8e8e93; }
+        [data-theme="dark"] .mobile-close-btn:hover { background: rgba(255,59,48,0.2); color: #ff453a; }
+        [data-theme="dark"] .filter-toggle-btn { background: rgba(44,44,46,0.85); border-color: rgba(255,255,255,0.1); color: #0a84ff; }
     </style>
 </head>
 <body>
@@ -228,13 +180,26 @@
             <i class="fa-solid fa-house logo-icon"></i>
             <span class="logo-text" data-i18n="nav_logo_text">DarLink</span>
         </span>
-        <div class="links">
+        <button class="nav-hamburger" id="navHamburger" aria-label="Open menu" onclick="toggleMobileNav()">
+            <span></span><span></span><span></span>
+        </button>
+        <div class="links" id="navLinks">
+            <button class="mobile-close-btn" onclick="toggleMobileNav()" aria-label="Close menu">
+                <i class="fa-solid fa-times"></i>
+            </button>
             <button type="button" class="theme-btn" onclick="toggleTheme()" aria-label="Toggle theme">
                 <i class="fa-regular fa-moon" id="themeIcon"></i>
+                <span class="theme-label" style="font-size:0.95rem;">Dark Mode</span>
             </button>
-            <a href="index.html" data-i18n="nav_home">Home</a>
-            <a href="login.html" id="loginLink" data-i18n="nav_login">Login</a>
-            <a href="Register.html" id="registerLink" data-i18n="nav_register">Register</a>
+            <a href="index.html" data-i18n="nav_home" onclick="closeMobileNav()">
+                <i class="fa-solid fa-house" style="margin-right:8px;"></i> Home
+            </a>
+            <a href="login.html" id="loginLink" data-i18n="nav_login" onclick="closeMobileNav()">
+                <i class="fa-solid fa-right-to-bracket" style="margin-right:8px;"></i> Login
+            </a>
+            <a href="Register.html" id="registerLink" data-i18n="nav_register" onclick="closeMobileNav()">
+                <i class="fa-solid fa-user-plus" style="margin-right:8px;"></i> Register
+            </a>
             <div class="lang-switch">
                 <button type="button" class="lang-btn" data-lang="en">EN</button>
                 <button type="button" class="lang-btn" data-lang="ar">عربي</button>
@@ -244,21 +209,16 @@
     </nav>
 
     <main>
-        <!-- ======== HERO SECTION ======== -->
         <section class="hero-section">
             <div class="hero-content">
                 <h1 class="hero-title" data-i18n="hero_title">الشفافية والسرعة</h1>
-                <p class="hero-subtitle" data-i18n="hero_subtitle">
-                    The most trusted and transparent vacation rental platform in Algeria. 
-                    Real reviews, fast booking, and seamless experiences.
-                </p>
+                <p class="hero-subtitle" data-i18n="hero_subtitle">The most trusted and transparent vacation rental platform in Algeria. Real reviews, fast booking, and seamless experiences.</p>
                 <button class="btn" style="padding: 16px 32px; font-size: 1.1rem; border-radius: 999px;" onclick="document.getElementById('regularSection').scrollIntoView({behavior: 'smooth'})">
                     <span data-i18n="hero_btn">Explore Properties</span> <i class="fa-solid fa-arrow-down" style="margin-left: 8px;"></i>
                 </button>
             </div>
         </section>
 
-        <!-- ======== DASHBOARD WIDGET (Visible if logged in) ======== -->
         <div id="dashboardOverlay" style="display: none; padding: 0 5%; margin-bottom: 30px;">
             <div class="card" style="background: linear-gradient(135deg, rgba(10, 132, 255, 0.1) 0%, rgba(52, 199, 89, 0.1) 100%); border-radius: var(--radius-lg); padding: 24px; border: 1px solid rgba(10,132,255,0.2);">
                 <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px;">
@@ -266,27 +226,25 @@
                         <h3 style="font-size: 1.3rem; font-weight: 700; margin-bottom: 8px;" data-i18n="dash_title">🚀 Quick Dashboard</h3>
                         <p style="color: #666; font-size: 0.95rem;" data-i18n="dash_desc">Manage your account directly from here.</p>
                     </div>
-                    <div style="display: flex; gap: 12px; flex-wrap: wrap;" id="dashButtons">
-                        <!-- Buttons populated by JS -->
-                    </div>
+                    <div style="display: flex; gap: 12px; flex-wrap: wrap;" id="dashButtons"></div>
                 </div>
             </div>
         </div>
 
-        <!-- ======== MAIN LAYOUT WITH SIDEBAR ======== -->
         <div class="main-layout">
-            
-            <!-- SIDEBAR FILTER -->
-            <aside class="sidebar">
+            <!-- Filter toggle button (mobile only) -->
+            <button class="filter-toggle-btn" id="filterToggleBtn" onclick="toggleFilterSidebar()">
+                <i class="fa-solid fa-filter"></i>
+                <span data-i18n="filter_title">Filters</span>
+                <i class="fa-solid fa-chevron-down" id="filterChevron" style="margin-left: auto; transition: transform 0.3s;"></i>
+            </button>
+
+            <aside class="sidebar" id="filterSidebar">
                 <h2 class="sidebar-title"><i class="fa-solid fa-filter"></i> <span data-i18n="filter_title">Filters</span></h2>
-                
                 <div class="filter-group">
                     <label data-i18n="filter_wilaya">Wilaya (Province)</label>
-                    <select id="filterCity">
-                        <option value="" data-i18n="filter_all_wilayas">All Wilayas</option>
-                    </select>
+                    <select id="filterCity"><option value="" data-i18n="filter_all_wilayas">All Wilayas</option></select>
                 </div>
-                
                 <div class="filter-group">
                     <label data-i18n="filter_type">Property Type</label>
                     <select id="filterType">
@@ -296,7 +254,6 @@
                         <option value="Studio" data-i18n="type_studio">Studio</option>
                     </select>
                 </div>
-
                 <div class="filter-group">
                     <label data-i18n="filter_rooms">Rooms</label>
                     <select id="filterRooms">
@@ -306,95 +263,56 @@
                         <option value="3" data-i18n="rooms_3">3+ Rooms</option>
                     </select>
                 </div>
-                
                 <div class="filter-group">
                     <label data-i18n="filter_price">Max Price (DZD / Night)</label>
                     <input type="range" id="filterPrice" min="1000" max="50000" step="500" value="50000" style="padding: 0; appearance: auto; height: 6px; border-radius: 5px; background: #ddd; accent-color: var(--primary);">
-                    <div class="price-range-labels">
-                        <span>1,000</span>
-                        <span id="priceValueOut">50,000</span>
-                    </div>
+                    <div class="price-range-labels"><span>1,000</span><span id="priceValueOut">50,000</span></div>
                 </div>
-                
                 <button class="btn" style="width: 100%; margin-top: 10px;" onclick="applyFilters()"><i class="fa-solid fa-search"></i> <span data-i18n="filter_btn">Apply Filters</span></button>
             </aside>
 
-            <!-- CONTENT AREA -->
             <div class="content-area">
                 <div id="loading" style="text-align:center; padding:40px; color:#666; font-weight: 600; font-size: 1.1rem;">
                     <i class="fa-solid fa-spinner fa-spin" style="font-size: 2rem; color: var(--primary); margin-bottom: 15px; display:block;"></i>
                     <span data-i18n="loading">Loading amazing properties...</span>
                 </div>
-        
-        <!-- PROMOTIONAL CAROUSEL -->
-        <div id="promoCarousel" class="promo-carousel-container" style="display: none;">
-            <div class="promo-carousel-header">
-                <h2 data-i18n="sec_promo_title">🔥 Special Promotions</h2>
-                <p data-i18n="sec_promo_desc">Limited time offers - Don't miss out!</p>
-            </div>
-            <div id="promoScroll" class="promo-carousel"></div>
-        </div>
-        
-        <!-- FEATURED/PREMIUM SECTION -->
-        <div id="featuredSection" class="tier-section" style="display: none;">
-            <div class="tier-header featured">
-                <span style="font-size: 2rem;">⭐</span>
-                <h2 data-i18n="sec_feat_title">Premium Package Properties</h2>
-                <span class="tier-count" id="featuredCount">0</span>
-            </div>
-            <div id="featuredGrid" class="cards-grid"></div>
-        </div>
-        
-        <!-- BOOSTED SECTION -->
-        <div id="boostedSection" class="tier-section" style="display: none;">
-            <div class="tier-header boosted">
-                <span style="font-size: 2rem;">🚀</span>
-                <h2 data-i18n="sec_boost_title">Boosted Package Properties</h2>
-                <span class="tier-count" id="boostedCount">0</span>
-            </div>
-            <div id="boostedGrid" class="cards-grid"></div>
-        </div>
-
-        
-        <!-- POPULAR/MOST BOOKED SECTION -->
-        <div id="popularSection" class="tier-section" style="display: none;">
-            <div class="tier-header popular">
-                <span style="font-size: 2rem;">🔥</span>
-                <h2 data-i18n="sec_pop_title">Most Popular Properties</h2>
-                <span class="tier-count" id="popularCount">0</span>
-            </div>
-            <div id="popularGrid" class="cards-grid"></div>
-        </div>
-        
-        <!-- REGULAR PROPERTIES SECTION -->
-        <div id="regularSection" class="tier-section" style="display: none;">
-            <div class="tier-header">
-                <span style="font-size: 2rem;">x</span>
-                <h2 data-i18n="sec_all_title">All Properties</h2>
-                <span class="tier-count" id="regularCount">0</span>
-            </div>
-            <div id="regularGrid" class="cards-grid"></div>
-        </div>
-        
-        <div id="emptyState" style="display:none; text-align:center; padding:60px; color:#666;">
-            <h2 data-i18n="no_props_title">No Properties Available</h2>
-            <p data-i18n="no_props_desc">Check back later for new listings.</p>
-        </div>
-        <!-- Close content area and layout -->
+                <div id="promoCarousel" class="promo-carousel-container" style="display: none;">
+                    <div class="promo-carousel-header">
+                        <h2 data-i18n="sec_promo_title">🔥 Special Promotions</h2>
+                        <p data-i18n="sec_promo_desc">Limited time offers - Don't miss out!</p>
+                    </div>
+                    <div id="promoScroll" class="promo-carousel"></div>
+                </div>
+                <div id="featuredSection" class="tier-section" style="display: none;">
+                    <div class="tier-header featured"><span style="font-size: 2rem;">⭐</span><h2 data-i18n="sec_feat_title">Premium Package Properties</h2><span class="tier-count" id="featuredCount">0</span></div>
+                    <div id="featuredGrid" class="cards-grid"></div>
+                </div>
+                <div id="boostedSection" class="tier-section" style="display: none;">
+                    <div class="tier-header boosted"><span style="font-size: 2rem;">🚀</span><h2 data-i18n="sec_boost_title">Boosted Package Properties</h2><span class="tier-count" id="boostedCount">0</span></div>
+                    <div id="boostedGrid" class="cards-grid"></div>
+                </div>
+                <div id="popularSection" class="tier-section" style="display: none;">
+                    <div class="tier-header popular"><span style="font-size: 2rem;">🔥</span><h2 data-i18n="sec_pop_title">Most Popular Properties</h2><span class="tier-count" id="popularCount">0</span></div>
+                    <div id="popularGrid" class="cards-grid"></div>
+                </div>
+                <div id="regularSection" class="tier-section" style="display: none;">
+                    <div class="tier-header"><span style="font-size: 2rem;">🏠</span><h2 data-i18n="sec_all_title">All Properties</h2><span class="tier-count" id="regularCount">0</span></div>
+                    <div id="regularGrid" class="cards-grid"></div>
+                </div>
+                <div id="emptyState" style="display:none; text-align:center; padding:60px; color:#666;">
+                    <h2 data-i18n="no_props_title">No Properties Available</h2>
+                    <p data-i18n="no_props_desc">Check back later for new listings.</p>
+                </div>
             </div>
         </div>
     </main>
 
-    <!-- FOOTER -->
     <footer class="footer">
         <div class="footer-content">
             <div class="footer-section">
                 <h3>About DarLink</h3>
-                <p style="color: #ccc; line-height: 1.6;">
-                    Your trusted platform for vacation rentals in Algeria.
-                </p>
+                <p style="color: #ccc; line-height: 1.6;">Your trusted platform for vacation rentals in Algeria.</p>
             </div>
-            
             <div class="footer-section">
                 <h3 data-i18n="footer_contact">Contact</h3>
                 <ul class="footer-links">
@@ -402,7 +320,6 @@
                     <li><i class="fa-solid fa-phone"></i> +213 699 787 702</li>
                 </ul>
             </div>
-            
             <div class="footer-section">
                 <h3 data-i18n="footer_follow">Follow Us</h3>
                 <div class="social-links">
@@ -415,65 +332,43 @@
     </footer>
 
     <script>
-        // Language Definitions for Index
+        function toggleMobileNav() { document.getElementById('navLinks').classList.toggle('mobile-open'); }
+        function closeMobileNav() { document.getElementById('navLinks').classList.remove('mobile-open'); }
+        function toggleFilterSidebar() {
+            const sidebar = document.getElementById('filterSidebar');
+            const chevron = document.getElementById('filterChevron');
+            sidebar.classList.toggle('filter-open');
+            chevron.style.transform = sidebar.classList.contains('filter-open') ? 'rotate(180deg)' : 'rotate(0deg)';
+        }
+
         window.I18N_MESSAGES = {
-            nav_home: { en: "Home", ar: "الرئيسية" },
-            nav_login: { en: "Login", ar: "تسجيل الدخول" },
-            nav_register: { en: "Register", ar: "إنشاء حساب" },
+            nav_home: { en: "Home", ar: "الرئيسية" }, nav_login: { en: "Login", ar: "تسجيل الدخول" }, nav_register: { en: "Register", ar: "إنشاء حساب" },
             hero_title: { en: "Transparency and Setup Speed", ar: "الشفافية والسرعة" },
-            hero_subtitle: { 
-                en: "The most trusted and transparent vacation rental platform in Algeria. Real reviews, fast booking, and seamless experiences.", ar: "المنصة الأكثر ثقة وشفافية لإيجار بيوت العطلات في الجزائر. آراء حقيقية، حجز سريع، وتجربة سلسة." 
-            },
+            hero_subtitle: { en: "The most trusted and transparent vacation rental platform in Algeria. Real reviews, fast booking, and seamless experiences.", ar: "المنصة الأكثر ثقة وشفافية لإيجار بيوت العطلات في الجزائر. آراء حقيقية، حجز سريع، وتجربة سلسة." },
             hero_btn: { en: "Explore Properties", ar: "استكشف العقارات" },
-            dash_title: { en: "🚀 Quick Dashboard", ar: "🚀 لوحة تحكم سريعة" },
-            dash_desc: { en: "Manage your account directly from here.", ar: "أدر حسابك مباشرة من هنا." },
-            filter_title: { en: "Filters", ar: "عوامل التصفية" },
-            filter_wilaya: { en: "Wilaya (Province)", ar: "الولاية" },
-            filter_all_wilayas: { en: "All Wilayas", ar: "جميع الولايات" },
-            filter_type: { en: "Property Type", ar: "نوع العقار" },
-            filter_all_types: { en: "All Types", ar: "جميع الأنواع" },
-            type_apt: { en: "Apartment", ar: "شقة" },
-            type_villa: { en: "Villa", ar: "فيلا" },
-            type_studio: { en: "Studio", ar: "استوديو" },
-            filter_rooms: { en: "Rooms", ar: "الغرف" },
-            filter_any: { en: "Any Check", ar: "أي عدد" },
-            rooms_1: { en: "1 Room", ar: "غرفة واحدة" },
-            rooms_2: { en: "2 Rooms", ar: "غرفتان" },
-            rooms_3: { en: "3+ Rooms", ar: "3 غرف فأكثر" },
-            filter_price: { en: "Max Price (DZD / Night)", ar: "السعر الأقصى (د.ج / ليلة)" },
-            filter_btn: { en: "Apply Filters", ar: "تطبيق عوامل التصفية" },
+            dash_title: { en: "🚀 Quick Dashboard", ar: "🚀 لوحة تحكم سريعة" }, dash_desc: { en: "Manage your account directly from here.", ar: "أدر حسابك مباشرة من هنا." },
+            filter_title: { en: "Filters", ar: "عوامل التصفية" }, filter_wilaya: { en: "Wilaya (Province)", ar: "الولاية" }, filter_all_wilayas: { en: "All Wilayas", ar: "جميع الولايات" },
+            filter_type: { en: "Property Type", ar: "نوع العقار" }, filter_all_types: { en: "All Types", ar: "جميع الأنواع" },
+            type_apt: { en: "Apartment", ar: "شقة" }, type_villa: { en: "Villa", ar: "فيلا" }, type_studio: { en: "Studio", ar: "استوديو" },
+            filter_rooms: { en: "Rooms", ar: "الغرف" }, filter_any: { en: "Any Check", ar: "أي عدد" },
+            rooms_1: { en: "1 Room", ar: "غرفة واحدة" }, rooms_2: { en: "2 Rooms", ar: "غرفتان" }, rooms_3: { en: "3+ Rooms", ar: "3 غرف فأكثر" },
+            filter_price: { en: "Max Price (DZD / Night)", ar: "السعر الأقصى (د.ج / ليلة)" }, filter_btn: { en: "Apply Filters", ar: "تطبيق عوامل التصفية" },
             loading: { en: "Loading amazing properties...", ar: "جاري تحميل العقارات..." },
-            no_props_title: { en: "No Properties Available", ar: "لا توجد عقارات متاحة" },
-            no_props_desc: { en: "Check back later for new listings.", ar: "تحقق لاحقاً لرؤية عروض جديدة." },
-            sec_promo_title: { en: "🔥 Special Promotions", ar: "🔥 عروض ترويجية" },
-            sec_promo_desc: { en: "Limited time offers - Don't miss out!", ar: "عروض لفترة محدودة - لا تفوت الفرصة!" },
-            sec_feat_title: { en: "Premium Package Properties", ar: "عقارات الباقة المميزة" },
-            sec_boost_title: { en: "Boosted Package Properties", ar: "عقارات الباقة المدعومة" },
-            sec_pop_title: { en: "Most Popular Properties", ar: "العقارات الأكثر شعبية" },
-            sec_all_title: { en: "All Properties", ar: "جميع العقارات" },
-            footer_contact: { en: "Contact", ar: "اتصل بنا" },
-            footer_follow: { en: "Follow Us", ar: "تابعنا" },
-            btn_chat: { en: "Chat", ar: "دردشة" },
-            card_btn_details: { en: "View Details", ar: "عرض التفاصيل" },
-            msg_title: { en: "Messages", ar: "الرسائل" },
-            no_msgs: { en: "No messages yet", ar: "لا توجد رسائل بعد" },
-            profile_settings: { en: "Profile Settings", ar: "إعدادات الحساب" },
-            change_pic: { en: "Change Photo", ar: "تغيير الصورة" }
+            no_props_title: { en: "No Properties Available", ar: "لا توجد عقارات متاحة" }, no_props_desc: { en: "Check back later for new listings.", ar: "تحقق لاحقاً لرؤية عروض جديدة." },
+            sec_promo_title: { en: "🔥 Special Promotions", ar: "🔥 عروض ترويجية" }, sec_promo_desc: { en: "Limited time offers - Don't miss out!", ar: "عروض لفترة محدودة - لا تفوت الفرصة!" },
+            sec_feat_title: { en: "Premium Package Properties", ar: "عقارات الباقة المميزة" }, sec_boost_title: { en: "Boosted Package Properties", ar: "عقارات الباقة المدعومة" },
+            sec_pop_title: { en: "Most Popular Properties", ar: "العقارات الأكثر شعبية" }, sec_all_title: { en: "All Properties", ar: "جميع العقارات" },
+            footer_contact: { en: "Contact", ar: "اتصل بنا" }, footer_follow: { en: "Follow Us", ar: "تابعنا" },
+            btn_chat: { en: "Chat", ar: "دردشة" }, card_btn_details: { en: "View Details", ar: "عرض التفاصيل" },
+            msg_title: { en: "Messages", ar: "الرسائل" }, no_msgs: { en: "No messages yet", ar: "لا توجد رسائل بعد" },
+            profile_settings: { en: "Profile Settings", ar: "إعدادات الحساب" }, change_pic: { en: "Change Photo", ar: "تغيير الصورة" }
         };
 
-        const SERVER_URL = 'https://darlink-production.up.railway.app' ? 'https://darlink-production.up.railway.app' : `http://${window.location.hostname}:5000`;
+        const SERVER_URL = 'https://darlink-production.up.railway.app';
         const API_URL = `${SERVER_URL}/api`;
         let currentUser = null;
-        try {
-            currentUser = JSON.parse(localStorage.getItem('user') || 'null');
-        } catch (e) {
-            console.error('Failed to parse user from localStorage:', e);
-            localStorage.removeItem('user');
-        }
-        
-        const currentLang = (window.I18N && typeof window.I18N.getCurrentLang === 'function') 
-            ? window.I18N.getCurrentLang() 
-            : (localStorage.getItem('site_lang') || 'en');
+        try { currentUser = JSON.parse(localStorage.getItem('user') || 'null'); } catch (e) { localStorage.removeItem('user'); }
+        const currentLang = (window.I18N && typeof window.I18N.getCurrentLang === 'function') ? window.I18N.getCurrentLang() : (localStorage.getItem('site_lang') || 'en');
 
         function toggleTheme() {
             const current = document.documentElement.getAttribute('data-theme') || 'light';
@@ -483,634 +378,203 @@
             document.getElementById('themeIcon').className = newTheme === 'dark' ? 'fa-solid fa-sun' : 'fa-regular fa-moon';
         }
 
-      function updateGreeting() {
-    try {
-        if (currentUser) {
-            const firstName = currentUser.FirstName || currentUser.FullName || 'User';
-            const avatar = currentUser.ProfilePicturePath ? 
-                `<img src="${currentUser.ProfilePicturePath}" class="nav-avatar-img">` : 
-                `<div class="nav-avatar-placeholder">${firstName.charAt(0).toUpperCase()}</div>`;
-            
-            // Update navbar greeting
-            const greetingEl = document.getElementById('userGreeting');
-            if (greetingEl) {
-                greetingEl.innerHTML = `
-                    <div class="nav-profile" onclick="toggleProfileModal()">
-                        ${avatar}
-                        <span class="nav-user-name">${firstName}</span>
-                    </div>
-                `;
-            }
-        } else {
-            const greetingEl = document.getElementById('userGreeting');
-            if (greetingEl) {
-                greetingEl.innerHTML = '';
-            }
-        }
-    } catch (error) {
-        console.error('updateGreeting error:', error);
-    }
-}
-
-function toggleProfileModal() {
-    // ✅ UPDATE MODAL CONTENT EVERY TIME IT OPENS
-    if (currentUser) {
-        const firstName = currentUser.FirstName || currentUser.FullName || 'User';
-        const lastName = currentUser.LastName || '';
-        
-        // Update name
-        const modalUserName = document.getElementById('modalUserName');
-        if (modalUserName) {
-            modalUserName.textContent = `${firstName} ${lastName}`.trim();
-        }
-        
-        // Update avatar
-        const bigAvatar = document.getElementById('bigAvatar');
-        if (bigAvatar) {
-            if (currentUser.ProfilePicturePath) {
-                bigAvatar.innerHTML = `<img src="${currentUser.ProfilePicturePath}" style="width:100%; height:100%; border-radius:50%; object-fit:cover;">`;
-            } else {
-                const initials = (firstName.charAt(0) + (lastName.charAt(0) || '')).toUpperCase();
-                bigAvatar.textContent = initials;
-            }
-        }
-        
-        // Update dashboard link
-        const modalDashboardBtn = document.getElementById('modalDashboardBtn');
-        if (modalDashboardBtn) {
-            const dashboardLink = currentUser.UserType === 'Owner' ? 'AddHome.html' : 'Rent.html';
-            modalDashboardBtn.href = dashboardLink;
-        }
-        
-        // Fetch and update rating
-        fetch(`${API_URL}/users/${currentUser.UserId}`)
-            .then(res => res.json())
-            .then(data => {
-                const modalUserRating = document.getElementById('modalUserRating');
-                if (modalUserRating) {
-                    modalUserRating.innerHTML = getStarIcons(data.AverageRating || 0);
+        function updateGreeting() {
+            try {
+                if (currentUser) {
+                    const firstName = currentUser.FirstName || currentUser.FullName || 'User';
+                    const avatar = currentUser.ProfilePicturePath ? `<img src="${currentUser.ProfilePicturePath}" class="nav-avatar-img">` : `<div class="nav-avatar-placeholder">${firstName.charAt(0).toUpperCase()}</div>`;
+                    const greetingEl = document.getElementById('userGreeting');
+                    if (greetingEl) greetingEl.innerHTML = `<div class="nav-profile" onclick="toggleProfileModal()">${avatar}<span class="nav-user-name">${firstName}</span></div>`;
                 }
-            })
-            .catch(e => console.error('Failed to fetch rating:', e));
-    }
-    
-    // Show modal
-    document.getElementById('modalOverlay').style.display = 'block';
-    document.getElementById('profileModal').classList.add('show');
-}
+            } catch (error) { console.error('updateGreeting error:', error); }
+        }
 
-function closeProfileModal() {
-    document.getElementById('modalOverlay').style.display = 'none';
-    document.getElementById('profileModal').classList.remove('show');
-}
+        function toggleProfileModal() {
+            if (currentUser) {
+                const firstName = currentUser.FirstName || currentUser.FullName || 'User';
+                const lastName = currentUser.LastName || '';
+                const modalUserName = document.getElementById('modalUserName');
+                if (modalUserName) modalUserName.textContent = `${firstName} ${lastName}`.trim();
+                const bigAvatar = document.getElementById('bigAvatar');
+                if (bigAvatar) { if (currentUser.ProfilePicturePath) { bigAvatar.innerHTML = `<img src="${currentUser.ProfilePicturePath}" style="width:100%; height:100%; border-radius:50%; object-fit:cover;">`; } else { bigAvatar.textContent = (firstName.charAt(0) + (lastName.charAt(0) || '')).toUpperCase(); } }
+                const modalDashboardBtn = document.getElementById('modalDashboardBtn');
+                if (modalDashboardBtn) modalDashboardBtn.href = currentUser.UserType === 'Owner' ? 'AddHome.html' : 'Rent.html';
+                fetch(`${API_URL}/users/${currentUser.UserId}`).then(res => res.json()).then(data => { const el = document.getElementById('modalUserRating'); if (el) el.innerHTML = getStarIcons(data.AverageRating || 0); }).catch(e => console.error(e));
+            }
+            document.getElementById('modalOverlay').style.display = 'block';
+            document.getElementById('profileModal').classList.add('show');
+        }
+        function closeProfileModal() { document.getElementById('modalOverlay').style.display = 'none'; document.getElementById('profileModal').classList.remove('show'); }
 
-       
         async function uploadProfilePic(input) {
             if (!input.files || !input.files[0]) return;
-            
             const formData = new FormData();
             formData.append('profilePic', input.files[0]);
             formData.append('userId', currentUser.UserId);
-            
             try {
                 const label = document.querySelector('.upload-btn-label');
                 const originalText = label.innerHTML;
                 label.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Uploading...';
-                
-                const response = await fetch(`${API_URL}/users/profile-picture`, {
-                    method: 'POST',
-                    body: formData
-                });
-                
+                const response = await fetch(`${API_URL}/users/profile-picture`, { method: 'POST', body: formData });
                 const result = await response.json();
-                if (result.success) {
-                    currentUser.ProfilePicturePath = result.avatarPath;
-                    localStorage.setItem('user', JSON.stringify(currentUser));
-                    updateGreeting();
-                    label.innerHTML = '<i class="fa-solid fa-check"></i> Updated!';
-                    setTimeout(() => label.innerHTML = originalText, 2000);
-                }
-            } catch (error) {
-                console.error('Upload failed:', error);
-                alert('Failed to upload profile picture');
-            }
+                if (result.success) { currentUser.ProfilePicturePath = result.avatarPath; localStorage.setItem('user', JSON.stringify(currentUser)); updateGreeting(); label.innerHTML = '<i class="fa-solid fa-check"></i> Updated!'; setTimeout(() => label.innerHTML = originalText, 2000); }
+            } catch (error) { alert('Failed to upload profile picture'); }
         }
 
-        function logout() {
-            localStorage.removeItem('user');
-            location.reload();
-        }
-
+        function logout() { localStorage.removeItem('user'); location.reload(); }
         function viewProperty(propertyId, ownerId) {
-            if (!currentUser) {
-                window.location.href = `property-detail.html?id=${propertyId}`;
-                return;
-            }
-
-            // My own property -> edit
-            if (currentUser.UserId === ownerId) {
-                window.location.href = `edit-property.html?id=${propertyId}`;
-                return;
-            }
-
-            // Otherwise view details (Owners can now book too)
+            if (!currentUser) { window.location.href = `property-detail.html?id=${propertyId}`; return; }
+            if (currentUser.UserId === ownerId) { window.location.href = `edit-property.html?id=${propertyId}`; return; }
             window.location.href = `property-detail.html?id=${propertyId}`;
         }
 
-        function calculatePromoPrice(originalPrice, discountPercent) {
-            return originalPrice * (1 - discountPercent / 100);
+        function createPromoCard(property) {
+            const priceInDB = parseFloat(property.PricePerNight);
+            const isMyProperty = currentUser && currentUser.UserType === 'Owner' && currentUser.UserId === property.OwnerId;
+            const ownerBasePrice = priceInDB / 1.1;
+            let ownerPriceAfterDiscount = ownerBasePrice, discountLabel = '';
+            if (property.DiscountType === 'Percentage' && parseFloat(property.DiscountPercentage) > 0) { const d = parseFloat(property.DiscountPercentage); ownerPriceAfterDiscount = ownerBasePrice * (1 - d / 100); discountLabel = `${d}% OFF`; }
+            else if (property.DiscountType === 'FixedAmount' && parseFloat(property.DiscountAmount) > 0) { const d = parseFloat(property.DiscountAmount); ownerPriceAfterDiscount = ownerBasePrice - d; discountLabel = `${d.toLocaleString()} DZD OFF`; }
+            const renterPaysPrice = ownerPriceAfterDiscount * 1.1;
+            return `<div class="promo-card"><div onclick="viewProperty(${property.PropertyId}, ${property.OwnerId})">${property.MainImage ? `<img src="${property.MainImage}" alt="${property.Title}" class="promo-card-img">` : '<div class="promo-card-img" style="background:#eee;display:flex;align-items:center;justify-content:center;"><i class="fa-solid fa-house" style="font-size:3rem;color:#ccc;"></i></div>'}<div class="promo-discount-badge">${discountLabel}</div><div class="promo-card-body"><h3>${property.Title}</h3><div style="color:#666;font-size:0.9rem;margin:5px 0;">📍 ${property.City}, ${property.Wilaya}</div><div class="promo-price-container"><div class="promo-old-price">${Math.round(priceInDB).toLocaleString()} DZD/night</div><div class="promo-new-price">${Math.round(renterPaysPrice).toLocaleString()} DZD/night</div></div></div></div><div style="padding:15px;border-top:1px solid var(--glass-border);display:flex;gap:10px;"><button onclick="viewProperty(${property.PropertyId}, ${property.OwnerId})" class="btn" style="flex:1;">${I18N_MESSAGES.card_btn_details[currentLang] || 'View'}</button>${!isMyProperty ? `<button onclick="openChat(event, ${property.PropertyId}, ${property.OwnerId}, '${property.OwnerName || 'Owner'}')" class="btn" style="flex:1;background:var(--accent);"><i class="fa-solid fa-comment"></i> ${I18N_MESSAGES.btn_chat[currentLang] || 'Chat'}</button>` : ''}</div></div>`;
         }
 
-function createPromoCard(property) {
-    const priceInDB = parseFloat(property.PricePerNight); // Has 10% markup already
-    const isMyProperty = currentUser && currentUser.UserType === 'Owner' && currentUser.UserId === property.OwnerId;
-    
-    // Step 1: Remove 10% markup to get owner's base price
-    const ownerBasePrice = priceInDB / 1.1;
-    
-    // Step 2: Apply discount to owner's base
-    let ownerPriceAfterDiscount = ownerBasePrice;
-    let discountLabel = '';
-    
-    if (property.DiscountType === 'Percentage' && parseFloat(property.DiscountPercentage) > 0) {
-        const discountPercent = parseFloat(property.DiscountPercentage);
-        ownerPriceAfterDiscount = ownerBasePrice * (1 - discountPercent / 100);
-        discountLabel = `${discountPercent}% OFF`;
-    } else if (property.DiscountType === 'FixedAmount' && parseFloat(property.DiscountAmount) > 0) {
-        const discountAmount = parseFloat(property.DiscountAmount);
-        ownerPriceAfterDiscount = ownerBasePrice - discountAmount;
-        discountLabel = `${discountAmount.toLocaleString()} DZD OFF`;
-    }
-    
-    // Step 3: Add 10% markup back for renter's price
-    const renterPaysPrice = ownerPriceAfterDiscount * 1.1;
-    
-    return `
-        <div class="promo-card">
-            <div onclick="viewProperty(${property.PropertyId}, ${property.OwnerId})">
-                ${property.MainImage ? 
-                    `<img src="${property.MainImage}" alt="${property.Title}" class="promo-card-img">` : 
-                    '<div class="promo-card-img" style="background: #eee; display:flex; align-items:center; justify-content:center;"><i class="fa-solid fa-house" style="font-size:3rem; color:#ccc;"></i></div>'
-                }
-                <div class="promo-discount-badge">${discountLabel}</div>
-                <div class="promo-card-body">
-                    <h3>${property.Title}</h3>
-                    <div style="color: #666; font-size: 0.9rem; margin: 5px 0;">📍 ${property.City}, ${property.Wilaya}</div>
-                    <div class="promo-price-container">
-                        <div class="promo-old-price">${Math.round(priceInDB).toLocaleString()} DZD/night</div>
-                        <div class="promo-new-price">${Math.round(renterPaysPrice).toLocaleString()} DZD/night</div>
-                    </div>
-                </div>
-            </div>
-            <div style="padding: 15px; border-top: 1px solid var(--glass-border); display: flex; gap: 10px;">
-                <button onclick="viewProperty(${property.PropertyId}, ${property.OwnerId})" class="btn" style="flex: 1;">${I18N_MESSAGES.card_btn_details[currentLang] || 'View'}</button>
-                ${!isMyProperty ? `<button onclick="openChat(event, ${property.PropertyId}, ${property.OwnerId}, '${property.OwnerName || 'Owner'}')" class="btn" style="flex: 1; background: var(--accent);"><i class="fa-solid fa-comment"></i> ${I18N_MESSAGES.btn_chat[currentLang] || 'Chat'}</button>` : ''}
-            </div>
-        </div>
-    `;
-}
- 
-
- function createPropertyCard(property) {
-    const isMyProperty = currentUser && currentUser.UserType === 'Owner' && currentUser.UserId === property.OwnerId;
-    const buttonLabel = isMyProperty ? 'Manage' : 'View Details';
-    const buttonStyle = isMyProperty ? 'background: #34C759; color: #fff;' : '';
-    const mainImage = property.MainImage ? (property.MainImage.startsWith('http') ? property.MainImage : `${SERVER_URL}${property.MainImage}`) : null;
- 
-    const hasPromo = property.HasPromotion && (parseFloat(property.DiscountPercentage) > 0 || parseFloat(property.DiscountAmount) > 0);
-    const priceInDB = parseFloat(property.PricePerNight); // Has 10% markup
-    
-    let displayPrice = priceInDB;
-    let discountLabel = '';
-    
-    if (hasPromo) {
-        // Step 1: Remove 10% markup
-        const ownerBasePrice = priceInDB / 1.1;
-        
-        // Step 2: Apply discount
-        let ownerPriceAfterDiscount = ownerBasePrice;
-        
-        if (property.DiscountType === 'Percentage' && parseFloat(property.DiscountPercentage) > 0) {
-            const discountPercent = parseFloat(property.DiscountPercentage);
-            ownerPriceAfterDiscount = ownerBasePrice * (1 - discountPercent / 100);
-            discountLabel = `${discountPercent}% OFF`;
-        } else if (property.DiscountType === 'FixedAmount' && parseFloat(property.DiscountAmount) > 0) {
-            const discountAmount = parseFloat(property.DiscountAmount);
-            ownerPriceAfterDiscount = ownerBasePrice - discountAmount;
-            discountLabel = `${discountAmount.toLocaleString()} DZD OFF`;
+        function createPropertyCard(property) {
+            const isMyProperty = currentUser && currentUser.UserType === 'Owner' && currentUser.UserId === property.OwnerId;
+            const mainImage = property.MainImage ? (property.MainImage.startsWith('http') ? property.MainImage : `${SERVER_URL}${property.MainImage}`) : null;
+            const hasPromo = property.HasPromotion && (parseFloat(property.DiscountPercentage) > 0 || parseFloat(property.DiscountAmount) > 0);
+            const priceInDB = parseFloat(property.PricePerNight);
+            let displayPrice = priceInDB, discountLabel = '';
+            if (hasPromo) {
+                const ownerBasePrice = priceInDB / 1.1;
+                let ownerPriceAfterDiscount = ownerBasePrice;
+                if (property.DiscountType === 'Percentage' && parseFloat(property.DiscountPercentage) > 0) { ownerPriceAfterDiscount = ownerBasePrice * (1 - parseFloat(property.DiscountPercentage) / 100); discountLabel = `${property.DiscountPercentage}% OFF`; }
+                else if (property.DiscountType === 'FixedAmount' && parseFloat(property.DiscountAmount) > 0) { ownerPriceAfterDiscount = ownerBasePrice - parseFloat(property.DiscountAmount); discountLabel = `${parseFloat(property.DiscountAmount).toLocaleString()} DZD OFF`; }
+                displayPrice = ownerPriceAfterDiscount * 1.1;
+            }
+            return `<div class="card" style="position:relative;">${isMyProperty ? '<div class="my-property-badge" style="position:absolute;top:10px;right:10px;background:#34C759;color:white;padding:6px 12px;border-radius:12px;z-index:10;">My Property</div>' : ''}${hasPromo ? `<div class="promo-discount-badge" style="position:absolute;top:10px;left:10px;background:#FF4757;color:white;padding:8px 15px;border-radius:20px;font-weight:700;font-size:1rem;box-shadow:0 2px 8px rgba(0,0,0,0.2);z-index:10;">${discountLabel}</div>` : ''}<div class="card-img" onclick="viewProperty(${property.PropertyId}, ${property.OwnerId})">${mainImage ? `<img src="${mainImage}" alt="${property.Title}">` : '<i class="fa-solid fa-house card-placeholder-icon"></i>'}</div><div class="card-body"><h3>${property.Title}</h3><div class="location">📍 ${property.City}, ${property.Wilaya}</div>${hasPromo ? `<div class="promo-price-container" style="margin:10px 0;"><div class="promo-old-price" style="text-decoration:line-through;color:#999;font-size:0.9rem;">${Math.round(priceInDB).toLocaleString()} DZD/night</div><div class="price" style="color:#00C851;font-size:1.4rem;font-weight:700;">${Math.round(displayPrice).toLocaleString()} DZD/night</div></div>` : `<div class="price">${Math.round(priceInDB).toLocaleString()} DZD / night</div>`}<p style="font-size:0.9rem;color:#666;margin:10px 0;">${property.PropertyType} ⬢ ${property.NumofRooms} rooms</p><div style="display:flex;gap:10px;"><button onclick="viewProperty(${property.PropertyId}, ${property.OwnerId})" class="btn" style="flex:2;${isMyProperty ? 'background:#34C759;color:#fff;' : ''}">${isMyProperty ? 'Manage' : 'View Details'}</button>${!isMyProperty ? `<button onclick="openChat(event, ${property.PropertyId}, ${property.OwnerId}, '${property.OwnerName || 'Owner'}')" class="btn" style="flex:1;background:var(--accent);padding:8px;"><i class="fa-solid fa-comment"></i></button>` : ''}</div></div></div>`;
         }
-        
-        // Step 3: Add 10% markup back
-        displayPrice = ownerPriceAfterDiscount * 1.1;
-    }
- 
-    return `
-        <div class="card" style="position: relative;">
-            ${isMyProperty ? '<div class="my-property-badge" style="position:absolute; top:10px; right:10px; background:#34C759; color:white; padding:6px 12px; border-radius:12px; z-index:10;">My Property</div>' : ''}
-            
-            ${hasPromo ? `<div class="promo-discount-badge" style="position:absolute; top:10px; left:10px; background:#FF4757; color:white; padding:8px 15px; border-radius:20px; font-weight:700; font-size:1rem; box-shadow:0 2px 8px rgba(0,0,0,0.2); z-index:10;">${discountLabel}</div>` : ''}
-            
-            <div class="card-img" onclick="viewProperty(${property.PropertyId}, ${property.OwnerId})">
-                ${mainImage ? 
-                    `<img src="${mainImage}" alt="${property.Title}">` : 
-                    '<i class="fa-solid fa-house card-placeholder-icon"></i>'
-                }
-            </div>
-            <div class="card-body">
-                <h3>${property.Title}</h3>
-                <div class="location">📍 ${property.City}, ${property.Wilaya}</div>
-                
-                ${hasPromo ? `
-                    <div class="promo-price-container" style="margin: 10px 0;">
-                        <div class="promo-old-price" style="text-decoration: line-through; color: #999; font-size: 0.9rem;">${Math.round(priceInDB).toLocaleString()} DZD/night</div>
-                        <div class="price" style="color: #00C851; font-size: 1.4rem; font-weight: 700;">${Math.round(displayPrice).toLocaleString()} DZD/night</div>
-                    </div>
-                ` : `
-                    <div class="price">${Math.round(priceInDB).toLocaleString()} DZD / night</div>
-                `}
-                
-                <p style="font-size:0.9rem; color:#666; margin:10px 0;">
-                    ${property.PropertyType} ⬢ ${property.NumofRooms} rooms
-                </p>
-                <div style="display: flex; gap: 10px;">
-                    <button onclick="viewProperty(${property.PropertyId}, ${property.OwnerId})" class="btn" style="flex: 2; ${buttonStyle}">
-                        ${buttonLabel}
-                    </button>
-                    ${!isMyProperty ? `
-                    <button onclick="openChat(event, ${property.PropertyId}, ${property.OwnerId}, '${property.OwnerName || 'Owner'}')" class="btn" style="flex: 1; background: var(--accent); padding: 8px;">
-                        <i class="fa-solid fa-comment"></i>
-                    </button>` : ''}
-                </div>
-            </div>
-        </div>
-    `;
-}
 
-
-        function applyFilters() {
-            loadProperties();
-        }
+        function applyFilters() { loadProperties(); }
 
         async function loadProperties() {
             try {
                 document.getElementById('loading').style.display = 'block';
-                document.getElementById('promoCarousel').style.display = 'none';
-                document.getElementById('featuredSection').style.display = 'none';
-                document.getElementById('boostedSection').style.display = 'none';
-                document.getElementById('popularSection').style.display = 'none';
-                document.getElementById('regularSection').style.display = 'none';
-                document.getElementById('emptyState').style.display = 'none';
-
+                ['promoCarousel','featuredSection','boostedSection','popularSection','regularSection','emptyState'].forEach(id => document.getElementById(id).style.display = 'none');
                 const response = await fetch(`${API_URL}/properties`);
-                
                 if (!response.ok) throw new Error(`HTTP Error: ${response.status}`);
-
                 let properties = await response.json();
                 document.getElementById('loading').style.display = 'none';
-
-                if (!Array.isArray(properties)) {
-                    console.error('API Error: Expected array of properties, got:', properties);
-                    throw new Error('Invalid data format received from server');
-                }
-
-                // Apply Filters
-                const cityFilter = document.getElementById('filterCity').value;
-                const typeFilter = document.getElementById('filterType').value;
-                const roomsFilter = document.getElementById('filterRooms').value;
-                const priceFilter = parseInt(document.getElementById('filterPrice').value);
-
+                if (!Array.isArray(properties)) throw new Error('Invalid data format');
+                const cityFilter = document.getElementById('filterCity').value, typeFilter = document.getElementById('filterType').value, roomsFilter = document.getElementById('filterRooms').value, priceFilter = parseInt(document.getElementById('filterPrice').value);
                 if (cityFilter) properties = properties.filter(p => p.Wilaya === cityFilter || p.City === cityFilter);
                 if (typeFilter) properties = properties.filter(p => p.PropertyType === typeFilter);
-                if (roomsFilter) {
-                    if (roomsFilter === "3") {
-                        properties = properties.filter(p => parseInt(p.NumofRooms) >= 3);
-                    } else {
-                        properties = properties.filter(p => p.NumofRooms == roomsFilter);
-                    }
-                }
+                if (roomsFilter) { if (roomsFilter === "3") properties = properties.filter(p => parseInt(p.NumofRooms) >= 3); else properties = properties.filter(p => p.NumofRooms == roomsFilter); }
                 if (priceFilter) properties = properties.filter(p => p.PricePerNight <= priceFilter);
-
-                if (!properties || properties.length === 0) {
-                    document.getElementById('emptyState').style.display = 'block';
-                    return;
-                }
-
-                // Categorize properties
+                if (!properties || properties.length === 0) { document.getElementById('emptyState').style.display = 'block'; return; }
                 const promotional = properties.filter(p => p.HasPromotion && (parseFloat(p.DiscountPercentage) > 0 || parseFloat(p.DiscountAmount) > 0));
                 const featured = properties.filter(p => p.IsFeatured && !p.HasPromotion);
                 const boosted = properties.filter(p => p.IsBoosted && !p.IsFeatured && !p.HasPromotion);
-                
-                // Sort by ViewCount for "Most Popular"
                 const sortedByViews = [...properties].sort((a, b) => (b.ViewCount || 0) - (a.ViewCount || 0));
                 const popular = sortedByViews.slice(0, 6).filter(p => !p.IsFeatured && !p.IsBoosted && !p.HasPromotion);
-                
                 const regular = properties.filter(p => !p.IsFeatured && !p.IsBoosted && !p.HasPromotion && !popular.includes(p));
-
-                // Display Promotional Carousel
-                if (promotional.length > 0) {
-                    document.getElementById('promoCarousel').style.display = 'block';
-                    document.getElementById('promoScroll').innerHTML = promotional.map(createPromoCard).join('');
-                }
-
-                // Display Featured
-                if (featured.length > 0) {
-                    document.getElementById('featuredSection').style.display = 'block';
-                    document.getElementById('featuredCount').textContent = featured.length;
-                    document.getElementById('featuredGrid').innerHTML = featured.map(createPropertyCard).join('');
-                }
-
-                // Display Boosted
-                if (boosted.length > 0) {
-                    document.getElementById('boostedSection').style.display = 'block';
-                    document.getElementById('boostedCount').textContent = boosted.length;
-                    document.getElementById('boostedGrid').innerHTML = boosted.map(createPropertyCard).join('');
-                }
-
-                // Display Popular
-                if (popular.length > 0) {
-                    document.getElementById('popularSection').style.display = 'block';
-                    document.getElementById('popularCount').textContent = popular.length;
-                    document.getElementById('popularGrid').innerHTML = popular.map(createPropertyCard).join('');
-                }
-
-                // Display Regular
-                if (regular.length > 0) {
-                    document.getElementById('regularSection').style.display = 'block';
-                    document.getElementById('regularCount').textContent = regular.length;
-                    document.getElementById('regularGrid').innerHTML = regular.map(createPropertyCard).join('');
-                }
-
-                if (promotional.length === 0 && featured.length === 0 && boosted.length === 0 && popular.length === 0 && regular.length === 0) {
-                    document.getElementById('emptyState').style.display = 'block';
-                }
-
+                const show = (id, countId, grid, items, fn) => { if (items.length > 0) { document.getElementById(id).style.display = 'block'; if (countId) document.getElementById(countId).textContent = items.length; document.getElementById(grid).innerHTML = items.map(fn).join(''); } };
+                if (promotional.length > 0) { document.getElementById('promoCarousel').style.display = 'block'; document.getElementById('promoScroll').innerHTML = promotional.map(createPromoCard).join(''); }
+                show('featuredSection','featuredCount','featuredGrid', featured, createPropertyCard);
+                show('boostedSection','boostedCount','boostedGrid', boosted, createPropertyCard);
+                show('popularSection','popularCount','popularGrid', popular, createPropertyCard);
+                show('regularSection','regularCount','regularGrid', regular, createPropertyCard);
+                if (!promotional.length && !featured.length && !boosted.length && !popular.length && !regular.length) document.getElementById('emptyState').style.display = 'block';
             } catch (error) {
                 document.getElementById('loading').style.display = 'block';
-                document.getElementById('loading').innerHTML = `
-                    <div style="color: #ff3b30; padding: 20px;">
-                        <i class="fa-solid fa-triangle-exclamation" style="font-size: 2.5rem; margin-bottom: 15px;"></i>
-                        <h3 style="margin-bottom: 10px;">Connection Error</h3>
-                        <p style="font-size: 0.95rem; color: #666;">We're having trouble connecting to the server. Please check your connection and try again.</p>
-                        <button onclick="loadProperties()" class="btn" style="margin-top: 15px; background: var(--primary);">Try Again</button>
-                    </div>
-                `;
+                document.getElementById('loading').innerHTML = `<div style="color:#ff3b30;padding:20px;"><i class="fa-solid fa-triangle-exclamation" style="font-size:2.5rem;margin-bottom:15px;"></i><h3 style="margin-bottom:10px;">Connection Error</h3><p style="font-size:0.95rem;color:#666;">We're having trouble connecting to the server.</p><button onclick="loadProperties()" class="btn" style="margin-top:15px;">Try Again</button></div>`;
                 console.error('loadProperties Error:', error);
             }
         }
 
-        // Dynamic price label update
-        document.getElementById('filterPrice').addEventListener('input', function(e) {
-            document.getElementById('priceValueOut').innerText = Number(e.target.value).toLocaleString() + ' DZD';
-        });
+        document.getElementById('filterPrice').addEventListener('input', function(e) { document.getElementById('priceValueOut').innerText = Number(e.target.value).toLocaleString() + ' DZD'; });
 
-        // Initialize Page
         try {
             if (currentUser) {
                 updateGreeting();
-                
                 if (document.getElementById('loginLink')) document.getElementById('loginLink').style.display = 'none';
                 if (document.getElementById('registerLink')) document.getElementById('registerLink').style.display = 'none';
-
-                const dashOverlay = document.getElementById('dashboardOverlay');
-                const dashButtons = document.getElementById('dashButtons');
                 if (currentUser.UserType === 'Owner') {
+                    const dashOverlay = document.getElementById('dashboardOverlay');
+                    const dashButtons = document.getElementById('dashButtons');
                     if (dashOverlay) dashOverlay.style.display = 'block';
-                    if (dashButtons) {
-                        dashButtons.innerHTML = `
-                            <a href="AddHome.html" class="btn" style="background: var(--accent);"><i class="fa-solid fa-plus"></i> Add Property</a>
-                            <a href="my-property.html" class="btn"><i class="fa-solid fa-list"></i> <span data-i18n="link-my-properties">My Properties</span></a>
-                            <a href="profile.html" class="btn" style="background:#555;"><i class="fa-solid fa-user"></i> Profile</a>
-                        `;
-                    }
-                } else {
-                    if (dashOverlay) dashOverlay.style.display = 'none';
+                    if (dashButtons) dashButtons.innerHTML = `<a href="AddHome.html" class="btn" style="background:var(--accent);"><i class="fa-solid fa-plus"></i> Add Property</a><a href="my-property.html" class="btn"><i class="fa-solid fa-list"></i> My Properties</a><a href="profile.html" class="btn" style="background:#555;"><i class="fa-solid fa-user"></i> Profile</a>`;
                 }
             }
-        } catch (initError) {
-            console.error('Initialization error:', initError);
-        }
-        
-        document.addEventListener('DOMContentLoaded', () => {
-            // Handle Chat Intent from Property Detail
-            const chatIntent = sessionStorage.getItem('openChatIntent');
-            if (chatIntent) {
-                sessionStorage.removeItem('openChatIntent');
-                try {
-                    const { ownerId, ownerName, propId } = JSON.parse(chatIntent);
-                    setTimeout(() => {
-                        if (typeof openChat === 'function') {
-                            openChat(null, propId, ownerId, ownerName);
-                        }
-                    }, 1000);
-                } catch (e) {
-                    console.error('Failed to parse chat intent:', e);
-                }
-            }
+        } catch (initError) { console.error('Initialization error:', initError); }
 
-            if (typeof populateWilayasSelect === 'function') {
-                try { populateWilayasSelect('filterCity', 'All Wilayas'); } catch(e) { console.error('Wilayas error:', e); }
-            }
+        document.addEventListener('DOMContentLoaded', () => {
+            const chatIntent = sessionStorage.getItem('openChatIntent');
+            if (chatIntent) { sessionStorage.removeItem('openChatIntent'); try { const { ownerId, ownerName, propId } = JSON.parse(chatIntent); setTimeout(() => { if (typeof openChat === 'function') openChat(null, propId, ownerId, ownerName); }, 1000); } catch (e) {} }
+            if (typeof populateWilayasSelect === 'function') { try { populateWilayasSelect('filterCity', 'All Wilayas'); } catch(e) {} }
             loadProperties();
         });
 
-        // ======== MESSAGING LOGIC (Unified Sidebar) ========
-        let activeChat = null; // { propertyId, otherUserId, name, avatar, rating }
-        let chatPollInterval = null;
-
-        function toggleMsgSidebar() {
-            const sidebar = document.getElementById('msgSidebar');
-            sidebar.classList.toggle('open');
-            if (sidebar.classList.contains('open')) {
-                if (!activeChat) loadConversations();
-            } else {
-                stopChatPolling();
-            }
-        }
-
-        function backToMsgList() {
-            activeChat = null;
-            stopChatPolling();
-            document.getElementById('msgChatView').style.display = 'none';
-            document.getElementById('msgListView').style.display = 'flex';
-            loadConversations();
-        }
-
-        function stopChatPolling() {
-            if (chatPollInterval) {
-                clearInterval(chatPollInterval);
-                chatPollInterval = null;
-            }
-        }
+        let activeChat = null, chatPollInterval = null;
+        function toggleMsgSidebar() { const s = document.getElementById('msgSidebar'); s.classList.toggle('open'); if (s.classList.contains('open') && !activeChat) loadConversations(); else stopChatPolling(); }
+        function backToMsgList() { activeChat = null; stopChatPolling(); document.getElementById('msgChatView').style.display = 'none'; document.getElementById('msgListView').style.display = 'flex'; loadConversations(); }
+        function stopChatPolling() { if (chatPollInterval) { clearInterval(chatPollInterval); chatPollInterval = null; } }
 
         async function loadConversations() {
             if (!currentUser) return;
             try {
                 const response = await fetch(`${API_URL}/conversations/${currentUser.UserId}`);
                 const conversations = await response.json();
-                
                 const list = document.getElementById('msgList');
-                if (conversations.length === 0) {
-                    list.innerHTML = `<div style="text-align:center; padding:40px; color:#8e8e93;" data-i18n="no_msgs">No messages yet</div>`;
-                    return;
-                }
-
-                list.innerHTML = conversations.map(c => {
-                    const avatarContent = c.OtherUserAvatar ? 
-                        `<img src="${c.OtherUserAvatar}" class="conv-avatar-img">` : 
-                        c.OtherUserName.charAt(0);
-                    
-                    return `
-                        <div class="conv-item" onclick="openSidebarChat(${c.PropertyId}, ${currentUser.UserType === 'Renter' ? c.OwnerId : c.RenterId}, '${c.OtherUserName}', '${c.OtherUserAvatar || ''}', ${c.OtherUserRating || 0})">
-                            <div class="conv-avatar">${avatarContent}</div>
-                            <div class="conv-info">
-                                <span class="conv-name">${c.OtherUserName}</span>
-                                <span class="conv-property">${c.PropertyTitle || 'General Inquiry'}</span>
-                            </div>
-                            ${c.UnreadCount > 0 ? `<span class="conv-unread">${c.UnreadCount}</span>` : ''}
-                        </div>
-                    `;
-                }).join('');
-
-                // Update floating button badge
+                if (conversations.length === 0) { list.innerHTML = `<div style="text-align:center;padding:40px;color:#8e8e93;">No messages yet</div>`; return; }
+                list.innerHTML = conversations.map(c => { const avatarContent = c.OtherUserAvatar ? `<img src="${c.OtherUserAvatar}" class="conv-avatar-img">` : c.OtherUserName.charAt(0); return `<div class="conv-item" onclick="openSidebarChat(${c.PropertyId}, ${currentUser.UserType === 'Renter' ? c.OwnerId : c.RenterId}, '${c.OtherUserName}', '${c.OtherUserAvatar || ''}', ${c.OtherUserRating || 0})"><div class="conv-avatar">${avatarContent}</div><div class="conv-info"><span class="conv-name">${c.OtherUserName}</span><span class="conv-property">${c.PropertyTitle || 'General Inquiry'}</span></div>${c.UnreadCount > 0 ? `<span class="conv-unread">${c.UnreadCount}</span>` : ''}</div>`; }).join('');
                 const totalUnread = conversations.reduce((sum, c) => sum + c.UnreadCount, 0);
                 const badge = document.getElementById('msgBtnBadge');
-                if (totalUnread > 0) {
-                    badge.textContent = totalUnread;
-                    badge.style.display = 'block';
-                } else {
-                    badge.style.display = 'none';
-                }
-
-            } catch (error) {
-                console.error('Failed to load conversations:', error);
-            }
+                if (totalUnread > 0) { badge.textContent = totalUnread; badge.style.display = 'block'; } else { badge.style.display = 'none'; }
+            } catch (error) { console.error('Failed to load conversations:', error); }
         }
 
         async function openSidebarChat(propertyId, otherUserId, name, avatar, rating) {
             activeChat = { propertyId, otherUserId, name, avatar, rating };
-            
-            // If some info is missing, fetch it
-            if (!name || !avatar || !rating) {
-                try {
-                    const res = await fetch(`${API_URL}/users/${otherUserId}`);
-                    const data = await res.json();
-                    activeChat.name = `${data.FirstName} ${data.LastName}`;
-                    activeChat.avatar = data.ProfilePicturePath;
-                    activeChat.rating = data.AverageRating;
-                } catch (e) { console.error('Error fetching user for chat:', e); }
-            }
-
-            // Switch views
-            document.getElementById('msgListView').style.display = 'none';
-            document.getElementById('msgChatView').style.display = 'flex';
-            
-            // Setup Header
+            if (!name || !avatar || !rating) { try { const res = await fetch(`${API_URL}/users/${otherUserId}`); const data = await res.json(); activeChat.name = `${data.FirstName} ${data.LastName}`; activeChat.avatar = data.ProfilePicturePath; activeChat.rating = data.AverageRating; } catch (e) {} }
+            document.getElementById('msgListView').style.display = 'none'; document.getElementById('msgChatView').style.display = 'flex';
             document.getElementById('activeChatName').textContent = activeChat.name;
             const avatarEl = document.getElementById('activeChatAvatar');
-            if (activeChat.avatar && activeChat.avatar !== 'null') {
-                avatarEl.innerHTML = `<img src="${activeChat.avatar}" class="conv-avatar-img">`;
-            } else {
-                avatarEl.textContent = activeChat.name.charAt(0);
-                avatarEl.innerHTML = activeChat.name.charAt(0);
-            }
-            
+            if (activeChat.avatar && activeChat.avatar !== 'null') { avatarEl.innerHTML = `<img src="${activeChat.avatar}" class="conv-avatar-img">`; } else { avatarEl.innerHTML = activeChat.name.charAt(0); }
             document.getElementById('activeChatRating').innerHTML = getStarIcons(activeChat.rating);
-            
-            // Load messages
-            loadSidebarMessages();
-            stopChatPolling();
-            chatPollInterval = setInterval(loadSidebarMessages, 3000);
-            
-            // Ensure sidebar is open
+            loadSidebarMessages(); stopChatPolling(); chatPollInterval = setInterval(loadSidebarMessages, 3000);
             document.getElementById('msgSidebar').classList.add('open');
         }
 
-        function getStarIcons(rating) {
-            let stars = '';
-            const r = parseFloat(rating) || 0;
-            for (let i = 1; i <= 5; i++) {
-                if (i <= Math.floor(r)) stars += '<i class="fa-solid fa-star"></i>';
-                else if (i - 0.5 <= r) stars += '<i class="fa-solid fa-star-half-stroke"></i>';
-                else stars += '<i class="fa-regular fa-star"></i>';
-            }
-            return stars + ` (${r.toFixed(1)})`;
-        }
+        function getStarIcons(rating) { let stars = ''; const r = parseFloat(rating) || 0; for (let i = 1; i <= 5; i++) { if (i <= Math.floor(r)) stars += '<i class="fa-solid fa-star"></i>'; else if (i - 0.5 <= r) stars += '<i class="fa-solid fa-star-half-stroke"></i>'; else stars += '<i class="fa-regular fa-star"></i>'; } return stars + ` (${r.toFixed(1)})`; }
 
         async function loadSidebarMessages() {
             if (!activeChat || !currentUser) return;
             try {
-                const url = activeChat.propertyId 
-                    ? `${API_URL}/messages/${currentUser.UserId}/${activeChat.otherUserId}?propertyId=${activeChat.propertyId}`
-                    : `${API_URL}/messages/${currentUser.UserId}/${activeChat.otherUserId}`;
-                    
-                const response = await fetch(url);
-                const messages = await response.json();
-                
+                const url = activeChat.propertyId ? `${API_URL}/messages/${currentUser.UserId}/${activeChat.otherUserId}?propertyId=${activeChat.propertyId}` : `${API_URL}/messages/${currentUser.UserId}/${activeChat.otherUserId}`;
+                const response = await fetch(url); const messages = await response.json();
                 const container = document.getElementById('chatMessages');
                 const isAtBottom = container.scrollHeight - container.scrollTop <= container.clientHeight + 100;
-
-                container.innerHTML = messages.map(m => {
-                    const isSent = m.SenderId == currentUser.UserId;
-                    const time = new Date(m.SentAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-                    return `
-                        <div class="msg-bubble ${isSent ? 'msg-sent' : 'msg-received'}">
-                            ${m.MessageText}
-                            <span class="msg-time">${time}</span>
-                        </div>
-                    `;
-                }).join('');
-
+                container.innerHTML = messages.map(m => { const isSent = m.SenderId == currentUser.UserId; const time = new Date(m.SentAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }); return `<div class="msg-bubble ${isSent ? 'msg-sent' : 'msg-received'}">${m.MessageText}<span class="msg-time">${time}</span></div>`; }).join('');
                 if (isAtBottom) container.scrollTop = container.scrollHeight;
-
-            } catch (error) {
-                console.error('Sidebar chat load error:', error);
-            }
+            } catch (error) { console.error('Sidebar chat load error:', error); }
         }
 
         async function sendSidebarMessage() {
-            const input = document.getElementById('chatInput');
-            const text = input.value.trim();
-            if (!text || !activeChat) return;
-
-            input.value = '';
-            try {
-                await fetch(`${API_URL}/messages`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        senderId: currentUser.UserId,
-                        receiverId: activeChat.otherUserId,
-                        propertyId: activeChat.propertyId,
-                        messageText: text
-                    })
-                });
-                loadSidebarMessages();
-            } catch (error) {
-                console.error('Send failed:', error);
-            }
+            const input = document.getElementById('chatInput'); const text = input.value.trim();
+            if (!text || !activeChat) return; input.value = '';
+            try { await fetch(`${API_URL}/messages`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ senderId: currentUser.UserId, receiverId: activeChat.otherUserId, propertyId: activeChat.propertyId, messageText: text }) }); loadSidebarMessages(); } catch (error) { console.error('Send failed:', error); }
         }
 
         function openChat(event, propertyId, ownerId, ownerName) {
-            event.stopPropagation();
-            if (!currentUser) {
-                alert('Please login to chat with owners');
-                window.location.href = 'login.html';
-                return;
-            }
-            // Transition from cards to sidebar chat
-            openSidebarChat(propertyId, ownerId, ownerName, null, 0); 
-            // Note: owner avatar/rating will be fetched properly if they have an existing conversation, 
-            // or we could fetch user info here. For now, it will load with defaults and update on refresh.
+            if (event) event.stopPropagation();
+            if (!currentUser) { alert('Please login to chat with owners'); window.location.href = 'login.html'; return; }
+            openSidebarChat(propertyId, ownerId, ownerName, null, 0);
         }
 
-        // Initialize messaging
-        if (currentUser) {
-            loadConversations();
-            setInterval(loadConversations, 10000); 
-        }
+        if (currentUser) { loadConversations(); setInterval(loadConversations, 10000); }
     </script>
 
-    <!-- Profile Modal -->
     <div class="modal-overlay" id="modalOverlay" onclick="closeProfileModal()"></div>
     <div class="profile-modal" id="profileModal">
         <div class="modal-header">
@@ -1119,9 +583,7 @@ function createPromoCard(property) {
         </div>
         <div class="profile-pic-editor">
             <div id="bigAvatar" class="big-avatar">?</div>
-            <label for="profilePicInput" class="upload-btn-label">
-                <i class="fa-solid fa-camera"></i> <span data-i18n="change_pic">Change Photo</span>
-            </label>
+            <label for="profilePicInput" class="upload-btn-label"><i class="fa-solid fa-camera"></i> <span data-i18n="change_pic">Change Photo</span></label>
             <input type="file" id="profilePicInput" style="display: none;" accept="image/*" onchange="uploadProfilePic(this)">
         </div>
         <div id="profileBody">
@@ -1129,30 +591,24 @@ function createPromoCard(property) {
             <p id="modalUserRating" style="text-align: center; color: #ffc107; font-weight: 600;"></p>
         </div>
         <div class="modal-footer">
-            <a href="#" id="modalDashboardBtn" class="primary" style="text-decoration: none; text-align: center; padding: 12px; border-radius: 12px; font-weight: 600; background: var(--primary); color: white;"><span data-i18n="link-dashboard">Dashboard</span></a>
-            <button class="primary" onclick="logout()" style="background: #ff3b30; border: none; padding: 12px; border-radius: 12px; color: white; font-weight: 600; cursor: pointer;">Logout</button>
+            <a href="#" id="modalDashboardBtn" class="primary" style="text-decoration: none; text-align: center; padding: 12px; border-radius: 12px; font-weight: 600; background: var(--primary); color: white;"><span>Dashboard</span></a>
+            <button onclick="logout()" style="background: #ff3b30; border: none; padding: 12px; border-radius: 12px; color: white; font-weight: 600; cursor: pointer;">Logout</button>
         </div>
     </div>
 
-    <!-- Messaging UI -->
     <button class="msg-toggle-btn" id="msgToggleBtn" onclick="toggleMsgSidebar()" title="Messages">
         <i class="fa-solid fa-message"></i>
         <span class="msg-badge" id="msgBtnBadge" style="display: none;">0</span>
     </button>
 
     <div class="msg-sidebar" id="msgSidebar">
-        <!-- List View -->
         <div id="msgListView" class="msg-view">
             <div class="msg-sidebar-header">
                 <h2 style="font-size: 1.2rem; font-weight: 800; flex: 1;" data-i18n="msg_title">Messages</h2>
                 <button onclick="toggleMsgSidebar()" style="background:none; border:none; font-size:1.2rem; cursor:pointer; color:#8e8e93;"><i class="fa-solid fa-times"></i></button>
             </div>
-            <div class="msg-list" id="msgList">
-                <div style="text-align:center; padding:40px;">Loading conversations...</div>
-            </div>
+            <div class="msg-list" id="msgList"><div style="text-align:center; padding:40px;">Loading conversations...</div></div>
         </div>
-
-        <!-- Chat View -->
         <div id="msgChatView" class="msg-view" style="display: none;">
             <div class="msg-sidebar-header">
                 <i class="fa-solid fa-arrow-left back-to-list" onclick="backToMsgList()"></i>
@@ -1165,14 +621,10 @@ function createPromoCard(property) {
                 </div>
                 <button onclick="toggleMsgSidebar()" style="background:none; border:none; font-size:1.2rem; cursor:pointer; color:#8e8e93;"><i class="fa-solid fa-times"></i></button>
             </div>
-            <div id="chatMessages" class="chat-messages">
-                <!-- Messages load here -->
-            </div>
+            <div id="chatMessages" class="chat-messages"></div>
             <div class="chat-input-area">
                 <input type="text" id="chatInput" class="chat-input" placeholder="Type your message..." onkeypress="if(event.key==='Enter') sendSidebarMessage()">
-                <button class="chat-send-btn" onclick="sendSidebarMessage()">
-                    <i class="fa-solid fa-paper-plane"></i>
-                </button>
+                <button class="chat-send-btn" onclick="sendSidebarMessage()"><i class="fa-solid fa-paper-plane"></i></button>
             </div>
         </div>
     </div>

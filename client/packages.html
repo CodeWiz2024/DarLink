@@ -57,10 +57,23 @@
             border-radius: 12px;
             margin-bottom: 20px;
         }
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 16px;
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 600;
+        }
+        .back-link:hover {
+            color: var(--primary-dark);
+        }
     </style>
 </head>
 <body class="page-wrapper">
     <div class="page-container">
+        <a class="back-link" href="my-property.html">&larr; Back to My Properties</a>
         <div class="page-header">
             <h1>Upgrade Your Property</h1>
             <p>Choose a package to boost your property visibility</p>
@@ -68,7 +81,7 @@
 
         <div id="propertyInfo" class="property-info" style="display:none;">
             <h2 id="propertyTitle"></h2>
-            <p>?? <span id="propertyLocation"></span></p>
+            <p>&#128205; <span id="propertyLocation"></span></p>
         </div>
 
         <div id="packagesGrid" class="packages-grid"></div>
@@ -115,10 +128,10 @@
                         <h2>${pkg.PackageName}</h2>
                         <div class="package-price">${pkg.Price} DZD</div>
                         <ul class="package-features">
-                            <li>?? ${pkg.MaxImages} Images</li>
-                            <li>?? ${pkg.DurationDays} Days</li>
-                            ${pkg.PackageType === 'Premium' ? '<li>? Featured Property</li>' : ''}
-                            ${pkg.PackageType === 'Boost' ? '<li>?? Boosted Visibility</li>' : ''}
+                            <li>&#128247; ${pkg.MaxImages} Images</li>
+                            <li>&#128197; ${pkg.DurationDays} Days</li>
+                            ${pkg.PackageType === 'Premium' ? '<li>&#127775; Featured Property</li>' : ''}
+                            ${pkg.PackageType === 'Boost' ? '<li>&#128640; Boosted Visibility</li>' : ''}
                         </ul>
                         <button class="btn-pay" onclick="payForPackage(${pkg.PackageId})">
                             Select Package

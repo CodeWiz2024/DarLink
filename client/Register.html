@@ -25,43 +25,148 @@
         #manualBtn { margin-bottom: 16px; background: #6c757d; color: white; border: none; border-radius: 12px; padding: 12px; font-size: 0.95rem; font-weight: 500; cursor: pointer; transition: background 0.2s; width: 100%; }
         #manualBtn:hover { background: #5a6268; }
         .form-box { max-width: 550px; width: 100%; }
-        
-        /* Password container styles */
-        .password-container {
-            position: relative;
-            width: 100%;
-            margin-bottom: 15px;
-        }
-        
-        .password-container input {
-            width: 100%;
-            padding-right: 40px;
-        }
-        
-        .toggle-password {
-            position: absolute;
-            right: 12px;
-            top: 50%;
-            transform: translateY(-50%);
-            cursor: pointer;
-            color: #8e8e93;
-            font-size: 1.2rem;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            width: 30px;
-            height: 30px;
-        }
-        
-        .toggle-password:hover {
-            color: var(--primary);
-        }
-        
-        /* Required field star */
+        .password-container { position: relative; width: 100%; margin-bottom: 15px; }
+        .password-container input { width: 100%; padding-right: 40px; margin-bottom: 0; }
+        .toggle-password { position: absolute; right: 12px; top: 50%; transform: translateY(-50%); cursor: pointer; color: #8e8e93; font-size: 1.2rem; display: flex; align-items: center; justify-content: center; width: 30px; height: 30px; }
+        .toggle-password:hover { color: var(--primary); }
         .required-star { color: #ff3b30; margin-left: 4px; font-weight: bold; }
         [dir="rtl"] .required-star { margin-left: 0; margin-right: 4px; }
-        
+
+        /* ── Hamburger: hidden on desktop ── */
+        .nav-hamburger {
+            display: none;
+            flex-direction: column;
+            gap: 5px;
+            cursor: pointer;
+            padding: 8px;
+            border-radius: 10px;
+            border: none;
+            background: transparent;
+        }
+        .nav-hamburger span {
+            display: block;
+            width: 22px; height: 2px;
+            background: var(--text-main, #1d1d1f);
+            border-radius: 2px;
+            transition: all 0.3s ease;
+        }
+
+        /* ── Close button: hidden everywhere until mobile ── */
+        .mobile-close-btn { display: none !important; }
+
+        /* ══════════ DESKTOP ══════════ */
+        @media (min-width: 769px) {
+            .navbar .links {
+                display: flex !important;
+                position: static;
+                height: auto; width: auto;
+                background: transparent;
+                backdrop-filter: none;
+                -webkit-backdrop-filter: none;
+                flex-direction: row;
+                justify-content: flex-end;
+                align-items: center;
+                gap: 6px;
+                padding: 0;
+                z-index: auto;
+                overflow: visible;
+            }
+            .navbar .links a,
+            .navbar .links button:not(.nav-hamburger) { width: auto; max-width: none; padding: 10px 18px; font-size: 0.95rem; border: none; background: transparent; }
+            .navbar .links .lang-switch { margin: 0 0 0 8px; }
+        }
+
+        /* ══════════ MOBILE ══════════ */
+        @media (max-width: 768px) {
+            .nav-hamburger { display: flex; }
+
+            .mobile-close-btn {
+                display: flex !important;
+                position: absolute;
+                top: 18px; right: 18px;
+                width: 42px; height: 42px;
+                border-radius: 50%;
+                background: rgba(0,0,0,0.06);
+                border: none;
+                font-size: 1.1rem;
+                cursor: pointer;
+                color: var(--text-muted, #8e8e93);
+                align-items: center;
+                justify-content: center;
+                transition: all 0.2s;
+                z-index: 10;
+            }
+            .mobile-close-btn:hover { background: rgba(255,59,48,0.12); color: #ff3b30; }
+
+            .navbar .links {
+                display: none;
+                position: fixed;
+                top: 0; left: 0;
+                width: 100%; height: 100vh;
+                background: var(--glass-bg, rgba(255,255,255,0.97));
+                backdrop-filter: saturate(180%) blur(28px);
+                -webkit-backdrop-filter: saturate(180%) blur(28px);
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                gap: 10px;
+                z-index: 1050;
+                padding: 80px 28px 40px;
+                overflow-y: auto;
+            }
+            .navbar .links.mobile-open { display: flex; }
+
+            .navbar .links a {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                width: 100%; max-width: 320px;
+                padding: 15px 24px;
+                font-size: 1.05rem;
+                font-weight: 600;
+                border-radius: 16px;
+                border: 1px solid rgba(0,0,0,0.07);
+                background: rgba(255,255,255,0.7);
+                color: var(--text-main, #1d1d1f);
+                text-decoration: none;
+                transition: all 0.2s;
+                box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+            }
+            .navbar .links a:hover { background: rgba(10,132,255,0.08); color: var(--primary, #0A84FF); border-color: rgba(10,132,255,0.2); transform: translateY(-1px); }
+            .navbar .links a.primary { background: var(--primary, #0A84FF); color: white; border-color: transparent; box-shadow: 0 4px 16px rgba(10,132,255,0.35); }
+            .navbar .links a.primary:hover { background: var(--primary-dark, #0062D1); transform: translateY(-1px); }
+
+            .navbar .links button.theme-btn {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                gap: 10px;
+                width: 100%; max-width: 320px;
+                padding: 15px 24px;
+                font-size: 1.05rem;
+                font-weight: 600;
+                border-radius: 16px;
+                border: 1px solid rgba(0,0,0,0.07);
+                background: rgba(255,255,255,0.7);
+                color: var(--text-main, #1d1d1f);
+                box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+                cursor: pointer;
+                transition: all 0.2s;
+            }
+            .navbar .links button.theme-btn:hover { background: rgba(0,0,0,0.05); }
+
+            .navbar .links .lang-switch { display: flex; gap: 10px; margin-top: 4px; }
+            .navbar .links .lang-switch .lang-btn { padding: 12px 28px; border-radius: 14px; font-size: 0.95rem; font-weight: 700; }
+
+            /* form */
+            .form-page { padding: 16px; align-items: flex-start; padding-top: 30px; }
+            .form-box { padding: 24px 16px; }
+            .form-box h1 { font-size: 1.4rem; margin-bottom: 20px; }
+            .form-box input, .form-box select { font-size: 16px; }
+        }
+
         @media (max-width: 600px) { .id-upload { grid-template-columns: 1fr; } }
+
         [data-theme="dark"] .upload-box h4 { color: #f5f5f7; }
         [data-theme="dark"] .note { color: #98989d; }
         [data-theme="dark"] #ocrText { color: #f5f5f7; }
@@ -72,6 +177,13 @@
         [data-theme="dark"] .required-star { color: #ff453a; }
         [data-theme="dark"] .toggle-password { color: #98989d; }
         [data-theme="dark"] .toggle-password:hover { color: #0a84ff; }
+        [data-theme="dark"] .navbar .links { background: rgba(20,20,22,0.97); }
+        [data-theme="dark"] .navbar .links a { background: rgba(255,255,255,0.06); border-color: rgba(255,255,255,0.08); color: #f5f5f7; }
+        [data-theme="dark"] .navbar .links a:hover { background: rgba(255,255,255,0.12); color: #fff; }
+        [data-theme="dark"] .navbar .links a.primary { background: #0A84FF; color: white; }
+        [data-theme="dark"] .navbar .links button.theme-btn { background: rgba(255,255,255,0.06); border-color: rgba(255,255,255,0.08); color: #f5f5f7; }
+        [data-theme="dark"] .mobile-close-btn { background: rgba(255,255,255,0.08); color: #8e8e93; }
+        [data-theme="dark"] .mobile-close-btn:hover { background: rgba(255,59,48,0.2); color: #ff453a; }
     </style>
 </head>
 <body>
@@ -80,13 +192,26 @@
             <i class="fa-solid fa-house logo-icon"></i>
             <span class="logo-text" data-i18n="nav_logo_text">DarLink</span>
         </span>
-        <div class="links">
-                   <button class="theme-btn" onclick="toggleTheme()" id="themeToggle">
-                   <i class="fa-regular fa-moon" id="themeIcon"></i>
-                   </button>
-            <a href="index.html" data-i18n="nav_home">Home</a>
-            <a href="login.html" data-i18n="nav_login">Login</a>
-            <a href="Register.html" class="primary" data-i18n="nav_register">Register</a>
+        <button class="nav-hamburger" id="navHamburger" aria-label="Open menu" onclick="toggleMobileNav()">
+            <span></span><span></span><span></span>
+        </button>
+        <div class="links" id="navLinks">
+            <button class="mobile-close-btn" onclick="toggleMobileNav()" aria-label="Close menu">
+                <i class="fa-solid fa-times"></i>
+            </button>
+            <button class="theme-btn" onclick="toggleTheme()" id="themeToggle">
+                <i class="fa-regular fa-moon" id="themeIcon"></i>
+                <span class="theme-label" style="font-size:0.95rem;">Dark Mode</span>
+            </button>
+            <a href="index.html" data-i18n="nav_home" onclick="closeMobileNav()">
+                <i class="fa-solid fa-house" style="margin-right:8px;"></i> Home
+            </a>
+            <a href="login.html" data-i18n="nav_login" onclick="closeMobileNav()">
+                <i class="fa-solid fa-right-to-bracket" style="margin-right:8px;"></i> Login
+            </a>
+            <a href="Register.html" class="primary" data-i18n="nav_register" onclick="closeMobileNav()">
+                <i class="fa-solid fa-user-plus" style="margin-right:8px;"></i> Register
+            </a>
             <div class="lang-switch">
                 <button type="button" class="lang-btn" data-lang="en">EN</button>
                 <button type="button" class="lang-btn" data-lang="ar">عربي</button>
@@ -118,40 +243,31 @@
 
                 <label><span data-i18n="register_id_images_label">ID Card Image (Front Side)</span></label>
                 <div class="note" data-i18n="register_id_note">Upload a clear photo of the front of your ID card (Optional)</div>
-                
                 <div class="id-upload">
                     <div class="upload-box" id="frontBox">
                         <h4 data-i18n="register_front_side">Front Side</h4>
                         <input type="file" id="IDCardFront" accept="image/*">
                         <label for="IDCardFront" class="file-label" data-i18n="register_upload_btn">📤 Click to Upload</label>
-                        <div class="preview" id="frontPreview">
-                            <img id="frontImg" alt="Front">
-                        </div>
+                        <div class="preview" id="frontPreview"><img id="frontImg" alt="Front"></div>
                     </div>
                 </div>
 
                 <div id="ocrStatus" class="ocr-status">
                     <div id="ocrText" data-i18n="register_scanning">Scanning...</div>
-                    <div class="progress">
-                        <div class="progress-bar" id="progressBar"></div>
-                    </div>
+                    <div class="progress"><div class="progress-bar" id="progressBar"></div></div>
                 </div>
 
                 <label><span data-i18n="register_id_number_label">ID Card Number</span><span class="required-star">*</span></label>
                 <div class="note" data-i18n="register_id_number_note">Will be extracted automatically from front image</div>
                 <input type="text" id="IDCardNumber" placeholder="18 digits" data-i18n-placeholder="register_id_number_placeholder" required readonly>
-                
                 <button type="button" id="manualBtn" data-i18n="register_manual_btn">✏️ Edit Manually</button>
 
                 <label><span data-i18n="register_password_label">Password</span><span class="required-star">*</span></label>
                 <div class="password-container">
                     <input type="password" id="Password" minlength="6" placeholder="Minimum 6 characters" data-i18n-placeholder="register_password_placeholder" required>
-                    <span class="toggle-password" onclick="togglePasswordVisibility('Password', this)">
-                        <i class="fa fa-eye"></i>
-                    </span>
+                    <span class="toggle-password" onclick="togglePasswordVisibility('Password', this)"><i class="fa fa-eye"></i></span>
                 </div>
 
-                <!-- Password requirements message box -->
                 <div id="passwordMessage" style="display: none; background: rgba(255,255,255,0.1); padding: 10px; border-radius: 8px; margin-bottom: 15px;">
                     <p style="margin: 0 0 5px 0; font-size: 13px;">Password must contain:</p>
                     <p id="letter" class="invalid" style="margin: 2px 0; font-size: 12px; color: red;">✓ A <b>lowercase</b> letter</p>
@@ -163,9 +279,7 @@
                 <label><span data-i18n="register_confirm_password_label">Confirm Password</span><span class="required-star">*</span></label>
                 <div class="password-container">
                     <input type="password" id="ConfirmPassword" minlength="6" placeholder="Re-enter your password" data-i18n-placeholder="register_confirm_password_placeholder" required>
-                    <span class="toggle-password" onclick="togglePasswordVisibility('ConfirmPassword', this)">
-                        <i class="fa fa-eye"></i>
-                    </span>
+                    <span class="toggle-password" onclick="togglePasswordVisibility('ConfirmPassword', this)"><i class="fa fa-eye"></i></span>
                 </div>
                 <div id="confirmPasswordValidation" class="validation-message" style="font-size: 13px; margin-top: -10px; margin-bottom: 10px;"></div>
 
@@ -188,6 +302,9 @@
 
     <script src='https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js'></script>
     <script>
+        function toggleMobileNav() { document.getElementById('navLinks').classList.toggle('mobile-open'); }
+        function closeMobileNav() { document.getElementById('navLinks').classList.remove('mobile-open'); }
+
         window.I18N_MESSAGES = {
             nav_logo_text: { en: 'DarLink', ar: 'إيجار العطلات' },
             nav_home: { en: 'Home', ar: 'الرئيسية' },
@@ -227,47 +344,32 @@
             register_ocr_failed: { en: '❌ OCR failed. Please enter manually.', ar: '❌ فشل التعرف الضوئي. يرجى الإدخال يدوياً.' },
             register_file_too_large: { en: '❌ File too large', ar: '❌ الملف كبير جداً' },
             register_select_user_type_error: { en: '❌ Please select user type', ar: '❌ يرجى اختيار نوع المستخدم' },
-            register_upload_front_image_error: { en: '❌ Please upload your ID card image', ar: '❌ يرجى رفع صورة بطاقة التعريف' },
             register_password_mismatch: { en: '❌ Passwords do not match', ar: '❌ كلمتا المرور غير متطابقتين' },
-            register_password_too_short: { en: '❌ Password must be at least 6 characters', ar: '❌ يجب أن تكون كلمة المرور من 6 أحرف على الأقل' },
             register_registering: { en: 'Registering...', ar: 'جاري إنشاء الحساب...' },
-            register_network_error: { en: '❌ Network error', ar: '❌ خطأ في الشبكة' },
-            register_default_error_prefix: { en: '❌ ', ar: '❌ ' }
+            register_network_error: { en: '❌ Network error', ar: '❌ خطأ في الشبكة' }
         };
 
         const API_URL = 'https://darlink-production.up.railway.app/api';
         let frontFile = null;
 
-       function toggleTheme() {
-    const current = document.documentElement.getAttribute('data-theme');
-    const newTheme = current === 'dark' ? 'light' : 'dark';
-    document.documentElement.setAttribute('data-theme', newTheme);
-    localStorage.setItem('site_theme', newTheme);
-    const icon = document.getElementById('themeIcon');
-    if (icon) {
-        icon.className = newTheme === 'dark' ? 'fa-solid fa-sun' : 'fa-regular fa-moon';
-    }
-}
+        function toggleTheme() {
+            const current = document.documentElement.getAttribute('data-theme');
+            const newTheme = current === 'dark' ? 'light' : 'dark';
+            document.documentElement.setAttribute('data-theme', newTheme);
+            localStorage.setItem('site_theme', newTheme);
+            const icon = document.getElementById('themeIcon');
+            if (icon) icon.className = newTheme === 'dark' ? 'fa-solid fa-sun' : 'fa-regular fa-moon';
+        }
 
-// Set initial theme icon based on saved theme
-const initialTheme = document.documentElement.getAttribute('data-theme') || 'light';
-const initialIcon = document.getElementById('themeIcon');
-if (initialIcon) {
-    initialIcon.className = initialTheme === 'dark' ? 'fa-solid fa-sun' : 'fa-regular fa-moon';
-}
+        const initialTheme = document.documentElement.getAttribute('data-theme') || 'light';
+        const initialIcon = document.getElementById('themeIcon');
+        if (initialIcon) initialIcon.className = initialTheme === 'dark' ? 'fa-solid fa-sun' : 'fa-regular fa-moon';
 
-        // Toggle password visibility function with icon switching (same logic as login page)
         function togglePasswordVisibility(inputId, element) {
             const input = document.getElementById(inputId);
             const icon = element.querySelector('i');
-            
-            if (input.type === 'password') {
-                input.type = 'text';
-                icon.className = 'fa fa-eye-slash';
-            } else {
-                input.type = 'password';
-                icon.className = 'fa fa-eye';
-            }
+            if (input.type === 'password') { input.type = 'text'; icon.className = 'fa fa-eye-slash'; }
+            else { input.type = 'password'; icon.className = 'fa fa-eye'; }
         }
 
         function selectUserType(type) {
@@ -281,38 +383,19 @@ if (initialIcon) {
             IDCardNumber.focus();
             const lang = window.I18N ? window.I18N.getCurrentLang() : 'en';
             const dict = window.I18N_MESSAGES || {};
-            const label = (dict.register_manual_enabled && dict.register_manual_enabled[lang]) || '✅ Editing Enabled';
-            this.textContent = label;
+            this.textContent = (dict.register_manual_enabled && dict.register_manual_enabled[lang]) || '✅ Editing Enabled';
             this.style.background = '#ffc107';
         };
 
         function extractID(text) {
-            console.log('Raw OCR text:', text);
             const clean = text.replace(/[\s\-_\.]/g, '');
-            const patterns = [
-                /\b\d{18}\b/,
-                /\b1\d{17}\b/,
-                /(?:^|\D)(\d{18})(?:\D|$)/,
-                /\b\d{2}0+\d{13,15}\b/
-            ];
-            
+            const patterns = [ /\b\d{18}\b/, /\b1\d{17}\b/, /(?:^|\D)(\d{18})(?:\D|$)/, /\b\d{2}0+\d{13,15}\b/ ];
             for (let pattern of patterns) {
                 const match = clean.match(pattern);
-                if (match) {
-                    const id = match[1] || match[0];
-                    console.log('Found ID with pattern:', pattern, '→', id);
-                    return id.replace(/\D/g, '');
-                }
+                if (match) return (match[1] || match[0]).replace(/\D/g, '');
             }
-            
             const allNumbers = clean.match(/\d{15,}/g);
-            if (allNumbers && allNumbers.length > 0) {
-                const longest = allNumbers.reduce((a, b) => a.length > b.length ? a : b);
-                console.log('Using longest number found:', longest);
-                return longest;
-            }
-            
-            console.log('No ID pattern found');
+            if (allNumbers && allNumbers.length > 0) return allNumbers.reduce((a, b) => a.length > b.length ? a : b);
             return null;
         }
 
@@ -321,415 +404,149 @@ if (initialIcon) {
             const lang = window.I18N ? window.I18N.getCurrentLang() : 'en';
             const dict = window.I18N_MESSAGES || {};
             ocrText.textContent = (dict.register_scanning && dict.register_scanning[lang]) || 'Scanning...';
-            
             try {
                 const { data: { text } } = await Tesseract.recognize(file, 'eng+fra', {
-                    logger: info => {
-                        if (info.status === 'recognizing text') {
-                            const progress = Math.round(info.progress * 100);
-                            progressBar.style.width = progress + '%';
-                            ocrText.textContent = `Scanning... ${progress}%`;
-                        }
-                    }
+                    logger: info => { if (info.status === 'recognizing text') { progressBar.style.width = Math.round(info.progress * 100) + '%'; ocrText.textContent = `Scanning... ${Math.round(info.progress * 100)}%`; } }
                 });
-
                 const idNumber = extractID(text);
                 if (idNumber) {
                     IDCardNumber.value = idNumber;
-                    const label = (dict.register_ocr_id_detected && dict.register_ocr_id_detected[lang]) || '✅ ID detected: ';
-                    message.innerHTML = '<div class="message success">' + label + idNumber + '</div>';
+                    message.innerHTML = '<div class="message success">' + ((dict.register_ocr_id_detected && dict.register_ocr_id_detected[lang]) || '✅ ID detected: ') + idNumber + '</div>';
                 } else {
-                    const textMsg = (dict.register_ocr_could_not_detect && dict.register_ocr_could_not_detect[lang]) || '⚠️ Could not detect ID. Please enter manually.';
-                    message.innerHTML = '<div class="message">' + textMsg + '</div>';
+                    message.innerHTML = '<div class="message">' + ((dict.register_ocr_could_not_detect && dict.register_ocr_could_not_detect[lang]) || '⚠️ Could not detect ID.') + '</div>';
                     manualBtn.click();
                 }
             } catch (error) {
-                const errMsg = (dict.register_ocr_failed && dict.register_ocr_failed[lang]) || '❌ OCR failed. Please enter manually.';
-                message.innerHTML = '<div class="message error">' + errMsg + '</div>';
+                message.innerHTML = '<div class="message error">' + ((dict.register_ocr_failed && dict.register_ocr_failed[lang]) || '❌ OCR failed.') + '</div>';
                 manualBtn.click();
             }
-            
             setTimeout(() => ocrStatus.style.display = 'none', 2000);
         }
 
         IDCardFront.onchange = async function(e) {
             const file = e.target.files[0];
             if (!file) return;
-            if (file.size > 5*1024*1024) {
-                const lang = window.I18N ? window.I18N.getCurrentLang() : 'en';
-                const dict = window.I18N_MESSAGES || {};
-                const txt = (dict.register_file_too_large && dict.register_file_too_large[lang]) || '❌ File too large';
-                message.innerHTML = '<div class="message error">' + txt + '</div>';
-                return;
-            }
-
+            if (file.size > 5*1024*1024) { message.innerHTML = '<div class="message error">' + (window.I18N_MESSAGES.register_file_too_large['en']) + '</div>'; return; }
             frontFile = file;
             frontBox.classList.add('uploaded');
             const reader = new FileReader();
-            reader.onload = e => {frontImg.src = e.target.result; frontPreview.style.display = 'block';};
+            reader.onload = e => { frontImg.src = e.target.result; frontPreview.style.display = 'block'; };
             reader.readAsDataURL(file);
             await runOCR(file);
         };
 
         registerForm.onsubmit = async function(e) {
             e.preventDefault();
-
             const lang = window.I18N ? window.I18N.getCurrentLang() : 'en';
             const dict = window.I18N_MESSAGES || {};
-            const first = FirstName.value.trim();
-            const last = LastName.value.trim();
-            const pwd = Password.value;
-            const confirmPwd = ConfirmPassword.value;
-
-            // Check if all validations pass
-            const isFirstNameValid = /^[a-zA-Z]+$/.test(first);
-            const isLastNameValid = /^[a-zA-Z]+$/.test(last);
-            const isEmailValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(Email.value.trim());
-            const isPhoneValid = PhoneNumber.value.trim().length >= 10; // Basic phone validation
-            
-            // Password validation
-            const hasLower = /[a-z]/g.test(pwd);
-            const hasUpper = /[A-Z]/g.test(pwd);
-            const hasNumber = /[0-9]/g.test(pwd);
-            const hasLength = pwd.length >= 8;
-            const isPasswordValid = hasLower && hasUpper && hasNumber && hasLength;
-
-            if (!isFirstNameValid) {
-                message.innerHTML = '<div class="message error">❌ First name should contain only letters</div>';
-                FirstName.focus();
-                return;
-            }
-
-            if (!isLastNameValid) {
-                message.innerHTML = '<div class="message error">❌ Last name should contain only letters</div>';
-                LastName.focus();
-                return;
-            }
-
-            if (!isEmailValid) {
-                message.innerHTML = '<div class="message error">❌ Please enter a valid email address</div>';
-                Email.focus();
-                return;
-            }
-
-            if (!isPhoneValid) {
-                message.innerHTML = '<div class="message error">❌ Please enter a valid phone number</div>';
-                PhoneNumber.focus();
-                return;
-            }
-
-            if (!isPasswordValid) {
-                message.innerHTML = '<div class="message error">❌ Password must contain at least 8 characters with uppercase, lowercase and number</div>';
-                Password.focus();
-                return;
-            }
-
-            if (pwd !== confirmPwd) {
-                const txt = (dict.register_password_mismatch && dict.register_password_mismatch[lang]) || '❌ Passwords do not match';
-                message.innerHTML = '<div class="message error">' + txt + '</div>';
-                ConfirmPassword.focus();
-                return;
-            }
-
-            if (!UserType.value) {
-                const txt = (dict.register_select_user_type_error && dict.register_select_user_type_error[lang]) || '❌ Please select user type';
-                message.innerHTML = '<div class="message error">' + txt + '</div>';
-                return;
-            }
+            const first = FirstName.value.trim(), last = LastName.value.trim(), pwd = Password.value, confirmPwd = ConfirmPassword.value;
+            if (!/^[a-zA-Z]+$/.test(first)) { message.innerHTML = '<div class="message error">❌ First name should contain only letters</div>'; FirstName.focus(); return; }
+            if (!/^[a-zA-Z]+$/.test(last)) { message.innerHTML = '<div class="message error">❌ Last name should contain only letters</div>'; LastName.focus(); return; }
+            if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(Email.value.trim())) { message.innerHTML = '<div class="message error">❌ Please enter a valid email address</div>'; Email.focus(); return; }
+            if (PhoneNumber.value.trim().length < 10) { message.innerHTML = '<div class="message error">❌ Please enter a valid phone number</div>'; PhoneNumber.focus(); return; }
+            if (!(/[a-z]/.test(pwd) && /[A-Z]/.test(pwd) && /[0-9]/.test(pwd) && pwd.length >= 8)) { message.innerHTML = '<div class="message error">❌ Password must contain at least 8 characters with uppercase, lowercase and number</div>'; Password.focus(); return; }
+            if (pwd !== confirmPwd) { message.innerHTML = '<div class="message error">' + ((dict.register_password_mismatch && dict.register_password_mismatch[lang]) || '❌ Passwords do not match') + '</div>'; ConfirmPassword.focus(); return; }
+            if (!UserType.value) { message.innerHTML = '<div class="message error">' + ((dict.register_select_user_type_error && dict.register_select_user_type_error[lang]) || '❌ Please select user type') + '</div>'; return; }
 
             submitBtn.disabled = true;
             submitBtn.textContent = (dict.register_registering && dict.register_registering[lang]) || 'Registering...';
 
-            const fullName = (first + ' ' + last).trim();
             const formData = new FormData();
-            formData.append('FullName', fullName);
+            formData.append('FullName', (first + ' ' + last).trim());
             formData.append('Email', Email.value.trim());
             formData.append('PhoneNumber', PhoneNumber.value.trim());
             formData.append('IDCardNumber', IDCardNumber.value.trim());
             formData.append('Password', pwd);
             formData.append('UserType', UserType.value);
-            
-            // Only append images if they were uploaded
-            if (frontFile) {
-                formData.append('IDCardFront', frontFile);
-                formData.append('IDCardBack', frontFile); // Send same image as back
-            }
+            if (frontFile) { formData.append('IDCardFront', frontFile); formData.append('IDCardBack', frontFile); }
 
             try {
-                const res = await fetch(API_URL + '/users/register', {method: 'POST', body: formData});
+                const res = await fetch(API_URL + '/users/register', { method: 'POST', body: formData });
                 const data = await res.json();
-
                 if (res.ok) {
                     message.innerHTML = '<div class="message success">✅ ' + data.message + '</div>';
-                    registerForm.reset();
-                    frontFile = null;
-                    frontBox.classList.remove('uploaded');
-                    frontPreview.style.display = 'none';
+                    registerForm.reset(); frontFile = null; frontBox.classList.remove('uploaded'); frontPreview.style.display = 'none';
                     document.querySelectorAll('.user-btn').forEach(b => b.classList.remove('active'));
                     setTimeout(() => location.href = 'login.html', 2000);
-                } else {
-                    message.innerHTML = '<div class="message error">❌ ' + (data.error || '') + '</div>';
-                }
+                } else { message.innerHTML = '<div class="message error">❌ ' + (data.error || '') + '</div>'; }
             } catch (error) {
-                const txt = (dict.register_network_error && dict.register_network_error[lang]) || '❌ Network error';
-                message.innerHTML = '<div class="message error">' + txt + '</div>';
+                message.innerHTML = '<div class="message error">' + ((dict.register_network_error && dict.register_network_error[lang]) || '❌ Network error') + '</div>';
             } finally {
                 submitBtn.disabled = false;
                 const currentLang = window.I18N ? window.I18N.getCurrentLang() : 'en';
-                const label = (window.I18N_MESSAGES.register_submit && window.I18N_MESSAGES.register_submit[currentLang]) || 'Register';
-                submitBtn.textContent = label;
+                submitBtn.textContent = (window.I18N_MESSAGES.register_submit && window.I18N_MESSAGES.register_submit[currentLang]) || 'Register';
             }
         };
     </script>
 
-    <!-- Client-side validation scripts -->
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            // Get form elements
-            const firstNameInput = document.getElementById('FirstName');
-            const lastNameInput = document.getElementById('LastName');
-            const emailInput = document.getElementById('Email');
-            const phoneInput = document.getElementById('PhoneNumber');
-            const passwordInput = document.getElementById('Password');
-            const confirmPasswordInput = document.getElementById('ConfirmPassword');
-            const submitBtn = document.getElementById('submitBtn');
-            
-            // Get validation message containers
-            const firstNameValidation = document.getElementById('firstNameValidation');
-            const lastNameValidation = document.getElementById('lastNameValidation');
-            const emailValidation = document.getElementById('emailValidation');
-            const phoneValidation = document.getElementById('phoneValidation');
-            const confirmPasswordValidation = document.getElementById('confirmPasswordValidation');
-            
-            // Get password message elements
-            const passwordMessage = document.getElementById('passwordMessage');
-            const letter = document.getElementById('letter');
-            const capital = document.getElementById('capital');
-            const number = document.getElementById('number');
-            const length = document.getElementById('length');
+            const firstNameInput = document.getElementById('FirstName'), lastNameInput = document.getElementById('LastName'),
+                emailInput = document.getElementById('Email'), phoneInput = document.getElementById('PhoneNumber'),
+                passwordInput = document.getElementById('Password'), confirmPasswordInput = document.getElementById('ConfirmPassword'),
+                submitBtn = document.getElementById('submitBtn'),
+                firstNameValidation = document.getElementById('firstNameValidation'), lastNameValidation = document.getElementById('lastNameValidation'),
+                emailValidation = document.getElementById('emailValidation'), phoneValidation = document.getElementById('phoneValidation'),
+                confirmPasswordValidation = document.getElementById('confirmPasswordValidation'),
+                passwordMessage = document.getElementById('passwordMessage'),
+                letter = document.getElementById('letter'), capital = document.getElementById('capital'),
+                number = document.getElementById('number'), length = document.getElementById('length');
 
-            // Name validation function - only letters (a-z, A-Z)
-            function validateName(name) {
-                return /^[a-zA-Z]+$/.test(name);
-            }
+            const validateName = n => /^[a-zA-Z]+$/.test(n);
+            const validateEmail = e => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(e);
+            const validatePhone = p => p.replace(/\D/g, '').length >= 10;
 
-            // Email validation function
-            function validateEmail(email) {
-                return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
-            }
-
-            // Phone validation function (basic - at least 10 digits)
-            function validatePhone(phone) {
-                const digits = phone.replace(/\D/g, '');
-                return digits.length >= 10;
-            }
-
-            // First Name validation
-            firstNameInput.addEventListener('input', function() {
-                const value = firstNameInput.value.trim();
-                
-                if (value === '') {
-                    firstNameValidation.textContent = '';
-                    firstNameInput.style.borderColor = '#ccc';
-                } else if (validateName(value)) {
-                    firstNameValidation.textContent = '✓ Valid first name';
-                    firstNameValidation.style.color = 'green';
-                    firstNameInput.style.borderColor = 'green';
-                } else {
-                    firstNameValidation.textContent = '✗ First name should contain only letters';
-                    firstNameValidation.style.color = 'red';
-                    firstNameInput.style.borderColor = 'red';
-                }
-            });
-
-            // Last Name validation
-            lastNameInput.addEventListener('input', function() {
-                const value = lastNameInput.value.trim();
-                
-                if (value === '') {
-                    lastNameValidation.textContent = '';
-                    lastNameInput.style.borderColor = '#ccc';
-                } else if (validateName(value)) {
-                    lastNameValidation.textContent = '✓ Valid last name';
-                    lastNameValidation.style.color = 'green';
-                    lastNameInput.style.borderColor = 'green';
-                } else {
-                    lastNameValidation.textContent = '✗ Last name should contain only letters';
-                    lastNameValidation.style.color = 'red';
-                    lastNameInput.style.borderColor = 'red';
-                }
-            });
-
-            // Email validation
-            emailInput.addEventListener('input', function() {
-                const email = emailInput.value.trim();
-                
-                if (email === '') {
-                    emailValidation.textContent = '';
-                    emailInput.style.borderColor = '#ccc';
-                } else if (validateEmail(email)) {
-                    emailValidation.textContent = '✓ Valid email';
-                    emailValidation.style.color = 'green';
-                    emailInput.style.borderColor = 'green';
-                } else {
-                    emailValidation.textContent = '✗ Invalid email format';
-                    emailValidation.style.color = 'red';
-                    emailInput.style.borderColor = 'red';
-                }
-            });
-
-            // Phone validation
-            phoneInput.addEventListener('input', function() {
-                const phone = phoneInput.value.trim();
-                
-                if (phone === '') {
-                    phoneValidation.textContent = '';
-                    phoneInput.style.borderColor = '#ccc';
-                } else if (validatePhone(phone)) {
-                    phoneValidation.textContent = '✓ Valid phone number';
-                    phoneValidation.style.color = 'green';
-                    phoneInput.style.borderColor = 'green';
-                } else {
-                    phoneValidation.textContent = '✗ Phone number should have at least 10 digits';
-                    phoneValidation.style.color = 'red';
-                    phoneInput.style.borderColor = 'red';
-                }
-            });
-
-            // Password validation
-            passwordInput.onfocus = function() {
-                passwordMessage.style.display = "block";
-            }
-            
-            passwordInput.onblur = function() {
-                if (passwordInput.value === "") {
-                    passwordMessage.style.display = "none";
-                }
-            }
-            
-            passwordInput.onkeyup = function() {
-                const pwd = passwordInput.value;
-                const lowerCaseLetters = /[a-z]/g;
-                const upperCaseLetters = /[A-Z]/g;
-                const numbers = /[0-9]/g;
-                
-                // Validate lowercase letters
-                if (pwd.match(lowerCaseLetters)) {
-                    letter.classList.remove("invalid");
-                    letter.classList.add("valid");
-                    letter.style.color = "green";
-                } else {
-                    letter.classList.remove("valid");
-                    letter.classList.add("invalid");
-                    letter.style.color = "red";
-                }
-                
-                // Validate uppercase letters
-                if (pwd.match(upperCaseLetters)) {
-                    capital.classList.remove("invalid");
-                    capital.classList.add("valid");
-                    capital.style.color = "green";
-                } else {
-                    capital.classList.remove("valid");
-                    capital.classList.add("invalid");
-                    capital.style.color = "red";
-                }
-                
-                // Validate numbers
-                if (pwd.match(numbers)) {
-                    number.classList.remove("invalid");
-                    number.classList.add("valid");
-                    number.style.color = "green";
-                } else {
-                    number.classList.remove("valid");
-                    number.classList.add("invalid");
-                    number.style.color = "red";
-                }
-                
-                // Validate length
-                if (pwd.length >= 8) {
-                    length.classList.remove("invalid");
-                    length.classList.add("valid");
-                    length.style.color = "green";
-                } else {
-                    length.classList.remove("valid");
-                    length.classList.add("invalid");
-                    length.style.color = "red";
-                }
-            }
-
-            // Confirm password validation
-            confirmPasswordInput.addEventListener('input', function() {
-                const pwd = passwordInput.value;
-                const confirmPwd = confirmPasswordInput.value;
-                
-                if (confirmPwd === '') {
-                    confirmPasswordValidation.textContent = '';
-                    confirmPasswordInput.style.borderColor = '#ccc';
-                } else if (pwd === confirmPwd) {
-                    confirmPasswordValidation.textContent = '✓ Passwords match';
-                    confirmPasswordValidation.style.color = 'green';
-                    confirmPasswordInput.style.borderColor = 'green';
-                } else {
-                    confirmPasswordValidation.textContent = '✗ Passwords do not match';
-                    confirmPasswordValidation.style.color = 'red';
-                    confirmPasswordInput.style.borderColor = 'red';
-                }
-            });
-
-            // Real-time form validation for submit button
-            function checkFormValidity() {
-                const firstName = firstNameInput.value.trim();
-                const lastName = lastNameInput.value.trim();
-                const email = emailInput.value.trim();
-                const phone = phoneInput.value.trim();
-                const pwd = passwordInput.value;
-                const confirmPwd = confirmPasswordInput.value;
-                
-                const isFirstNameValid = firstName !== '' && validateName(firstName);
-                const isLastNameValid = lastName !== '' && validateName(lastName);
-                const isEmailValid = email !== '' && validateEmail(email);
-                const isPhoneValid = phone !== '' && validatePhone(phone);
-                
-                const hasLower = /[a-z]/g.test(pwd);
-                const hasUpper = /[A-Z]/g.test(pwd);
-                const hasNumber = /[0-9]/g.test(pwd);
-                const hasLength = pwd.length >= 8;
-                const isPasswordValid = hasLower && hasUpper && hasNumber && hasLength;
-                
-                const isConfirmValid = pwd === confirmPwd && confirmPwd !== '';
-                
-                if (isFirstNameValid && isLastNameValid && isEmailValid && isPhoneValid && 
-                    isPasswordValid && isConfirmValid && UserType.value) {
-                    submitBtn.disabled = false;
-                    submitBtn.style.backgroundColor = "";
-                    submitBtn.style.cursor = "pointer";
-                } else {
-                    submitBtn.disabled = true;
-                    submitBtn.style.backgroundColor = "gray";
-                    submitBtn.style.cursor = "not-allowed";
-                }
-            }
-
-            // Add input event listeners for all fields
-            firstNameInput.addEventListener('input', checkFormValidity);
-            lastNameInput.addEventListener('input', checkFormValidity);
-            emailInput.addEventListener('input', checkFormValidity);
-            phoneInput.addEventListener('input', checkFormValidity);
-            passwordInput.addEventListener('keyup', checkFormValidity);
-            confirmPasswordInput.addEventListener('input', checkFormValidity);
-            
-            // Override selectUserType to check form validity
-            const originalSelectUserType = selectUserType;
-            selectUserType = function(type) {
-                originalSelectUserType(type);
-                checkFormValidity();
+            const setField = (el, input, valid, ok, fail) => {
+                if (!input.value.trim()) { el.textContent = ''; input.style.borderColor = '#ccc'; return; }
+                el.textContent = valid ? ok : fail;
+                el.style.color = valid ? 'green' : 'red';
+                input.style.borderColor = valid ? 'green' : 'red';
             };
 
-            // Initialize button state
+            firstNameInput.addEventListener('input', () => setField(firstNameValidation, firstNameInput, validateName(firstNameInput.value.trim()), '✓ Valid first name', '✗ Letters only'));
+            lastNameInput.addEventListener('input', () => setField(lastNameValidation, lastNameInput, validateName(lastNameInput.value.trim()), '✓ Valid last name', '✗ Letters only'));
+            emailInput.addEventListener('input', () => setField(emailValidation, emailInput, validateEmail(emailInput.value.trim()), '✓ Valid email', '✗ Invalid email format'));
+            phoneInput.addEventListener('input', () => setField(phoneValidation, phoneInput, validatePhone(phoneInput.value.trim()), '✓ Valid phone number', '✗ At least 10 digits'));
+
+            passwordInput.onfocus = () => passwordMessage.style.display = 'block';
+            passwordInput.onblur = () => { if (!passwordInput.value) passwordMessage.style.display = 'none'; };
+            passwordInput.onkeyup = () => {
+                const pwd = passwordInput.value;
+                const upd = (el, ok) => { el.classList.toggle('valid', ok); el.classList.toggle('invalid', !ok); el.style.color = ok ? 'green' : 'red'; };
+                upd(letter, /[a-z]/.test(pwd)); upd(capital, /[A-Z]/.test(pwd)); upd(number, /[0-9]/.test(pwd)); upd(length, pwd.length >= 8);
+            };
+
+            confirmPasswordInput.addEventListener('input', () => {
+                const match = passwordInput.value === confirmPasswordInput.value && confirmPasswordInput.value !== '';
+                if (!confirmPasswordInput.value) { confirmPasswordValidation.textContent = ''; confirmPasswordInput.style.borderColor = '#ccc'; return; }
+                confirmPasswordValidation.textContent = match ? '✓ Passwords match' : '✗ Passwords do not match';
+                confirmPasswordValidation.style.color = match ? 'green' : 'red';
+                confirmPasswordInput.style.borderColor = match ? 'green' : 'red';
+            });
+
+            function checkFormValidity() {
+                const pwd = passwordInput.value, confirmPwd = confirmPasswordInput.value;
+                const isPasswordValid = /[a-z]/.test(pwd) && /[A-Z]/.test(pwd) && /[0-9]/.test(pwd) && pwd.length >= 8;
+                const valid = firstNameInput.value.trim() && validateName(firstNameInput.value.trim()) &&
+                    lastNameInput.value.trim() && validateName(lastNameInput.value.trim()) &&
+                    emailInput.value.trim() && validateEmail(emailInput.value.trim()) &&
+                    phoneInput.value.trim() && validatePhone(phoneInput.value.trim()) &&
+                    isPasswordValid && pwd === confirmPwd && confirmPwd !== '' && UserType.value;
+                submitBtn.disabled = !valid;
+                submitBtn.style.backgroundColor = valid ? '' : 'gray';
+                submitBtn.style.cursor = valid ? 'pointer' : 'not-allowed';
+            }
+
+            [firstNameInput, lastNameInput, emailInput, phoneInput].forEach(el => el.addEventListener('input', checkFormValidity));
+            passwordInput.addEventListener('keyup', checkFormValidity);
+            confirmPasswordInput.addEventListener('input', checkFormValidity);
+
+            const originalSelectUserType = window.selectUserType;
+            window.selectUserType = function(type) { originalSelectUserType(type); checkFormValidity(); };
+
             submitBtn.disabled = true;
-            submitBtn.style.backgroundColor = "gray";
-            submitBtn.style.cursor = "not-allowed";
+            submitBtn.style.backgroundColor = 'gray';
+            submitBtn.style.cursor = 'not-allowed';
         });
     </script>
 </body>

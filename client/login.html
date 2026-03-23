@@ -14,7 +14,7 @@
         .register-link { text-align: center; margin-top: 24px; color: #666; font-size: 0.95rem; }
         [data-theme="dark"] .register-link { color: #98989d; }
 
-        /* ===== HAMBURGER ===== */
+        /* ── Hamburger: hidden on desktop ── */
         .nav-hamburger {
             display: none;
             flex-direction: column;
@@ -27,64 +27,173 @@
         }
         .nav-hamburger span {
             display: block;
-            width: 22px;
-            height: 2px;
+            width: 22px; height: 2px;
             background: var(--text-main, #1d1d1f);
             border-radius: 2px;
             transition: all 0.3s ease;
         }
 
+        /* ── Close button: always hidden until mobile ── */
+        .mobile-close-btn { display: none !important; }
+
+        /* ══════════ DESKTOP ══════════ */
+        @media (min-width: 769px) {
+            .navbar .links {
+                display: flex !important;
+                position: static;
+                height: auto; width: auto;
+                background: transparent;
+                backdrop-filter: none;
+                -webkit-backdrop-filter: none;
+                flex-direction: row;
+                justify-content: flex-end;
+                align-items: center;
+                gap: 6px;
+                padding: 0;
+                z-index: auto;
+                overflow: visible;
+            }
+            .navbar .links a,
+            .navbar .links button:not(.nav-hamburger) {
+                width: auto; max-width: none;
+                padding: 10px 18px;
+                font-size: 0.95rem;
+                border: none;
+                background: transparent;
+            }
+            .navbar .links .lang-switch { margin: 0 0 0 8px; }
+        }
+
+        /* ══════════ MOBILE ══════════ */
         @media (max-width: 768px) {
+            /* show hamburger */
             .nav-hamburger { display: flex; }
+
+            /* show close button only in mobile context */
+            .mobile-close-btn {
+                display: flex !important;
+                position: absolute;
+                top: 18px; right: 18px;
+                width: 42px; height: 42px;
+                border-radius: 50%;
+                background: rgba(0,0,0,0.06);
+                border: none;
+                font-size: 1.1rem;
+                cursor: pointer;
+                color: var(--text-muted, #8e8e93);
+                align-items: center;
+                justify-content: center;
+                transition: all 0.2s;
+                z-index: 10;
+            }
+            .mobile-close-btn:hover { background: rgba(255,59,48,0.12); color: #ff3b30; }
+
+            /* full-screen overlay menu */
             .navbar .links {
                 display: none;
                 position: fixed;
                 top: 0; left: 0;
                 width: 100%; height: 100vh;
                 background: var(--glass-bg, rgba(255,255,255,0.97));
-                backdrop-filter: blur(24px);
-                -webkit-backdrop-filter: blur(24px);
+                backdrop-filter: saturate(180%) blur(28px);
+                -webkit-backdrop-filter: saturate(180%) blur(28px);
                 flex-direction: column;
                 justify-content: center;
                 align-items: center;
-                gap: 16px;
+                gap: 10px;
                 z-index: 1050;
-                padding: 40px 24px;
+                padding: 80px 28px 40px;
+                overflow-y: auto;
             }
             .navbar .links.mobile-open { display: flex; }
-            .navbar .links a,
-            .navbar .links button:not(.nav-hamburger) {
-                width: 100%;
-                max-width: 280px;
-                text-align: center;
-                padding: 14px 20px;
-                font-size: 1rem;
-                border-radius: 12px;
-            }
-            .navbar .links .lang-switch { margin: 8px 0 0; }
 
-            .mobile-close-btn {
-                position: absolute;
-                top: 20px;
-                right: 20px;
-                background: none;
-                border: none;
-                font-size: 1.6rem;
+            /* individual link pills */
+            .navbar .links a {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                width: 100%; max-width: 320px;
+                padding: 15px 24px;
+                font-size: 1.05rem;
+                font-weight: 600;
+                border-radius: 16px;
+                border: 1px solid rgba(0,0,0,0.07);
+                background: rgba(255,255,255,0.7);
+                color: var(--text-main, #1d1d1f);
+                text-decoration: none;
+                transition: all 0.2s;
+                box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+            }
+            .navbar .links a:hover {
+                background: rgba(10,132,255,0.08);
+                color: var(--primary, #0A84FF);
+                border-color: rgba(10,132,255,0.2);
+                transform: translateY(-1px);
+            }
+            .navbar .links a.primary {
+                background: var(--primary, #0A84FF);
+                color: white;
+                border-color: transparent;
+                box-shadow: 0 4px 16px rgba(10,132,255,0.35);
+            }
+            .navbar .links a.primary:hover { background: var(--primary-dark, #0062D1); transform: translateY(-1px); }
+
+            /* theme button on mobile */
+            .navbar .links button.theme-btn {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                gap: 10px;
+                width: 100%; max-width: 320px;
+                padding: 15px 24px;
+                font-size: 1.05rem;
+                font-weight: 600;
+                border-radius: 16px;
+                border: 1px solid rgba(0,0,0,0.07);
+                background: rgba(255,255,255,0.7);
+                color: var(--text-main, #1d1d1f);
+                box-shadow: 0 2px 8px rgba(0,0,0,0.04);
                 cursor: pointer;
-                color: var(--text-muted, #8e8e93);
+                transition: all 0.2s;
+            }
+            .navbar .links button.theme-btn:hover { background: rgba(0,0,0,0.05); }
+
+            /* lang switch */
+            .navbar .links .lang-switch {
+                display: flex;
+                gap: 10px;
+                margin-top: 4px;
+            }
+            .navbar .links .lang-switch .lang-btn {
+                padding: 12px 28px;
+                border-radius: 14px;
+                font-size: 0.95rem;
+                font-weight: 700;
             }
 
-            /* Form */
+            /* form */
             .form-page { padding: 16px; align-items: flex-start; padding-top: 30px; }
             .form-box { padding: 24px 16px; }
             .form-box h1 { font-size: 1.4rem; margin-bottom: 20px; }
-
-            /* prevent iOS zoom on inputs */
-            .form-box input,
-            .form-box select { font-size: 16px; }
+            .form-box input, .form-box select { font-size: 16px; }
         }
 
-        [data-theme="dark"] .navbar .links { background: rgba(28,28,30,0.97); }
+        /* dark mode overrides */
+        [data-theme="dark"] .navbar .links { background: rgba(20,20,22,0.97); }
+        [data-theme="dark"] .navbar .links a {
+            background: rgba(255,255,255,0.06);
+            border-color: rgba(255,255,255,0.08);
+            color: #f5f5f7;
+        }
+        [data-theme="dark"] .navbar .links a:hover { background: rgba(255,255,255,0.12); color: #fff; }
+        [data-theme="dark"] .navbar .links a.primary { background: #0A84FF; color: white; }
+        [data-theme="dark"] .navbar .links button.theme-btn {
+            background: rgba(255,255,255,0.06);
+            border-color: rgba(255,255,255,0.08);
+            color: #f5f5f7;
+        }
+        [data-theme="dark"] .mobile-close-btn { background: rgba(255,255,255,0.08); color: #8e8e93; }
+        [data-theme="dark"] .mobile-close-btn:hover { background: rgba(255,59,48,0.2); color: #ff453a; }
     </style>
 </head>
 <body>
@@ -93,7 +202,6 @@
             <i class="fa-solid fa-house logo-icon"></i>
             <span class="logo-text" data-i18n="nav_logo_text">DarLink</span>
         </span>
-        <!-- Hamburger button -->
         <button class="nav-hamburger" id="navHamburger" aria-label="Open menu" onclick="toggleMobileNav()">
             <span></span><span></span><span></span>
         </button>
@@ -103,10 +211,17 @@
             </button>
             <button class="theme-btn" onclick="toggleTheme()" id="themeToggle">
                 <i class="fa-regular fa-moon" id="themeIcon"></i>
+                <span class="theme-label" style="font-size:0.95rem;">Dark Mode</span>
             </button>
-            <a href="index.html" data-i18n="nav_home" onclick="closeMobileNav()">Home</a>
-            <a href="login.html" class="primary" data-i18n="nav_login" onclick="closeMobileNav()">Login</a>
-            <a href="Register.html" data-i18n="nav_register" onclick="closeMobileNav()">Register</a>
+            <a href="index.html" data-i18n="nav_home" onclick="closeMobileNav()">
+                <i class="fa-solid fa-house" style="margin-right:8px;"></i> Home
+            </a>
+            <a href="login.html" class="primary" data-i18n="nav_login" onclick="closeMobileNav()">
+                <i class="fa-solid fa-right-to-bracket" style="margin-right:8px;"></i> Login
+            </a>
+            <a href="Register.html" data-i18n="nav_register" onclick="closeMobileNav()">
+                <i class="fa-solid fa-user-plus" style="margin-right:8px;"></i> Register
+            </a>
             <div class="lang-switch">
                 <button type="button" class="lang-btn" data-lang="en">EN</button>
                 <button type="button" class="lang-btn" data-lang="ar">عربي</button>
@@ -117,9 +232,7 @@
     <div class="form-page">
         <div class="form-box">
             <h1 data-i18n="login_title">Login</h1>
-            
             <div id="message"></div>
-
             <form id="loginForm">
                 <label for="Email" data-i18n="login_email_label">Email</label>
                 <input type="email" id="Email" placeholder="Enter your email" data-i18n-placeholder="login_email_placeholder" required>
@@ -141,7 +254,6 @@
 
                 <button type="submit" id="submitBtn" data-i18n="login_submit">Login</button>
             </form>
-
             <div class="register-link">
                 <span data-i18n="login_no_account">Don't have an account?</span>
                 <a href="Register.html" data-i18n="nav_register">Register</a>
@@ -150,7 +262,6 @@
     </div>
 
     <script>
-        // Mobile nav toggle
         function toggleMobileNav() {
             document.getElementById('navLinks').classList.toggle('mobile-open');
         }
@@ -158,7 +269,6 @@
             document.getElementById('navLinks').classList.remove('mobile-open');
         }
 
-        // Page translation strings
         window.I18N_MESSAGES = {
             nav_logo_text: { en: "DarLink", ar: "إيجار العطلات" },
             nav_home: { en: "Home", ar: "الرئيسية" },
@@ -178,7 +288,7 @@
             login_select_user_type_error: { en: "⚠️ Please select user type", ar: "⚠️ يرجى اختيار نوع المستخدم" },
             login_logging_in: { en: "Logging in...", ar: "جاري تسجيل الدخول..." },
             login_failed_fallback: { en: "Login failed", ar: "فشل تسجيل الدخول" },
-            login_network_error: { en: "R Network error. Check if server is running.", ar: "R خطأ في الشبكة. تأكد من أن الخادم يعمل." }
+            login_network_error: { en: "Network error. Check if server is running.", ar: "خطأ في الشبكة. تأكد من أن الخادم يعمل." }
         };
 
         const API_URL = 'https://darlink-production.up.railway.app/api';
@@ -189,9 +299,7 @@
         const initialTheme = window.getTheme ? window.getTheme() : (localStorage.getItem('site_theme') || 'light');
         document.documentElement.setAttribute('data-theme', initialTheme);
         const initialIcon = document.getElementById('themeIcon');
-        if (initialIcon) {
-            initialIcon.className = initialTheme === 'dark' ? 'fa-solid fa-sun' : 'fa-regular fa-moon';
-        }
+        if (initialIcon) initialIcon.className = initialTheme === 'dark' ? 'fa-solid fa-sun' : 'fa-regular fa-moon';
 
         function toggleTheme() {
             const current = document.documentElement.getAttribute('data-theme') || 'light';
@@ -204,27 +312,17 @@
         function togglePasswordVisibility() {
             const pwd = document.getElementById('Password');
             const icon = document.getElementById('passwordToggleIcon');
-            if (pwd.type === 'password') {
-                pwd.type = 'text';
-                icon.className = 'fa fa-eye-slash';
-            } else {
-                pwd.type = 'password';
-                icon.className = 'fa fa-eye';
-            }
+            if (pwd.type === 'password') { pwd.type = 'text'; icon.className = 'fa fa-eye-slash'; }
+            else { pwd.type = 'password'; icon.className = 'fa fa-eye'; }
         }
 
         form.addEventListener('submit', async (e) => {
             e.preventDefault();
-            const loginData = {
-                Email: Email.value.trim(),
-                Password: Password.value,
-                UserType: UserType.value
-            };
+            const loginData = { Email: Email.value.trim(), Password: Password.value, UserType: UserType.value };
             if (!loginData.UserType) {
                 const lang = window.I18N ? window.I18N.getCurrentLang() : 'en';
                 const dict = window.I18N_MESSAGES || {};
-                const msg = (dict.login_select_user_type_error && dict.login_select_user_type_error[lang]) || '❌ Please select user type';
-                messageDiv.innerHTML = `<div class="message error">${msg}</div>`;
+                messageDiv.innerHTML = `<div class="message error">${(dict.login_select_user_type_error && dict.login_select_user_type_error[lang]) || '❌ Please select user type'}</div>`;
                 return;
             }
             submitBtn.disabled = true;
@@ -232,32 +330,24 @@
             const dict = window.I18N_MESSAGES || {};
             submitBtn.textContent = (dict.login_logging_in && dict.login_logging_in[lang]) || 'Logging in...';
             try {
-                const response = await fetch(`${API_URL}/users/login`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(loginData)
-                });
+                const response = await fetch(`${API_URL}/users/login`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(loginData) });
                 const data = await response.json();
                 if (response.ok) {
                     localStorage.setItem('user', JSON.stringify(data.user));
                     messageDiv.innerHTML = `<div class="message success">✔️ ${data.message}</div>`;
-                    setTimeout(() => {
-                        if (data.user.UserType === 'Owner') { window.location.href = 'AddHome.html'; }
-                        else { window.location.href = 'Rent.html'; }
-                    }, 1500);
+                    setTimeout(() => { window.location.href = data.user.UserType === 'Owner' ? 'AddHome.html' : 'Rent.html'; }, 1500);
                 } else {
-                    const fallback = (dict.login_failed_fallback && dict.login_failed_fallback[lang]) || 'Login failed';
-                    messageDiv.innerHTML = `<div class="message error">❌ ${data.error || fallback}</div>`;
+                    messageDiv.innerHTML = `<div class="message error">❌ ${data.error || (dict.login_failed_fallback && dict.login_failed_fallback[lang]) || 'Login failed'}</div>`;
                 }
             } catch (error) {
-                const net = (dict.login_network_error && dict.login_network_error[lang]) || '❌ Network error.';
-                messageDiv.innerHTML = `<div class="message error">${net}</div>`;
+                const dict2 = window.I18N_MESSAGES || {};
+                const lang2 = window.I18N ? window.I18N.getCurrentLang() : 'en';
+                messageDiv.innerHTML = `<div class="message error">${(dict2.login_network_error && dict2.login_network_error[lang2]) || '❌ Network error.'}</div>`;
                 console.error('Error:', error);
             } finally {
                 submitBtn.disabled = false;
                 const currentLang = window.I18N ? window.I18N.getCurrentLang() : 'en';
-                const label = (window.I18N_MESSAGES.login_submit && window.I18N_MESSAGES.login_submit[currentLang]) || 'Login';
-                submitBtn.textContent = label;
+                submitBtn.textContent = (window.I18N_MESSAGES.login_submit && window.I18N_MESSAGES.login_submit[currentLang]) || 'Login';
             }
         });
     </script>
