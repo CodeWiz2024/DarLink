@@ -6,627 +6,1012 @@
     <title>DarLink - Vacation Rental</title>
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
     <script src="js/wilayas.js"></script>
     <script src="js/i18n-dashboard.js"></script>
     <script src="lang.js"></script>
     <script src="js/theme.js"></script>
     <style>
-        /* ── Promo Carousel ── */
-        .promo-carousel-container { background: linear-gradient(135deg, #00C851 0%, #007E33 100%); border-radius: 30px; padding: 30px 20px; margin: 30px 0; overflow: hidden; box-shadow: 0 8px 24px rgba(0,200,81,0.3); }
-        .promo-carousel-header { text-align: center; color: white; margin-bottom: 25px; }
-        .promo-carousel-header h2 { font-size: 2rem; margin: 0 0 10px 0; }
-        .promo-carousel { display: flex; gap: 20px; overflow-x: auto; scroll-behavior: smooth; padding: 10px; -webkit-overflow-scrolling: touch; }
-        .promo-carousel::-webkit-scrollbar { height: 8px; }
-        .promo-carousel::-webkit-scrollbar-track { background: rgba(255,255,255,0.2); border-radius: 10px; }
-        .promo-carousel::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.5); border-radius: 10px; }
-        .promo-card { min-width: 280px; background: white; border-radius: 20px; overflow: hidden; box-shadow: 0 4px 12px rgba(0,0,0,0.1); transition: transform 0.3s ease; cursor: pointer; position: relative; }
-        .promo-card:hover { transform: translateY(-5px); }
-        .promo-card-img { width: 100%; height: 180px; object-fit: cover; }
-        .promo-discount-badge { position: absolute; top: 10px; right: 10px; background: #FF4757; color: white; padding: 8px 15px; border-radius: 20px; font-weight: 700; font-size: 1rem; box-shadow: 0 2px 8px rgba(0,0,0,0.2); }
-        .promo-card-body { padding: 15px; }
-        .promo-card-body h3 { margin: 0 0 10px 0; font-size: 1.1rem; }
-        .promo-price-container { margin: 10px 0; }
-        .promo-old-price { text-decoration: line-through; color: #999; font-size: 0.9rem; }
-        .promo-new-price { color: #00C851; font-size: 1.4rem; font-weight: 700; }
-
-        /* ── Tier sections ── */
-        .tier-section { margin: 50px 0; }
-        .tier-header { display: flex; align-items: center; gap: 15px; margin-bottom: 25px; padding: 15px 25px; border-radius: 16px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; }
-        .tier-header.featured { background: linear-gradient(135deg, #FFD700 0%, #FFA500 100%); color: #000; }
-        .tier-header.boosted { background: linear-gradient(135deg, #FF6B6B 0%, #FF4757 100%); }
-        .tier-header.popular { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
-        .tier-header h2 { margin: 0; font-size: 1.8rem; flex: 1; }
-        .tier-count { background: rgba(255,255,255,0.3); padding: 8px 16px; border-radius: 20px; font-weight: 600; }
-
-        /* ── Footer ── */
-        .footer { background: #1d1d1f; color: white; padding: 40px 20px; margin-top: 80px; }
-        .footer-content { max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 30px; }
-        .footer-section h3 { margin: 0 0 15px 0; font-size: 1.2rem; }
-        .footer-links { list-style: none; padding: 0; margin: 0; }
-        .footer-links li { margin: 10px 0; }
-        .footer-links a { color: #ccc; text-decoration: none; transition: color 0.2s; }
-        .footer-links a:hover { color: #007AFF; }
-        .social-links { display: flex; gap: 15px; margin-top: 15px; }
-        .social-links a { width: 40px; height: 40px; background: rgba(255,255,255,0.1); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; text-decoration: none; transition: all 0.3s; }
-        .social-links a:hover { background: #007AFF; transform: translateY(-3px); }
-
-        /* ── Hamburger: hidden on desktop ── */
-        .nav-hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; padding: 8px; border-radius: 10px; border: none; background: transparent; }
-        .nav-hamburger span { display: block; width: 22px; height: 2px; background: var(--text-main, #1d1d1f); border-radius: 2px; transition: all 0.3s ease; }
-        .mobile-close-btn { display: none !important; }
-
-        /* ── Filter toggle: hidden on desktop ── */
-        .filter-toggle-btn { display: none; }
-
-        /* ══════════ DESKTOP ══════════ */
-        @media (min-width: 769px) {
-            .navbar .links { display: flex !important; position: static; height: auto; width: auto; background: transparent; backdrop-filter: none; -webkit-backdrop-filter: none; flex-direction: row; justify-content: flex-end; align-items: center; gap: 6px; padding: 0; z-index: auto; overflow: visible; }
-            .navbar .links a, .navbar .links button:not(.nav-hamburger) { width: auto; max-width: none; padding: 10px 18px; font-size: 0.95rem; border: none; background: transparent; }
-            .navbar .links .lang-switch { margin: 0 0 0 8px; }
+        /* ═══════════════════════════════════════════
+           DARLINK — REDESIGNED INDEX
+           Aesthetic: Refined Editorial × Warm Glass
+        ═══════════════════════════════════════════ */
+        :root {
+            --primary: #0A84FF;
+            --primary-dark: #0062D1;
+            --accent: #34C759;
+            --gold: #F5A623;
+            --red: #FF3B30;
+            --font-display: 'Syne', sans-serif;
+            --font-body: 'DM Sans', sans-serif;
+            --bg: #F0F2F5;
+            --glass: rgba(255,255,255,0.82);
+            --glass-border: rgba(255,255,255,0.6);
+            --text: #111827;
+            --muted: #6B7280;
+            --card-r: 18px;
+            --nav-h: 64px;
         }
+        [data-theme="dark"] {
+            --bg: #0D0F12;
+            --glass: rgba(22,24,28,0.88);
+            --glass-border: rgba(255,255,255,0.07);
+            --text: #F1F5F9;
+            --muted: #94A3B8;
+        }
+
+        *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+
+        body {
+            font-family: var(--font-body);
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+            transition: background .3s, color .3s;
+        }
+
+        /* ── NAVBAR ── */
+        .navbar {
+            position: sticky; top:0; z-index:1000;
+            height: var(--nav-h);
+            padding: 0 5%;
+            display: flex; align-items:center; justify-content:space-between; gap:12px;
+            background: var(--glass);
+            backdrop-filter: saturate(180%) blur(20px);
+            -webkit-backdrop-filter: saturate(180%) blur(20px);
+            border-bottom: 1px solid var(--glass-border);
+            box-shadow: 0 1px 0 rgba(0,0,0,.04);
+        }
+        .navbar .logo {
+            display:flex; align-items:center; gap:8px;
+            font-family: var(--font-display);
+            font-size: 1.4rem; font-weight: 800;
+            color: var(--primary); letter-spacing:-.03em;
+            text-decoration:none; flex-shrink:0;
+        }
+        .logo-icon { font-size:1.2rem; }
+        .navbar .links { display:flex; align-items:center; gap:4px; }
+        .navbar .links a, .navbar .links button {
+            padding: 8px 14px; border-radius:10px;
+            font-family: var(--font-body); font-size:.9rem; font-weight:500;
+            color: var(--text); border:none; background:transparent;
+            cursor:pointer; white-space:nowrap; transition:all .2s;
+            text-decoration:none;
+        }
+        .navbar .links a:hover, .navbar .links button:hover { background:rgba(10,132,255,.08); color:var(--primary); }
+        .navbar .links a.primary { background:var(--primary); color:#fff; font-weight:600; }
+        .navbar .links a.primary:hover { background:var(--primary-dark); }
+        .lang-switch { display:flex; gap:3px; }
+        .lang-btn {
+            padding: 5px 10px; border-radius:8px;
+            border: 1px solid rgba(0,0,0,.12); background:transparent;
+            font-size:.8rem; font-weight:600; color:var(--muted); cursor:pointer; transition:all .2s;
+        }
+        .lang-btn.active { background:var(--primary); color:#fff; border-color:var(--primary); }
+        .theme-btn {
+            width:36px; height:36px; border-radius:10px; border:1px solid rgba(0,0,0,.1);
+            background:transparent; cursor:pointer; display:flex; align-items:center; justify-content:center;
+            font-size:1rem; color:var(--muted); transition:all .2s;
+        }
+        .theme-btn:hover { background:rgba(10,132,255,.08); color:var(--primary); }
+        .nav-hamburger {
+            display:none; flex-direction:column; gap:5px;
+            cursor:pointer; padding:8px; border-radius:10px; border:none; background:transparent;
+        }
+        .nav-hamburger span { display:block; width:22px; height:2px; background:var(--text); border-radius:2px; transition:all .3s; }
+        .mobile-close-btn { display:none !important; }
+
+        /* ── HERO ── */
+        .hero {
+            margin: 20px 4% 0;
+            border-radius: 24px;
+            background: linear-gradient(135deg, #0A84FF 0%, #0040CC 60%, #003399 100%);
+            padding: clamp(40px, 6vw, 70px) clamp(24px, 5%, 60px);
+            color:#fff; text-align:center; position:relative; overflow:hidden;
+        }
+        .hero::before {
+            content:'';
+            position:absolute; inset:0;
+            background: radial-gradient(ellipse 80% 80% at 50% 120%, rgba(255,255,255,.12) 0%, transparent 60%);
+        }
+        .hero::after {
+            content:'';
+            position:absolute; top:-40%; right:-10%;
+            width:500px; height:500px; border-radius:50%;
+            background: radial-gradient(circle, rgba(255,255,255,.06) 0%, transparent 70%);
+        }
+        .hero-inner { position:relative; z-index:1; max-width:680px; margin:0 auto; }
+        .hero h1 {
+            font-family: var(--font-display);
+            font-size: clamp(1.8rem, 5vw, 3rem);
+            font-weight:800; line-height:1.15; margin-bottom:14px; letter-spacing:-.03em;
+        }
+        .hero p { font-size: clamp(.9rem, 2vw, 1.1rem); opacity:.85; margin-bottom:24px; line-height:1.6; }
+        .hero-btn {
+            display:inline-flex; align-items:center; gap:8px;
+            padding: 13px 28px; border-radius:999px;
+            background: rgba(255,255,255,.18); backdrop-filter:blur(10px);
+            border: 1.5px solid rgba(255,255,255,.4);
+            color:#fff; font-weight:600; font-size:.95rem; cursor:pointer;
+            transition:all .3s; text-decoration:none;
+        }
+        .hero-btn:hover { background:rgba(255,255,255,.28); transform:translateY(-2px); }
+
+        /* ── DASHBOARD QUICK BAR ── */
+        .quick-bar {
+            display:none; margin: 16px 4% 0;
+            background: var(--glass); backdrop-filter:blur(16px);
+            border: 1px solid var(--glass-border);
+            border-radius: 16px; padding: 14px 20px;
+            align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap;
+        }
+        .quick-bar.visible { display:flex; }
+        .quick-bar-title { font-family:var(--font-display); font-weight:700; font-size:.95rem; }
+        .quick-bar-actions { display:flex; gap:8px; flex-wrap:wrap; }
+        .quick-bar-actions a {
+            padding: 8px 16px; border-radius:10px; font-size:.85rem; font-weight:600;
+            text-decoration:none; transition:all .2s; display:flex; align-items:center; gap:6px;
+        }
+        .qb-primary { background:var(--primary); color:#fff; }
+        .qb-secondary { background:rgba(10,132,255,.1); color:var(--primary); }
+        .qb-neutral { background:rgba(0,0,0,.06); color:var(--text); }
+        [data-theme="dark"] .qb-neutral { background:rgba(255,255,255,.08); }
+
+        /* ── MAIN LAYOUT ── */
+        .page-body { display:flex; gap:20px; padding: 20px 4% 50px; align-items:flex-start; }
+
+        /* ── FILTER SIDEBAR ── */
+        .filter-panel {
+            flex: 0 0 240px; position:sticky; top: calc(var(--nav-h) + 12px);
+            background: var(--glass); backdrop-filter:blur(16px);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px; padding: 20px;
+            box-shadow: 0 4px 20px rgba(0,0,0,.05);
+        }
+        .filter-title {
+            font-family:var(--font-display); font-weight:700; font-size:.95rem;
+            margin-bottom:16px; display:flex; align-items:center; gap:8px;
+        }
+        .filter-group { margin-bottom:14px; }
+        .filter-group label { display:block; font-size:.78rem; font-weight:600; color:var(--muted); margin-bottom:6px; text-transform:uppercase; letter-spacing:.06em; }
+        .filter-group select, .filter-group input[type=range] {
+            width:100%; padding:9px 12px; border-radius:10px;
+            border: 1px solid rgba(0,0,0,.1); background:rgba(255,255,255,.6);
+            font-family:var(--font-body); font-size:.88rem; color:var(--text);
+            transition:all .2s; outline:none;
+        }
+        [data-theme="dark"] .filter-group select { background:rgba(255,255,255,.06); border-color:rgba(255,255,255,.1); color:var(--text); }
+        [data-theme="dark"] select option { background:#1e2028; }
+        .filter-group select:focus { border-color:var(--primary); box-shadow:0 0 0 3px rgba(10,132,255,.15); }
+        .filter-group input[type=range] { padding:0; accent-color:var(--primary); height:4px; background:rgba(10,132,255,.15); border:none; cursor:pointer; }
+        .price-labels { display:flex; justify-content:space-between; font-size:.75rem; color:var(--muted); margin-top:6px; font-weight:600; }
+        .filter-apply {
+            width:100%; padding:10px; border-radius:12px; border:none;
+            background:var(--primary); color:#fff; font-weight:600; font-size:.88rem;
+            cursor:pointer; transition:all .2s; margin-top:4px;
+        }
+        .filter-apply:hover { background:var(--primary-dark); transform:translateY(-1px); }
+
+        /* ── CONTENT AREA ── */
+        .content-area { flex:1; min-width:0; }
+
+        /* ── SECTION HEADER ── */
+        .section-header {
+            display:flex; align-items:center; justify-content:space-between;
+            margin-bottom:12px; margin-top:4px;
+        }
+        .section-label {
+            display:inline-flex; align-items:center; gap:7px;
+            font-family:var(--font-display); font-size:.95rem; font-weight:700;
+        }
+        .section-label .badge {
+            padding: 3px 10px; border-radius:999px; font-size:.72rem; font-weight:700;
+        }
+
+        /* ── CAROUSEL ── */
+        .carousel-wrap { position:relative; }
+        .carousel-track-outer {
+            overflow:hidden; border-radius:var(--card-r);
+        }
+        .carousel-track {
+            display:flex; gap:14px;
+            transition: transform .4s cubic-bezier(.4,0,.2,1);
+            will-change: transform;
+        }
+        .carousel-btn {
+            position:absolute; top:50%; transform:translateY(-50%);
+            width:36px; height:36px; border-radius:50%;
+            background: var(--glass); backdrop-filter:blur(10px);
+            border: 1px solid var(--glass-border);
+            box-shadow: 0 4px 16px rgba(0,0,0,.12);
+            display:flex; align-items:center; justify-content:center;
+            cursor:pointer; z-index:10; transition:all .2s; color:var(--text);
+            font-size:.85rem;
+        }
+        .carousel-btn:hover { background:var(--primary); color:#fff; border-color:var(--primary); transform:translateY(-50%) scale(1.05); }
+        .carousel-btn.prev { left:-18px; }
+        .carousel-btn.next { right:-18px; }
+        .carousel-btn:disabled { opacity:.3; cursor:default; pointer-events:none; }
+
+        /* ── PROPERTY CARD ── */
+        .prop-card {
+            flex: 0 0 220px;
+            background: var(--glass); backdrop-filter:blur(16px);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--card-r);
+            overflow:hidden;
+            box-shadow: 0 4px 16px rgba(0,0,0,.06);
+            transition: transform .3s, box-shadow .3s;
+            cursor:pointer;
+            display:flex; flex-direction:column;
+            position:relative;
+        }
+        .prop-card:hover { transform:translateY(-4px); box-shadow:0 12px 32px rgba(0,0,0,.12); }
+        .prop-card-img {
+            width:100%; height:150px; object-fit:cover;
+            background:rgba(0,0,0,.06);
+            display:flex; align-items:center; justify-content:center;
+            color:var(--muted); font-size:2rem; position:relative; overflow:hidden;
+        }
+        .prop-card-img img { width:100%; height:100%; object-fit:cover; transition:transform .5s; }
+        .prop-card:hover .prop-card-img img { transform:scale(1.06); }
+        .prop-card-img-placeholder { width:100%; height:100%; display:flex; align-items:center; justify-content:center; font-size:2.5rem; }
+
+        /* Labels on card image */
+        .card-labels {
+            position:absolute; top:8px; left:8px;
+            display:flex; flex-direction:column; gap:4px; z-index:2;
+        }
+        .card-label {
+            display:inline-flex; align-items:center; gap:4px;
+            padding: 3px 8px; border-radius:999px;
+            font-size:.65rem; font-weight:700; letter-spacing:.02em;
+            backdrop-filter:blur(8px); border:1px solid rgba(255,255,255,.3);
+        }
+        .label-featured { background:rgba(245,166,35,.9); color:#fff; }
+        .label-boosted  { background:rgba(255,59,48,.88); color:#fff; }
+        .label-promo    { background:rgba(52,199,89,.9); color:#fff; }
+        .label-mine     { background:rgba(10,132,255,.88); color:#fff; }
+
+        .prop-card-body { padding:12px; flex:1; display:flex; flex-direction:column; gap:5px; }
+        .prop-card-title {
+            font-family:var(--font-display); font-weight:700; font-size:.9rem;
+            line-height:1.3; color:var(--text);
+            white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
+        }
+        .prop-card-loc { font-size:.73rem; color:var(--muted); display:flex; align-items:center; gap:3px; }
+        .prop-card-meta { display:flex; align-items:center; gap:8px; font-size:.72rem; color:var(--muted); }
+        .prop-card-price {
+            font-family:var(--font-display); font-weight:800; font-size:.95rem; color:var(--primary);
+            margin-top:auto; padding-top:6px;
+        }
+        .prop-card-price .old-price { font-size:.72rem; color:var(--muted); text-decoration:line-through; font-weight:400; margin-left:4px; }
+        .prop-card-actions { display:flex; gap:6px; padding: 0 12px 12px; }
+        .prop-card-actions button {
+            flex:1; padding:7px 4px; border-radius:10px; border:none;
+            font-size:.75rem; font-weight:600; cursor:pointer; transition:all .2s;
+            font-family:var(--font-body);
+        }
+        .btn-view-card { background:var(--primary); color:#fff; }
+        .btn-view-card:hover { background:var(--primary-dark); }
+        .btn-chat-card { background:rgba(52,199,89,.12); color:#1a7a35; }
+        .btn-chat-card:hover { background:var(--accent); color:#fff; }
+        [data-theme="dark"] .btn-chat-card { color:var(--accent); }
+        .btn-manage-card { background:rgba(10,132,255,.1); color:var(--primary); }
+        .btn-manage-card:hover { background:var(--primary); color:#fff; }
+
+        /* Loading skeleton */
+        .skeleton { animation: shimmer 1.5s infinite; background: linear-gradient(90deg, rgba(0,0,0,.04) 25%, rgba(0,0,0,.08) 50%, rgba(0,0,0,.04) 75%); background-size:200% 100%; border-radius:var(--card-r); }
+        @keyframes shimmer { 0%{background-position:200% 0} 100%{background-position:-200% 0} }
+        .skeleton-card { flex: 0 0 220px; height: 260px; }
+
+        /* ── SECTION SEPARATORS ── */
+        .section-block { margin-bottom:32px; }
+
+        /* ── EMPTY STATE ── */
+        .empty-state { text-align:center; padding:60px 20px; color:var(--muted); }
+        .empty-state i { font-size:3rem; opacity:.3; margin-bottom:16px; display:block; }
+
+        /* ── PROFILE MODAL (kept from original) ── */
+        .modal-overlay { position:fixed; inset:0; background:rgba(0,0,0,.4); backdrop-filter:blur(4px); z-index:2999; display:none; }
+        .profile-modal {
+            position:fixed; top:50%; left:50%; transform:translate(-50%,-50%) scale(.9);
+            width:90%; max-width:380px;
+            background:var(--glass); backdrop-filter:blur(20px); border:1px solid var(--glass-border);
+            padding:28px; border-radius:20px; z-index:3000; display:none; opacity:0;
+            transition:all .3s cubic-bezier(.175,.885,.32,1.275);
+            box-shadow: 0 20px 50px rgba(0,0,0,.2);
+        }
+        .profile-modal.show { display:block; opacity:1; transform:translate(-50%,-50%) scale(1); }
+        .modal-header { display:flex; justify-content:space-between; align-items:center; margin-bottom:20px; }
+        .modal-header h2 { font-family:var(--font-display); font-size:1.1rem; font-weight:800; }
+        .modal-close { cursor:pointer; color:var(--muted); font-size:1.1rem; }
+        .modal-close:hover { color:#ff3b30; }
+        .profile-pic-editor { display:flex; flex-direction:column; align-items:center; gap:14px; margin-bottom:20px; }
+        .big-avatar { width:90px; height:90px; border-radius:50%; background:var(--primary); color:#fff; display:flex; align-items:center; justify-content:center; font-size:2rem; font-weight:800; overflow:hidden; box-shadow:0 8px 24px rgba(10,132,255,.3); }
+        .upload-btn-label { padding:8px 18px; background:var(--primary); color:#fff; border-radius:10px; cursor:pointer; font-size:.85rem; font-weight:600; }
+        .modal-footer { border-top:1px solid var(--glass-border); padding-top:16px; margin-top:16px; display:flex; flex-direction:column; gap:8px; }
+        .modal-footer a, .modal-footer button { padding:11px; border-radius:12px; text-align:center; font-weight:600; font-size:.9rem; cursor:pointer; transition:all .2s; text-decoration:none; display:block; border:none; }
+        .modal-footer a { background:var(--primary); color:#fff; }
+        .modal-footer button { background:rgba(255,59,48,.1); color:#ff3b30; }
+        .modal-footer button:hover { background:#ff3b30; color:#fff; }
+
+        /* ── MSG SIDEBAR (kept from original) ── */
+        .msg-toggle-btn {
+            position:fixed; bottom:28px; right:24px; z-index:2000;
+            width:56px; height:56px; border-radius:50%;
+            background:var(--primary); color:#fff; border:none; cursor:pointer;
+            box-shadow:0 8px 28px rgba(10,132,255,.4); font-size:1.4rem;
+            display:flex; align-items:center; justify-content:center; transition:all .3s;
+        }
+        .msg-toggle-btn:hover { transform:scale(1.08); box-shadow:0 12px 36px rgba(10,132,255,.5); }
+        .msg-badge { position:absolute; top:-4px; right:-4px; background:#ff3b30; color:#fff; font-size:.7rem; padding:2px 6px; border-radius:999px; font-weight:800; border:2px solid #fff; }
+        .msg-sidebar {
+            position:fixed; top:0; right:-380px; width:360px; height:100vh;
+            background:var(--glass); backdrop-filter:blur(20px); -webkit-backdrop-filter:blur(20px);
+            border-left:1px solid var(--glass-border); z-index:1500;
+            transition:right .4s cubic-bezier(.4,0,.2,1);
+            display:flex; flex-direction:column; padding-top:16px;
+            box-shadow:-8px 0 32px rgba(0,0,0,.08);
+        }
+        .msg-sidebar.open { right:0; }
+        .msg-sidebar-header { padding:12px 20px; border-bottom:1px solid var(--glass-border); display:flex; align-items:center; gap:12px; }
+        .msg-view { display:flex; flex-direction:column; height:100%; overflow:hidden; }
+        .msg-list { flex:1; overflow-y:auto; padding:12px; }
+        .conv-item { display:flex; align-items:center; gap:12px; padding:12px; border-radius:14px; cursor:pointer; transition:all .2s; margin-bottom:6px; }
+        .conv-item:hover { background:rgba(10,132,255,.06); }
+        .conv-avatar { width:44px; height:44px; border-radius:50%; background:var(--primary); color:#fff; display:flex; align-items:center; justify-content:center; font-size:1.1rem; font-weight:700; flex-shrink:0; }
+        .conv-avatar-img { width:100%; height:100%; border-radius:50%; object-fit:cover; }
+        .conv-info { flex:1; min-width:0; }
+        .conv-name { font-weight:700; font-size:.9rem; display:block; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+        .conv-property { font-size:.75rem; color:var(--muted); display:block; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+        .conv-unread { background:var(--primary); color:#fff; padding:2px 7px; border-radius:999px; font-size:.68rem; font-weight:700; }
+        .chat-messages { flex:1; overflow-y:auto; padding:16px; background:rgba(0,0,0,.02); display:flex; flex-direction:column; gap:8px; }
+        .msg-bubble { max-width:78%; padding:9px 13px; border-radius:16px; font-size:.88rem; line-height:1.4; position:relative; }
+        .msg-sent { background:var(--primary); color:#fff; align-self:flex-end; border-bottom-right-radius:4px; }
+        .msg-received { background:rgba(255,255,255,.8); color:var(--text); align-self:flex-start; border-bottom-left-radius:4px; border:1px solid var(--glass-border); }
+        .msg-time { font-size:.65rem; opacity:.6; margin-top:3px; display:block; text-align:right; }
+        .chat-input-area { padding:12px; border-top:1px solid var(--glass-border); display:flex; gap:8px; background:var(--glass); }
+        .chat-input { flex:1; border:1px solid var(--glass-border); padding:9px 14px; border-radius:20px; background:rgba(255,255,255,.6); font-family:var(--font-body); font-size:.88rem; color:var(--text); outline:none; }
+        .chat-input:focus { border-color:var(--primary); }
+        .chat-send-btn { width:36px; height:36px; border-radius:50%; background:var(--primary); color:#fff; border:none; cursor:pointer; display:flex; align-items:center; justify-content:center; transition:all .2s; }
+        .chat-send-btn:hover { transform:scale(1.1); }
+        .chat-header-user { display:flex; align-items:center; gap:10px; flex:1; }
+        .chat-user-avatar { width:36px; height:36px; border-radius:50%; background:var(--primary); color:#fff; display:flex; align-items:center; justify-content:center; font-weight:700; overflow:hidden; }
+        .chat-user-info { display:flex; flex-direction:column; }
+        .chat-user-name { font-weight:700; font-size:.88rem; }
+        .chat-user-rating { color:#ffc107; font-size:.72rem; }
+        .back-to-list { cursor:pointer; color:var(--muted); font-size:1.1rem; transition:.2s; }
+        .back-to-list:hover { color:var(--primary); }
+        #msgChatView { display:flex; flex-direction:column; height:100%; }
+
+        /* ── NAV PROFILE PILL ── */
+        .nav-profile { display:flex; align-items:center; gap:8px; padding:5px 12px; background:rgba(10,132,255,.08); border-radius:999px; cursor:pointer; transition:.2s; }
+        .nav-profile:hover { background:rgba(10,132,255,.15); }
+        .nav-avatar-placeholder, .nav-avatar-img { width:28px; height:28px; border-radius:50%; background:var(--primary); color:#fff; display:flex; align-items:center; justify-content:center; font-weight:700; font-size:.8rem; overflow:hidden; object-fit:cover; }
+        .nav-user-name { font-size:.85rem; font-weight:600; }
+
+        /* ── FOOTER ── */
+        .site-footer { background:var(--glass); backdrop-filter:blur(16px); border-top:1px solid var(--glass-border); padding:40px 5%; margin-top:20px; }
+        .footer-grid { display:grid; grid-template-columns:repeat(auto-fit, minmax(180px,1fr)); gap:28px; max-width:900px; margin:0 auto; }
+        .footer-section h3 { font-family:var(--font-display); font-size:.9rem; font-weight:700; margin-bottom:12px; }
+        .footer-links { list-style:none; }
+        .footer-links li { margin:8px 0; font-size:.85rem; color:var(--muted); display:flex; align-items:center; gap:6px; }
+        .social-links { display:flex; gap:10px; margin-top:10px; }
+        .social-links a { width:36px; height:36px; border-radius:10px; background:rgba(10,132,255,.1); display:flex; align-items:center; justify-content:center; color:var(--primary); transition:.2s; }
+        .social-links a:hover { background:var(--primary); color:#fff; transform:translateY(-2px); }
 
         /* ══════════ MOBILE ══════════ */
         @media (max-width: 768px) {
-            /* Hamburger */
-            .nav-hamburger { display: flex; }
+            .nav-hamburger { display:flex; }
+            .mobile-close-btn { display:flex !important; position:absolute; top:16px; right:16px; width:40px; height:40px; border-radius:50%; background:rgba(0,0,0,.06); border:none; font-size:1rem; cursor:pointer; color:var(--muted); align-items:center; justify-content:center; z-index:10; }
+            .navbar .links { display:none; position:fixed; inset:0; background:var(--glass); backdrop-filter:blur(28px); flex-direction:column; justify-content:center; align-items:center; gap:10px; z-index:1050; padding:80px 28px; }
+            .navbar .links.mobile-open { display:flex; }
+            .navbar .links a, .navbar .links button { width:100%; max-width:300px; padding:14px 20px; font-size:1rem; font-weight:600; border-radius:14px; border:1px solid rgba(0,0,0,.07); background:rgba(255,255,255,.7); text-align:center; display:flex; align-items:center; justify-content:center; gap:8px; }
+            .navbar .links .lang-switch { display:flex; gap:8px; }
+            .navbar .links .lang-btn { padding:10px 24px; font-size:.9rem; }
+            [data-theme="dark"] .navbar .links { background:rgba(13,15,18,.97); }
+            [data-theme="dark"] .navbar .links a { background:rgba(255,255,255,.06); border-color:rgba(255,255,255,.08); color:var(--text); }
 
-            /* Close button */
-            .mobile-close-btn {
-                display: flex !important;
-                position: absolute; top: 18px; right: 18px;
-                width: 42px; height: 42px; border-radius: 50%;
-                background: rgba(0,0,0,0.06); border: none;
-                font-size: 1.1rem; cursor: pointer;
-                color: var(--text-muted, #8e8e93);
-                align-items: center; justify-content: center;
-                transition: all 0.2s; z-index: 10;
-            }
-            .mobile-close-btn:hover { background: rgba(255,59,48,0.12); color: #ff3b30; }
-
-            /* Full-screen nav overlay */
-            .navbar .links {
-                display: none; position: fixed; top: 0; left: 0;
-                width: 100%; height: 100vh;
-                background: var(--glass-bg, rgba(255,255,255,0.97));
-                backdrop-filter: saturate(180%) blur(28px);
-                -webkit-backdrop-filter: saturate(180%) blur(28px);
-                flex-direction: column; justify-content: center; align-items: center;
-                gap: 10px; z-index: 1050; padding: 80px 28px 40px; overflow-y: auto;
-            }
-            .navbar .links.mobile-open { display: flex; }
-
-            /* Link pills */
-            .navbar .links a {
-                display: flex; align-items: center; justify-content: center;
-                width: 100%; max-width: 320px; padding: 15px 24px;
-                font-size: 1.05rem; font-weight: 600; border-radius: 16px;
-                border: 1px solid rgba(0,0,0,0.07); background: rgba(255,255,255,0.7);
-                color: var(--text-main, #1d1d1f); text-decoration: none;
-                transition: all 0.2s; box-shadow: 0 2px 8px rgba(0,0,0,0.04);
-            }
-            .navbar .links a:hover { background: rgba(10,132,255,0.08); color: var(--primary, #0A84FF); border-color: rgba(10,132,255,0.2); transform: translateY(-1px); }
-            .navbar .links a.primary { background: var(--primary, #0A84FF); color: white; border-color: transparent; box-shadow: 0 4px 16px rgba(10,132,255,0.35); }
-            .navbar .links a.primary:hover { background: var(--primary-dark, #0062D1); transform: translateY(-1px); }
-            .navbar .links button.theme-btn { display: flex; align-items: center; justify-content: center; gap: 10px; width: 100%; max-width: 320px; padding: 15px 24px; font-size: 1.05rem; font-weight: 600; border-radius: 16px; border: 1px solid rgba(0,0,0,0.07); background: rgba(255,255,255,0.7); color: var(--text-main, #1d1d1f); box-shadow: 0 2px 8px rgba(0,0,0,0.04); cursor: pointer; transition: all 0.2s; }
-            .navbar .links button.theme-btn:hover { background: rgba(0,0,0,0.05); }
-            .navbar .links .lang-switch { display: flex; gap: 10px; margin-top: 4px; }
-            .navbar .links .lang-switch .lang-btn { padding: 12px 28px; border-radius: 14px; font-size: 0.95rem; font-weight: 700; }
-
-            /* Layout stacks */
-            .main-layout { flex-direction: column; padding: 0 4% 30px; }
-
-            /* Filter toggle button */
-            .filter-toggle-btn {
-                display: flex;
-                width: 100%; padding: 14px 18px;
-                background: var(--glass-bg); border: 1px solid var(--glass-border);
-                border-radius: 14px; font-size: 1rem; font-weight: 600;
-                color: var(--primary); cursor: pointer; margin-bottom: 12px;
-                align-items: center; gap: 10px;
-                order: -1;
-            }
-
-            /* Filter sidebar collapses */
-            .sidebar {
-                flex: none; width: 100%; position: static; order: -1;
-                max-height: 0; overflow: hidden; padding: 0 24px;
-                transition: max-height 0.4s ease, padding 0.3s ease;
-                border-radius: 14px;
-            }
-            .sidebar.filter-open { max-height: 800px; padding: 24px; }
-
-            /* Tier headers shrink */
-            .tier-header { padding: 12px 16px; gap: 10px; }
-            .tier-header h2 { font-size: 1.2rem; }
-            .tier-header span:first-child { font-size: 1.4rem; }
-
-            /* Promo */
-            .promo-carousel-container { border-radius: 20px; padding: 20px 12px; margin: 20px 0; }
-            .promo-carousel-header h2 { font-size: 1.4rem; }
-            .promo-card { min-width: 240px; }
-            .promo-card-img { height: 150px; }
-
-            /* Dashboard buttons */
-            #dashButtons { flex-direction: column; width: 100%; }
-            #dashButtons a { width: 100%; text-align: center; justify-content: center; }
-
-            /* Messaging */
-            .msg-toggle-btn { bottom: 20px; right: 16px; width: 52px; height: 52px; font-size: 1.2rem; }
-
-            /* Footer */
-            .footer { padding: 30px 16px; margin-top: 40px; }
-            .footer-content { grid-template-columns: 1fr; gap: 20px; }
+            .hero { margin: 12px 3% 0; padding: 36px 20px; }
+            .page-body { flex-direction:column; padding: 16px 3% 40px; }
+            .filter-panel { position:static; width:100%; max-height:0; overflow:hidden; padding:0 18px; transition:max-height .4s, padding .3s; border-radius:16px; }
+            .filter-panel.open { max-height:600px; padding:18px; }
+            .filter-toggle { display:flex !important; }
+            .prop-card { flex:0 0 180px; }
+            .prop-card-img { height:130px; }
+            .carousel-btn { width:30px; height:30px; font-size:.75rem; }
+            .carousel-btn.prev { left:-14px; }
+            .carousel-btn.next { right:-14px; }
+            .msg-sidebar { width:100%; right:-100%; }
+            .msg-toggle-btn { bottom:20px; right:16px; width:50px; height:50px; font-size:1.2rem; }
         }
 
-        @media (max-width: 480px) {
-            .tier-header h2 { font-size: 1rem; }
-            .promo-card { min-width: 200px; }
+        @media (min-width: 769px) {
+            .filter-toggle { display:none !important; }
         }
 
-        /* dark mode */
-        [data-theme="dark"] .navbar .links { background: rgba(20,20,22,0.97); }
-        [data-theme="dark"] .navbar .links a { background: rgba(255,255,255,0.06); border-color: rgba(255,255,255,0.08); color: #f5f5f7; }
-        [data-theme="dark"] .navbar .links a:hover { background: rgba(255,255,255,0.12); color: #fff; }
-        [data-theme="dark"] .navbar .links a.primary { background: #0A84FF; color: white; }
-        [data-theme="dark"] .navbar .links button.theme-btn { background: rgba(255,255,255,0.06); border-color: rgba(255,255,255,0.08); color: #f5f5f7; }
-        [data-theme="dark"] .mobile-close-btn { background: rgba(255,255,255,0.08); color: #8e8e93; }
-        [data-theme="dark"] .mobile-close-btn:hover { background: rgba(255,59,48,0.2); color: #ff453a; }
-        [data-theme="dark"] .filter-toggle-btn { background: rgba(44,44,46,0.85); border-color: rgba(255,255,255,0.1); color: #0a84ff; }
+        .filter-toggle {
+            display:none; width:100%; padding:11px 16px; border-radius:14px;
+            border:1px solid var(--glass-border); background:var(--glass);
+            font-family:var(--font-body); font-size:.9rem; font-weight:600;
+            color:var(--primary); cursor:pointer; margin-bottom:12px;
+            align-items:center; gap:8px;
+        }
+
+        /* Dark mode tweaks */
+        [data-theme="dark"] .navbar .links a { color:var(--text); }
+        [data-theme="dark"] .msg-received { background:rgba(255,255,255,.06); }
+        [data-theme="dark"] .prop-card { background:rgba(28,30,36,.9); }
+        [data-theme="dark"] .filter-panel { background:rgba(22,24,28,.92); }
+        [data-theme="dark"] .site-footer { background:rgba(13,15,18,.7); }
+        [data-theme="dark"] .qb-neutral { background:rgba(255,255,255,.08); }
+
+        /* scroll animations */
+        @keyframes fadeUp { from{opacity:0;transform:translateY(18px)} to{opacity:1;transform:translateY(0)} }
+        .section-block { animation: fadeUp .5s ease both; }
+        .section-block:nth-child(2) { animation-delay:.08s; }
+        .section-block:nth-child(3) { animation-delay:.16s; }
+        .section-block:nth-child(4) { animation-delay:.24s; }
     </style>
 </head>
 <body>
-    <nav class="navbar">
-        <span class="logo">
-            <i class="fa-solid fa-house logo-icon"></i>
-            <span class="logo-text" data-i18n="nav_logo_text">DarLink</span>
-        </span>
-        <button class="nav-hamburger" id="navHamburger" aria-label="Open menu" onclick="toggleMobileNav()">
-            <span></span><span></span><span></span>
+
+<!-- NAVBAR -->
+<nav class="navbar">
+    <a href="index.html" class="logo">
+        <i class="fa-solid fa-house logo-icon"></i>
+        <span data-i18n="nav_logo_text">DarLink</span>
+    </a>
+    <button class="nav-hamburger" id="navHamburger" onclick="toggleMobileNav()" aria-label="Menu">
+        <span></span><span></span><span></span>
+    </button>
+    <div class="links" id="navLinks">
+        <button class="mobile-close-btn" onclick="closeMobileNav()"><i class="fa-solid fa-times"></i></button>
+        <button class="theme-btn" onclick="toggleTheme()" aria-label="Theme">
+            <i class="fa-regular fa-moon" id="themeIcon"></i>
         </button>
-        <div class="links" id="navLinks">
-            <button class="mobile-close-btn" onclick="toggleMobileNav()" aria-label="Close menu">
-                <i class="fa-solid fa-times"></i>
-            </button>
-            <button type="button" class="theme-btn" onclick="toggleTheme()" aria-label="Toggle theme">
-                <i class="fa-regular fa-moon" id="themeIcon"></i>
-                <span class="theme-label" style="font-size:0.95rem;">Dark Mode</span>
-            </button>
-            <a href="index.html" data-i18n="nav_home" onclick="closeMobileNav()">
-                <i class="fa-solid fa-house" style="margin-right:8px;"></i> Home
-            </a>
-            <a href="login.html" id="loginLink" data-i18n="nav_login" onclick="closeMobileNav()">
-                <i class="fa-solid fa-right-to-bracket" style="margin-right:8px;"></i> Login
-            </a>
-            <a href="Register.html" id="registerLink" data-i18n="nav_register" onclick="closeMobileNav()">
-                <i class="fa-solid fa-user-plus" style="margin-right:8px;"></i> Register
-            </a>
-            <div class="lang-switch">
-                <button type="button" class="lang-btn" data-lang="en">EN</button>
-                <button type="button" class="lang-btn" data-lang="ar">عربي</button>
-            </div>
-            <span id="userGreeting"></span>
+        <a href="index.html" data-i18n="nav_home" onclick="closeMobileNav()"><i class="fa-solid fa-house"></i> Home</a>
+        <a href="login.html" id="loginLink" data-i18n="nav_login" onclick="closeMobileNav()"><i class="fa-solid fa-right-to-bracket"></i> Login</a>
+        <a href="Register.html" id="registerLink" class="primary" data-i18n="nav_register" onclick="closeMobileNav()"><i class="fa-solid fa-user-plus"></i> Register</a>
+        <div class="lang-switch">
+            <button class="lang-btn" data-lang="en">EN</button>
+            <button class="lang-btn" data-lang="ar">عربي</button>
         </div>
-    </nav>
+        <span id="userGreeting"></span>
+    </div>
+</nav>
 
-    <main>
-        <section class="hero-section">
-            <div class="hero-content">
-                <h1 class="hero-title" data-i18n="hero_title">الشفافية والسرعة</h1>
-                <p class="hero-subtitle" data-i18n="hero_subtitle">The most trusted and transparent vacation rental platform in Algeria. Real reviews, fast booking, and seamless experiences.</p>
-                <button class="btn" style="padding: 16px 32px; font-size: 1.1rem; border-radius: 999px;" onclick="document.getElementById('regularSection').scrollIntoView({behavior: 'smooth'})">
-                    <span data-i18n="hero_btn">Explore Properties</span> <i class="fa-solid fa-arrow-down" style="margin-left: 8px;"></i>
-                </button>
-            </div>
-        </section>
+<!-- HERO -->
+<section class="hero">
+    <div class="hero-inner">
+        <h1 data-i18n="hero_title">Transparency & Speed</h1>
+        <p data-i18n="hero_subtitle">Algeria's most trusted vacation rental platform. Real reviews, instant booking.</p>
+        <a href="#sections" class="hero-btn" onclick="document.getElementById('sections').scrollIntoView({behavior:'smooth'});return false;">
+            <span data-i18n="hero_btn">Explore Properties</span> <i class="fa-solid fa-arrow-down"></i>
+        </a>
+    </div>
+</section>
 
-        <div id="dashboardOverlay" style="display: none; padding: 0 5%; margin-bottom: 30px;">
-            <div class="card" style="background: linear-gradient(135deg, rgba(10, 132, 255, 0.1) 0%, rgba(52, 199, 89, 0.1) 100%); border-radius: var(--radius-lg); padding: 24px; border: 1px solid rgba(10,132,255,0.2);">
-                <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px;">
-                    <div>
-                        <h3 style="font-size: 1.3rem; font-weight: 700; margin-bottom: 8px;" data-i18n="dash_title">🚀 Quick Dashboard</h3>
-                        <p style="color: #666; font-size: 0.95rem;" data-i18n="dash_desc">Manage your account directly from here.</p>
-                    </div>
-                    <div style="display: flex; gap: 12px; flex-wrap: wrap;" id="dashButtons"></div>
-                </div>
+<!-- DASHBOARD QUICK BAR -->
+<div class="quick-bar" id="dashQuickBar">
+    <span class="quick-bar-title" data-i18n="dash_title">🚀 Quick Dashboard</span>
+    <div class="quick-bar-actions" id="dashButtons"></div>
+</div>
+
+<!-- MAIN BODY -->
+<div class="page-body" id="sections">
+    <!-- FILTER SIDEBAR -->
+    <aside>
+        <button class="filter-toggle" id="filterToggle" onclick="toggleFilter()">
+            <i class="fa-solid fa-sliders"></i> <span>Filters</span>
+            <i class="fa-solid fa-chevron-down" id="filterChev" style="margin-left:auto;transition:.3s;"></i>
+        </button>
+        <div class="filter-panel" id="filterPanel">
+            <div class="filter-title"><i class="fa-solid fa-sliders" style="color:var(--primary)"></i> Filters</div>
+            <div class="filter-group">
+                <label data-i18n="filter_wilaya">Wilaya</label>
+                <select id="filterCity"><option value="" data-i18n="filter_all_wilayas">All Wilayas</option></select>
             </div>
+            <div class="filter-group">
+                <label data-i18n="filter_type">Type</label>
+                <select id="filterType">
+                    <option value="" data-i18n="filter_all_types">All Types</option>
+                    <option value="Apartment">Apartment</option>
+                    <option value="House">House</option>
+                    <option value="Room">Room</option>
+                    <option value="Cottage">Cottage</option>
+                </select>
+            </div>
+            <div class="filter-group">
+                <label data-i18n="filter_rooms">Rooms</label>
+                <select id="filterRooms">
+                    <option value="">Any</option>
+                    <option value="1">1 Room</option>
+                    <option value="2">2 Rooms</option>
+                    <option value="3">3+ Rooms</option>
+                </select>
+            </div>
+            <div class="filter-group">
+                <label data-i18n="filter_price">Max Price / Night</label>
+                <input type="range" id="filterPrice" min="1000" max="50000" step="500" value="50000">
+                <div class="price-labels"><span>1,000</span><span id="priceOut">50,000 DZD</span></div>
+            </div>
+            <button class="filter-apply" onclick="applyFilters()"><i class="fa-solid fa-search"></i> Apply</button>
         </div>
+    </aside>
 
-        <div class="main-layout">
-            <!-- Filter toggle button (mobile only) -->
-            <button class="filter-toggle-btn" id="filterToggleBtn" onclick="toggleFilterSidebar()">
-                <i class="fa-solid fa-filter"></i>
-                <span data-i18n="filter_title">Filters</span>
-                <i class="fa-solid fa-chevron-down" id="filterChevron" style="margin-left: auto; transition: transform 0.3s;"></i>
-            </button>
+    <!-- CONTENT -->
+    <div class="content-area" id="contentArea">
+        <div id="loadingState" style="text-align:center;padding:60px;color:var(--muted);">
+            <i class="fa-solid fa-spinner fa-spin" style="font-size:2rem;color:var(--primary);display:block;margin-bottom:12px;"></i>
+            Loading properties...
+        </div>
+        <!-- Sections injected by JS -->
+    </div>
+</div>
 
-            <aside class="sidebar" id="filterSidebar">
-                <h2 class="sidebar-title"><i class="fa-solid fa-filter"></i> <span data-i18n="filter_title">Filters</span></h2>
-                <div class="filter-group">
-                    <label data-i18n="filter_wilaya">Wilaya (Province)</label>
-                    <select id="filterCity"><option value="" data-i18n="filter_all_wilayas">All Wilayas</option></select>
-                </div>
-                <div class="filter-group">
-                    <label data-i18n="filter_type">Property Type</label>
-                    <select id="filterType">
-                        <option value="" data-i18n="filter_all_types">All Types</option>
-                        <option value="Apartment" data-i18n="type_apt">Apartment</option>
-                        <option value="Villa" data-i18n="type_villa">Villa</option>
-                        <option value="Studio" data-i18n="type_studio">Studio</option>
-                    </select>
-                </div>
-                <div class="filter-group">
-                    <label data-i18n="filter_rooms">Rooms</label>
-                    <select id="filterRooms">
-                        <option value="" data-i18n="filter_any">Any Check</option>
-                        <option value="1" data-i18n="rooms_1">1 Room</option>
-                        <option value="2" data-i18n="rooms_2">2 Rooms</option>
-                        <option value="3" data-i18n="rooms_3">3+ Rooms</option>
-                    </select>
-                </div>
-                <div class="filter-group">
-                    <label data-i18n="filter_price">Max Price (DZD / Night)</label>
-                    <input type="range" id="filterPrice" min="1000" max="50000" step="500" value="50000" style="padding: 0; appearance: auto; height: 6px; border-radius: 5px; background: #ddd; accent-color: var(--primary);">
-                    <div class="price-range-labels"><span>1,000</span><span id="priceValueOut">50,000</span></div>
-                </div>
-                <button class="btn" style="width: 100%; margin-top: 10px;" onclick="applyFilters()"><i class="fa-solid fa-search"></i> <span data-i18n="filter_btn">Apply Filters</span></button>
-            </aside>
-
-            <div class="content-area">
-                <div id="loading" style="text-align:center; padding:40px; color:#666; font-weight: 600; font-size: 1.1rem;">
-                    <i class="fa-solid fa-spinner fa-spin" style="font-size: 2rem; color: var(--primary); margin-bottom: 15px; display:block;"></i>
-                    <span data-i18n="loading">Loading amazing properties...</span>
-                </div>
-                <div id="promoCarousel" class="promo-carousel-container" style="display: none;">
-                    <div class="promo-carousel-header">
-                        <h2 data-i18n="sec_promo_title">🔥 Special Promotions</h2>
-                        <p data-i18n="sec_promo_desc">Limited time offers - Don't miss out!</p>
-                    </div>
-                    <div id="promoScroll" class="promo-carousel"></div>
-                </div>
-                <div id="featuredSection" class="tier-section" style="display: none;">
-                    <div class="tier-header featured"><span style="font-size: 2rem;">⭐</span><h2 data-i18n="sec_feat_title">Premium Package Properties</h2><span class="tier-count" id="featuredCount">0</span></div>
-                    <div id="featuredGrid" class="cards-grid"></div>
-                </div>
-                <div id="boostedSection" class="tier-section" style="display: none;">
-                    <div class="tier-header boosted"><span style="font-size: 2rem;">🚀</span><h2 data-i18n="sec_boost_title">Boosted Package Properties</h2><span class="tier-count" id="boostedCount">0</span></div>
-                    <div id="boostedGrid" class="cards-grid"></div>
-                </div>
-                <div id="popularSection" class="tier-section" style="display: none;">
-                    <div class="tier-header popular"><span style="font-size: 2rem;">🔥</span><h2 data-i18n="sec_pop_title">Most Popular Properties</h2><span class="tier-count" id="popularCount">0</span></div>
-                    <div id="popularGrid" class="cards-grid"></div>
-                </div>
-                <div id="regularSection" class="tier-section" style="display: none;">
-                    <div class="tier-header"><span style="font-size: 2rem;">🏠</span><h2 data-i18n="sec_all_title">All Properties</h2><span class="tier-count" id="regularCount">0</span></div>
-                    <div id="regularGrid" class="cards-grid"></div>
-                </div>
-                <div id="emptyState" style="display:none; text-align:center; padding:60px; color:#666;">
-                    <h2 data-i18n="no_props_title">No Properties Available</h2>
-                    <p data-i18n="no_props_desc">Check back later for new listings.</p>
-                </div>
+<!-- FOOTER -->
+<footer class="site-footer">
+    <div class="footer-grid">
+        <div class="footer-section">
+            <h3>DarLink</h3>
+            <p style="font-size:.85rem;color:var(--muted);line-height:1.6">Algeria's trusted vacation rental platform.</p>
+        </div>
+        <div class="footer-section">
+            <h3 data-i18n="footer_contact">Contact</h3>
+            <ul class="footer-links">
+                <li><i class="fa-solid fa-envelope"></i> darlink1dz@gmail.com</li>
+                <li><i class="fa-solid fa-phone"></i> +213 699 787 702</li>
+            </ul>
+        </div>
+        <div class="footer-section">
+            <h3 data-i18n="footer_follow">Follow Us</h3>
+            <div class="social-links">
+                <a href="https://www.instagram.com/darlink.dz" target="_blank"><i class="fa-brands fa-instagram"></i></a>
+                <a href="mailto:darlink1dz@gmail.com"><i class="fa-solid fa-envelope"></i></a>
+                <a href="https://www.facebook.com/ferhi.tarek.2025" target="_blank"><i class="fa-brands fa-facebook-f"></i></a>
             </div>
         </div>
-    </main>
+    </div>
+</footer>
 
-    <footer class="footer">
-        <div class="footer-content">
-            <div class="footer-section">
-                <h3>About DarLink</h3>
-                <p style="color: #ccc; line-height: 1.6;">Your trusted platform for vacation rentals in Algeria.</p>
-            </div>
-            <div class="footer-section">
-                <h3 data-i18n="footer_contact">Contact</h3>
-                <ul class="footer-links">
-                    <li><i class="fa-solid fa-envelope"></i> darlink1dz@gmail.com</li>
-                    <li><i class="fa-solid fa-phone"></i> +213 699 787 702</li>
-                </ul>
-            </div>
-            <div class="footer-section">
-                <h3 data-i18n="footer_follow">Follow Us</h3>
-                <div class="social-links">
-                    <a href="https://www.instagram.com/darlink.dz" title="Instagram" target="_blank"><i class="fa-brands fa-instagram"></i></a>
-                    <a href="mailto:darlink1dz@gmail.com" title="Email"><i class="fa-solid fa-envelope"></i></a>
-                    <a href="https://www.facebook.com/ferhi.tarek.2025" title="Facebook" target="_blank"><i class="fa-brands fa-facebook-f"></i></a>
+<!-- PROFILE MODAL -->
+<div class="modal-overlay" id="modalOverlay" onclick="closeProfileModal()"></div>
+<div class="profile-modal" id="profileModal">
+    <div class="modal-header">
+        <h2>Profile</h2>
+        <i class="fa-solid fa-times modal-close" onclick="closeProfileModal()"></i>
+    </div>
+    <div class="profile-pic-editor">
+        <div id="bigAvatar" class="big-avatar">?</div>
+        <label for="profilePicInput" class="upload-btn-label"><i class="fa-solid fa-camera"></i> Change Photo</label>
+        <input type="file" id="profilePicInput" style="display:none" accept="image/*" onchange="uploadProfilePic(this)">
+    </div>
+    <h3 id="modalUserName" style="text-align:center;margin-bottom:4px;font-family:var(--font-display)"></h3>
+    <p id="modalUserRating" style="text-align:center;color:#ffc107;font-size:.9rem"></p>
+    <div class="modal-footer">
+        <a href="#" id="modalDashboardBtn" style="text-decoration:none">Dashboard</a>
+        <button onclick="logout()">Logout</button>
+    </div>
+</div>
+
+<!-- MSG TOGGLE -->
+<button class="msg-toggle-btn" id="msgToggleBtn" onclick="toggleMsgSidebar()">
+    <i class="fa-solid fa-message"></i>
+    <span class="msg-badge" id="msgBtnBadge" style="display:none">0</span>
+</button>
+
+<!-- MSG SIDEBAR -->
+<div class="msg-sidebar" id="msgSidebar">
+    <div id="msgListView" class="msg-view">
+        <div class="msg-sidebar-header">
+            <h2 style="font-family:var(--font-display);font-size:1rem;font-weight:800;flex:1">Messages</h2>
+            <button onclick="toggleMsgSidebar()" style="background:none;border:none;font-size:1.1rem;cursor:pointer;color:var(--muted)"><i class="fa-solid fa-times"></i></button>
+        </div>
+        <div class="msg-list" id="msgList"><div style="text-align:center;padding:40px;color:var(--muted)">Loading…</div></div>
+    </div>
+    <div id="msgChatView" style="display:none">
+        <div class="msg-sidebar-header">
+            <i class="fa-solid fa-arrow-left back-to-list" onclick="backToMsgList()"></i>
+            <div class="chat-header-user">
+                <div id="activeChatAvatar" class="chat-user-avatar">?</div>
+                <div class="chat-user-info">
+                    <span id="activeChatName" class="chat-user-name">User</span>
+                    <span id="activeChatRating" class="chat-user-rating"></span>
                 </div>
             </div>
+            <button onclick="toggleMsgSidebar()" style="background:none;border:none;font-size:1.1rem;cursor:pointer;color:var(--muted)"><i class="fa-solid fa-times"></i></button>
         </div>
-    </footer>
+        <div id="chatMessages" class="chat-messages"></div>
+        <div class="chat-input-area">
+            <input type="text" id="chatInput" class="chat-input" placeholder="Type…" onkeypress="if(event.key==='Enter')sendSidebarMessage()">
+            <button class="chat-send-btn" onclick="sendSidebarMessage()"><i class="fa-solid fa-paper-plane"></i></button>
+        </div>
+    </div>
+</div>
 
-    <script>
-        function toggleMobileNav() { document.getElementById('navLinks').classList.toggle('mobile-open'); }
-        function closeMobileNav() { document.getElementById('navLinks').classList.remove('mobile-open'); }
-        function toggleFilterSidebar() {
-            const sidebar = document.getElementById('filterSidebar');
-            const chevron = document.getElementById('filterChevron');
-            sidebar.classList.toggle('filter-open');
-            chevron.style.transform = sidebar.classList.contains('filter-open') ? 'rotate(180deg)' : 'rotate(0deg)';
+<script>
+/* ═══════════════════════ CONFIG ═══════════════════════ */
+const SERVER_URL = 'https://darlink-production.up.railway.app';
+const API_URL = SERVER_URL + '/api';
+
+window.I18N_MESSAGES = {
+    nav_logo_text:{en:"DarLink",ar:"دارلينك"},
+    nav_home:{en:"Home",ar:"الرئيسية"},nav_login:{en:"Login",ar:"تسجيل الدخول"},
+    nav_register:{en:"Register",ar:"إنشاء حساب"},
+    hero_title:{en:"Transparency & Speed",ar:"الشفافية والسرعة"},
+    hero_subtitle:{en:"Algeria\'s most trusted vacation rental platform. Real reviews, instant booking.",ar:"المنصة الأكثر ثقة لإيجار العطلات في الجزائر."},
+    hero_btn:{en:"Explore Properties",ar:"استكشف العقارات"},
+    dash_title:{en:"🚀 Quick Dashboard",ar:"🚀 لوحة تحكم سريعة"},
+    filter_wilaya:{en:"Wilaya",ar:"الولاية"},filter_all_wilayas:{en:"All Wilayas",ar:"كل الولايات"},
+    filter_type:{en:"Type",ar:"النوع"},filter_all_types:{en:"All Types",ar:"كل الأنواع"},
+    filter_rooms:{en:"Rooms",ar:"الغرف"},filter_price:{en:"Max Price / Night",ar:"السعر الأقصى"},
+    footer_contact:{en:"Contact",ar:"اتصل بنا"},footer_follow:{en:"Follow Us",ar:"تابعنا"},
+};
+
+let currentUser = null;
+try { currentUser = JSON.parse(localStorage.getItem('user') || 'null'); } catch(e){}
+
+/* ═══════════════════════ NAV ═══════════════════════ */
+function toggleMobileNav(){ document.getElementById('navLinks').classList.toggle('mobile-open'); }
+function closeMobileNav(){ document.getElementById('navLinks').classList.remove('mobile-open'); }
+
+function toggleTheme(){
+    const t = document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+    document.documentElement.setAttribute('data-theme', t);
+    localStorage.setItem('site_theme', t);
+    document.getElementById('themeIcon').className = t==='dark' ? 'fa-solid fa-sun' : 'fa-regular fa-moon';
+}
+const _savedTheme = localStorage.getItem('site_theme') || 'light';
+document.documentElement.setAttribute('data-theme', _savedTheme);
+document.getElementById('themeIcon').className = _savedTheme==='dark' ? 'fa-solid fa-sun' : 'fa-regular fa-moon';
+
+/* ═══════════════════════ FILTER TOGGLE (mobile) ═══════════════════════ */
+function toggleFilter(){
+    const p = document.getElementById('filterPanel');
+    const c = document.getElementById('filterChev');
+    const open = p.classList.toggle('open');
+    c.style.transform = open ? 'rotate(180deg)' : 'rotate(0deg)';
+}
+
+document.getElementById('filterPrice').addEventListener('input', function(){
+    document.getElementById('priceOut').textContent = Number(this.value).toLocaleString() + ' DZD';
+});
+
+/* ═══════════════════════ USER GREETING ═══════════════════════ */
+function updateGreeting(){
+    if(!currentUser) return;
+    const firstName = currentUser.FirstName || 'User';
+    const avatar = currentUser.ProfilePicturePath
+        ? `<img src="${currentUser.ProfilePicturePath}" class="nav-avatar-img">`
+        : `<div class="nav-avatar-placeholder">${firstName.charAt(0).toUpperCase()}</div>`;
+    const el = document.getElementById('userGreeting');
+    if(el) el.innerHTML = `<div class="nav-profile" onclick="toggleProfileModal()">${avatar}<span class="nav-user-name">${firstName}</span></div>`;
+    document.getElementById('loginLink')?.setAttribute('style','display:none');
+    document.getElementById('registerLink')?.setAttribute('style','display:none');
+    // Quick bar
+    const bar = document.getElementById('dashQuickBar');
+    const btns = document.getElementById('dashButtons');
+    bar.classList.add('visible');
+    if(currentUser.UserType === 'Owner'){
+        btns.innerHTML = `
+            <a href="add-new-home.html" class="qb-primary"><i class="fa-solid fa-plus"></i> Add Property</a>
+            <a href="my-property.html" class="qb-secondary"><i class="fa-solid fa-list"></i> My Properties</a>
+            <a href="profile.html" class="qb-neutral"><i class="fa-solid fa-user"></i> Profile</a>`;
+    } else {
+        btns.innerHTML = `
+            <a href="my-bookings.html" class="qb-secondary"><i class="fa-solid fa-calendar"></i> My Bookings</a>
+            <a href="profile.html" class="qb-neutral"><i class="fa-solid fa-user"></i> Profile</a>`;
+    }
+}
+
+function toggleProfileModal(){
+    if(!currentUser) return;
+    const firstName = currentUser.FirstName || 'User';
+    const lastName = currentUser.LastName || '';
+    document.getElementById('modalUserName').textContent = `${firstName} ${lastName}`.trim();
+    const av = document.getElementById('bigAvatar');
+    if(currentUser.ProfilePicturePath){
+        av.innerHTML = `<img src="${currentUser.ProfilePicturePath}" style="width:100%;height:100%;border-radius:50%;object-fit:cover">`;
+    } else { av.textContent = (firstName.charAt(0)+(lastName.charAt(0)||'')).toUpperCase(); }
+    document.getElementById('modalDashboardBtn').href = currentUser.UserType==='Owner' ? 'AddHome.html' : 'Rent.html';
+    fetch(`${API_URL}/users/${currentUser.UserId}`).then(r=>r.json()).then(d=>{
+        document.getElementById('modalUserRating').innerHTML = getStarIcons(d.AverageRating||0);
+    }).catch(()=>{});
+    document.getElementById('modalOverlay').style.display = 'block';
+    document.getElementById('profileModal').classList.add('show');
+}
+function closeProfileModal(){
+    document.getElementById('modalOverlay').style.display='none';
+    document.getElementById('profileModal').classList.remove('show');
+}
+function logout(){ localStorage.removeItem('user'); location.reload(); }
+
+async function uploadProfilePic(input){
+    if(!input.files||!input.files[0]) return;
+    const fd = new FormData();
+    fd.append('profilePic', input.files[0]);
+    fd.append('userId', currentUser.UserId);
+    try {
+        const r = await fetch(`${API_URL}/users/profile-picture`, {method:'POST',body:fd});
+        const d = await r.json();
+        if(d.success){ currentUser.ProfilePicturePath=d.avatarPath; localStorage.setItem('user',JSON.stringify(currentUser)); updateGreeting(); }
+    }catch(e){}
+}
+
+/* ═══════════════════════ CAROUSEL ═══════════════════════ */
+const carousels = {};
+
+function buildCarousel(containerId, cards){
+    const wrap = document.getElementById(containerId);
+    if(!wrap) return;
+    const track = wrap.querySelector('.carousel-track');
+    const prevBtn = wrap.querySelector('.carousel-btn.prev');
+    const nextBtn = wrap.querySelector('.carousel-btn.next');
+    const cardWidth = 234; // 220 + 14 gap
+    let pos = 0;
+    let max = 0;
+
+    function update(){
+        const visible = Math.floor(track.parentElement.offsetWidth / cardWidth);
+        max = Math.max(0, cards.length - visible);
+        pos = Math.min(pos, max);
+        track.style.transform = `translateX(-${pos * cardWidth}px)`;
+        prevBtn.disabled = pos === 0;
+        nextBtn.disabled = pos >= max;
+    }
+
+    prevBtn.onclick = () => { pos = Math.max(0, pos-1); update(); };
+    nextBtn.onclick = () => { pos = Math.min(max, pos+1); update(); };
+    window.addEventListener('resize', update);
+    setTimeout(update, 50);
+    carousels[containerId] = {update};
+}
+
+/* ═══════════════════════ CARD BUILDER ═══════════════════════ */
+function getStarIcons(r){
+    let s=''; const rating = parseFloat(r)||0;
+    for(let i=1;i<=5;i++){
+        if(i<=Math.floor(rating)) s+='<i class="fa-solid fa-star"></i>';
+        else if(i-0.5<=rating) s+='<i class="fa-solid fa-star-half-stroke"></i>';
+        else s+='<i class="fa-regular fa-star"></i>';
+    }
+    return s+` (${rating.toFixed(1)})`;
+}
+
+function calcDisplayPrice(p){
+    const priceInDB = parseFloat(p.PricePerNight);
+    if(!p.HasPromotion) return {display: priceInDB, original: null, label:null};
+    const base = priceInDB / 1.1;
+    let after = base, label = '';
+    if(p.DiscountType==='Percentage' && parseFloat(p.DiscountPercentage)>0){
+        const d = parseFloat(p.DiscountPercentage);
+        after = base*(1-d/100);
+        label = `${d}% OFF`;
+    } else if(p.DiscountType==='FixedAmount' && parseFloat(p.DiscountAmount)>0){
+        const d = parseFloat(p.DiscountAmount);
+        after = base - d;
+        label = `${d.toLocaleString()} DZD OFF`;
+    }
+    return {display: after*1.1, original: priceInDB, label};
+}
+
+function buildCard(p){
+    const isOwner = currentUser && currentUser.UserType==='Owner' && currentUser.UserId===p.OwnerId;
+    const isMine = isOwner;
+    const imgUrl = p.MainImage ? (p.MainImage.startsWith('http') ? p.MainImage : SERVER_URL+p.MainImage) : null;
+    const {display, original, label} = calcDisplayPrice(p);
+
+    // Labels
+    let labelHtml = '';
+    if(p.IsFeatured) labelHtml += `<span class="card-label label-featured"><i class="fa-solid fa-star"></i> Premium</span>`;
+    if(p.IsBoosted && !p.IsFeatured) labelHtml += `<span class="card-label label-boosted"><i class="fa-solid fa-bolt"></i> Boosted</span>`;
+    if(p.HasPromotion && label) labelHtml += `<span class="card-label label-promo"><i class="fa-solid fa-tag"></i> ${label}</span>`;
+    if(isMine) labelHtml += `<span class="card-label label-mine"><i class="fa-solid fa-house-user"></i> Mine</span>`;
+
+    const priceHtml = original
+        ? `${Math.round(display).toLocaleString()} <span class="old-price">${Math.round(original).toLocaleString()}</span>`
+        : Math.round(display).toLocaleString();
+
+    const actionBtn = isMine
+        ? `<button class="btn-manage-card" onclick="window.location.href='edit-property.html?id=${p.PropertyId}'"><i class="fa-solid fa-pen"></i> Manage</button>`
+        : `<button class="btn-chat-card" onclick="openChat(event,${p.PropertyId},${p.OwnerId},'${(p.OwnerName||'Owner').replace(/'/g,"\'")}')"><i class="fa-solid fa-comment"></i></button>`;
+
+    return `
+    <div class="prop-card" onclick="viewProperty(${p.PropertyId},${p.OwnerId})">
+        <div class="prop-card-img">
+            <div class="card-labels">${labelHtml}</div>
+            ${imgUrl
+                ? `<img src="${imgUrl}" alt="${p.Title}" loading="lazy">`
+                : `<div class="prop-card-img-placeholder"><i class="fa-solid fa-house"></i></div>`}
+        </div>
+        <div class="prop-card-body">
+            <div class="prop-card-title">${p.Title}</div>
+            <div class="prop-card-loc"><i class="fa-solid fa-location-dot" style="color:var(--primary)"></i>${p.City}, ${p.Wilaya}</div>
+            <div class="prop-card-meta">
+                <span><i class="fa-solid fa-bed"></i> ${p.NumofRooms}</span>
+                <span>· ${p.PropertyType}</span>
+                ${p.AverageRating>0 ? `<span style="color:#ffc107"><i class="fa-solid fa-star"></i> ${Number(p.AverageRating).toFixed(1)}</span>` : ''}
+            </div>
+            <div class="prop-card-price">${priceHtml} <span style="font-size:.7rem;font-weight:400;color:var(--muted)">DZD/night</span></div>
+        </div>
+        <div class="prop-card-actions" onclick="event.stopPropagation()">
+            <button class="btn-view-card" onclick="viewProperty(${p.PropertyId},${p.OwnerId})"><i class="fa-solid fa-eye"></i> View</button>
+            ${actionBtn}
+        </div>
+    </div>`;
+}
+
+function buildSection(id, icon, title, badgeCount, badgeColor, cards){
+    const skeletons = Array(3).fill(`<div class="prop-card skeleton skeleton-card"></div>`).join('');
+    return `
+    <div class="section-block">
+        <div class="section-header">
+            <div class="section-label">
+                <span style="font-size:1.1rem">${icon}</span> ${title}
+                <span class="badge" style="background:${badgeColor};color:#fff">${badgeCount}</span>
+            </div>
+        </div>
+        <div class="carousel-wrap">
+            <button class="carousel-btn prev" disabled><i class="fa-solid fa-chevron-left"></i></button>
+            <div class="carousel-track-outer">
+                <div class="carousel-track" id="${id}-track">
+                    ${cards.map(buildCard).join('')}
+                </div>
+            </div>
+            <button class="carousel-btn next" ${cards.length<=1?'disabled':''}><i class="fa-solid fa-chevron-right"></i></button>
+        </div>
+    </div>`;
+}
+
+/* ═══════════════════════ LOAD PROPERTIES ═══════════════════════ */
+async function loadProperties(){
+    const content = document.getElementById('contentArea');
+    try {
+        const r = await fetch(`${API_URL}/properties`);
+        if(!r.ok) throw new Error('HTTP '+r.status);
+        let all = await r.json();
+        if(!Array.isArray(all)) throw new Error('Bad data');
+
+        // Filters
+        const city = document.getElementById('filterCity').value;
+        const type = document.getElementById('filterType').value;
+        const rooms = document.getElementById('filterRooms').value;
+        const price = parseInt(document.getElementById('filterPrice').value);
+
+        if(city) all = all.filter(p=>p.Wilaya===city||p.City===city);
+        if(type) all = all.filter(p=>p.PropertyType===type);
+        if(rooms){ if(rooms==='3') all=all.filter(p=>p.NumofRooms>=3); else all=all.filter(p=>p.NumofRooms==rooms); }
+        if(price) all = all.filter(p=>p.PricePerNight<=price);
+
+        if(!all.length){
+            content.innerHTML = `<div class="empty-state"><i class="fa-solid fa-house-crack"></i><h3>No Properties Found</h3><p>Try adjusting your filters</p></div>`;
+            return;
         }
 
-        window.I18N_MESSAGES = {
-            nav_home: { en: "Home", ar: "الرئيسية" }, nav_login: { en: "Login", ar: "تسجيل الدخول" }, nav_register: { en: "Register", ar: "إنشاء حساب" },
-            hero_title: { en: "Transparency and Setup Speed", ar: "الشفافية والسرعة" },
-            hero_subtitle: { en: "The most trusted and transparent vacation rental platform in Algeria. Real reviews, fast booking, and seamless experiences.", ar: "المنصة الأكثر ثقة وشفافية لإيجار بيوت العطلات في الجزائر. آراء حقيقية، حجز سريع، وتجربة سلسة." },
-            hero_btn: { en: "Explore Properties", ar: "استكشف العقارات" },
-            dash_title: { en: "🚀 Quick Dashboard", ar: "🚀 لوحة تحكم سريعة" }, dash_desc: { en: "Manage your account directly from here.", ar: "أدر حسابك مباشرة من هنا." },
-            filter_title: { en: "Filters", ar: "عوامل التصفية" }, filter_wilaya: { en: "Wilaya (Province)", ar: "الولاية" }, filter_all_wilayas: { en: "All Wilayas", ar: "جميع الولايات" },
-            filter_type: { en: "Property Type", ar: "نوع العقار" }, filter_all_types: { en: "All Types", ar: "جميع الأنواع" },
-            type_apt: { en: "Apartment", ar: "شقة" }, type_villa: { en: "Villa", ar: "فيلا" }, type_studio: { en: "Studio", ar: "استوديو" },
-            filter_rooms: { en: "Rooms", ar: "الغرف" }, filter_any: { en: "Any Check", ar: "أي عدد" },
-            rooms_1: { en: "1 Room", ar: "غرفة واحدة" }, rooms_2: { en: "2 Rooms", ar: "غرفتان" }, rooms_3: { en: "3+ Rooms", ar: "3 غرف فأكثر" },
-            filter_price: { en: "Max Price (DZD / Night)", ar: "السعر الأقصى (د.ج / ليلة)" }, filter_btn: { en: "Apply Filters", ar: "تطبيق عوامل التصفية" },
-            loading: { en: "Loading amazing properties...", ar: "جاري تحميل العقارات..." },
-            no_props_title: { en: "No Properties Available", ar: "لا توجد عقارات متاحة" }, no_props_desc: { en: "Check back later for new listings.", ar: "تحقق لاحقاً لرؤية عروض جديدة." },
-            sec_promo_title: { en: "🔥 Special Promotions", ar: "🔥 عروض ترويجية" }, sec_promo_desc: { en: "Limited time offers - Don't miss out!", ar: "عروض لفترة محدودة - لا تفوت الفرصة!" },
-            sec_feat_title: { en: "Premium Package Properties", ar: "عقارات الباقة المميزة" }, sec_boost_title: { en: "Boosted Package Properties", ar: "عقارات الباقة المدعومة" },
-            sec_pop_title: { en: "Most Popular Properties", ar: "العقارات الأكثر شعبية" }, sec_all_title: { en: "All Properties", ar: "جميع العقارات" },
-            footer_contact: { en: "Contact", ar: "اتصل بنا" }, footer_follow: { en: "Follow Us", ar: "تابعنا" },
-            btn_chat: { en: "Chat", ar: "دردشة" }, card_btn_details: { en: "View Details", ar: "عرض التفاصيل" },
-            msg_title: { en: "Messages", ar: "الرسائل" }, no_msgs: { en: "No messages yet", ar: "لا توجد رسائل بعد" },
-            profile_settings: { en: "Profile Settings", ar: "إعدادات الحساب" }, change_pic: { en: "Change Photo", ar: "تغيير الصورة" }
-        };
+        const promo     = all.filter(p=>p.HasPromotion && (parseFloat(p.DiscountPercentage)>0 || parseFloat(p.DiscountAmount)>0));
+        const featured  = all.filter(p=>p.IsFeatured && !p.HasPromotion);
+        const boosted   = all.filter(p=>p.IsBoosted && !p.IsFeatured && !p.HasPromotion);
+        const sorted    = [...all].sort((a,b)=>(b.ViewCount||0)-(a.ViewCount||0));
+        const popular   = sorted.slice(0,8).filter(p=>!p.IsFeatured&&!p.IsBoosted&&!p.HasPromotion);
+        const regular   = all.filter(p=>!p.IsFeatured&&!p.IsBoosted&&!p.HasPromotion&&!popular.includes(p));
 
-        const SERVER_URL = 'https://darlink-production.up.railway.app';
-        const API_URL = `${SERVER_URL}/api`;
-        let currentUser = null;
-        try { currentUser = JSON.parse(localStorage.getItem('user') || 'null'); } catch (e) { localStorage.removeItem('user'); }
-        const currentLang = (window.I18N && typeof window.I18N.getCurrentLang === 'function') ? window.I18N.getCurrentLang() : (localStorage.getItem('site_lang') || 'en');
+        let html = '';
+        if(promo.length)    html += buildSection('promo',   '🔥','Special Promotions', promo.length,   '#34C759', promo);
+        if(featured.length) html += buildSection('featured','⭐','Premium Listings',   featured.length, '#F5A623', featured);
+        if(boosted.length)  html += buildSection('boosted', '🚀','Boosted Properties', boosted.length,  '#FF3B30', boosted);
+        if(popular.length)  html += buildSection('popular', '📈','Most Popular',        popular.length,  '#0A84FF', popular);
+        if(regular.length)  html += buildSection('regular', '🏠','All Properties',      regular.length,  '#6B7280', regular);
 
-        function toggleTheme() {
-            const current = document.documentElement.getAttribute('data-theme') || 'light';
-            const newTheme = current === 'dark' ? 'light' : 'dark';
-            document.documentElement.setAttribute('data-theme', newTheme);
-            localStorage.setItem('site_theme', newTheme);
-            document.getElementById('themeIcon').className = newTheme === 'dark' ? 'fa-solid fa-sun' : 'fa-regular fa-moon';
-        }
+        content.innerHTML = html;
 
-        function updateGreeting() {
-            try {
-                if (currentUser) {
-                    const firstName = currentUser.FirstName || currentUser.FullName || 'User';
-                    const avatar = currentUser.ProfilePicturePath ? `<img src="${currentUser.ProfilePicturePath}" class="nav-avatar-img">` : `<div class="nav-avatar-placeholder">${firstName.charAt(0).toUpperCase()}</div>`;
-                    const greetingEl = document.getElementById('userGreeting');
-                    if (greetingEl) greetingEl.innerHTML = `<div class="nav-profile" onclick="toggleProfileModal()">${avatar}<span class="nav-user-name">${firstName}</span></div>`;
-                }
-            } catch (error) { console.error('updateGreeting error:', error); }
-        }
-
-        function toggleProfileModal() {
-            if (currentUser) {
-                const firstName = currentUser.FirstName || currentUser.FullName || 'User';
-                const lastName = currentUser.LastName || '';
-                const modalUserName = document.getElementById('modalUserName');
-                if (modalUserName) modalUserName.textContent = `${firstName} ${lastName}`.trim();
-                const bigAvatar = document.getElementById('bigAvatar');
-                if (bigAvatar) { if (currentUser.ProfilePicturePath) { bigAvatar.innerHTML = `<img src="${currentUser.ProfilePicturePath}" style="width:100%; height:100%; border-radius:50%; object-fit:cover;">`; } else { bigAvatar.textContent = (firstName.charAt(0) + (lastName.charAt(0) || '')).toUpperCase(); } }
-                const modalDashboardBtn = document.getElementById('modalDashboardBtn');
-                if (modalDashboardBtn) modalDashboardBtn.href = currentUser.UserType === 'Owner' ? 'AddHome.html' : 'Rent.html';
-                fetch(`${API_URL}/users/${currentUser.UserId}`).then(res => res.json()).then(data => { const el = document.getElementById('modalUserRating'); if (el) el.innerHTML = getStarIcons(data.AverageRating || 0); }).catch(e => console.error(e));
+        // Init carousels
+        ['promo','featured','boosted','popular','regular'].forEach(id=>{
+            const wrap = content.querySelector(`#${id}-track`)?.closest('.carousel-wrap');
+            if(wrap){
+                wrap.id = id+'-wrap';
+                buildCarousel(id+'-wrap', []);
             }
-            document.getElementById('modalOverlay').style.display = 'block';
-            document.getElementById('profileModal').classList.add('show');
-        }
-        function closeProfileModal() { document.getElementById('modalOverlay').style.display = 'none'; document.getElementById('profileModal').classList.remove('show'); }
-
-        async function uploadProfilePic(input) {
-            if (!input.files || !input.files[0]) return;
-            const formData = new FormData();
-            formData.append('profilePic', input.files[0]);
-            formData.append('userId', currentUser.UserId);
-            try {
-                const label = document.querySelector('.upload-btn-label');
-                const originalText = label.innerHTML;
-                label.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Uploading...';
-                const response = await fetch(`${API_URL}/users/profile-picture`, { method: 'POST', body: formData });
-                const result = await response.json();
-                if (result.success) { currentUser.ProfilePicturePath = result.avatarPath; localStorage.setItem('user', JSON.stringify(currentUser)); updateGreeting(); label.innerHTML = '<i class="fa-solid fa-check"></i> Updated!'; setTimeout(() => label.innerHTML = originalText, 2000); }
-            } catch (error) { alert('Failed to upload profile picture'); }
-        }
-
-        function logout() { localStorage.removeItem('user'); location.reload(); }
-        function viewProperty(propertyId, ownerId) {
-            if (!currentUser) { window.location.href = `property-detail.html?id=${propertyId}`; return; }
-            if (currentUser.UserId === ownerId) { window.location.href = `edit-property.html?id=${propertyId}`; return; }
-            window.location.href = `property-detail.html?id=${propertyId}`;
-        }
-
-        function createPromoCard(property) {
-            const priceInDB = parseFloat(property.PricePerNight);
-            const isMyProperty = currentUser && currentUser.UserType === 'Owner' && currentUser.UserId === property.OwnerId;
-            const ownerBasePrice = priceInDB / 1.1;
-            let ownerPriceAfterDiscount = ownerBasePrice, discountLabel = '';
-            if (property.DiscountType === 'Percentage' && parseFloat(property.DiscountPercentage) > 0) { const d = parseFloat(property.DiscountPercentage); ownerPriceAfterDiscount = ownerBasePrice * (1 - d / 100); discountLabel = `${d}% OFF`; }
-            else if (property.DiscountType === 'FixedAmount' && parseFloat(property.DiscountAmount) > 0) { const d = parseFloat(property.DiscountAmount); ownerPriceAfterDiscount = ownerBasePrice - d; discountLabel = `${d.toLocaleString()} DZD OFF`; }
-            const renterPaysPrice = ownerPriceAfterDiscount * 1.1;
-            return `<div class="promo-card"><div onclick="viewProperty(${property.PropertyId}, ${property.OwnerId})">${property.MainImage ? `<img src="${property.MainImage}" alt="${property.Title}" class="promo-card-img">` : '<div class="promo-card-img" style="background:#eee;display:flex;align-items:center;justify-content:center;"><i class="fa-solid fa-house" style="font-size:3rem;color:#ccc;"></i></div>'}<div class="promo-discount-badge">${discountLabel}</div><div class="promo-card-body"><h3>${property.Title}</h3><div style="color:#666;font-size:0.9rem;margin:5px 0;">📍 ${property.City}, ${property.Wilaya}</div><div class="promo-price-container"><div class="promo-old-price">${Math.round(priceInDB).toLocaleString()} DZD/night</div><div class="promo-new-price">${Math.round(renterPaysPrice).toLocaleString()} DZD/night</div></div></div></div><div style="padding:15px;border-top:1px solid var(--glass-border);display:flex;gap:10px;"><button onclick="viewProperty(${property.PropertyId}, ${property.OwnerId})" class="btn" style="flex:1;">${I18N_MESSAGES.card_btn_details[currentLang] || 'View'}</button>${!isMyProperty ? `<button onclick="openChat(event, ${property.PropertyId}, ${property.OwnerId}, '${property.OwnerName || 'Owner'}')" class="btn" style="flex:1;background:var(--accent);"><i class="fa-solid fa-comment"></i> ${I18N_MESSAGES.btn_chat[currentLang] || 'Chat'}</button>` : ''}</div></div>`;
-        }
-
-        function createPropertyCard(property) {
-            const isMyProperty = currentUser && currentUser.UserType === 'Owner' && currentUser.UserId === property.OwnerId;
-            const mainImage = property.MainImage ? (property.MainImage.startsWith('http') ? property.MainImage : `${SERVER_URL}${property.MainImage}`) : null;
-            const hasPromo = property.HasPromotion && (parseFloat(property.DiscountPercentage) > 0 || parseFloat(property.DiscountAmount) > 0);
-            const priceInDB = parseFloat(property.PricePerNight);
-            let displayPrice = priceInDB, discountLabel = '';
-            if (hasPromo) {
-                const ownerBasePrice = priceInDB / 1.1;
-                let ownerPriceAfterDiscount = ownerBasePrice;
-                if (property.DiscountType === 'Percentage' && parseFloat(property.DiscountPercentage) > 0) { ownerPriceAfterDiscount = ownerBasePrice * (1 - parseFloat(property.DiscountPercentage) / 100); discountLabel = `${property.DiscountPercentage}% OFF`; }
-                else if (property.DiscountType === 'FixedAmount' && parseFloat(property.DiscountAmount) > 0) { ownerPriceAfterDiscount = ownerBasePrice - parseFloat(property.DiscountAmount); discountLabel = `${parseFloat(property.DiscountAmount).toLocaleString()} DZD OFF`; }
-                displayPrice = ownerPriceAfterDiscount * 1.1;
-            }
-            return `<div class="card" style="position:relative;">${isMyProperty ? '<div class="my-property-badge" style="position:absolute;top:10px;right:10px;background:#34C759;color:white;padding:6px 12px;border-radius:12px;z-index:10;">My Property</div>' : ''}${hasPromo ? `<div class="promo-discount-badge" style="position:absolute;top:10px;left:10px;background:#FF4757;color:white;padding:8px 15px;border-radius:20px;font-weight:700;font-size:1rem;box-shadow:0 2px 8px rgba(0,0,0,0.2);z-index:10;">${discountLabel}</div>` : ''}<div class="card-img" onclick="viewProperty(${property.PropertyId}, ${property.OwnerId})">${mainImage ? `<img src="${mainImage}" alt="${property.Title}">` : '<i class="fa-solid fa-house card-placeholder-icon"></i>'}</div><div class="card-body"><h3>${property.Title}</h3><div class="location">📍 ${property.City}, ${property.Wilaya}</div>${hasPromo ? `<div class="promo-price-container" style="margin:10px 0;"><div class="promo-old-price" style="text-decoration:line-through;color:#999;font-size:0.9rem;">${Math.round(priceInDB).toLocaleString()} DZD/night</div><div class="price" style="color:#00C851;font-size:1.4rem;font-weight:700;">${Math.round(displayPrice).toLocaleString()} DZD/night</div></div>` : `<div class="price">${Math.round(priceInDB).toLocaleString()} DZD / night</div>`}<p style="font-size:0.9rem;color:#666;margin:10px 0;">${property.PropertyType} ⬢ ${property.NumofRooms} rooms</p><div style="display:flex;gap:10px;"><button onclick="viewProperty(${property.PropertyId}, ${property.OwnerId})" class="btn" style="flex:2;${isMyProperty ? 'background:#34C759;color:#fff;' : ''}">${isMyProperty ? 'Manage' : 'View Details'}</button>${!isMyProperty ? `<button onclick="openChat(event, ${property.PropertyId}, ${property.OwnerId}, '${property.OwnerName || 'Owner'}')" class="btn" style="flex:1;background:var(--accent);padding:8px;"><i class="fa-solid fa-comment"></i></button>` : ''}</div></div></div>`;
-        }
-
-        function applyFilters() { loadProperties(); }
-
-        async function loadProperties() {
-            try {
-                document.getElementById('loading').style.display = 'block';
-                ['promoCarousel','featuredSection','boostedSection','popularSection','regularSection','emptyState'].forEach(id => document.getElementById(id).style.display = 'none');
-                const response = await fetch(`${API_URL}/properties`);
-                if (!response.ok) throw new Error(`HTTP Error: ${response.status}`);
-                let properties = await response.json();
-                document.getElementById('loading').style.display = 'none';
-                if (!Array.isArray(properties)) throw new Error('Invalid data format');
-                const cityFilter = document.getElementById('filterCity').value, typeFilter = document.getElementById('filterType').value, roomsFilter = document.getElementById('filterRooms').value, priceFilter = parseInt(document.getElementById('filterPrice').value);
-                if (cityFilter) properties = properties.filter(p => p.Wilaya === cityFilter || p.City === cityFilter);
-                if (typeFilter) properties = properties.filter(p => p.PropertyType === typeFilter);
-                if (roomsFilter) { if (roomsFilter === "3") properties = properties.filter(p => parseInt(p.NumofRooms) >= 3); else properties = properties.filter(p => p.NumofRooms == roomsFilter); }
-                if (priceFilter) properties = properties.filter(p => p.PricePerNight <= priceFilter);
-                if (!properties || properties.length === 0) { document.getElementById('emptyState').style.display = 'block'; return; }
-                const promotional = properties.filter(p => p.HasPromotion && (parseFloat(p.DiscountPercentage) > 0 || parseFloat(p.DiscountAmount) > 0));
-                const featured = properties.filter(p => p.IsFeatured && !p.HasPromotion);
-                const boosted = properties.filter(p => p.IsBoosted && !p.IsFeatured && !p.HasPromotion);
-                const sortedByViews = [...properties].sort((a, b) => (b.ViewCount || 0) - (a.ViewCount || 0));
-                const popular = sortedByViews.slice(0, 6).filter(p => !p.IsFeatured && !p.IsBoosted && !p.HasPromotion);
-                const regular = properties.filter(p => !p.IsFeatured && !p.IsBoosted && !p.HasPromotion && !popular.includes(p));
-                const show = (id, countId, grid, items, fn) => { if (items.length > 0) { document.getElementById(id).style.display = 'block'; if (countId) document.getElementById(countId).textContent = items.length; document.getElementById(grid).innerHTML = items.map(fn).join(''); } };
-                if (promotional.length > 0) { document.getElementById('promoCarousel').style.display = 'block'; document.getElementById('promoScroll').innerHTML = promotional.map(createPromoCard).join(''); }
-                show('featuredSection','featuredCount','featuredGrid', featured, createPropertyCard);
-                show('boostedSection','boostedCount','boostedGrid', boosted, createPropertyCard);
-                show('popularSection','popularCount','popularGrid', popular, createPropertyCard);
-                show('regularSection','regularCount','regularGrid', regular, createPropertyCard);
-                if (!promotional.length && !featured.length && !boosted.length && !popular.length && !regular.length) document.getElementById('emptyState').style.display = 'block';
-            } catch (error) {
-                document.getElementById('loading').style.display = 'block';
-                document.getElementById('loading').innerHTML = `<div style="color:#ff3b30;padding:20px;"><i class="fa-solid fa-triangle-exclamation" style="font-size:2.5rem;margin-bottom:15px;"></i><h3 style="margin-bottom:10px;">Connection Error</h3><p style="font-size:0.95rem;color:#666;">We're having trouble connecting to the server.</p><button onclick="loadProperties()" class="btn" style="margin-top:15px;">Try Again</button></div>`;
-                console.error('loadProperties Error:', error);
-            }
-        }
-
-        document.getElementById('filterPrice').addEventListener('input', function(e) { document.getElementById('priceValueOut').innerText = Number(e.target.value).toLocaleString() + ' DZD'; });
-
-        try {
-            if (currentUser) {
-                updateGreeting();
-                if (document.getElementById('loginLink')) document.getElementById('loginLink').style.display = 'none';
-                if (document.getElementById('registerLink')) document.getElementById('registerLink').style.display = 'none';
-                if (currentUser.UserType === 'Owner') {
-                    const dashOverlay = document.getElementById('dashboardOverlay');
-                    const dashButtons = document.getElementById('dashButtons');
-                    if (dashOverlay) dashOverlay.style.display = 'block';
-                    if (dashButtons) dashButtons.innerHTML = `<a href="AddHome.html" class="btn" style="background:var(--accent);"><i class="fa-solid fa-plus"></i> Add Property</a><a href="my-property.html" class="btn"><i class="fa-solid fa-list"></i> My Properties</a><a href="profile.html" class="btn" style="background:#555;"><i class="fa-solid fa-user"></i> Profile</a>`;
-                }
-            }
-        } catch (initError) { console.error('Initialization error:', initError); }
-
-        document.addEventListener('DOMContentLoaded', () => {
-            const chatIntent = sessionStorage.getItem('openChatIntent');
-            if (chatIntent) { sessionStorage.removeItem('openChatIntent'); try { const { ownerId, ownerName, propId } = JSON.parse(chatIntent); setTimeout(() => { if (typeof openChat === 'function') openChat(null, propId, ownerId, ownerName); }, 1000); } catch (e) {} }
-            if (typeof populateWilayasSelect === 'function') { try { populateWilayasSelect('filterCity', 'All Wilayas'); } catch(e) {} }
-            loadProperties();
         });
 
-        let activeChat = null, chatPollInterval = null;
-        function toggleMsgSidebar() { const s = document.getElementById('msgSidebar'); s.classList.toggle('open'); if (s.classList.contains('open') && !activeChat) loadConversations(); else stopChatPolling(); }
-        function backToMsgList() { activeChat = null; stopChatPolling(); document.getElementById('msgChatView').style.display = 'none'; document.getElementById('msgListView').style.display = 'flex'; loadConversations(); }
-        function stopChatPolling() { if (chatPollInterval) { clearInterval(chatPollInterval); chatPollInterval = null; } }
+    } catch(err){
+        content.innerHTML = `<div class="empty-state"><i class="fa-solid fa-triangle-exclamation"></i><h3>Connection Error</h3><p>${err.message}</p><button class="filter-apply" onclick="loadProperties()" style="width:auto;padding:10px 24px;margin-top:12px">Retry</button></div>`;
+    }
+}
 
-        async function loadConversations() {
-            if (!currentUser) return;
-            try {
-                const response = await fetch(`${API_URL}/conversations/${currentUser.UserId}`);
-                const conversations = await response.json();
-                const list = document.getElementById('msgList');
-                if (conversations.length === 0) { list.innerHTML = `<div style="text-align:center;padding:40px;color:#8e8e93;">No messages yet</div>`; return; }
-                list.innerHTML = conversations.map(c => { const avatarContent = c.OtherUserAvatar ? `<img src="${c.OtherUserAvatar}" class="conv-avatar-img">` : c.OtherUserName.charAt(0); return `<div class="conv-item" onclick="openSidebarChat(${c.PropertyId}, ${currentUser.UserType === 'Renter' ? c.OwnerId : c.RenterId}, '${c.OtherUserName}', '${c.OtherUserAvatar || ''}', ${c.OtherUserRating || 0})"><div class="conv-avatar">${avatarContent}</div><div class="conv-info"><span class="conv-name">${c.OtherUserName}</span><span class="conv-property">${c.PropertyTitle || 'General Inquiry'}</span></div>${c.UnreadCount > 0 ? `<span class="conv-unread">${c.UnreadCount}</span>` : ''}</div>`; }).join('');
-                const totalUnread = conversations.reduce((sum, c) => sum + c.UnreadCount, 0);
-                const badge = document.getElementById('msgBtnBadge');
-                if (totalUnread > 0) { badge.textContent = totalUnread; badge.style.display = 'block'; } else { badge.style.display = 'none'; }
-            } catch (error) { console.error('Failed to load conversations:', error); }
-        }
+function applyFilters(){ loadProperties(); }
+function viewProperty(id, ownerId){
+    if(!currentUser){ window.location.href=`property-detail.html?id=${id}`; return; }
+    if(currentUser.UserId===ownerId){ window.location.href=`edit-property.html?id=${id}`; return; }
+    window.location.href=`property-detail.html?id=${id}`;
+}
 
-        async function openSidebarChat(propertyId, otherUserId, name, avatar, rating) {
-            activeChat = { propertyId, otherUserId, name, avatar, rating };
-            if (!name || !avatar || !rating) { try { const res = await fetch(`${API_URL}/users/${otherUserId}`); const data = await res.json(); activeChat.name = `${data.FirstName} ${data.LastName}`; activeChat.avatar = data.ProfilePicturePath; activeChat.rating = data.AverageRating; } catch (e) {} }
-            document.getElementById('msgListView').style.display = 'none'; document.getElementById('msgChatView').style.display = 'flex';
-            document.getElementById('activeChatName').textContent = activeChat.name;
-            const avatarEl = document.getElementById('activeChatAvatar');
-            if (activeChat.avatar && activeChat.avatar !== 'null') { avatarEl.innerHTML = `<img src="${activeChat.avatar}" class="conv-avatar-img">`; } else { avatarEl.innerHTML = activeChat.name.charAt(0); }
-            document.getElementById('activeChatRating').innerHTML = getStarIcons(activeChat.rating);
-            loadSidebarMessages(); stopChatPolling(); chatPollInterval = setInterval(loadSidebarMessages, 3000);
-            document.getElementById('msgSidebar').classList.add('open');
-        }
+/* ═══════════════════════ MESSAGING ═══════════════════════ */
+let activeChat = null, chatPoll = null;
+function toggleMsgSidebar(){ const s=document.getElementById('msgSidebar'); s.classList.toggle('open'); if(s.classList.contains('open')&&!activeChat) loadConversations(); else stopPoll(); }
+function stopPoll(){ if(chatPoll){clearInterval(chatPoll);chatPoll=null;} }
+function backToMsgList(){ activeChat=null; stopPoll(); document.getElementById('msgChatView').style.display='none'; document.getElementById('msgListView').style.display='flex'; loadConversations(); }
 
-        function getStarIcons(rating) { let stars = ''; const r = parseFloat(rating) || 0; for (let i = 1; i <= 5; i++) { if (i <= Math.floor(r)) stars += '<i class="fa-solid fa-star"></i>'; else if (i - 0.5 <= r) stars += '<i class="fa-solid fa-star-half-stroke"></i>'; else stars += '<i class="fa-regular fa-star"></i>'; } return stars + ` (${r.toFixed(1)})`; }
+async function loadConversations(){
+    if(!currentUser) return;
+    try{
+        const r=await fetch(`${API_URL}/conversations/${currentUser.UserId}`);
+        const convs=await r.json();
+        const list=document.getElementById('msgList');
+        if(!convs.length){ list.innerHTML=`<div style="text-align:center;padding:40px;color:var(--muted)">No messages yet</div>`; return; }
+        list.innerHTML=convs.map(c=>`
+            <div class="conv-item" onclick="openSidebarChat(${c.PropertyId},${currentUser.UserType==='Renter'?c.OwnerId:c.RenterId},'${c.OtherUserName}','${c.OtherUserAvatar||''}',${c.OtherUserRating||0})">
+                <div class="conv-avatar">${c.OtherUserAvatar?`<img src="${c.OtherUserAvatar}" class="conv-avatar-img">`:c.OtherUserName.charAt(0)}</div>
+                <div class="conv-info"><span class="conv-name">${c.OtherUserName}</span><span class="conv-property">${c.PropertyTitle||'Inquiry'}</span></div>
+                ${c.UnreadCount>0?`<span class="conv-unread">${c.UnreadCount}</span>`:''}
+            </div>`).join('');
+        const total=convs.reduce((s,c)=>s+c.UnreadCount,0);
+        const badge=document.getElementById('msgBtnBadge');
+        badge.textContent=total; badge.style.display=total?'block':'none';
+    }catch(e){}
+}
 
-        async function loadSidebarMessages() {
-            if (!activeChat || !currentUser) return;
-            try {
-                const url = activeChat.propertyId ? `${API_URL}/messages/${currentUser.UserId}/${activeChat.otherUserId}?propertyId=${activeChat.propertyId}` : `${API_URL}/messages/${currentUser.UserId}/${activeChat.otherUserId}`;
-                const response = await fetch(url); const messages = await response.json();
-                const container = document.getElementById('chatMessages');
-                const isAtBottom = container.scrollHeight - container.scrollTop <= container.clientHeight + 100;
-                container.innerHTML = messages.map(m => { const isSent = m.SenderId == currentUser.UserId; const time = new Date(m.SentAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }); return `<div class="msg-bubble ${isSent ? 'msg-sent' : 'msg-received'}">${m.MessageText}<span class="msg-time">${time}</span></div>`; }).join('');
-                if (isAtBottom) container.scrollTop = container.scrollHeight;
-            } catch (error) { console.error('Sidebar chat load error:', error); }
-        }
+async function openSidebarChat(propId, otherId, name, avatar, rating){
+    activeChat={propId,otherId,name,avatar,rating};
+    document.getElementById('msgListView').style.display='none';
+    document.getElementById('msgChatView').style.display='flex';
+    document.getElementById('activeChatName').textContent=name;
+    const av=document.getElementById('activeChatAvatar');
+    av.innerHTML=avatar&&avatar!=='null'?`<img src="${avatar}" style="width:100%;height:100%;border-radius:50%;object-fit:cover">`:name.charAt(0);
+    document.getElementById('activeChatRating').innerHTML=getStarIcons(rating);
+    loadSidebarMessages(); stopPoll(); chatPoll=setInterval(loadSidebarMessages,3000);
+    document.getElementById('msgSidebar').classList.add('open');
+}
 
-        async function sendSidebarMessage() {
-            const input = document.getElementById('chatInput'); const text = input.value.trim();
-            if (!text || !activeChat) return; input.value = '';
-            try { await fetch(`${API_URL}/messages`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ senderId: currentUser.UserId, receiverId: activeChat.otherUserId, propertyId: activeChat.propertyId, messageText: text }) }); loadSidebarMessages(); } catch (error) { console.error('Send failed:', error); }
-        }
+async function loadSidebarMessages(){
+    if(!activeChat||!currentUser) return;
+    try{
+        const url=activeChat.propId?`${API_URL}/messages/${currentUser.UserId}/${activeChat.otherId}?propertyId=${activeChat.propId}`:`${API_URL}/messages/${currentUser.UserId}/${activeChat.otherId}`;
+        const r=await fetch(url); const msgs=await r.json();
+        const c=document.getElementById('chatMessages');
+        const atBottom=c.scrollHeight-c.scrollTop<=c.clientHeight+80;
+        c.innerHTML=msgs.map(m=>{
+            const sent=m.SenderId==currentUser.UserId;
+            const time=new Date(m.SentAt).toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'});
+            const safe=String(m.MessageText).replace(/</g,'&lt;').replace(/>/g,'&gt;');
+            return `<div class="msg-bubble ${sent?'msg-sent':'msg-received'}">${safe}<span class="msg-time">${time}</span></div>`;
+        }).join('');
+        if(atBottom) c.scrollTop=c.scrollHeight;
+    }catch(e){}
+}
 
-        function openChat(event, propertyId, ownerId, ownerName) {
-            if (event) event.stopPropagation();
-            if (!currentUser) { alert('Please login to chat with owners'); window.location.href = 'login.html'; return; }
-            openSidebarChat(propertyId, ownerId, ownerName, null, 0);
-        }
+async function sendSidebarMessage(){
+    const inp=document.getElementById('chatInput'); const text=inp.value.trim();
+    if(!text||!activeChat) return; inp.value='';
+    try{
+        await fetch(`${API_URL}/messages`,{method:'POST',headers:{'Content-Type':'application/json'},
+        body:JSON.stringify({senderId:currentUser.UserId,receiverId:activeChat.otherId,propertyId:activeChat.propId,messageText:text})});
+        loadSidebarMessages();
+    }catch(e){}
+}
 
-        if (currentUser) { loadConversations(); setInterval(loadConversations, 10000); }
-    </script>
+function openChat(e, propId, ownerId, ownerName){
+    if(e) e.stopPropagation();
+    if(!currentUser){window.location.href='login.html';return;}
+    openSidebarChat(propId, ownerId, ownerName, null, 0);
+}
 
-    <div class="modal-overlay" id="modalOverlay" onclick="closeProfileModal()"></div>
-    <div class="profile-modal" id="profileModal">
-        <div class="modal-header">
-            <h2 style="font-weight: 800;" data-i18n="profile_settings">Profile Settings</h2>
-            <i class="fa-solid fa-times modal-close" onclick="closeProfileModal()"></i>
-        </div>
-        <div class="profile-pic-editor">
-            <div id="bigAvatar" class="big-avatar">?</div>
-            <label for="profilePicInput" class="upload-btn-label"><i class="fa-solid fa-camera"></i> <span data-i18n="change_pic">Change Photo</span></label>
-            <input type="file" id="profilePicInput" style="display: none;" accept="image/*" onchange="uploadProfilePic(this)">
-        </div>
-        <div id="profileBody">
-            <h3 id="modalUserName" style="text-align: center; margin-bottom: 5px;">User Name</h3>
-            <p id="modalUserRating" style="text-align: center; color: #ffc107; font-weight: 600;"></p>
-        </div>
-        <div class="modal-footer">
-            <a href="#" id="modalDashboardBtn" class="primary" style="text-decoration: none; text-align: center; padding: 12px; border-radius: 12px; font-weight: 600; background: var(--primary); color: white;"><span>Dashboard</span></a>
-            <button onclick="logout()" style="background: #ff3b30; border: none; padding: 12px; border-radius: 12px; color: white; font-weight: 600; cursor: pointer;">Logout</button>
-        </div>
-    </div>
+/* ═══════════════════════ INIT ═══════════════════════ */
+document.addEventListener('DOMContentLoaded', ()=>{
+    // Chat intent from property page
+    const intent=sessionStorage.getItem('openChatIntent');
+    if(intent){ sessionStorage.removeItem('openChatIntent'); try{ const {ownerId,ownerName,propId}=JSON.parse(intent); setTimeout(()=>openChat(null,propId,ownerId,ownerName),800); }catch(e){} }
 
-    <button class="msg-toggle-btn" id="msgToggleBtn" onclick="toggleMsgSidebar()" title="Messages">
-        <i class="fa-solid fa-message"></i>
-        <span class="msg-badge" id="msgBtnBadge" style="display: none;">0</span>
-    </button>
+    // Populate wilaya filter
+    if(typeof populateWilayasSelect==='function'){ try{ populateWilayasSelect('filterCity','All Wilayas'); }catch(e){} }
 
-    <div class="msg-sidebar" id="msgSidebar">
-        <div id="msgListView" class="msg-view">
-            <div class="msg-sidebar-header">
-                <h2 style="font-size: 1.2rem; font-weight: 800; flex: 1;" data-i18n="msg_title">Messages</h2>
-                <button onclick="toggleMsgSidebar()" style="background:none; border:none; font-size:1.2rem; cursor:pointer; color:#8e8e93;"><i class="fa-solid fa-times"></i></button>
-            </div>
-            <div class="msg-list" id="msgList"><div style="text-align:center; padding:40px;">Loading conversations...</div></div>
-        </div>
-        <div id="msgChatView" class="msg-view" style="display: none;">
-            <div class="msg-sidebar-header">
-                <i class="fa-solid fa-arrow-left back-to-list" onclick="backToMsgList()"></i>
-                <div class="chat-header-user">
-                    <div id="activeChatAvatar" class="chat-user-avatar">?</div>
-                    <div class="chat-user-info">
-                        <span id="activeChatName" class="chat-user-name">User</span>
-                        <span id="activeChatRating" class="chat-user-rating"></span>
-                    </div>
-                </div>
-                <button onclick="toggleMsgSidebar()" style="background:none; border:none; font-size:1.2rem; cursor:pointer; color:#8e8e93;"><i class="fa-solid fa-times"></i></button>
-            </div>
-            <div id="chatMessages" class="chat-messages"></div>
-            <div class="chat-input-area">
-                <input type="text" id="chatInput" class="chat-input" placeholder="Type your message..." onkeypress="if(event.key==='Enter') sendSidebarMessage()">
-                <button class="chat-send-btn" onclick="sendSidebarMessage()"><i class="fa-solid fa-paper-plane"></i></button>
-            </div>
-        </div>
-    </div>
+    // User
+    if(currentUser){ updateGreeting(); loadConversations(); setInterval(loadConversations,10000); }
+
+    loadProperties();
+});
+</script>
 </body>
 </html>
