@@ -1,9 +1,10 @@
-import { v2 as cloudinary } from 'cloudinary';
+import cloudinary from 'cloudinary';
 import { CloudinaryStorage } from 'multer-storage-cloudinary';
 import multer from 'multer';
 import dotenv from 'dotenv';
 dotenv.config();
 
+// multer-storage-cloudinary v4 requires cloudinary v1 (default export), NOT v2
 cloudinary.config({
   cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
   api_key:    process.env.CLOUDINARY_API_KEY,
@@ -11,8 +12,8 @@ cloudinary.config({
 });
 
 // For property images
-export const propertyStorage = new CloudinaryStorage({
-  cloudinary,
+const propertyStorage = new CloudinaryStorage({
+  cloudinary: cloudinary,
   params: {
     folder: 'darlink/properties',
     allowed_formats: ['jpg', 'jpeg', 'png'],
@@ -21,8 +22,8 @@ export const propertyStorage = new CloudinaryStorage({
 });
 
 // For ID card images
-export const idStorage = new CloudinaryStorage({
-  cloudinary,
+const idStorage = new CloudinaryStorage({
+  cloudinary: cloudinary,
   params: {
     folder: 'darlink/ids',
     allowed_formats: ['jpg', 'jpeg', 'png'],
