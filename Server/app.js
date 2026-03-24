@@ -11,7 +11,7 @@ import fs from 'fs';
 import pool from './connect.js';
 import { extractIDFromImage, validateAlgerianID, parseAlgerianID } from './ocr.js';
 import chargily from './chargily-config.js';
-import { propertyUpload, idUpload } from './cloudinary-config.js';
+import { propertyUpload, idUpload, cloudinaryV2 } from './cloudinary-config.js';
 dotenv.config();
 
 const app = express();
@@ -2048,30 +2048,29 @@ app.get('/api/payment/booking-status/:bookingId', async (req, res) => {
 // ================================================================
 
 app.get('/api/test-cloudinary', async (req, res) => {
-    const vars = {
-      CLOUDINARY_CLOUD_NAME: process.env.CLOUDINARY_CLOUD_NAME ? '✅ set: ' + process.env.CLOUDINARY_CLOUD_NAME : '❌ MISSING',
-      CLOUDINARY_API_KEY:    process.env.CLOUDINARY_API_KEY    ? '✅ set' : '❌ MISSING',
-      CLOUDINARY_API_SECRET: process.env.CLOUDINARY_API_SECRET ? '✅ set' : '❌ MISSING',
-    };
-  
-    const allSet = !Object.values(vars).some(v => v.includes('MISSING'));
-  
-    if (!allSet) {
-      return res.status(500).json({
-        ok: false,
-        message: 'Go to Railway Dashboard → your service → Variables tab → add the missing vars',
-        vars
-      });
-    }
-  
-    try {
-      const { cloudinaryV2 } = await import('./cloudinary-config.js');
-      const result = await cloudinaryV2.api.ping();
-      res.json({ ok: true, message: 'Cloudinary is working!', ping: result, vars });
-    } catch (err) {
-      res.status(500).json({ ok: false, message: 'Cloudinary ping failed', error: err.message, vars });
-    }
-  });
+  const vars = {
+    CLOUDINARY_CLOUD_NAME: process.env.CLOUDINARY_CLOUD_NAME ? '✅ set: ' + process.env.CLOUDINARY_CLOUD_NAME : '❌ MISSING',
+    CLOUDINARY_API_KEY:    process.env.CLOUDINARY_API_KEY    ? '✅ set' : '❌ MISSING',
+    CLOUDINARY_API_SECRET: process.env.CLOUDINARY_API_SECRET ? '✅ set' : '❌ MISSING',
+  };
+ 
+  const allSet = !Object.values(vars).some(v => v.includes('MISSING'));
+  if (!allSet) {
+    return res.status(500).json({
+      ok: false,
+      message: 'Go to Railway Dashboard → your service → Variables tab → add the missing vars',
+      vars
+    });
+  }
+ 
+  try {
+    // cloudinaryV2 is imported at the top of app.js — no dynamic import needed
+    const result = await cloudinaryV2.api.ping();
+    res.json({ ok: true, message: 'Cloudinary is working! Images will upload correctly.', ping: result, vars });
+  } catch (err) {
+    res.status(500).json({ ok: false, message: 'Cloudinary ping failed', error: err.message, vars });
+  }
+});
 
 // Start server
 app.listen(process.env.PORT, () => {
