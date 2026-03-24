@@ -909,24 +909,25 @@
     // ===== FORM SUBMISSION =====
     document.getElementById('addPropertyForm').onsubmit = async function(e) {
         e.preventDefault();
-
+     
         const lat = document.getElementById('Latitude').value;
         const lng = document.getElementById('Longitude').value;
-
+     
         if (!lat || !lng) {
             message.innerHTML = `<div class="message error"><i class="fa-solid fa-exclamation-circle"></i> ${t('set_location')}</div>`;
             return;
         }
-
+     
         if (selectedFiles.length === 0) {
             message.innerHTML = `<div class="message error"><i class="fa-solid fa-exclamation-circle"></i> ${t('upload_image')}</div>`;
             return;
         }
-
+     
         const submitBtn = document.getElementById('submitBtn');
         submitBtn.disabled = true;
         submitBtn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> ${t('submitting')}`;
-
+        message.innerHTML = '';
+     
         const formData = new FormData();
         formData.append('Title', document.getElementById('Title').value.trim());
         formData.append('Description', document.getElementById('Description').value.trim());
@@ -940,23 +941,36 @@
         formData.append('AvailabilityStatus', document.getElementById('AvailabilityStatus').value);
         formData.append('NumofRooms', Number(document.getElementById('NumofRooms').value));
         formData.append('OwnerId', user.UserId);
-        
+     
         if (selectedFeatures.length > 0) {
             formData.append('FeatureIds', JSON.stringify(selectedFeatures));
         }
-
+     
         selectedFiles.forEach((file) => {
             formData.append('images', file);
         });
-
+     
+        // 60 second timeout — Cloudinary uploads can be slow
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => controller.abort(), 60000);
+     
         try {
             const response = await fetch(`${API_URL}/properties`, {
                 method: 'POST',
-                body: formData
+                body: formData,
+                signal: controller.signal
             });
-
-            const data = await response.json();
-
+     
+            clearTimeout(timeoutId);
+     
+            // Always try to parse JSON — even on error it has details
+            let data;
+            try {
+                data = await response.json();
+            } catch {
+                data = { error: `HTTP ${response.status}: ${response.statusText}` };
+            }
+     
             if (response.ok) {
                 message.innerHTML = `<div class="message success"><i class="fa-solid fa-check-circle"></i> ${t('property_added')}</div>`;
                 addPropertyForm.reset();
@@ -964,22 +978,34 @@
                 selectedFeatures = [];
                 document.getElementById('imagePreview').innerHTML = '';
                 displaySelectedFeatures();
-                
-                setTimeout(() => {
-                    window.location.href = 'my-property.html';
-                }, 2000);
+                setTimeout(() => { window.location.href = 'my-property.html'; }, 2000);
             } else {
-                message.innerHTML = `<div class="message error"><i class="fa-solid fa-exclamation-circle"></i> ${data.error}</div>`;
+                // Show exact server error so you can diagnose
+                const errMsg = data.error || data.details || `Server returned ${response.status}`;
+                message.innerHTML = `<div class="message error"><i class="fa-solid fa-exclamation-circle"></i> Error: ${errMsg}</div>`;
+                console.error('Server error response:', data);
             }
+     
         } catch (error) {
-            message.innerHTML = `<div class="message error"><i class="fa-solid fa-exclamation-circle"></i> ${t('network_error')}</div>`;
-            console.error('Error:', error);
+            clearTimeout(timeoutId);
+            if (error.name === 'AbortError') {
+                message.innerHTML = `<div class="message error">
+                    <i class="fa-solid fa-clock"></i>
+                    Request timed out after 60s. Possible causes:<br>
+                    • Cloudinary env vars not set in Railway<br>
+                    • Server is down — check Railway logs<br>
+                    • Visit: <a href="https://darlink-production.up.railway.app/api/test-cloudinary" target="_blank" style="color:white;text-decoration:underline;">test-cloudinary endpoint</a>
+                </div>`;
+            } else {
+                message.innerHTML = `<div class="message error"><i class="fa-solid fa-exclamation-circle"></i> Network error: ${error.message}</div>`;
+            }
+            console.error('Submit error:', error);
         } finally {
             submitBtn.disabled = false;
             submitBtn.innerHTML = `<i class="fa-solid fa-plus-circle"></i> ${t('submit_btn')}`;
         }
     };
-
+     
     // Initialize
     loadFeatures();
 </script>
