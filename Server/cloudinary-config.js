@@ -1,22 +1,23 @@
-// cloudinary-config.js - FINAL FIXED VERSION (works on Railway)
+// cloudinary-config.js - FIXED & COMPLETE (No more ReferenceError)
 
 import dotenv from 'dotenv';
-dotenv.config();   // ← MUST be at the very top
+dotenv.config();   // Load env vars first
 
-import cloudinary from 'cloudinary';   // This imports v1 (default)
+import cloudinary from 'cloudinary';                    // v1 default
+import multer from 'multer';
+import { CloudinaryStorage } from 'multer-storage-cloudinary';   // ← THIS WAS MISSING
 
 const cloudName = process.env.CLOUDINARY_CLOUD_NAME;
 const apiKey    = process.env.CLOUDINARY_API_KEY;
 const apiSecret = process.env.CLOUDINARY_API_SECRET;
 
 if (!cloudName || !apiKey || !apiSecret) {
-  console.error('❌ Cloudinary env vars MISSING on Railway!');
-  console.error('Vars received:', { cloudName, apiKey: apiKey ? '***' : null, apiSecret: apiSecret ? '***' : null });
+  console.error('❌ Cloudinary env vars MISSING!');
 } else {
   console.log('✅ Cloudinary credentials loaded successfully → Cloud:', cloudName);
 }
 
-// Configure once
+// Configure Cloudinary
 cloudinary.config({
   cloud_name: cloudName,
   api_key: apiKey,
@@ -24,6 +25,7 @@ cloudinary.config({
   secure: true
 });
 
+// Storage for properties
 export const propertyStorage = new CloudinaryStorage({
   cloudinary: cloudinary,
   params: {
@@ -33,6 +35,7 @@ export const propertyStorage = new CloudinaryStorage({
   },
 });
 
+// Storage for ID cards
 export const idStorage = new CloudinaryStorage({
   cloudinary: cloudinary,
   params: {
@@ -58,7 +61,7 @@ export const idUpload = multer({
   limits: { fileSize: 5 * 1024 * 1024 },
 });
 
-// Export v2 for ping and direct calls
+// For the test endpoint (ping)
 export const cloudinaryV2 = cloudinary.v2;
 
 export default cloudinary;
