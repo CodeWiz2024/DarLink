@@ -193,6 +193,7 @@ app.post('/api/users/login', async (req, res) => {
 });
 
 // Property endpoints — uses Cloudinary propertyUpload
+// Property endpoints — NEW manual upload with upload_stream
 app.post('/api/properties', propertyUpload.array('images', 10), async (req, res) => {
     try {
         let { 
@@ -225,6 +226,7 @@ app.post('/api/properties', propertyUpload.array('images', 10), async (req, res)
             return res.status(400).json({ error: 'At least one property image is required' });
         }
 
+        // Check owner
         const [owners] = await pool.query(
             'SELECT UserId, UserType FROM USER_a WHERE UserId = ? AND UserType = "Owner"',
             [OwnerId]
@@ -238,6 +240,7 @@ app.post('/api/properties', propertyUpload.array('images', 10), async (req, res)
         const lng = Longitude || null;
         const status = AvailabilityStatus || 'Active';
 
+        // Insert property first
         const [result] = await pool.query(
             `INSERT INTO Property 
             (Title, Description, Address, City, Wilaya, Latitude, Longitude, PropertyType, PricePerNight, AvailabilityStatus, NumofRooms, OwnerId) 
@@ -247,6 +250,7 @@ app.post('/api/properties', propertyUpload.array('images', 10), async (req, res)
 
         const propertyId = result.insertId;
 
+        // Insert features
         if (featureIdsArray && featureIdsArray.length > 0) {
             const featurePromises = featureIdsArray.map(fid =>
                 pool.query('INSERT INTO has_features (PropertyId, FeatureId) VALUES (?, ?)', [propertyId, fid])
@@ -254,10 +258,12 @@ app.post('/api/properties', propertyUpload.array('images', 10), async (req, res)
             await Promise.all(featurePromises);
         }
 
-        // Cloudinary returns full HTTPS URL in file.path
-        const imageInsertPromises = req.files.map((file, index) => {
-            const imageURL = file.path;
+        // === NEW: Upload images to Cloudinary using upload_stream ===
+        const imageInsertPromises = req.files.map(async (file, index) => {
+            const result = await uploadToCloudinary(file.buffer, 'darlink/properties');
+            const imageURL = result.secure_url;        // Full HTTPS URL
             const caption = index === 0 ? 'Main Image' : `Image ${index + 1}`;
+            
             return pool.query(
                 'INSERT INTO PROPERTY_Image (PropertyId, ImageURL, Caption) VALUES (?, ?, ?)',
                 [propertyId, imageURL, caption]
@@ -272,9 +278,12 @@ app.post('/api/properties', propertyUpload.array('images', 10), async (req, res)
         });
 
     } catch (error) {
+        console.error('Property upload error:', error);
         res.status(500).json({ error: error.message });
     }
 });
+
+
 
 app.get('/api/properties/owner/:ownerId', async (req, res) => {
     try {

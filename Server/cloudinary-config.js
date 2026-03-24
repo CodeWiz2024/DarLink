@@ -1,20 +1,20 @@
-// cloudinary-config.js - FIXED & COMPLETE (No more ReferenceError)
+// cloudinary-config.js - NEW CLEAN VERSION (using upload_stream)
 
 import dotenv from 'dotenv';
-dotenv.config();   // Load env vars first
+dotenv.config();
 
-import cloudinary from 'cloudinary';                    // v1 default
+import cloudinary from 'cloudinary';
 import multer from 'multer';
-import { CloudinaryStorage } from 'multer-storage-cloudinary';   // ← THIS WAS MISSING
+import streamifier from 'streamifier';
 
 const cloudName = process.env.CLOUDINARY_CLOUD_NAME;
 const apiKey    = process.env.CLOUDINARY_API_KEY;
 const apiSecret = process.env.CLOUDINARY_API_SECRET;
 
 if (!cloudName || !apiKey || !apiSecret) {
-  console.error('❌ Cloudinary env vars MISSING!');
+  console.error('❌ Cloudinary environment variables are missing!');
 } else {
-  console.log('✅ Cloudinary credentials loaded successfully → Cloud:', cloudName);
+  console.log('✅ Cloudinary configured successfully → Cloud:', cloudName);
 }
 
 // Configure Cloudinary
@@ -25,28 +25,25 @@ cloudinary.config({
   secure: true
 });
 
-// Storage for properties
-export const propertyStorage = new CloudinaryStorage({
-  cloudinary: cloudinary,
-  params: {
-    folder: 'darlink/properties',
-    allowed_formats: ['jpg', 'jpeg', 'png', 'webp'],
-    transformation: [{ width: 1200, height: 900, crop: 'limit' }],
-  },
-});
+// Helper function to upload buffer to Cloudinary
+const uploadToCloudinary = (buffer, folder) => {
+  return new Promise((resolve, reject) => {
+    cloudinary.v2.uploader.upload_stream(
+      { folder: folder },
+      (error, result) => {
+        if (error) reject(error);
+        else resolve(result);
+      }
+    ).end(buffer);
+  });
+};
 
-// Storage for ID cards
-export const idStorage = new CloudinaryStorage({
-  cloudinary: cloudinary,
-  params: {
-    folder: 'darlink/ids',
-    allowed_formats: ['jpg', 'jpeg', 'png'],
-  },
-});
+// Multer with memory storage (recommended for Cloudinary)
+const memoryStorage = multer.memoryStorage();
 
 export const propertyUpload = multer({
-  storage: propertyStorage,
-  limits: { fileSize: 10 * 1024 * 1024 },
+  storage: memoryStorage,
+  limits: { fileSize: 10 * 1024 * 1024 }, // 10MB
   fileFilter: (req, file, cb) => {
     if (file.mimetype.startsWith('image/')) {
       cb(null, true);
@@ -57,11 +54,18 @@ export const propertyUpload = multer({
 });
 
 export const idUpload = multer({
-  storage: idStorage,
-  limits: { fileSize: 5 * 1024 * 1024 },
+  storage: memoryStorage,
+  limits: { fileSize: 5 * 1024 * 1024 }, // 5MB
+  fileFilter: (req, file, cb) => {
+    if (file.mimetype.startsWith('image/')) {
+      cb(null, true);
+    } else {
+      cb(new Error('Only image files are allowed'), false);
+    }
+  }
 });
 
-// For the test endpoint (ping)
+// Export the upload helper and cloudinary instance
+export { uploadToCloudinary };
 export const cloudinaryV2 = cloudinary.v2;
-
 export default cloudinary;
