@@ -2090,6 +2090,22 @@ app.get('/api/test-cloudinary', async (req, res) => {
   }
 });
 
+
+app.get('/api/test-cloudinary-debug', async (req, res) => {
+  try {
+    const result = await cloudinaryV2.api.ping();
+    res.json({ ok: true, result });
+  } catch (err) {
+    res.status(500).json({
+      ok: false,
+      error_message: err.message,
+      http_code: err.http_code,
+      name: err.name,
+      full_error: err.toString()
+    });
+  }
+});
+
 // Start server
 app.listen(process.env.PORT, () => {
     console.log(`🚀 Server running on http://localhost:${process.env.PORT}`);
