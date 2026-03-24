@@ -11,7 +11,7 @@ import fs from 'fs';
 import pool from './connect.js';
 import { extractIDFromImage, validateAlgerianID, parseAlgerianID } from './ocr.js';
 import chargily from './chargily-config.js';
-import { propertyUpload, idUpload, cloudinaryV2 } from './cloudinary-config.js';
+import { propertyUpload, idUpload, cloudinaryV2, uploadToCloudinary } from './cloudinary-config.js';
 dotenv.config();
 
 const app = express();
@@ -124,7 +124,8 @@ app.post('/api/users/register', idUpload.single('IDCardFront'), async (req, res)
         // Cloudinary returns full HTTPS URL in req.file.path
         let frontImagePath = null;
         if (req.file) {
-            frontImagePath = req.file.path;
+           const uploadResult = await uploadToCloudinary(req.file.buffer, 'darlink/ids');
+            frontImagePath = uploadResult.secure_url;
         }
 
         const hashedPassword = await bcrypt.hash(Password, 10);
@@ -449,8 +450,9 @@ app.put('/api/properties/:id', propertyUpload.array('images', 10), async (req, r
 
         // Cloudinary returns full HTTPS URL in file.path
         if (req.files && req.files.length > 0) {
-            const imageInsertPromises = req.files.map((file, index) => {
-                const imageURL = file.path;
+            const imageInsertPromises = req.files.map(async (file, index) => {
+                const result = await uploadToCloudinary(file.buffer, 'darlink/properties');
+                const imageURL = result.secure_url;
                 const caption = `Image ${index + 1}`;
                 return pool.query(
                     'INSERT INTO PROPERTY_Image (PropertyId, ImageURL, Caption) VALUES (?, ?, ?)',
