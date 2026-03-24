@@ -2040,6 +2040,39 @@ app.get('/api/payment/booking-status/:bookingId', async (req, res) => {
     }
 });
 
+
+// ================================================================
+// ADD THIS ROUTE TO app.js to diagnose the Railway Cloudinary issue
+// Place it near the top with other test endpoints
+// Then visit: https://darlink-production.up.railway.app/api/test-cloudinary
+// ================================================================
+
+app.get('/api/test-cloudinary', async (req, res) => {
+    const vars = {
+      CLOUDINARY_CLOUD_NAME: process.env.CLOUDINARY_CLOUD_NAME ? '✅ set: ' + process.env.CLOUDINARY_CLOUD_NAME : '❌ MISSING',
+      CLOUDINARY_API_KEY:    process.env.CLOUDINARY_API_KEY    ? '✅ set' : '❌ MISSING',
+      CLOUDINARY_API_SECRET: process.env.CLOUDINARY_API_SECRET ? '✅ set' : '❌ MISSING',
+    };
+  
+    const allSet = !Object.values(vars).some(v => v.includes('MISSING'));
+  
+    if (!allSet) {
+      return res.status(500).json({
+        ok: false,
+        message: 'Go to Railway Dashboard → your service → Variables tab → add the missing vars',
+        vars
+      });
+    }
+  
+    try {
+      const { cloudinaryV2 } = await import('./cloudinary-config.js');
+      const result = await cloudinaryV2.api.ping();
+      res.json({ ok: true, message: 'Cloudinary is working!', ping: result, vars });
+    } catch (err) {
+      res.status(500).json({ ok: false, message: 'Cloudinary ping failed', error: err.message, vars });
+    }
+  });
+
 // Start server
 app.listen(process.env.PORT, () => {
     console.log(`🚀 Server running on http://localhost:${process.env.PORT}`);
