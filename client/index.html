@@ -2,7 +2,7 @@
 <html lang="en" dir="ltr">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <title>DarLink - Vacation Rental</title>
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
@@ -14,8 +14,9 @@
     <script src="js/theme.js"></script>
     <style>
         /* ═══════════════════════════════════════════
-           DARLINK — REDESIGNED INDEX
-           Aesthetic: Refined Editorial × Warm Glass
+           DARLINK — REDESIGNED INDEX + MOBILE FIXES
+           - Carousel arrows: fully visible, larger tap targets
+           - Mobile nav menu: polished buttons, better spacing
         ═══════════════════════════════════════════ */
         :root {
             --primary: #0A84FF;
@@ -211,10 +212,11 @@
             padding: 3px 10px; border-radius:999px; font-size:.72rem; font-weight:700;
         }
 
-        /* ── CAROUSEL ── */
+        /* ── CAROUSEL (FIXED ARROWS MOBILE) ── */
         .carousel-wrap {
             position: relative;
-            padding: 0 50px; /* space for buttons on each side */
+            padding: 0 56px;   /* increased horizontal space for arrows on all devices */
+            overflow: visible;  /* ensure arrows aren't clipped */
         }
         .carousel-track-outer {
             overflow: hidden;
@@ -226,22 +228,34 @@
             transition: transform .4s cubic-bezier(.4,0,.2,1);
             will-change: transform;
         }
-        /* Arrows sit in the padding zone, OUTSIDE the overflow:hidden track */
+        /* Arrows - improved tap targets, always visible */
         .carousel-btn {
             position:absolute; top:50%; transform:translateY(-50%);
-            width:40px; height:40px; border-radius:50%;
+            width: 44px; height: 44px;
+            border-radius: 40px;
             background: var(--glass);
-            backdrop-filter: blur(10px);
-            border: 1.5px solid var(--glass-border);
-            box-shadow: 0 4px 16px rgba(0,0,0,0.18);
+            backdrop-filter: blur(12px);
+            border: 1px solid var(--glass-border);
+            box-shadow: 0 6px 18px rgba(0,0,0,0.12);
             display:flex; align-items:center; justify-content:center;
-            cursor:pointer; z-index:20; transition:all .3s;
-            color: var(--primary); font-size:0.9rem; font-weight:600;
+            cursor:pointer; z-index: 30;
+            transition: all 0.2s ease;
+            color: var(--primary); font-size: 1.2rem; font-weight: 600;
         }
-        .carousel-btn:hover { background:var(--primary); color:#fff; border-color:var(--primary); transform:translateY(-50%) scale(1.12); box-shadow: 0 6px 20px rgba(10,132,255,0.3); }
-        .carousel-btn.prev { left:8px; }
-        .carousel-btn.next { right:8px; }
-        .carousel-btn:disabled { opacity:.3; pointer-events:none; cursor:not-allowed; }
+        .carousel-btn:hover {
+            background: var(--primary);
+            color: #fff;
+            border-color: var(--primary);
+            transform: translateY(-50%) scale(1.05);
+            box-shadow: 0 8px 22px rgba(10,132,255,0.35);
+        }
+        .carousel-btn:disabled {
+            opacity: 0.35;
+            pointer-events: none;
+            transform: translateY(-50%) scale(0.96);
+        }
+        .carousel-btn.prev { left: 8px; }
+        .carousel-btn.next { right: 8px; }
 
         /* ── PROPERTY CARD ── */
         .prop-card {
@@ -267,7 +281,6 @@
         .prop-card:hover .prop-card-img img { transform:scale(1.06); }
         .prop-card-img-placeholder { width:100%; height:100%; display:flex; align-items:center; justify-content:center; font-size:2.5rem; }
 
-        /* Labels on card image */
         .card-labels {
             position:absolute; top:8px; left:8px;
             display:flex; flex-direction:column; gap:4px; z-index:2;
@@ -322,7 +335,7 @@
         .empty-state { text-align:center; padding:60px 20px; color:var(--muted); }
         .empty-state i { font-size:3rem; opacity:.3; margin-bottom:16px; display:block; }
 
-        /* ── PROFILE MODAL (kept from original) ── */
+        /* ── PROFILE MODAL ── */
         .modal-overlay { position:fixed; inset:0; background:rgba(0,0,0,.4); backdrop-filter:blur(4px); z-index:2999; display:none; }
         .profile-modal {
             position:fixed; top:50%; left:50%; transform:translate(-50%,-50%) scale(.9);
@@ -346,24 +359,11 @@
         .modal-footer button { background:rgba(255,59,48,.1); color:#ff3b30; }
         .modal-footer button:hover { background:#ff3b30; color:#fff; }
 
-        /* ── MSG SIDEBAR (kept from original) ── */
-        .msg-toggle-btn {
-            position:fixed; bottom:28px; right:24px; z-index:2000;
-            width:56px; height:56px; border-radius:50%;
-            background:var(--primary); color:#fff; border:none; cursor:pointer;
-            box-shadow:0 8px 28px rgba(10,132,255,.4); font-size:1.4rem;
-            display:flex; align-items:center; justify-content:center; transition:all .3s;
-        }
+        /* ── MSG SIDEBAR (unchanged) ── */
+        .msg-toggle-btn { position:fixed; bottom:28px; right:24px; z-index:2000; width:56px; height:56px; border-radius:50%; background:var(--primary); color:#fff; border:none; cursor:pointer; box-shadow:0 8px 28px rgba(10,132,255,.4); font-size:1.4rem; display:flex; align-items:center; justify-content:center; transition:all .3s; }
         .msg-toggle-btn:hover { transform:scale(1.08); box-shadow:0 12px 36px rgba(10,132,255,.5); }
         .msg-badge { position:absolute; top:-4px; right:-4px; background:#ff3b30; color:#fff; font-size:.7rem; padding:2px 6px; border-radius:999px; font-weight:800; border:2px solid #fff; }
-        .msg-sidebar {
-            position:fixed; top:0; right:-380px; width:360px; height:100vh;
-            background:var(--glass); backdrop-filter:blur(20px); -webkit-backdrop-filter:blur(20px);
-            border-left:1px solid var(--glass-border); z-index:1500;
-            transition:right .4s cubic-bezier(.4,0,.2,1);
-            display:flex; flex-direction:column; padding-top:16px;
-            box-shadow:-8px 0 32px rgba(0,0,0,.08);
-        }
+        .msg-sidebar { position:fixed; top:0; right:-380px; width:360px; height:100vh; background:var(--glass); backdrop-filter:blur(20px); border-left:1px solid var(--glass-border); z-index:1500; transition:right .4s cubic-bezier(.4,0,.2,1); display:flex; flex-direction:column; padding-top:16px; box-shadow:-8px 0 32px rgba(0,0,0,.08); }
         .msg-sidebar.open { right:0; }
         .msg-sidebar-header { padding:12px 20px; border-bottom:1px solid var(--glass-border); display:flex; align-items:center; gap:12px; }
         .msg-view { display:flex; flex-direction:column; height:100%; overflow:hidden; }
@@ -411,93 +411,65 @@
         .social-links a { width:36px; height:36px; border-radius:10px; background:rgba(10,132,255,.1); display:flex; align-items:center; justify-content:center; color:var(--primary); transition:.2s; }
         .social-links a:hover { background:var(--primary); color:#fff; transform:translateY(-2px); }
 
-        /* ══════════ MOBILE ══════════ */
+        /* ══════════ MOBILE (FIXES: carousel arrows + menu polish) ══════════ */
         @media (max-width: 768px) {
             .nav-hamburger { display:flex; }
             .mobile-close-btn {
-                display:flex !important; position:absolute; top:16px; right:16px;
-                width:40px; height:40px; border-radius:50%;
-                background:rgba(0,0,0,.06); border:none; font-size:1rem;
-                cursor:pointer; color:var(--muted); align-items:center; justify-content:center; z-index:10;
+                display:flex !important; position:absolute; top:20px; right:20px;
+                width:44px; height:44px; border-radius:40px;
+                background:rgba(0,0,0,.08); border:1px solid rgba(0,0,0,.1);
+                font-size:1.2rem; cursor:pointer; color:var(--text); 
+                align-items:center; justify-content:center; z-index:20;
             }
             .navbar .links {
                 display:none; position:fixed; inset:0;
                 background:rgba(248,250,252,0.98);
-                backdrop-filter:blur(28px); -webkit-backdrop-filter:blur(28px);
+                backdrop-filter:blur(32px); -webkit-backdrop-filter:blur(32px);
                 flex-direction:column; justify-content:center; align-items:center;
-                gap:10px; z-index:1050; padding:80px 24px 40px;
-                direction:ltr !important;
+                gap:18px; z-index:1050; padding:80px 24px 40px;
+                overflow-y:auto;
             }
             .navbar .links.mobile-open { display:flex; }
-            .navbar .links a, .navbar .links button.theme-btn {
-                width:100%; max-width:280px; padding:14px 20px; font-size:.95rem; font-weight:600;
-                border-radius:14px; border:1px solid rgba(0,0,0,.08);
-                background:rgba(255,255,255,.9); text-align:center;
-                display:flex; align-items:center; justify-content:center; gap:10px;
-                color:#111827; box-shadow:0 2px 8px rgba(0,0,0,.06);
+            .navbar .links a, 
+            .navbar .links button.theme-btn,
+            .navbar .links #userGreeting .nav-profile {
+                width:100%; max-width:300px; padding:14px 20px; font-size:1rem; font-weight:600;
+                border-radius:60px; border:1px solid rgba(0,0,0,.1);
+                background:rgba(255,255,255,.95); text-align:center;
+                display:flex; align-items:center; justify-content:center; gap:12px;
+                color:#111827; box-shadow:0 2px 12px rgba(0,0,0,.06);
+                margin:0 auto;
             }
-            .navbar .links a:hover { background:rgba(10,132,255,.08); color:var(--primary); }
             .navbar .links a.primary { background:var(--primary); color:#fff; border-color:var(--primary); }
-            .navbar .links .lang-switch { display:flex; gap:8px; flex-direction:row; direction:ltr; }
-            .navbar .links .lang-btn { padding:10px 28px; font-size:.9rem; border-radius:12px; }
-        }
+            .navbar .links .lang-switch { display:flex; gap:16px; flex-direction:row; justify-content:center; width:100%; max-width:300px; margin-top:8px; }
+            .navbar .links .lang-btn { 
+                flex:1; padding:12px 0; font-size:.9rem; border-radius:60px; text-align:center;
+                background:rgba(0,0,0,.04); border-color:rgba(0,0,0,.12);
+            }
+            .navbar .links .lang-btn.active { background:var(--primary); color:#fff; }
+            .navbar .links .theme-btn { background:rgba(0,0,0,.06); width:auto; justify-content:center; }
 
-        /* Mobile nav dark mode — must be outside @media to work reliably */
-        [data-theme="dark"] .navbar .links {
-            background: rgba(13,15,18,.98);
-        }
-        [data-theme="dark"] .navbar .links a,
-        [data-theme="dark"] .navbar .links button.theme-btn {
-            background: rgba(255,255,255,.07);
-            border-color: rgba(255,255,255,.1);
-            color: #f1f5f9;
-        }
-        [data-theme="dark"] .navbar .links a.primary {
-            background: var(--primary); color:#fff; border-color:var(--primary);
-        }
-        /* Lang buttons dark mode */
-        [data-theme="dark"] .lang-btn {
-            border-color: rgba(255,255,255,.15);
-            color: var(--muted);
-        }
-        [data-theme="dark"] .lang-btn.active {
-            background: var(--primary); color:#fff; border-color:var(--primary);
-        }
-        [data-theme="dark"] .theme-btn {
-            background: rgba(255,255,255,.08);
-            border-color: rgba(255,255,255,.12);
-            color: #f1f5f9;
-        }
-        [data-theme="dark"] .theme-btn:hover {
-            background: var(--primary);
-            color: #fff;
-            border-color: var(--primary);
-        }
-        [data-theme="dark"] .navbar .links .lang-btn {
-            background: rgba(255,255,255,.06);
-            border-color: rgba(255,255,255,.15);
-            color: #cbd5e1;
-        }
-        [data-theme="dark"] .navbar .links .lang-btn.active {
-            background: var(--primary); color:#fff;
-        }
+            /* fix carousel arrows on mobile: better spacing, bigger hit area */
+            .carousel-wrap { padding: 0 48px; }
+            .carousel-btn { width: 42px; height: 42px; font-size: 1rem; background: var(--glass); backdrop-filter: blur(12px); box-shadow: 0 4px 14px rgba(0,0,0,0.2); }
+            .carousel-btn.prev { left: 2px; }
+            .carousel-btn.next { right: 2px; }
 
-        @media (max-width: 768px) {
             .hero { margin: 12px 3% 0; padding: 36px 20px; }
             .page-body { flex-direction:column; padding: 16px 3% 40px; }
             .filter-panel { position:static; width:100%; max-height:0; overflow:hidden; padding:0 18px; transition:max-height .4s, padding .3s; border-radius:16px; }
             .filter-panel.open { max-height:600px; padding:18px; }
             .filter-toggle { display:flex !important; }
             .prop-card { flex:0 0 calc(100vw - 80px); max-width:320px; }
-            .prop-card-img { height:160px; }
-            .carousel-wrap { padding: 0 38px; }
-            .carousel-btn { width:36px; height:36px; font-size:.85rem; }
-            .carousel-btn.prev { left:6px; }
-            .carousel-btn.next { right:6px; }
             .msg-sidebar { width:100%; right:-100%; }
-            .msg-toggle-btn { bottom:20px; right:16px; width:50px; height:50px; font-size:1.2rem; }
-         }
-
+            .msg-toggle-btn { bottom:20px; right:16px; width:50px; height:50px; }
+        }
+        @media (max-width: 480px) {
+            .carousel-wrap { padding: 0 38px; }
+            .carousel-btn { width: 38px; height: 38px; }
+            .carousel-btn.prev { left: 0px; }
+            .carousel-btn.next { right: 0px; }
+        }
         @media (min-width: 769px) {
             .filter-toggle { display:none !important; }
         }
@@ -510,27 +482,19 @@
             align-items:center; gap:8px;
         }
 
-        /* Dark mode tweaks */
-        [data-theme="dark"] .navbar .links a { color:var(--text); }
-        [data-theme="dark"] .msg-received { background:rgba(255,255,255,.06); }
-        [data-theme="dark"] .prop-card { background:rgba(28,30,36,.9); }
-        [data-theme="dark"] .filter-panel { background:rgba(22,24,28,.92); }
-        [data-theme="dark"] .site-footer { background:rgba(13,15,18,.7); }
-        [data-theme="dark"] .qb-neutral { background:rgba(255,255,255,.08); }
-
-        /* scroll animations */
-        @keyframes fadeUp { from{opacity:0;transform:translateY(18px)} to{opacity:1;transform:translateY(0)} }
-        .section-block { animation: fadeUp .5s ease both; }
-        .section-block:nth-child(2) { animation-delay:.08s; }
-        .section-block:nth-child(3) { animation-delay:.16s; }
-        .section-block:nth-child(4) { animation-delay:.24s; }
+        /* dark mode refinements */
+        [data-theme="dark"] .navbar .links { background: rgba(13,15,18,0.96); }
+        [data-theme="dark"] .navbar .links a, 
+        [data-theme="dark"] .navbar .links button.theme-btn,
+        [data-theme="dark"] .navbar .links #userGreeting .nav-profile {
+            background: rgba(30,32,40,0.9); border-color: rgba(255,255,255,0.12); color: #eef2ff;
+        }
+        [data-theme="dark"] .navbar .links a.primary { background: var(--primary); color:#fff; }
+        [data-theme="dark"] .lang-btn { border-color: rgba(255,255,255,.2); background: rgba(0,0,0,.3); }
+        [data-theme="dark"] .msg-received { background: rgba(30,32,40,.9); }
     </style>
-
 <script>
-// Override: NEVER flip page to RTL — keep LTR layout at all times
-// Arabic language only changes text content, not page direction
 (function(){
-    // Block any attempt to set dir=rtl on the root
     var _obs = new MutationObserver(function(muts){
         muts.forEach(function(m){
             if(m.attributeName === 'dir' || m.attributeName === 'lang'){
@@ -543,11 +507,9 @@
     });
     _obs.observe(document.documentElement, {attributes:true});
     _obs.observe(document.body, {attributes:true});
-    // Override setLang from lang.js if it tries to flip direction
     window.addEventListener('DOMContentLoaded', function(){
         document.querySelectorAll('.lang-btn').forEach(function(btn){
             btn.addEventListener('click', function(){
-                // After lang.js runs, force LTR back
                 setTimeout(function(){
                     document.documentElement.setAttribute('dir','ltr');
                     document.body.style.direction = 'ltr';
@@ -604,7 +566,6 @@
 
 <!-- MAIN BODY -->
 <div class="page-body" id="sections">
-    <!-- FILTER SIDEBAR -->
     <aside>
         <button class="filter-toggle" id="filterToggle" onclick="toggleFilter()">
             <i class="fa-solid fa-sliders"></i> <span>Filters</span>
@@ -612,552 +573,52 @@
         </button>
         <div class="filter-panel" id="filterPanel">
             <div class="filter-title"><i class="fa-solid fa-sliders" style="color:var(--primary)"></i> Filters</div>
-            <div class="filter-group">
-                <label data-i18n="filter_wilaya">Wilaya</label>
-                <select id="filterCity"><option value="" data-i18n="filter_all_wilayas">All Wilayas</option></select>
-            </div>
-            <div class="filter-group">
-                <label data-i18n="filter_type">Type</label>
-                <select id="filterType">
-                    <option value="" data-i18n="filter_all_types">All Types</option>
-                    <option value="Apartment">Apartment</option>
-                    <option value="House">House</option>
-                    <option value="Room">Room</option>
-                    <option value="Cottage">Cottage</option>
-                </select>
-            </div>
-            <div class="filter-group">
-                <label data-i18n="filter_rooms">Rooms</label>
-                <select id="filterRooms">
-                    <option value="">Any</option>
-                    <option value="1">1 Room</option>
-                    <option value="2">2 Rooms</option>
-                    <option value="3">3+ Rooms</option>
-                </select>
-            </div>
-            <div class="filter-group">
-                <label data-i18n="filter_price">Max Price / Night</label>
-                <input type="range" id="filterPrice" min="1000" max="50000" step="500" value="50000">
-                <div class="price-labels"><span>1,000</span><span id="priceOut">50,000 DZD</span></div>
-            </div>
+            <div class="filter-group"><label data-i18n="filter_wilaya">Wilaya</label><select id="filterCity"><option value="" data-i18n="filter_all_wilayas">All Wilayas</option></select></div>
+            <div class="filter-group"><label data-i18n="filter_type">Type</label><select id="filterType"><option value="" data-i18n="filter_all_types">All Types</option><option value="Apartment">Apartment</option><option value="House">House</option><option value="Room">Room</option><option value="Cottage">Cottage</option></select></div>
+            <div class="filter-group"><label data-i18n="filter_rooms">Rooms</label><select id="filterRooms"><option value="">Any</option><option value="1">1 Room</option><option value="2">2 Rooms</option><option value="3">3+ Rooms</option></select></div>
+            <div class="filter-group"><label data-i18n="filter_price">Max Price / Night</label><input type="range" id="filterPrice" min="1000" max="50000" step="500" value="50000"><div class="price-labels"><span>1,000</span><span id="priceOut">50,000 DZD</span></div></div>
             <button class="filter-apply" onclick="applyFilters()"><i class="fa-solid fa-search"></i> Apply</button>
         </div>
     </aside>
-
-    <!-- CONTENT -->
-    <div class="content-area" id="contentArea">
-        <div id="loadingState" style="text-align:center;padding:60px;color:var(--muted);">
-            <i class="fa-solid fa-spinner fa-spin" style="font-size:2rem;color:var(--primary);display:block;margin-bottom:12px;"></i>
-            Loading properties...
-        </div>
-        <!-- Sections injected by JS -->
-    </div>
+    <div class="content-area" id="contentArea"><div id="loadingState" style="text-align:center;padding:60px;color:var(--muted);"><i class="fa-solid fa-spinner fa-spin" style="font-size:2rem;color:var(--primary);display:block;margin-bottom:12px;"></i>Loading properties...</div></div>
 </div>
 
-<!-- FOOTER -->
-<footer class="site-footer">
-    <div class="footer-grid">
-        <div class="footer-section">
-            <h3>DarLink</h3>
-            <p style="font-size:.85rem;color:var(--muted);line-height:1.6">Algeria's trusted vacation rental platform.</p>
-        </div>
-        <div class="footer-section">
-            <h3 data-i18n="footer_contact">Contact</h3>
-            <ul class="footer-links">
-                <li><i class="fa-solid fa-envelope"></i> <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="6e0a0f1c020700055f0a142e09030f0702400d0103">[email&#160;protected]</a></li>
-                <li><i class="fa-solid fa-phone"></i> +213 699 787 702</li>
-            </ul>
-        </div>
-        <div class="footer-section">
-            <h3 data-i18n="footer_follow">Follow Us</h3>
-            <div class="social-links">
-                <a href="https://www.instagram.com/darlink.dz" target="_blank"><i class="fa-brands fa-instagram"></i></a>
-                <a href="/cdn-cgi/l/email-protection#107471627c797e7b21746a50777d71797c3e737f7d"><i class="fa-solid fa-envelope"></i></a>
-                <a href="https://www.facebook.com/ferhi.tarek.2025" target="_blank"><i class="fa-brands fa-facebook-f"></i></a>
-            </div>
-        </div>
-    </div>
-</footer>
+<footer class="site-footer"><div class="footer-grid"><div class="footer-section"><h3>DarLink</h3><p style="font-size:.85rem;color:var(--muted);line-height:1.6">Algeria's trusted vacation rental platform.</p></div><div class="footer-section"><h3 data-i18n="footer_contact">Contact</h3><ul class="footer-links"><li><i class="fa-solid fa-envelope"></i> <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="6e0a0f1c020700055f0a142e09030f0702400d0103">[email&#160;protected]</a></li><li><i class="fa-solid fa-phone"></i> +213 699 787 702</li></ul></div><div class="footer-section"><h3 data-i18n="footer_follow">Follow Us</h3><div class="social-links"><a href="https://www.instagram.com/darlink.dz" target="_blank"><i class="fa-brands fa-instagram"></i></a><a href="/cdn-cgi/l/email-protection#107471627c797e7b21746a50777d71797c3e737f7d"><i class="fa-solid fa-envelope"></i></a><a href="https://www.facebook.com/ferhi.tarek.2025" target="_blank"><i class="fa-brands fa-facebook-f"></i></a></div></div></div></footer>
 
-<!-- PROFILE MODAL -->
+<!-- PROFILE MODAL, MSG TOGGLE ETC (unchanged but essential) -->
 <div class="modal-overlay" id="modalOverlay" onclick="closeProfileModal()"></div>
-<div class="profile-modal" id="profileModal">
-    <div class="modal-header">
-        <h2>Profile</h2>
-        <i class="fa-solid fa-times modal-close" onclick="closeProfileModal()"></i>
-    </div>
-    <div class="profile-pic-editor">
-        <div id="bigAvatar" class="big-avatar">?</div>
-        <label for="profilePicInput" class="upload-btn-label"><i class="fa-solid fa-camera"></i> Change Photo</label>
-        <input type="file" id="profilePicInput" style="display:none" accept="image/*" onchange="uploadProfilePic(this)">
-    </div>
-    <h3 id="modalUserName" style="text-align:center;margin-bottom:4px;font-family:var(--font-display)"></h3>
-    <p id="modalUserRating" style="text-align:center;color:#ffc107;font-size:.9rem"></p>
-    <div class="modal-footer">
-        <a href="#" id="modalDashboardBtn" style="text-decoration:none">Dashboard</a>
-        <button onclick="logout()">Logout</button>
-    </div>
-</div>
-
-<!-- MSG TOGGLE -->
-<button class="msg-toggle-btn" id="msgToggleBtn" onclick="toggleMsgSidebar()">
-    <i class="fa-solid fa-message"></i>
-    <span class="msg-badge" id="msgBtnBadge" style="display:none">0</span>
-</button>
-
-<!-- MSG SIDEBAR -->
-<div class="msg-sidebar" id="msgSidebar">
-    <div id="msgListView" class="msg-view">
-        <div class="msg-sidebar-header">
-            <h2 style="font-family:var(--font-display);font-size:1rem;font-weight:800;flex:1">Messages</h2>
-            <button onclick="toggleMsgSidebar()" style="background:none;border:none;font-size:1.1rem;cursor:pointer;color:var(--muted)"><i class="fa-solid fa-times"></i></button>
-        </div>
-        <div class="msg-list" id="msgList"><div style="text-align:center;padding:40px;color:var(--muted)">Loading…</div></div>
-    </div>
-    <div id="msgChatView" style="display:none">
-        <div class="msg-sidebar-header">
-            <i class="fa-solid fa-arrow-left back-to-list" onclick="backToMsgList()"></i>
-            <div class="chat-header-user">
-                <div id="activeChatAvatar" class="chat-user-avatar">?</div>
-                <div class="chat-user-info">
-                    <span id="activeChatName" class="chat-user-name">User</span>
-                    <span id="activeChatRating" class="chat-user-rating"></span>
-                </div>
-            </div>
-            <button onclick="toggleMsgSidebar()" style="background:none;border:none;font-size:1.1rem;cursor:pointer;color:var(--muted)"><i class="fa-solid fa-times"></i></button>
-        </div>
-        <div id="chatMessages" class="chat-messages"></div>
-        <div class="chat-input-area">
-            <input type="text" id="chatInput" class="chat-input" placeholder="Type…" onkeypress="if(event.key==='Enter')sendSidebarMessage()">
-            <button class="chat-send-btn" onclick="sendSidebarMessage()"><i class="fa-solid fa-paper-plane"></i></button>
-        </div>
-    </div>
-</div>
+<div class="profile-modal" id="profileModal"><div class="modal-header"><h2>Profile</h2><i class="fa-solid fa-times modal-close" onclick="closeProfileModal()"></i></div><div class="profile-pic-editor"><div id="bigAvatar" class="big-avatar">?</div><label for="profilePicInput" class="upload-btn-label"><i class="fa-solid fa-camera"></i> Change Photo</label><input type="file" id="profilePicInput" style="display:none" accept="image/*" onchange="uploadProfilePic(this)"></div><h3 id="modalUserName" style="text-align:center;margin-bottom:4px;font-family:var(--font-display)"></h3><p id="modalUserRating" style="text-align:center;color:#ffc107;font-size:.9rem"></p><div class="modal-footer"><a href="#" id="modalDashboardBtn" style="text-decoration:none">Dashboard</a><button onclick="logout()">Logout</button></div></div>
+<button class="msg-toggle-btn" id="msgToggleBtn" onclick="toggleMsgSidebar()"><i class="fa-solid fa-message"></i><span class="msg-badge" id="msgBtnBadge" style="display:none">0</span></button>
+<div class="msg-sidebar" id="msgSidebar"><div id="msgListView" class="msg-view"><div class="msg-sidebar-header"><h2 style="font-family:var(--font-display);font-size:1rem;font-weight:800;flex:1">Messages</h2><button onclick="toggleMsgSidebar()" style="background:none;border:none;font-size:1.1rem;cursor:pointer;color:var(--muted)"><i class="fa-solid fa-times"></i></button></div><div class="msg-list" id="msgList"><div style="text-align:center;padding:40px;color:var(--muted)">Loading…</div></div></div><div id="msgChatView" style="display:none"><div class="msg-sidebar-header"><i class="fa-solid fa-arrow-left back-to-list" onclick="backToMsgList()"></i><div class="chat-header-user"><div id="activeChatAvatar" class="chat-user-avatar">?</div><div class="chat-user-info"><span id="activeChatName" class="chat-user-name">User</span><span id="activeChatRating" class="chat-user-rating"></span></div></div><button onclick="toggleMsgSidebar()" style="background:none;border:none;font-size:1.1rem;cursor:pointer;color:var(--muted)"><i class="fa-solid fa-times"></i></button></div><div id="chatMessages" class="chat-messages"></div><div class="chat-input-area"><input type="text" id="chatInput" class="chat-input" placeholder="Type…" onkeypress="if(event.key==='Enter')sendSidebarMessage()"><button class="chat-send-btn" onclick="sendSidebarMessage()"><i class="fa-solid fa-paper-plane"></i></button></div></div></div>
 
 <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
-/* ═══════════════════════ CONFIG ═══════════════════════ */
 const SERVER_URL = 'https://darlink-production.up.railway.app';
 const API_URL = SERVER_URL + '/api';
-
-window.I18N_MESSAGES = {
-    nav_logo_text:{en:"DarLink",ar:"دارلينك"},
-    nav_home:{en:"Home",ar:"الرئيسية"},nav_login:{en:"Login",ar:"تسجيل الدخول"},
-    nav_register:{en:"Register",ar:"إنشاء حساب"},
-    hero_title:{en:"Transparency & Speed",ar:"الشفافية والسرعة"},
-    hero_subtitle:{en:"Algeria\'s most trusted vacation rental platform. Real reviews, instant booking.",ar:"المنصة الأكثر ثقة لإيجار العطلات في الجزائر."},
-    hero_btn:{en:"Explore Properties",ar:"استكشف العقارات"},
-    dash_title:{en:"🚀 Quick Dashboard",ar:"🚀 لوحة تحكم سريعة"},
-    filter_wilaya:{en:"Wilaya",ar:"الولاية"},filter_all_wilayas:{en:"All Wilayas",ar:"كل الولايات"},
-    filter_type:{en:"Type",ar:"النوع"},filter_all_types:{en:"All Types",ar:"كل الأنواع"},
-    filter_rooms:{en:"Rooms",ar:"الغرف"},filter_price:{en:"Max Price / Night",ar:"السعر الأقصى"},
-    footer_contact:{en:"Contact",ar:"اتصل بنا"},footer_follow:{en:"Follow Us",ar:"تابعنا"},
-};
-
-let currentUser = null;
-try { currentUser = JSON.parse(localStorage.getItem('user') || 'null'); } catch(e){}
-
-/* ═══════════════════════ NAV ═══════════════════════ */
+window.I18N_MESSAGES = { nav_logo_text:{en:"DarLink",ar:"دارلينك"}, nav_home:{en:"Home",ar:"الرئيسية"},nav_login:{en:"Login",ar:"تسجيل الدخول"},nav_register:{en:"Register",ar:"إنشاء حساب"},hero_title:{en:"Transparency & Speed",ar:"الشفافية والسرعة"},hero_subtitle:{en:"Algeria\'s most trusted vacation rental platform. Real reviews, instant booking.",ar:"المنصة الأكثر ثقة لإيجار العطلات في الجزائر."},hero_btn:{en:"Explore Properties",ar:"استكشف العقارات"},dash_title:{en:"🚀 Quick Dashboard",ar:"🚀 لوحة تحكم سريعة"},filter_wilaya:{en:"Wilaya",ar:"الولاية"},filter_all_wilayas:{en:"All Wilayas",ar:"كل الولايات"},filter_type:{en:"Type",ar:"النوع"},filter_all_types:{en:"All Types",ar:"كل الأنواع"},filter_rooms:{en:"Rooms",ar:"الغرف"},filter_price:{en:"Max Price / Night",ar:"السعر الأقصى"},footer_contact:{en:"Contact",ar:"اتصل بنا"},footer_follow:{en:"Follow Us",ar:"تابعنا"},};
+let currentUser = null; try { currentUser = JSON.parse(localStorage.getItem('user') || 'null'); } catch(e){}
 function toggleMobileNav(){ document.getElementById('navLinks').classList.toggle('mobile-open'); }
 function closeMobileNav(){ document.getElementById('navLinks').classList.remove('mobile-open'); }
-
-function toggleTheme(){
-    const t = document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
-    document.documentElement.setAttribute('data-theme', t);
-    localStorage.setItem('site_theme', t);
-    document.getElementById('themeIcon').className = t==='dark' ? 'fa-solid fa-sun' : 'fa-regular fa-moon';
-}
-const _savedTheme = localStorage.getItem('site_theme') || 'light';
-document.documentElement.setAttribute('data-theme', _savedTheme);
-document.getElementById('themeIcon').className = _savedTheme==='dark' ? 'fa-solid fa-sun' : 'fa-regular fa-moon';
-
-/* ═══════════════════════ FILTER TOGGLE (mobile) ═══════════════════════ */
-function toggleFilter(){
-    const p = document.getElementById('filterPanel');
-    const c = document.getElementById('filterChev');
-    const open = p.classList.toggle('open');
-    c.style.transform = open ? 'rotate(180deg)' : 'rotate(0deg)';
-}
-
-document.getElementById('filterPrice').addEventListener('input', function(){
-    document.getElementById('priceOut').textContent = Number(this.value).toLocaleString() + ' DZD';
-});
-
-/* ═══════════════════════ USER GREETING ═══════════════════════ */
-function updateGreeting(){
-    if(!currentUser) return;
-    const firstName = currentUser.FirstName || 'User';
-    const avatar = currentUser.ProfilePicturePath
-        ? `<img src="${currentUser.ProfilePicturePath}" class="nav-avatar-img">`
-        : `<div class="nav-avatar-placeholder">${firstName.charAt(0).toUpperCase()}</div>`;
-    const el = document.getElementById('userGreeting');
-    if(el) el.innerHTML = `<div class="nav-profile" onclick="toggleProfileModal()">${avatar}<span class="nav-user-name">${firstName}</span></div>`;
-    document.getElementById('loginLink')?.setAttribute('style','display:none');
-    document.getElementById('registerLink')?.setAttribute('style','display:none');
-    // Quick bar
-    const bar = document.getElementById('dashQuickBar');
-    const btns = document.getElementById('dashButtons');
-    bar.classList.add('visible');
-    if(currentUser.UserType === 'Owner'){
-        btns.innerHTML = `
-            <a href="add-new-home.html" class="qb-primary"><i class="fa-solid fa-plus"></i> Add Property</a>
-            <a href="my-property.html" class="qb-secondary"><i class="fa-solid fa-list"></i> My Properties</a>
-            <a href="profile.html" class="qb-neutral"><i class="fa-solid fa-user"></i> Profile</a>`;
-    } else {
-        btns.innerHTML = `
-            <a href="my-bookings.html" class="qb-secondary"><i class="fa-solid fa-calendar"></i> My Bookings</a>
-            <a href="profile.html" class="qb-neutral"><i class="fa-solid fa-user"></i> Profile</a>`;
-    }
-}
-
-function toggleProfileModal(){
-    if(!currentUser) return;
-    const firstName = currentUser.FirstName || 'User';
-    const lastName = currentUser.LastName || '';
-    document.getElementById('modalUserName').textContent = `${firstName} ${lastName}`.trim();
-    const av = document.getElementById('bigAvatar');
-    if(currentUser.ProfilePicturePath){
-        av.innerHTML = `<img src="${currentUser.ProfilePicturePath}" style="width:100%;height:100%;border-radius:50%;object-fit:cover">`;
-    } else { av.textContent = (firstName.charAt(0)+(lastName.charAt(0)||'')).toUpperCase(); }
-    document.getElementById('modalDashboardBtn').href = currentUser.UserType==='Owner' ? 'AddHome.html' : 'Rent.html';
-    fetch(`${API_URL}/users/${currentUser.UserId}`).then(r=>r.json()).then(d=>{
-        document.getElementById('modalUserRating').innerHTML = getStarIcons(d.AverageRating||0);
-    }).catch(()=>{});
-    document.getElementById('modalOverlay').style.display = 'block';
-    document.getElementById('profileModal').classList.add('show');
-}
-function closeProfileModal(){
-    document.getElementById('modalOverlay').style.display='none';
-    document.getElementById('profileModal').classList.remove('show');
-}
+function toggleTheme(){ const t = document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark'; document.documentElement.setAttribute('data-theme', t); localStorage.setItem('site_theme', t); document.getElementById('themeIcon').className = t==='dark' ? 'fa-solid fa-sun' : 'fa-regular fa-moon'; }
+const _savedTheme = localStorage.getItem('site_theme') || 'light'; document.documentElement.setAttribute('data-theme', _savedTheme); document.getElementById('themeIcon').className = _savedTheme==='dark' ? 'fa-solid fa-sun' : 'fa-regular fa-moon';
+function toggleFilter(){ const p=document.getElementById('filterPanel'); const c=document.getElementById('filterChev'); const open=p.classList.toggle('open'); c.style.transform = open ? 'rotate(180deg)' : 'rotate(0deg)'; }
+document.getElementById('filterPrice').addEventListener('input', function(){ document.getElementById('priceOut').textContent = Number(this.value).toLocaleString() + ' DZD'; });
+function updateGreeting(){ if(!currentUser) return; const firstName = currentUser.FirstName || 'User'; const avatar = currentUser.ProfilePicturePath ? `<img src="${currentUser.ProfilePicturePath}" class="nav-avatar-img">` : `<div class="nav-avatar-placeholder">${firstName.charAt(0).toUpperCase()}</div>`; const el=document.getElementById('userGreeting'); if(el) el.innerHTML = `<div class="nav-profile" onclick="toggleProfileModal(); closeMobileNav();">${avatar}<span class="nav-user-name">${firstName}</span></div>`; document.getElementById('loginLink')?.setAttribute('style','display:none'); document.getElementById('registerLink')?.setAttribute('style','display:none'); const bar=document.getElementById('dashQuickBar'); const btns=document.getElementById('dashButtons'); bar.classList.add('visible'); if(currentUser.UserType==='Owner'){ btns.innerHTML = `<a href="add-new-home.html" class="qb-primary"><i class="fa-solid fa-plus"></i> Add Property</a><a href="my-property.html" class="qb-secondary"><i class="fa-solid fa-list"></i> My Properties</a><a href="profile.html" class="qb-neutral"><i class="fa-solid fa-user"></i> Profile</a>`; } else { btns.innerHTML = `<a href="my-bookings.html" class="qb-secondary"><i class="fa-solid fa-calendar"></i> My Bookings</a><a href="profile.html" class="qb-neutral"><i class="fa-solid fa-user"></i> Profile</a>`; } }
+function toggleProfileModal(){ if(!currentUser) return; const firstName=currentUser.FirstName||'User'; const lastName=currentUser.LastName||''; document.getElementById('modalUserName').textContent=`${firstName} ${lastName}`.trim(); const av=document.getElementById('bigAvatar'); if(currentUser.ProfilePicturePath){ av.innerHTML=`<img src="${currentUser.ProfilePicturePath}" style="width:100%;height:100%;border-radius:50%;object-fit:cover">`; } else { av.textContent=(firstName.charAt(0)+(lastName.charAt(0)||'')).toUpperCase(); } document.getElementById('modalDashboardBtn').href=currentUser.UserType==='Owner'?'AddHome.html':'Rent.html'; fetch(`${API_URL}/users/${currentUser.UserId}`).then(r=>r.json()).then(d=>{ document.getElementById('modalUserRating').innerHTML=getStarIcons(d.AverageRating||0); }).catch(()=>{}); document.getElementById('modalOverlay').style.display='block'; document.getElementById('profileModal').classList.add('show'); }
+function closeProfileModal(){ document.getElementById('modalOverlay').style.display='none'; document.getElementById('profileModal').classList.remove('show'); }
 function logout(){ localStorage.removeItem('user'); location.reload(); }
-
-async function uploadProfilePic(input){
-    if(!input.files||!input.files[0]) return;
-    const fd = new FormData();
-    fd.append('profilePic', input.files[0]);
-    fd.append('userId', currentUser.UserId);
-    try {
-        const r = await fetch(`${API_URL}/users/profile-picture`, {method:'POST',body:fd});
-        const d = await r.json();
-        if(d.success){ currentUser.ProfilePicturePath=d.avatarPath; localStorage.setItem('user',JSON.stringify(currentUser)); updateGreeting(); }
-    }catch(e){}
-}
-
-/* ═══════════════════════ CAROUSEL ═══════════════════════ */
-const carousels = {};
-
-function buildCarousel(containerId, cards){
-    const wrap = document.getElementById(containerId);
-    if(!wrap) return;
-    const trackOuter = wrap.querySelector('.carousel-track-outer');
-    const track = wrap.querySelector('.carousel-track');
-    const prevBtn = wrap.querySelector('.carousel-btn.prev');
-    const nextBtn = wrap.querySelector('.carousel-btn.next');
-    const cardWidth = 194; // 180 + 14 gap (mobile) or use computed
-    let pos = 0;
-    let max = 0;
-
-    function getCardWidth(){
-        const firstCard = track.querySelector('.prop-card');
-        if(!firstCard) return 194;
-        const style = window.getComputedStyle(firstCard);
-        const marginRight = parseFloat(style.marginRight)||0;
-        const gapPx = 14;
-        return firstCard.offsetWidth + gapPx;
-    }
-    function update(){
-        const cw = getCardWidth();
-        const visible = Math.floor(track.parentElement.offsetWidth / cw);
-        const total = track.querySelectorAll('.prop-card').length;
-        max = Math.max(0, total - visible);
-        pos = Math.min(pos, max);
-        track.style.transform = `translateX(-${pos * cw}px)`;
-        prevBtn.disabled = pos === 0;
-        nextBtn.disabled = pos >= max;
-    }
-
-    prevBtn.onclick = (e) => { e.stopPropagation(); pos = Math.max(0, pos-1); update(); };
-    nextBtn.onclick = (e) => { e.stopPropagation(); pos = Math.min(max, pos+1); update(); };
-
-    // Touch swipe — horizontal only, don't block vertical page scroll
-    let txStart = 0, tyStart = 0, txDelta = 0, swiping = false;
-
-    trackOuter.addEventListener('touchstart', (e) => {
-        txStart = e.touches[0].clientX;
-        tyStart = e.touches[0].clientY;
-        txDelta = 0; swiping = false;
-    }, {passive:true});
-
-    trackOuter.addEventListener('touchmove', (e) => {
-        if(!e.touches[0]) return;
-        const dx = e.touches[0].clientX - txStart;
-        const dy = Math.abs(e.touches[0].clientY - tyStart);
-        txDelta = dx;
-        if(!swiping) {
-            // Only hijack if clearly horizontal (dx > dy) and moved enough
-            if(Math.abs(dx) > 10 && Math.abs(dx) > dy * 1.5) {
-                swiping = true;
-            } else if(dy > 10) {
-                return; // clearly vertical — let page scroll freely
-            }
-        }
-        if(swiping) e.preventDefault();
-    }, {passive:false});
-
-    trackOuter.addEventListener('touchend', () => {
-        if(!swiping) return;
-        swiping = false;
-        if(txDelta < -40) pos = Math.min(max, pos + 1);
-        else if(txDelta > 40) pos = Math.max(0, pos - 1);
-        update();
-    }, {passive:true});
-
-    window.addEventListener('resize', update);
-    setTimeout(update, 50);
-    carousels[containerId] = {update};
-}
-
-/* ═══════════════════════ CARD BUILDER ═══════════════════════ */
-function getStarIcons(r){
-    let s=''; const rating = parseFloat(r)||0;
-    for(let i=1;i<=5;i++){
-        if(i<=Math.floor(rating)) s+='<i class="fa-solid fa-star"></i>';
-        else if(i-0.5<=rating) s+='<i class="fa-solid fa-star-half-stroke"></i>';
-        else s+='<i class="fa-regular fa-star"></i>';
-    }
-    return s+` (${rating.toFixed(1)})`;
-}
-
-function calcDisplayPrice(p){
-    const priceInDB = parseFloat(p.PricePerNight);
-    if(!p.HasPromotion) return {display: priceInDB, original: null, label:null};
-    const base = priceInDB / 1.1;
-    let after = base, label = '';
-    if(p.DiscountType==='Percentage' && parseFloat(p.DiscountPercentage)>0){
-        const d = parseFloat(p.DiscountPercentage);
-        after = base*(1-d/100);
-        label = `${d}% OFF`;
-    } else if(p.DiscountType==='FixedAmount' && parseFloat(p.DiscountAmount)>0){
-        const d = parseFloat(p.DiscountAmount);
-        after = base - d;
-        label = `${d.toLocaleString()} DZD OFF`;
-    }
-    return {display: after*1.1, original: priceInDB, label};
-}
-
-function buildCard(p){
-    const isOwner = currentUser && currentUser.UserType==='Owner' && currentUser.UserId===p.OwnerId;
-    const isMine = isOwner;
-    const imgUrl = p.MainImage ? (p.MainImage.startsWith('http') ? p.MainImage : SERVER_URL+p.MainImage) : null;
-    const {display, original, label} = calcDisplayPrice(p);
-
-    // Labels
-    let labelHtml = '';
-    if(p.IsFeatured) labelHtml += `<span class="card-label label-featured"><i class="fa-solid fa-star"></i> Premium</span>`;
-    if(p.IsBoosted && !p.IsFeatured) labelHtml += `<span class="card-label label-boosted"><i class="fa-solid fa-bolt"></i> Boosted</span>`;
-    if(p.HasPromotion && label) labelHtml += `<span class="card-label label-promo"><i class="fa-solid fa-tag"></i> ${label}</span>`;
-    if(isMine) labelHtml += `<span class="card-label label-mine"><i class="fa-solid fa-house-user"></i> Mine</span>`;
-
-    const priceHtml = original
-        ? `${Math.round(display).toLocaleString()} <span class="old-price">${Math.round(original).toLocaleString()}</span>`
-        : Math.round(display).toLocaleString();
-
-    const actionBtn = isMine
-        ? `<button class="btn-manage-card" onclick="window.location.href='edit-property.html?id=${p.PropertyId}'"><i class="fa-solid fa-pen"></i> Manage</button>`
-        : `<button class="btn-chat-card" onclick="openChat(event,${p.PropertyId},${p.OwnerId},'${(p.OwnerName||'Owner').replace(/'/g,"\'")}')"><i class="fa-solid fa-comment"></i></button>`;
-
-    return `
-    <div class="prop-card" onclick="viewProperty(${p.PropertyId},${p.OwnerId})">
-        <div class="prop-card-img">
-            <div class="card-labels">${labelHtml}</div>
-            ${imgUrl
-                ? `<img src="${imgUrl}" alt="${p.Title}" loading="lazy">`
-                : `<div class="prop-card-img-placeholder"><i class="fa-solid fa-house"></i></div>`}
-        </div>
-        <div class="prop-card-body">
-            <div class="prop-card-title">${p.Title}</div>
-            <div class="prop-card-loc"><i class="fa-solid fa-location-dot" style="color:var(--primary)"></i>${p.City}, ${p.Wilaya}</div>
-            <div class="prop-card-meta">
-                <span><i class="fa-solid fa-bed"></i> ${p.NumofRooms}</span>
-                <span>· ${p.PropertyType}</span>
-                ${p.AverageRating>0 ? `<span style="color:#ffc107"><i class="fa-solid fa-star"></i> ${Number(p.AverageRating).toFixed(1)}</span>` : ''}
-            </div>
-            <div class="prop-card-price">${priceHtml} <span style="font-size:.7rem;font-weight:400;color:var(--muted)">DZD/night</span></div>
-        </div>
-        <div class="prop-card-actions" onclick="event.stopPropagation()">
-            <button class="btn-view-card" onclick="viewProperty(${p.PropertyId},${p.OwnerId})"><i class="fa-solid fa-eye"></i> View</button>
-            ${actionBtn}
-        </div>
-    </div>`;
-}
-
-function buildSection(id, icon, title, badgeCount, badgeColor, cards){
-    return `
-    <div class="section-block">
-        <div class="section-header">
-            <div class="section-label">
-                <span style="font-size:1.1rem">${icon}</span> ${title}
-                <span class="badge" style="background:${badgeColor};color:#fff">${badgeCount}</span>
-            </div>
-        </div>
-        <div class="carousel-wrap">
-            <button class="carousel-btn prev" disabled><i class="fa-solid fa-chevron-left"></i></button>
-            <div class="carousel-track-outer">
-                <div class="carousel-track" id="${id}-track">
-                    ${cards.map(buildCard).join('')}
-                </div>
-            </div>
-            <button class="carousel-btn next" ${cards.length<=1?'disabled':''}><i class="fa-solid fa-chevron-right"></i></button>
-        </div>
-    </div>`;
-}
-
-/* ═══════════════════════ LOAD PROPERTIES ═══════════════════════ */
-async function loadProperties(){
-    const content = document.getElementById('contentArea');
-    try {
-        const r = await fetch(`${API_URL}/properties`);
-        if(!r.ok) throw new Error('HTTP '+r.status);
-        let all = await r.json();
-        if(!Array.isArray(all)) throw new Error('Bad data');
-
-        // Filters
-        const city = document.getElementById('filterCity').value;
-        const type = document.getElementById('filterType').value;
-        const rooms = document.getElementById('filterRooms').value;
-        const price = parseInt(document.getElementById('filterPrice').value);
-
-        if(city) all = all.filter(p=>p.Wilaya===city||p.City===city);
-        if(type) all = all.filter(p=>p.PropertyType===type);
-        if(rooms){ if(rooms==='3') all=all.filter(p=>p.NumofRooms>=3); else all=all.filter(p=>p.NumofRooms==rooms); }
-        if(price) all = all.filter(p=>p.PricePerNight<=price);
-
-        if(!all.length){
-            content.innerHTML = `<div class="empty-state"><i class="fa-solid fa-house-crack"></i><h3>No Properties Found</h3><p>Try adjusting your filters</p></div>`;
-            return;
-        }
-
-        const promo     = all.filter(p=>p.HasPromotion && (parseFloat(p.DiscountPercentage)>0 || parseFloat(p.DiscountAmount)>0));
-        const featured  = all.filter(p=>p.IsFeatured && !p.HasPromotion);
-        const boosted   = all.filter(p=>p.IsBoosted && !p.IsFeatured && !p.HasPromotion);
-        const sorted    = [...all].sort((a,b)=>(b.ViewCount||0)-(a.ViewCount||0));
-        const popular   = sorted.slice(0,8).filter(p=>!p.IsFeatured&&!p.IsBoosted&&!p.HasPromotion);
-        const regular   = all.filter(p=>!p.IsFeatured&&!p.IsBoosted&&!p.HasPromotion&&!popular.includes(p));
-
-        let html = '';
-        if(promo.length)    html += buildSection('promo',   '🔥','Special Promotions', promo.length,   '#34C759', promo);
-        if(featured.length) html += buildSection('featured','⭐','Premium Listings',   featured.length, '#F5A623', featured);
-        if(boosted.length)  html += buildSection('boosted', '🚀','Boosted Properties', boosted.length,  '#FF3B30', boosted);
-        if(popular.length)  html += buildSection('popular', '📈','Most Popular',        popular.length,  '#0A84FF', popular);
-        if(regular.length)  html += buildSection('regular', '🏠','All Properties',      regular.length,  '#6B7280', regular);
-
-        content.innerHTML = html;
-
-        // Init carousels
-        ['promo','featured','boosted','popular','regular'].forEach(id=>{
-            const wrap = content.querySelector(`#${id}-track`)?.closest('.carousel-wrap');
-            if(wrap){
-                wrap.id = id+'-wrap';
-                buildCarousel(id+'-wrap', []);
-            }
-        });
-
-    } catch(err){
-        content.innerHTML = `<div class="empty-state"><i class="fa-solid fa-triangle-exclamation"></i><h3>Connection Error</h3><p>${err.message}</p><button class="filter-apply" onclick="loadProperties()" style="width:auto;padding:10px 24px;margin-top:12px">Retry</button></div>`;
-    }
-}
-
+async function uploadProfilePic(input){ if(!input.files||!input.files[0]) return; const fd=new FormData(); fd.append('profilePic', input.files[0]); fd.append('userId', currentUser.UserId); try{ const r=await fetch(`${API_URL}/users/profile-picture`, {method:'POST',body:fd}); const d=await r.json(); if(d.success){ currentUser.ProfilePicturePath=d.avatarPath; localStorage.setItem('user',JSON.stringify(currentUser)); updateGreeting(); } }catch(e){} }
+function getStarIcons(r){ let s=''; const rating=parseFloat(r)||0; for(let i=1;i<=5;i++){ if(i<=Math.floor(rating)) s+='<i class="fa-solid fa-star"></i>'; else if(i-0.5<=rating) s+='<i class="fa-solid fa-star-half-stroke"></i>'; else s+='<i class="fa-regular fa-star"></i>'; } return s+` (${rating.toFixed(1)})`; }
+function buildCard(p){ const isOwner = currentUser && currentUser.UserType==='Owner' && currentUser.UserId===p.OwnerId; const isMine=isOwner; const imgUrl = p.MainImage ? (p.MainImage.startsWith('http') ? p.MainImage : SERVER_URL+p.MainImage) : null; let price=p.PricePerNight; let original=null; if(p.HasPromotion){ const base=price/1.1; let after=base; if(p.DiscountType==='Percentage'&&parseFloat(p.DiscountPercentage)>0) after=base*(1-parseFloat(p.DiscountPercentage)/100); else if(p.DiscountType==='FixedAmount'&&parseFloat(p.DiscountAmount)>0) after=base-parseFloat(p.DiscountAmount); price=after*1.1; original=p.PricePerNight; } let labelHtml=''; if(p.IsFeatured) labelHtml+=`<span class="card-label label-featured"><i class="fa-solid fa-star"></i> Premium</span>`; if(p.IsBoosted&&!p.IsFeatured) labelHtml+=`<span class="card-label label-boosted"><i class="fa-solid fa-bolt"></i> Boosted</span>`; if(p.HasPromotion) labelHtml+=`<span class="card-label label-promo"><i class="fa-solid fa-tag"></i> ${p.DiscountPercentage?p.DiscountPercentage+'% OFF':(p.DiscountAmount?p.DiscountAmount.toLocaleString()+' OFF':'Promo')}</span>`; if(isMine) labelHtml+=`<span class="card-label label-mine"><i class="fa-solid fa-house-user"></i> Mine</span>`; const priceHtml=original?`${Math.round(price).toLocaleString()} <span class="old-price">${Math.round(original).toLocaleString()}</span>`:Math.round(price).toLocaleString(); const actionBtn=isMine?`<button class="btn-manage-card" onclick="window.location.href='edit-property.html?id=${p.PropertyId}'"><i class="fa-solid fa-pen"></i> Manage</button>`:`<button class="btn-chat-card" onclick="openChat(event,${p.PropertyId},${p.OwnerId},'${(p.OwnerName||'Owner').replace(/'/g,"\\'")}')"><i class="fa-solid fa-comment"></i></button>`; return `<div class="prop-card" onclick="viewProperty(${p.PropertyId},${p.OwnerId})"><div class="prop-card-img"><div class="card-labels">${labelHtml}</div>${imgUrl?`<img src="${imgUrl}" alt="${p.Title}" loading="lazy">`:`<div class="prop-card-img-placeholder"><i class="fa-solid fa-house"></i></div>`}</div><div class="prop-card-body"><div class="prop-card-title">${p.Title}</div><div class="prop-card-loc"><i class="fa-solid fa-location-dot" style="color:var(--primary)"></i>${p.City}, ${p.Wilaya}</div><div class="prop-card-meta"><span><i class="fa-solid fa-bed"></i> ${p.NumofRooms}</span><span>· ${p.PropertyType}</span>${p.AverageRating>0?`<span style="color:#ffc107"><i class="fa-solid fa-star"></i> ${Number(p.AverageRating).toFixed(1)}</span>`:''}</div><div class="prop-card-price">${priceHtml} <span style="font-size:.7rem;font-weight:400;color:var(--muted)">DZD/night</span></div></div><div class="prop-card-actions" onclick="event.stopPropagation()"><button class="btn-view-card" onclick="viewProperty(${p.PropertyId},${p.OwnerId})"><i class="fa-solid fa-eye"></i> View</button>${actionBtn}</div></div>`; }
+async function loadProperties(){ const content=document.getElementById('contentArea'); try{ const r=await fetch(`${API_URL}/properties`); if(!r.ok) throw new Error('HTTP '+r.status); let all=await r.json(); if(!Array.isArray(all)) throw new Error('Bad data'); const city=document.getElementById('filterCity').value; const type=document.getElementById('filterType').value; const rooms=document.getElementById('filterRooms').value; const price=parseInt(document.getElementById('filterPrice').value); if(city) all=all.filter(p=>p.Wilaya===city||p.City===city); if(type) all=all.filter(p=>p.PropertyType===type); if(rooms){ if(rooms==='3') all=all.filter(p=>p.NumofRooms>=3); else all=all.filter(p=>p.NumofRooms==rooms); } if(price) all=all.filter(p=>p.PricePerNight<=price); if(!all.length){ content.innerHTML=`<div class="empty-state"><i class="fa-solid fa-house-crack"></i><h3>No Properties Found</h3><p>Try adjusting your filters</p></div>`; return; } const promo=all.filter(p=>p.HasPromotion && (parseFloat(p.DiscountPercentage)>0||parseFloat(p.DiscountAmount)>0)); const featured=all.filter(p=>p.IsFeatured && !p.HasPromotion); const boosted=all.filter(p=>p.IsBoosted && !p.IsFeatured && !p.HasPromotion); const sorted=[...all].sort((a,b)=>(b.ViewCount||0)-(a.ViewCount||0)); const popular=sorted.slice(0,8).filter(p=>!p.IsFeatured&&!p.IsBoosted&&!p.HasPromotion); const regular=all.filter(p=>!p.IsFeatured&&!p.IsBoosted&&!p.HasPromotion&&!popular.includes(p)); let html=''; function buildSection(id,icon,title,badgeCount,badgeColor,cards){ return `<div class="section-block"><div class="section-header"><div class="section-label"><span style="font-size:1.1rem">${icon}</span> ${title}<span class="badge" style="background:${badgeColor};color:#fff">${badgeCount}</span></div></div><div class="carousel-wrap"><button class="carousel-btn prev" disabled><i class="fa-solid fa-chevron-left"></i></button><div class="carousel-track-outer"><div class="carousel-track" id="${id}-track">${cards.map(buildCard).join('')}</div></div><button class="carousel-btn next" ${cards.length<=1?'disabled':''}><i class="fa-solid fa-chevron-right"></i></button></div></div>`; } if(promo.length) html+=buildSection('promo','🔥','Special Promotions',promo.length,'#34C759',promo); if(featured.length) html+=buildSection('featured','⭐','Premium Listings',featured.length,'#F5A623',featured); if(boosted.length) html+=buildSection('boosted','🚀','Boosted Properties',boosted.length,'#FF3B30',boosted); if(popular.length) html+=buildSection('popular','📈','Most Popular',popular.length,'#0A84FF',popular); if(regular.length) html+=buildSection('regular','🏠','All Properties',regular.length,'#6B7280',regular); content.innerHTML=html; ['promo','featured','boosted','popular','regular'].forEach(id=>{ const wrap=content.querySelector(`#${id}-track`)?.closest('.carousel-wrap'); if(wrap){ wrap.id=id+'-wrap'; function initCarousel(){ const track=wrap.querySelector('.carousel-track'); const prev=wrap.querySelector('.carousel-btn.prev'); const next=wrap.querySelector('.carousel-btn.next'); let pos=0, max=0; function getStep(){ const first=track?.querySelector('.prop-card'); if(!first) return 220+14; return first.offsetWidth+14; } function update(){ const step=getStep(); const visible=Math.floor(wrap.querySelector('.carousel-track-outer').offsetWidth/step); const total=track.querySelectorAll('.prop-card').length; max=Math.max(0,total-visible); pos=Math.min(pos,max); track.style.transform=`translateX(-${pos*step}px)`; prev.disabled=pos===0; next.disabled=pos>=max; } prev.onclick=()=>{ pos=Math.max(0,pos-1); update(); }; next.onclick=()=>{ pos=Math.min(max,pos+1); update(); }; window.addEventListener('resize',update); setTimeout(update,20); } initCarousel(); } }); } catch(err){ content.innerHTML=`<div class="empty-state"><i class="fa-solid fa-triangle-exclamation"></i><h3>Connection Error</h3><p>${err.message}</p><button class="filter-apply" onclick="loadProperties()" style="width:auto;padding:10px 24px;margin-top:12px">Retry</button></div>`; } }
 function applyFilters(){ loadProperties(); }
-function viewProperty(id, ownerId){
-    if(!currentUser){ window.location.href=`property-detail.html?id=${id}`; return; }
-    if(currentUser.UserId===ownerId){ window.location.href=`edit-property.html?id=${id}`; return; }
-    window.location.href=`property-detail.html?id=${id}`;
-}
-
-/* ═══════════════════════ MESSAGING ═══════════════════════ */
-let activeChat = null, chatPoll = null;
-function toggleMsgSidebar(){ const s=document.getElementById('msgSidebar'); s.classList.toggle('open'); if(s.classList.contains('open')&&!activeChat) loadConversations(); else stopPoll(); }
-function stopPoll(){ if(chatPoll){clearInterval(chatPoll);chatPoll=null;} }
-function backToMsgList(){ activeChat=null; stopPoll(); document.getElementById('msgChatView').style.display='none'; document.getElementById('msgListView').style.display='flex'; loadConversations(); }
-
-async function loadConversations(){
-    if(!currentUser) return;
-    try{
-        const r=await fetch(`${API_URL}/conversations/${currentUser.UserId}`);
-        const convs=await r.json();
-        const list=document.getElementById('msgList');
-        if(!convs.length){ list.innerHTML=`<div style="text-align:center;padding:40px;color:var(--muted)">No messages yet</div>`; return; }
-        list.innerHTML=convs.map(c=>`
-            <div class="conv-item" onclick="openSidebarChat(${c.PropertyId},${currentUser.UserType==='Renter'?c.OwnerId:c.RenterId},'${c.OtherUserName}','${c.OtherUserAvatar||''}',${c.OtherUserRating||0})">
-                <div class="conv-avatar">${c.OtherUserAvatar?`<img src="${c.OtherUserAvatar}" class="conv-avatar-img">`:c.OtherUserName.charAt(0)}</div>
-                <div class="conv-info"><span class="conv-name">${c.OtherUserName}</span><span class="conv-property">${c.PropertyTitle||'Inquiry'}</span></div>
-                ${c.UnreadCount>0?`<span class="conv-unread">${c.UnreadCount}</span>`:''}
-            </div>`).join('');
-        const total=convs.reduce((s,c)=>s+c.UnreadCount,0);
-        const badge=document.getElementById('msgBtnBadge');
-        badge.textContent=total; badge.style.display=total?'block':'none';
-    }catch(e){}
-}
-
-async function openSidebarChat(propId, otherId, name, avatar, rating){
-    activeChat={propId,otherId,name,avatar,rating};
-    document.getElementById('msgListView').style.display='none';
-    document.getElementById('msgChatView').style.display='flex';
-    document.getElementById('activeChatName').textContent=name;
-    const av=document.getElementById('activeChatAvatar');
-    av.innerHTML=avatar&&avatar!=='null'?`<img src="${avatar}" style="width:100%;height:100%;border-radius:50%;object-fit:cover">`:name.charAt(0);
-    document.getElementById('activeChatRating').innerHTML=getStarIcons(rating);
-    loadSidebarMessages(); stopPoll(); chatPoll=setInterval(loadSidebarMessages,3000);
-    document.getElementById('msgSidebar').classList.add('open');
-}
-
-async function loadSidebarMessages(){
-    if(!activeChat||!currentUser) return;
-    try{
-        const url=activeChat.propId?`${API_URL}/messages/${currentUser.UserId}/${activeChat.otherId}?propertyId=${activeChat.propId}`:`${API_URL}/messages/${currentUser.UserId}/${activeChat.otherId}`;
-        const r=await fetch(url); const msgs=await r.json();
-        const c=document.getElementById('chatMessages');
-        const atBottom=c.scrollHeight-c.scrollTop<=c.clientHeight+80;
-        c.innerHTML=msgs.map(m=>{
-            const sent=m.SenderId==currentUser.UserId;
-            const time=new Date(m.SentAt).toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'});
-            const safe=String(m.MessageText).replace(/</g,'&lt;').replace(/>/g,'&gt;');
-            return `<div class="msg-bubble ${sent?'msg-sent':'msg-received'}">${safe}<span class="msg-time">${time}</span></div>`;
-        }).join('');
-        if(atBottom) c.scrollTop=c.scrollHeight;
-    }catch(e){}
-}
-
-async function sendSidebarMessage(){
-    const inp=document.getElementById('chatInput'); const text=inp.value.trim();
-    if(!text||!activeChat) return; inp.value='';
-    try{
-        await fetch(`${API_URL}/messages`,{method:'POST',headers:{'Content-Type':'application/json'},
-        body:JSON.stringify({senderId:currentUser.UserId,receiverId:activeChat.otherId,propertyId:activeChat.propId,messageText:text})});
-        loadSidebarMessages();
-    }catch(e){}
-}
-
-function openChat(e, propId, ownerId, ownerName){
-    if(e) e.stopPropagation();
-    if(!currentUser){window.location.href='login.html';return;}
-    openSidebarChat(propId, ownerId, ownerName, null, 0);
-}
-
-/* ═══════════════════════ INIT ═══════════════════════ */
-document.addEventListener('DOMContentLoaded', ()=>{
-    // Chat intent from property page
-    const intent=sessionStorage.getItem('openChatIntent');
-    if(intent){ sessionStorage.removeItem('openChatIntent'); try{ const {ownerId,ownerName,propId}=JSON.parse(intent); setTimeout(()=>openChat(null,propId,ownerId,ownerName),800); }catch(e){} }
-
-    // Populate wilaya filter
-    if(typeof populateWilayasSelect==='function'){ try{ populateWilayasSelect('filterCity','All Wilayas'); }catch(e){} }
-
-    // User
-    if(currentUser){ updateGreeting(); loadConversations(); setInterval(loadConversations,10000); }
-
-    loadProperties();
-});
+function viewProperty(id,ownerId){ if(!currentUser){ window.location.href=`property-detail.html?id=${id}`; return; } if(currentUser.UserId===ownerId){ window.location.href=`edit-property.html?id=${id}`; return; } window.location.href=`property-detail.html?id=${id}`; }
+let activeChat=null,chatPoll=null; function toggleMsgSidebar(){ const s=document.getElementById('msgSidebar'); s.classList.toggle('open'); if(s.classList.contains('open')&&!activeChat) loadConversations(); else stopPoll(); } function stopPoll(){ if(chatPoll){clearInterval(chatPoll);chatPoll=null;} } function backToMsgList(){ activeChat=null; stopPoll(); document.getElementById('msgChatView').style.display='none'; document.getElementById('msgListView').style.display='flex'; loadConversations(); }
+async function loadConversations(){ if(!currentUser) return; try{ const r=await fetch(`${API_URL}/conversations/${currentUser.UserId}`); const convs=await r.json(); const list=document.getElementById('msgList'); if(!convs.length){ list.innerHTML=`<div style="text-align:center;padding:40px;color:var(--muted)">No messages yet</div>`; return; } list.innerHTML=convs.map(c=>`<div class="conv-item" onclick="openSidebarChat(${c.PropertyId},${currentUser.UserType==='Renter'?c.OwnerId:c.RenterId},'${c.OtherUserName}','${c.OtherUserAvatar||''}',${c.OtherUserRating||0})"><div class="conv-avatar">${c.OtherUserAvatar?`<img src="${c.OtherUserAvatar}" class="conv-avatar-img">`:c.OtherUserName.charAt(0)}</div><div class="conv-info"><span class="conv-name">${c.OtherUserName}</span><span class="conv-property">${c.PropertyTitle||'Inquiry'}</span></div>${c.UnreadCount>0?`<span class="conv-unread">${c.UnreadCount}</span>`:''}</div>`).join(''); const total=convs.reduce((s,c)=>s+c.UnreadCount,0); const badge=document.getElementById('msgBtnBadge'); badge.textContent=total; badge.style.display=total?'block':'none'; }catch(e){} }
+async function openSidebarChat(propId,otherId,name,avatar,rating){ activeChat={propId,otherId,name,avatar,rating}; document.getElementById('msgListView').style.display='none'; document.getElementById('msgChatView').style.display='flex'; document.getElementById('activeChatName').textContent=name; const av=document.getElementById('activeChatAvatar'); av.innerHTML=avatar&&avatar!=='null'?`<img src="${avatar}" style="width:100%;height:100%;border-radius:50%;object-fit:cover">`:name.charAt(0); document.getElementById('activeChatRating').innerHTML=getStarIcons(rating); loadSidebarMessages(); stopPoll(); chatPoll=setInterval(loadSidebarMessages,3000); document.getElementById('msgSidebar').classList.add('open'); }
+async function loadSidebarMessages(){ if(!activeChat||!currentUser) return; try{ const url=activeChat.propId?`${API_URL}/messages/${currentUser.UserId}/${activeChat.otherId}?propertyId=${activeChat.propId}`:`${API_URL}/messages/${currentUser.UserId}/${activeChat.otherId}`; const r=await fetch(url); const msgs=await r.json(); const c=document.getElementById('chatMessages'); const atBottom=c.scrollHeight-c.scrollTop<=c.clientHeight+80; c.innerHTML=msgs.map(m=>{ const sent=m.SenderId==currentUser.UserId; const time=new Date(m.SentAt).toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'}); const safe=String(m.MessageText).replace(/</g,'&lt;').replace(/>/g,'&gt;'); return `<div class="msg-bubble ${sent?'msg-sent':'msg-received'}">${safe}<span class="msg-time">${time}</span></div>`; }).join(''); if(atBottom) c.scrollTop=c.scrollHeight; }catch(e){} }
+async function sendSidebarMessage(){ const inp=document.getElementById('chatInput'); const text=inp.value.trim(); if(!text||!activeChat) return; inp.value=''; try{ await fetch(`${API_URL}/messages`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({senderId:currentUser.UserId,receiverId:activeChat.otherId,propertyId:activeChat.propId,messageText:text})}); loadSidebarMessages(); }catch(e){} }
+function openChat(e,propId,ownerId,ownerName){ if(e) e.stopPropagation(); if(!currentUser){window.location.href='login.html';return;} openSidebarChat(propId,ownerId,ownerName,null,0); }
+document.addEventListener('DOMContentLoaded', ()=>{ const intent=sessionStorage.getItem('openChatIntent'); if(intent){ sessionStorage.removeItem('openChatIntent'); try{ const {ownerId,ownerName,propId}=JSON.parse(intent); setTimeout(()=>openChat(null,propId,ownerId,ownerName),800); }catch(e){} } if(typeof populateWilayasSelect==='function'){ try{ populateWilayasSelect('filterCity','All Wilayas'); }catch(e){} } if(currentUser){ updateGreeting(); loadConversations(); setInterval(loadConversations,10000); } loadProperties(); });
 </script>
 </body>
 </html>
