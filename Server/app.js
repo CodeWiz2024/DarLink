@@ -1707,7 +1707,7 @@ app.post('/api/payment/create-booking-payment', async (req, res) => {
             [ownerShare, platformFee, bookingId]
         );
 
-        const CLIENT_URL = 'https://darlink-mocha.vercel.app';
+        const CLIENT_URL = 'https://dar-link-mocha.vercel.app';
         const checkoutData = {
             amount: Math.round(totalAmount * 100),
             currency: 'dzd',
