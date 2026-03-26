@@ -973,7 +973,7 @@ app.post('/api/payment/create-checkout', async (req, res) => {
         );
 
         const dbTransactionId = result.insertId;
-        const CLIENT_URL = 'https://darlink-production.up.railway.app';
+        const CLIENT_URL = 'https://dar-link-mocha.vercel.app';
         
         const checkoutData = {
             amount: Math.round(pkg.Price * 100),
@@ -1068,7 +1068,7 @@ app.get('/api/test-chargily-custom', async (req, res) => {
     try {
         const apiKey = process.env.CHARGILY_SECRET_KEY;
         const baseURL = 'https://pay.chargily.net/api/v2';
-        const CLIENT_URL = 'https://darlink-production.up.railway.app';
+        const CLIENT_URL = 'https://dar-link-mocha.vercel.app';
         const testData = {
             amount: 10000,
             currency: "dzd",
@@ -1101,7 +1101,7 @@ app.get('/api/test-chargily-custom', async (req, res) => {
 
 app.get('/api/test-chargily-new', async (req, res) => {
     try {
-        const CLIENT_URL = 'https://darlink-production.up.railway.app';
+        const CLIENT_URL = 'https://dar-link-mocha.vercel.app';
         const testData = {
             amount: 5000,
             currency: "dzd",
@@ -1707,7 +1707,7 @@ app.post('/api/payment/create-booking-payment', async (req, res) => {
             [ownerShare, platformFee, bookingId]
         );
 
-        const CLIENT_URL = 'https://darlink-production.up.railway.app';
+        const CLIENT_URL = 'https://darlink-mocha.vercel.app';
         const checkoutData = {
             amount: Math.round(totalAmount * 100),
             currency: 'dzd',
