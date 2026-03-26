@@ -246,6 +246,27 @@
         .carousel-btn.next { right:8px; }
         .carousel-btn:disabled { opacity:.3; pointer-events:none; cursor:not-allowed; }
 
+        /* Mobile carousel button enhancements */
+        @media (max-width: 768px) {
+            .carousel-btn {
+                width: 44px;
+                height: 44px;
+                font-size: 1rem;
+                background: rgba(10, 132, 255, 0.95);
+                color: #fff;
+                border: 2px solid var(--primary);
+                box-shadow: 0 6px 20px rgba(10, 132, 255, 0.4);
+            }
+            .carousel-btn:active {
+                transform: translateY(-50%) scale(0.9);
+            }
+            .carousel-btn:disabled {
+                opacity: 0.4;
+                background: rgba(107, 114, 128, 0.5);
+                border-color: rgba(107, 114, 128, 0.3);
+            }
+        }
+
         /* ── PROPERTY CARD ── */
         .prop-card {
             flex: 0 0 220px;
@@ -502,9 +523,6 @@
             .prop-card { flex:0 0 calc(100vw - 120px); max-width:260px; }
             .prop-card-img { height:130px; }
             .carousel-wrap { padding: 0 38px; }
-            .carousel-btn { width:36px; height:36px; font-size:.85rem; }
-            .carousel-btn.prev { left:6px; }
-            .carousel-btn.next { right:6px; }
             .msg-sidebar { width:100%; right:-100%; }
             .msg-toggle-btn { bottom:20px; right:16px; width:50px; height:50px; font-size:1.2rem; }
          }
