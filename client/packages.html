@@ -3,182 +3,362 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Property Packages</title>
+    <title>Property Packages - DarLink</title>
     <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <style>
+        body { margin: 0; background: var(--bg-gradient); min-height: 100vh; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; }
+
+        .page-wrap { max-width: 900px; margin: 0 auto; padding: 40px 24px 60px; }
+
+        .back-link {
+            display: inline-flex; align-items: center; gap: 8px;
+            padding: 10px 18px; border-radius: 12px;
+            background: var(--glass-bg); border: 1px solid var(--glass-border);
+            color: var(--primary); font-weight: 600; font-size: 0.9rem;
+            text-decoration: none; margin-bottom: 28px;
+            backdrop-filter: blur(12px); transition: all 0.2s;
+        }
+        .back-link:hover { background: var(--primary); color: white; text-decoration: none; transform: translateX(-3px); }
+
+        .page-title { font-size: 1.9rem; font-weight: 800; color: var(--text-main); margin-bottom: 6px; }
+        .page-subtitle { color: var(--text-muted); font-size: 1rem; margin-bottom: 28px; }
+
+        /* Property Info Banner */
+        .property-banner {
+            background: var(--glass-bg);
+            backdrop-filter: blur(16px);
+            border: 1px solid var(--glass-border);
+            border-radius: 18px;
+            padding: 20px 24px;
+            margin-bottom: 32px;
+            display: flex; align-items: center; gap: 16px;
+            box-shadow: var(--card-shadow);
+        }
+        .property-banner-icon {
+            width: 50px; height: 50px; border-radius: 14px;
+            background: rgba(10,132,255,0.12); color: var(--primary);
+            display: flex; align-items: center; justify-content: center; font-size: 1.4rem;
+            flex-shrink: 0;
+        }
+        .property-banner-info h3 { font-size: 1.05rem; font-weight: 700; color: var(--text-main); margin: 0 0 4px; }
+        .property-banner-info p  { font-size: 0.85rem; color: var(--text-muted); margin: 0; }
+
+        /* Packages Grid */
         .packages-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
             gap: 24px;
-            margin: 30px 0;
+            margin-bottom: 28px;
         }
+
         .package-card {
-            background: white;
-            border-radius: 16px;
-            padding: 24px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            background: var(--glass-bg);
+            backdrop-filter: saturate(180%) blur(20px);
+            border: 1.5px solid var(--glass-border);
+            border-radius: 22px;
+            padding: 32px 28px;
             text-align: center;
-            transition: transform 0.3s;
+            box-shadow: var(--card-shadow);
+            transition: transform 0.3s, box-shadow 0.3s;
+            position: relative;
+            overflow: hidden;
         }
-        .package-card:hover {
-            transform: translateY(-5px);
+        .package-card:hover { transform: translateY(-6px); box-shadow: var(--card-hover-shadow); }
+
+        .package-card.featured {
+            border-color: var(--primary);
+            background: linear-gradient(160deg, rgba(10,132,255,0.08) 0%, var(--glass-bg) 100%);
         }
-        .package-price {
-            font-size: 2rem;
-            color: var(--primary);
-            font-weight: bold;
-            margin: 15px 0;
+        .package-card.featured::before {
+            content: '⭐ Most Popular';
+            position: absolute; top: 16px; right: -28px;
+            background: var(--primary); color: white;
+            font-size: 0.72rem; font-weight: 700;
+            padding: 4px 36px; transform: rotate(30deg);
+            letter-spacing: 0.04em;
         }
-        .package-features {
-            list-style: none;
-            padding: 0;
-            margin: 20px 0;
+
+        .pkg-icon {
+            width: 64px; height: 64px; border-radius: 20px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 1.8rem; margin: 0 auto 20px;
         }
-        .package-features li {
-            padding: 8px 0;
-            border-bottom: 1px solid #eee;
+        .pkg-icon.boost   { background: rgba(255,59,48,0.1); }
+        .pkg-icon.premium { background: rgba(255,149,0,0.1); }
+        .pkg-icon.free    { background: rgba(52,199,89,0.1); }
+
+        .pkg-name { font-size: 1.3rem; font-weight: 800; color: var(--text-main); margin-bottom: 6px; }
+        .pkg-type-badge {
+            display: inline-block; padding: 3px 12px; border-radius: 999px;
+            font-size: 0.75rem; font-weight: 700; margin-bottom: 18px;
+            text-transform: uppercase; letter-spacing: 0.06em;
         }
+        .badge-boost   { background: rgba(255,59,48,0.12); color: #c00; }
+        .badge-premium { background: rgba(255,149,0,0.12); color: #c07000; }
+        .badge-free    { background: rgba(52,199,89,0.12); color: #1a6b2e; }
+
+        [data-theme="dark"] .badge-boost   { color: #FF6B6B; }
+        [data-theme="dark"] .badge-premium { color: #FF9500; }
+        [data-theme="dark"] .badge-free    { color: #34C759; }
+
+        .pkg-price {
+            font-size: 2.4rem; font-weight: 800; color: var(--primary);
+            margin-bottom: 4px; line-height: 1;
+        }
+        .pkg-price span { font-size: 1rem; font-weight: 500; color: var(--text-muted); }
+
+        .pkg-features {
+            list-style: none; padding: 0; margin: 20px 0 28px;
+            text-align: left;
+        }
+        .pkg-features li {
+            display: flex; align-items: center; gap: 10px;
+            padding: 9px 0; border-bottom: 1px solid rgba(0,0,0,0.05);
+            font-size: 0.92rem; color: var(--text-main);
+        }
+        [data-theme="dark"] .pkg-features li { border-bottom-color: rgba(255,255,255,0.06); }
+        .pkg-features li:last-child { border-bottom: none; }
+        .pkg-features li i { color: var(--primary); width: 18px; flex-shrink: 0; }
+
         .btn-pay {
-            width: 100%;
-            padding: 14px;
-            background: var(--primary);
-            color: white;
-            border: none;
-            border-radius: 12px;
-            font-size: 1rem;
-            cursor: pointer;
+            width: 100%; padding: 14px;
+            background: var(--primary); color: white;
+            border: none; border-radius: 14px;
+            font-size: 1rem; font-weight: 700;
+            cursor: pointer; transition: all 0.2s;
+            display: flex; align-items: center; justify-content: center; gap: 8px;
         }
-        .btn-pay:hover {
-            background: var(--primary-dark);
-        }
-        .property-info {
-            background: rgba(0,122,255,0.1);
-            padding: 20px;
-            border-radius: 12px;
-            margin-bottom: 20px;
-        }
-        .back-link {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            margin-bottom: 16px;
-            color: var(--primary);
-            text-decoration: none;
-            font-weight: 600;
-        }
-        .back-link:hover {
-            color: var(--primary-dark);
+        .btn-pay:hover { background: var(--primary-dark); transform: translateY(-2px); box-shadow: 0 6px 20px rgba(10,132,255,0.35); }
+        .btn-pay:disabled { background: #aaa; cursor: not-allowed; transform: none; box-shadow: none; }
+
+        /* Message Box */
+        .msg-box { padding: 16px 20px; border-radius: 14px; margin-top: 16px; font-weight: 500; font-size: 0.95rem; display: none; }
+        .msg-box.error   { background: rgba(255,59,48,0.1); color: #c00; border: 1px solid rgba(255,59,48,0.25); }
+        .msg-box.success { background: rgba(52,199,89,0.1); color: #1a6b2e; border: 1px solid rgba(52,199,89,0.25); }
+        [data-theme="dark"] .msg-box.error   { color: #FF6B6B; }
+        [data-theme="dark"] .msg-box.success { color: #34C759; }
+
+        /* Loading Skeleton */
+        .skeleton-card { height: 420px; border-radius: 22px; }
+        .skeleton { animation: shimmer 1.5s infinite; background: linear-gradient(90deg, rgba(0,0,0,0.04) 25%, rgba(0,0,0,0.08) 50%, rgba(0,0,0,0.04) 75%); background-size: 200% 100%; }
+        @keyframes shimmer { 0%{background-position:200% 0} 100%{background-position:-200% 0} }
+
+        @media (max-width: 600px) {
+            .packages-grid { grid-template-columns: 1fr; }
+            .page-wrap { padding: 24px 16px 50px; }
         }
     </style>
 </head>
-<body class="page-wrapper">
-    <div class="page-container">
-        <a class="back-link" href="my-property.html">&larr; Back to My Properties</a>
-        <div class="page-header">
-            <h1>Upgrade Your Property</h1>
-            <p>Choose a package to boost your property visibility</p>
+<body>
+    <div class="page-wrap">
+        <a class="back-link" href="my-property.html">
+            <i class="fa-solid fa-arrow-left"></i> Back to My Properties
+        </a>
+
+        <h1 class="page-title">Upgrade Your Listing</h1>
+        <p class="page-subtitle">Boost visibility and attract more renters with a package upgrade.</p>
+
+        <!-- Property Info Banner -->
+        <div class="property-banner" id="propertyBanner" style="display:none;">
+            <div class="property-banner-icon"><i class="fa-solid fa-house"></i></div>
+            <div class="property-banner-info">
+                <h3 id="propertyTitle">Loading...</h3>
+                <p id="propertyLocation"></p>
+            </div>
         </div>
 
-        <div id="propertyInfo" class="property-info" style="display:none;">
-            <h2 id="propertyTitle"></h2>
-            <p>&#128205; <span id="propertyLocation"></span></p>
+        <!-- Error if no property ID -->
+        <div id="noPropertyMsg" class="msg-box error" style="display:none;">
+            <i class="fa-solid fa-triangle-exclamation"></i> No property selected. Please go back and select a property.
         </div>
 
-        <div id="packagesGrid" class="packages-grid"></div>
-        <div id="message"></div>
+        <!-- Packages Grid -->
+        <div class="packages-grid" id="packagesGrid">
+            <!-- Skeleton loaders -->
+            <div class="skeleton skeleton-card"></div>
+            <div class="skeleton skeleton-card"></div>
+        </div>
+
+        <div class="msg-box" id="msgBox"></div>
     </div>
 
     <script>
         const API_URL = 'https://darlink-production.up.railway.app/api';
-        const urlParams = new URLSearchParams(window.location.search);
-        const propertyId = urlParams.get('propertyId');
-        
-        // Check if owner is logged in
+
+        // ── Auth guard ──────────────────────────────────────────
         const user = JSON.parse(localStorage.getItem('user') || 'null');
         if (!user || user.UserType !== 'Owner') {
             alert('Please login as an owner');
             window.location.href = 'login.html';
         }
 
-        // Load property info
+        // ── Parse propertyId ────────────────────────────────────
+        const urlParams  = new URLSearchParams(window.location.search);
+        const propertyId = urlParams.get('propertyId');
+
+        if (!propertyId) {
+            document.getElementById('noPropertyMsg').style.display = 'block';
+            document.getElementById('packagesGrid').innerHTML = '';
+        }
+
+        // ── Helpers ─────────────────────────────────────────────
+        function showMsg(text, type = 'error') {
+            const box = document.getElementById('msgBox');
+            box.textContent = text;
+            box.className = `msg-box ${type}`;
+            box.style.display = 'block';
+            box.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
+
+        function hideMsg() {
+            const box = document.getElementById('msgBox');
+            box.style.display = 'none';
+        }
+
+        function getIconForType(type) {
+            if (type === 'Premium') return '⭐';
+            if (type === 'Boost')   return '🚀';
+            return '🏠';
+        }
+
+        function getIconClass(type) {
+            if (type === 'Premium') return 'premium';
+            if (type === 'Boost')   return 'boost';
+            return 'free';
+        }
+
+        function getBadgeClass(type) {
+            if (type === 'Premium') return 'badge-premium';
+            if (type === 'Boost')   return 'badge-boost';
+            return 'badge-free';
+        }
+
+        // ── Load property info ──────────────────────────────────
         async function loadPropertyInfo() {
             if (!propertyId) return;
-            
             try {
-                const response = await fetch(`${API_URL}/properties/${propertyId}`);
-                const property = await response.json();
-                
-                document.getElementById('propertyInfo').style.display = 'block';
-                document.getElementById('propertyTitle').textContent = property.Title;
-                document.getElementById('propertyLocation').textContent = `${property.City}, ${property.Wilaya}`;
-            } catch (error) {
-                console.error('Error loading property:', error);
+                const res  = await fetch(`${API_URL}/properties/${propertyId}`);
+                if (!res.ok) throw new Error('Not found');
+                const prop = await res.json();
+
+                // Ownership check
+                if (prop.OwnerId !== user.UserId) {
+                    alert('You do not own this property.');
+                    window.location.href = 'my-property.html';
+                    return;
+                }
+
+                document.getElementById('propertyTitle').textContent    = prop.Title;
+                document.getElementById('propertyLocation').textContent = `${prop.City}, ${prop.Wilaya}`;
+                document.getElementById('propertyBanner').style.display = 'flex';
+            } catch (err) {
+                showMsg('Could not load property info. ' + err.message);
             }
         }
 
-        // Load packages
+        // ── Load packages ────────────────────────────────────────
         async function loadPackages() {
+            if (!propertyId) return;
             try {
-                const response = await fetch(`${API_URL}/packages`);
-                const packages = await response.json();
+                const res      = await fetch(`${API_URL}/packages`);
+                if (!res.ok) throw new Error('HTTP ' + res.status);
+                const packages = await res.json();
 
-                const grid = document.getElementById('packagesGrid');
-                grid.innerHTML = packages.map(pkg => `
-                    <div class="package-card">
-                        <h2>${pkg.PackageName}</h2>
-                        <div class="package-price">${pkg.Price} DZD</div>
-                        <ul class="package-features">
-                            <li>&#128247; ${pkg.MaxImages} Images</li>
-                            <li>&#128197; ${pkg.DurationDays} Days</li>
-                            ${pkg.PackageType === 'Premium' ? '<li>&#127775; Featured Property</li>' : ''}
-                            ${pkg.PackageType === 'Boost' ? '<li>&#128640; Boosted Visibility</li>' : ''}
+                if (!packages.length) {
+                    document.getElementById('packagesGrid').innerHTML =
+                        '<p style="color:var(--text-muted);grid-column:1/-1;text-align:center;padding:40px;">No packages available.</p>';
+                    return;
+                }
+
+                // Sort: Free → Boost → Premium
+                const order = { Free: 0, Boost: 1, Premium: 2 };
+                packages.sort((a, b) => (order[a.PackageType] ?? 9) - (order[b.PackageType] ?? 9));
+
+                document.getElementById('packagesGrid').innerHTML = packages.map(pkg => {
+                    const isFeatured = pkg.PackageType === 'Premium';
+                    return `
+                    <div class="package-card${isFeatured ? ' featured' : ''}">
+                        <div class="pkg-icon ${getIconClass(pkg.PackageType)}">${getIconForType(pkg.PackageType)}</div>
+                        <div class="pkg-name">${pkg.PackageName}</div>
+                        <span class="pkg-type-badge ${getBadgeClass(pkg.PackageType)}">${pkg.PackageType}</span>
+                        <div class="pkg-price">${Number(pkg.Price).toLocaleString()} <span>DZD</span></div>
+
+                        <ul class="pkg-features">
+                            <li><i class="fa-solid fa-images"></i> Up to <b>${pkg.MaxImages}</b> images</li>
+                            <li><i class="fa-regular fa-calendar"></i> <b>${pkg.DurationDays} days</b> duration</li>
+                            ${pkg.PackageType === 'Premium' ? '<li><i class="fa-solid fa-star"></i> Featured in top listings</li>' : ''}
+                            ${pkg.PackageType === 'Boost'   ? '<li><i class="fa-solid fa-bolt"></i> Boosted search visibility</li>' : ''}
+                            ${pkg.PackageType === 'Free'    ? '<li><i class="fa-solid fa-check"></i> Basic listing</li>' : ''}
                         </ul>
-                        <button class="btn-pay" onclick="payForPackage(${pkg.PackageId})">
-                            Select Package
-                        </button>
-                    </div>
-                `).join('');
 
-            } catch (error) {
-                console.error('Error loading packages:', error);
+                        <button class="btn-pay" id="btn-${pkg.PackageId}" onclick="payForPackage(${pkg.PackageId}, this)">
+                            <i class="fa-solid fa-credit-card"></i> Select Package
+                        </button>
+                    </div>`;
+                }).join('');
+
+            } catch (err) {
+                document.getElementById('packagesGrid').innerHTML = '';
+                showMsg('Failed to load packages: ' + err.message);
             }
         }
 
-        // Pay for package
-        async function payForPackage(packageId) {
+        // ── Pay for package ──────────────────────────────────────
+        async function payForPackage(packageId, btnEl) {
             if (!propertyId) {
-                alert('Property ID not found');
+                showMsg('No property selected.');
                 return;
             }
 
+            hideMsg();
+
+            // Disable button & show loading
+            const originalHTML = btnEl.innerHTML;
+            btnEl.disabled  = true;
+            btnEl.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Processing...';
+
+            // Also disable all other buttons to prevent double submission
+            document.querySelectorAll('.btn-pay').forEach(b => b.disabled = true);
+
             try {
-                const response = await fetch(`${API_URL}/payment/create-checkout`, {
-                    method: 'POST',
+                const res = await fetch(`${API_URL}/payment/create-checkout`, {
+                    method:  'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
+                    body:    JSON.stringify({
                         propertyId: parseInt(propertyId),
-                        packageId: packageId,
-                        ownerId: user.UserId
+                        packageId:  packageId,
+                        ownerId:    user.UserId
                     })
                 });
 
-                const data = await response.json();
+                const data = await res.json();
 
-                if (data.success && data.checkoutUrl) {
-                    // Redirect to Chargily payment page
-                    window.location.href = data.checkoutUrl;
-                } else {
-                    document.getElementById('message').innerHTML = 
-                        `<div class="message error">? ${data.error || 'Payment failed'}</div>`;
+                if (!res.ok) {
+                    throw new Error(data.error || data.details || `Server error (${res.status})`);
                 }
-            } catch (error) {
-                document.getElementById('message').innerHTML = 
-                    '<div class="message error">? Network error</div>';
+
+                if (!data.success || !data.checkoutUrl) {
+                    throw new Error(data.error || 'Payment URL not received. Please try again.');
+                }
+
+                // Redirect to Chargily checkout
+                window.location.href = data.checkoutUrl;
+
+            } catch (err) {
+                showMsg('Payment failed: ' + err.message);
+
+                // Re-enable buttons on error
+                document.querySelectorAll('.btn-pay').forEach(b => b.disabled = false);
+                btnEl.innerHTML = originalHTML;
             }
         }
 
-        loadPropertyInfo();
-        loadPackages();
+        // ── Init ─────────────────────────────────────────────────
+        if (propertyId) {
+            loadPropertyInfo();
+            loadPackages();
+        }
     </script>
 </body>
 </html>
