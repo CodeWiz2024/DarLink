@@ -290,6 +290,25 @@ CREATE TABLE `USER_a` (
   `ProfilePicturePath` varchar(500) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+-- ============================================================
+--  DarLink Admin Migration
+--  Run this on your Railway MySQL database
+-- ============================================================
+
+-- 1. Add AccountStatus column to USER_a (if it doesn't exist)
+ALTER TABLE `USER_a`
+    ADD COLUMN IF NOT EXISTS `AccountStatus`
+    ENUM('Active','Suspended','Banned') NOT NULL DEFAULT 'Active';
+
+-- 2. Set all existing users to Active
+UPDATE `USER_a` SET AccountStatus = 'Active' WHERE AccountStatus IS NULL;
+
+-- 3. (Optional) Insert a default admin record if your Admin table is empty
+--    Replace 'your_admin_name' and hash the password before inserting.
+--    For now this just shows the structure:
+-- INSERT INTO `Admin` (Name, Email, Password, UserId, PropertyId)
+-- VALUES ('Super Admin', 'admin@darlink.dz', '<bcrypt_hash>', 1, 1);
+
 INSERT INTO `USER_a` VALUES
 (1, 'Tarek', 'Ferhi', 'ferhi.tarek@yahoo.com', '0699787702', '100050841032670003', '$2b$10$vZ/SgM/cuSV3HFVmSQBIA.Jq4Aqrps5jXgsj5bqOf08R2nCwH0OOS', 'Renter', NULL, 4.00, 1, NULL),
 (2, 'test', 'tttt', 'test@yahoo.com', '0794807081', '100001112765903847', '$2b$10$eX0C9Ko8lVwbpQm58luaT.8ZZXYCc5pJa37yFvGtW3YvWxp9YNRje', 'Owner', NULL, 4.50, 2, NULL);

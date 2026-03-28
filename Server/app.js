@@ -2108,6 +2108,161 @@ app.get('/api/test-cloudinary-debug', async (req, res) => {
   }
 });
 
+
+// ================================================================
+// ENDPOINTS Administration & Diagnostics
+// ================================================================
+
+// GET all users (admin) — returns FullName, AccountStatus
+app.get('/api/users', async (req, res) => {
+    try {
+        const [users] = await pool.query(
+            `SELECT UserId,
+             CONCAT(FirstName, ' ', LastName) AS FullName,
+             FirstName, LastName, Email, PhoneNumber,
+             UserType, IDCardNumber, IDCardFrontPath,
+             AverageRating, TotalReviews,
+             COALESCE(AccountStatus, 'Active') AS AccountStatus
+             FROM USER_a
+             ORDER BY UserId DESC`
+        );
+        res.json(users);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+});
+ 
+// PUT update user account status (admin: Active / Suspended / Banned)
+app.put('/api/users/:id/status', async (req, res) => {
+    try {
+        const { id } = req.params;
+        const { status } = req.body;
+ 
+        const allowed = ['Active', 'Suspended', 'Banned'];
+        if (!allowed.includes(status)) {
+            return res.status(400).json({ error: 'Invalid status' });
+        }
+ 
+        await pool.query(
+            'UPDATE USER_a SET AccountStatus = ? WHERE UserId = ?',
+            [status, id]
+        );
+        res.json({ message: `User #${id} status updated to ${status}` });
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+});
+ 
+// GET all properties with owner name (admin)
+app.get('/api/admin/properties', async (req, res) => {
+    try {
+        const [properties] = await pool.query(
+            `SELECT p.*,
+             CONCAT(u.FirstName, ' ', u.LastName) AS OwnerName
+             FROM Property p
+             JOIN USER_a u ON p.OwnerId = u.UserId
+             ORDER BY p.PropertyId DESC`
+        );
+        res.json(properties);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+});
+ 
+// PUT update property availability status (admin)
+app.put('/api/properties/:id/status', async (req, res) => {
+    try {
+        const { id } = req.params;
+        const { status } = req.body;
+ 
+        const allowed = ['Active', 'Inactive', 'Blocked'];
+        if (!allowed.includes(status)) {
+            return res.status(400).json({ error: 'Invalid status' });
+        }
+ 
+        await pool.query(
+            'UPDATE Property SET AvailabilityStatus = ? WHERE PropertyId = ?',
+            [status, id]
+        );
+        res.json({ message: `Property #${id} status updated to ${status}` });
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+});
+ 
+// GET all bookings (admin) — includes renter name and property title
+app.get('/api/bookings', async (req, res) => {
+    try {
+        const [bookings] = await pool.query(
+            `SELECT b.*,
+             p.Title AS PropertyTitle,
+             CONCAT(u.FirstName, ' ', u.LastName) AS RenterName
+             FROM Booking b
+             JOIN Property p ON b.PropertyId = p.PropertyId
+             JOIN USER_a u ON b.UserId = u.UserId
+             ORDER BY b.BookingId DESC`
+        );
+        res.json(bookings);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+});
+ 
+// PUT cancel booking (admin)
+app.put('/api/bookings/:id/cancel', async (req, res) => {
+    try {
+        const { id } = req.params;
+        await pool.query(
+            "UPDATE Booking SET BookingStatus = 'Cancelled' WHERE BookingId = ?",
+            [id]
+        );
+        res.json({ message: `Booking #${id} cancelled` });
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+});
+ 
+// GET all reviews (admin)
+app.get('/api/reviews', async (req, res) => {
+    try {
+        const [reviews] = await pool.query(
+            `SELECT r.*,
+             CONCAT(reviewer.FirstName, ' ', reviewer.LastName) AS ReviewerName,
+             p.Title AS PropertyTitle
+             FROM Review r
+             JOIN USER_a reviewer ON r.ReviewerId = reviewer.UserId
+             LEFT JOIN Property p ON r.PropertyId = p.PropertyId
+             ORDER BY r.ReviewDate DESC`
+        );
+        // Normalize: use ReviewId as PropertyReviewId for compatibility
+        const normalized = reviews.map(r => ({
+            ...r,
+            PropertyReviewId: r.ReviewId
+        }));
+        res.json(normalized);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+});
+ 
+// DELETE a review (admin)
+app.delete('/api/reviews/:id', async (req, res) => {
+    try {
+        const { id } = req.params;
+        const [result] = await pool.query(
+            'DELETE FROM Review WHERE ReviewId = ?',
+            [id]
+        );
+        if (result.affectedRows === 0) {
+            return res.status(404).json({ error: 'Review not found' });
+        }
+        res.json({ message: 'Review deleted' });
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+});
+ 
+
 // Start server
 app.listen(process.env.PORT, () => {
     console.log(`🚀 Server running on http://localhost:${process.env.PORT}`);

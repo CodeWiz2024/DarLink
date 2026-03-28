@@ -2,8 +2,7 @@
 //  DarLink — Admin Dashboard Logic  |  admin.js
 // ============================================================
 
-const API = 'http://localhost:5000/api';
-
+const API = 'https://darlink-production.up.railway.app/api'
 // ── Helpers ──────────────────────────────────────────────────
 
 function badge(status) {
