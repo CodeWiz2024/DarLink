@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DarLink · Admin Login</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+        :root {
+            --bg:       #0b0c0e;
+            --s1:       #111317;
+            --s2:       #16181d;
+            --b1:       rgba(255,255,255,0.06);
+            --b2:       rgba(255,255,255,0.10);
+            --b3:       rgba(255,255,255,0.16);
+            --t1:       #f4f4f6;
+            --t2:       #8e9099;
+            --t3:       #52555f;
+            --blue:     #4b8dff;
+            --blue-dim: rgba(75,141,255,0.18);
+            --red:      #f04f4f;
+            --red-dim:  rgba(240,79,79,0.15);
+            --green:    #27c96f;
+            --r:        12px;
+        }
+
+        html, body {
+            height: 100%;
+            font-family: 'Inter', system-ui, sans-serif;
+            background: var(--bg);
+            color: var(--t1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+        }
+
+        .login-wrap {
+            width: 100%;
+            max-width: 420px;
+            padding: 24px;
+        }
+
+        /* Brand */
+        .brand {
+            text-align: center;
+            margin-bottom: 36px;
+        }
+        .brand-logo {
+            font-family: 'Instrument Serif', serif;
+            font-size: 2rem;
+            color: var(--t1);
+            letter-spacing: -.02em;
+        }
+        .brand-logo span {
+            color: var(--blue);
+        }
+        .brand-sub {
+            font-size: .72rem;
+            font-weight: 600;
+            letter-spacing: .18em;
+            text-transform: uppercase;
+            color: var(--t3);
+            margin-top: 6px;
+        }
+
+        /* Card */
+        .card {
+            background: var(--s1);
+            border: 1px solid var(--b1);
+            border-radius: 18px;
+            padding: 36px 32px;
+            box-shadow: 0 24px 60px rgba(0,0,0,.5);
+        }
+        .card-title {
+            font-family: 'Instrument Serif', serif;
+            font-size: 1.5rem;
+            color: var(--t1);
+            margin-bottom: 6px;
+            letter-spacing: -.01em;
+        }
+        .card-sub {
+            font-size: .82rem;
+            color: var(--t3);
+            margin-bottom: 28px;
+        }
+
+        /* Fields */
+        .field {
+            margin-bottom: 18px;
+        }
+        .field label {
+            display: block;
+            font-size: .78rem;
+            font-weight: 600;
+            letter-spacing: .06em;
+            text-transform: uppercase;
+            color: var(--t3);
+            margin-bottom: 8px;
+        }
+        .field-inner {
+            position: relative;
+        }
+        .field-inner > i.field-icon {
+            position: absolute;
+            left: 14px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: .82rem;
+            color: var(--t3);
+            pointer-events: none;
+            z-index: 1;
+        }
+        .password-container {
+            position: relative;
+        }
+        .password-container > i.field-icon {
+            position: absolute;
+            left: 14px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: .82rem;
+            color: var(--t3);
+            pointer-events: none;
+            z-index: 1;
+        }
+        .field input {
+            width: 100%;
+            height: 44px;
+            padding: 0 42px 0 38px;
+            background: var(--s2);
+            border: 1px solid var(--b1);
+            border-radius: var(--r);
+            color: var(--t1);
+            font-size: .9rem;
+            font-family: inherit;
+            outline: none;
+            transition: border-color .2s, box-shadow .2s;
+        }
+        .field input::placeholder { color: var(--t3); }
+        /* Hide native browser password reveal button */
+        .field input[type="password"]::-ms-reveal,
+        .field input[type="password"]::-ms-clear,
+        .field input[type="password"]::-webkit-contacts-auto-fill-button,
+        .field input[type="password"]::-webkit-credentials-auto-fill-button { display: none !important; }
+        input[type="password"]::-ms-reveal { display: none; }
+        .field input:focus {
+            border-color: var(--blue);
+            box-shadow: 0 0 0 3px var(--blue-dim);
+        }
+
+        /* Toggle password — blue, matching client login */
+        .toggle-password {
+            position: absolute;
+            right: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            cursor: pointer;
+            color: var(--blue);
+            font-size: 1rem;
+            transition: color .2s, transform .2s, opacity .2s;
+            padding: 4px 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 10;
+            border: none;
+            background: none;
+            opacity: 0.75;
+        }
+        .toggle-password:hover {
+            color: var(--blue);
+            opacity: 1;
+            transform: translateY(-50%) scale(1.15);
+        }
+
+        /* Error */
+        .error-box {
+            display: none;
+            background: var(--red-dim);
+            border: 1px solid rgba(240,79,79,.25);
+            border-radius: var(--r);
+            padding: 12px 14px;
+            font-size: .83rem;
+            color: var(--red);
+            margin-bottom: 18px;
+            align-items: center;
+            gap: 8px;
+        }
+        .error-box.show { display: flex; }
+
+        /* Submit */
+        .btn-login {
+            width: 100%;
+            height: 46px;
+            background: var(--blue);
+            border: none;
+            border-radius: var(--r);
+            color: #fff;
+            font-size: .92rem;
+            font-weight: 600;
+            font-family: inherit;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            box-shadow: 0 4px 18px rgba(75,141,255,.35);
+            transition: background .18s, box-shadow .18s, transform .12s;
+            margin-top: 6px;
+        }
+        .btn-login:hover {
+            background: #3a7de8;
+            box-shadow: 0 6px 24px rgba(75,141,255,.45);
+        }
+        .btn-login:active { transform: scale(.98); }
+        .btn-login:disabled {
+            background: var(--t3);
+            box-shadow: none;
+            cursor: not-allowed;
+        }
+
+        /* Footer note */
+        .back-link {
+            text-align: center;
+            margin-top: 20px;
+            font-size: .8rem;
+            color: var(--t3);
+        }
+        .back-link a {
+            color: var(--blue);
+            text-decoration: none;
+            font-weight: 500;
+        }
+        .back-link a:hover { text-decoration: underline; }
+
+        /* Spinner */
+        @keyframes spin { to { transform: rotate(360deg); } }
+        .spin { animation: spin .7s linear infinite; display: inline-block; }
+    </style>
+</head>
+<body>
+
+<div class="login-wrap">
+    <div class="brand">
+        <div class="brand-logo">Dar<span>Link</span></div>
+        <div class="brand-sub">Admin Console</div>
+    </div>
+
+    <div class="card">
+        <div class="card-title">Welcome back</div>
+        <div class="card-sub">Sign in to access the admin dashboard.</div>
+
+        <div class="error-box" id="errorBox">
+            <i class="fa-solid fa-circle-exclamation"></i>
+            <span id="errorMsg">Invalid credentials</span>
+        </div>
+
+        <form id="loginForm" autocomplete="off">
+            <div class="field">
+                <label>Admin Name</label>
+                <div class="field-inner">
+                    <i class="fa-solid fa-user field-icon"></i>
+                    <input type="text" id="name" placeholder="Admin Name" required autocomplete="off">
+                </div>
+            </div>
+
+            <div class="field">
+                <label>Password</label>
+                <div class="password-container">
+                    <i class="fa-solid fa-lock field-icon"></i>
+                    <input type="password" id="password" placeholder="••••••••" required>
+                    <span class="toggle-password" onclick="togglePw()">
+                        <i id="pwIcon" class="fa fa-eye" aria-hidden="true"></i>
+                    </span>
+                </div>
+            </div>
+
+            <button type="submit" class="btn-login" id="loginBtn">
+                <i class="fa-solid fa-arrow-right-to-bracket"></i> Sign In
+            </button>
+        </form>
+    </div>
+
+    <div class="back-link">
+        <a href="../client/index.html"><i class="fa-solid fa-arrow-left"></i> Back to site</a>
+    </div>
+</div>
+
+<script>
+    const API = 'https://darlink-production.up.railway.app/api';
+
+    // Redirect if already logged in
+    if (localStorage.getItem('admin')) {
+        window.location.href = 'admin-dashboard.html';
+    }
+
+    function togglePw() {
+        const pwd = document.getElementById('password');
+        const icon = document.getElementById('pwIcon');
+        if (pwd.type === 'password') {
+            pwd.type = 'text';
+            icon.className = 'fa fa-eye-slash';
+        } else {
+            pwd.type = 'password';
+            icon.className = 'fa fa-eye';
+        }
+    }
+
+    function showError(msg) {
+        const box = document.getElementById('errorBox');
+        document.getElementById('errorMsg').textContent = msg;
+        box.classList.add('show');
+    }
+
+    function hideError() {
+        document.getElementById('errorBox').classList.remove('show');
+    }
+
+    document.getElementById('loginForm').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        hideError();
+
+        const name = document.getElementById('name').value.trim();
+        const password = document.getElementById('password').value;
+        const btn = document.getElementById('loginBtn');
+
+        btn.disabled = true;
+        btn.innerHTML = '<i class="fa-solid fa-circle-notch spin"></i> Signing in…';
+
+        try {
+            const res = await fetch(`${API}/admin/login`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ name, password })
+            });
+
+            const data = await res.json();
+
+            if (res.ok && data.success) {
+                localStorage.setItem('admin', JSON.stringify(data.admin));
+                window.location.href = 'admin-dashboard.html';
+            } else {
+                showError(data.error || 'Invalid name or password.');
+            }
+        } catch (err) {
+            showError('Network error. Please try again.');
+        } finally {
+            btn.disabled = false;
+            btn.innerHTML = '<i class="fa-solid fa-arrow-right-to-bracket"></i> Sign In';
+        }
+    });
+</script>
+</body>
+</html>

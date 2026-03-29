@@ -579,7 +579,18 @@ tbody tr:hover td{background:var(--s2);color:var(--t1)}
 </style>
 </head>
 <body>
+<!-- Add this script tag RIGHT AFTER <body> opens in admin-dashboard.html -->
+<!-- It redirects to login if not authenticated -->
 
+<script>
+    // Auth guard — place at top of admin-dashboard.html body
+    (function() {
+        const admin = localStorage.getItem('admin');
+        if (!admin) {
+            window.location.href = 'AdminLogin.html';
+        }
+    })();
+</script>
 <!-- SIDEBAR -->
 <aside class="sidebar">
   <div class="sb-photo">

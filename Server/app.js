@@ -2261,7 +2261,97 @@ app.delete('/api/reviews/:id', async (req, res) => {
         res.status(500).json({ error: error.message });
     }
 });
+ app.post('/api/admin/login', async (req, res) => {
+    try {
+        const { name, password } = req.body;
  
+        if (!name || !password) {
+            return res.status(400).json({ error: 'Name and password are required' });
+        }
+ 
+        const [admins] = await pool.query(
+            'SELECT * FROM Admin WHERE Name = ?',
+            [name]
+        );
+ 
+        if (admins.length === 0) {
+            return res.status(401).json({ error: 'Invalid name or password' });
+        }
+ 
+        const admin = admins[0];
+        const valid = await bcrypt.compare(password, admin.Password);
+ 
+        if (!valid) {
+            return res.status(401).json({ error: 'Invalid name or password' });
+        }
+ 
+        delete admin.Password;
+ 
+        res.json({
+            success: true,
+            admin: {
+                AdminId: admin.AdminId,
+                Name: admin.Name,
+                Email: admin.Email
+            }
+        });
+ 
+    } catch (error) {
+        console.error('Admin login error:', error);
+        res.status(500).json({ error: 'Server error' });
+    }
+});
+
+// POST create new admin
+app.post('/api/admin/register', async (req, res) => {
+    try {
+        const { name, email, password } = req.body;
+
+        if (!name || !email || !password) {
+            return res.status(400).json({ error: 'Name, email, and password are required' });
+        }
+
+        // Check if admin name already exists
+        const [existingName] = await pool.query(
+            'SELECT AdminId FROM Admin WHERE Name = ?',
+            [name]
+        );
+
+        if (existingName.length > 0) {
+            return res.status(400).json({ error: 'Admin name already exists' });
+        }
+
+        // Check if email already exists
+        const [existingEmail] = await pool.query(
+            'SELECT AdminId FROM Admin WHERE Email = ?',
+            [email]
+        );
+
+        if (existingEmail.length > 0) {
+            return res.status(400).json({ error: 'Email already registered' });
+        }
+
+        // Hash password
+        const hashedPassword = await bcrypt.hash(password, 10);
+
+        // Insert new admin (userId and propertyId are optional, can be NULL)
+        const [result] = await pool.query(
+            `INSERT INTO Admin (Name, Email, Password, UserId, PropertyId)
+             VALUES (?, ?, ?, NULL, NULL)`,
+            [name, email, hashedPassword]
+        );
+
+        res.status(201).json({
+            success: true,
+            message: 'Admin account created successfully',
+            adminId: result.insertId
+        });
+
+    } catch (error) {
+        console.error('Admin registration error:', error);
+        res.status(500).json({ error: 'Server error' });
+    }
+});
 
 // Start server
 app.listen(process.env.PORT, () => {
