@@ -587,7 +587,7 @@ tbody tr:hover td{background:var(--s2);color:var(--t1)}
     (function() {
         const admin = localStorage.getItem('admin');
         if (!admin) {
-            window.location.href = 'AdminLogin.html';
+            window.location.href = '/Admin/AdminLogin.html';
         }
     })();
 </script>
@@ -859,7 +859,7 @@ function nav(name, btn) {
 // Logout function
 function logout() {
     localStorage.removeItem('admin');
-    window.location.href = 'Admin/AdminLogin.html';
+    window.location.href = '/Admin/AdminLogin.html';
 }
 </script>
 <script src="admin.js"></script>
