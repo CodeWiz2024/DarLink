@@ -42,9 +42,7 @@
         }
 
         *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
-
         html, body { overflow-x: hidden; max-width: 100%; }
-
         body {
             font-family: var(--font-body);
             background: var(--bg);
@@ -73,7 +71,11 @@
             text-decoration:none; flex-shrink:0;
         }
         .logo-icon { font-size:1.05rem; }
-        .navbar .links { display:flex; align-items:center; gap:8px; }
+
+        /* Desktop nav links */
+        .navbar .links {
+            display:flex; align-items:center; gap:8px;
+        }
         .navbar .links a, .navbar .links button {
             padding: 8px 16px; border-radius:10px;
             font-family: var(--font-body); font-size:.9rem; font-weight:500;
@@ -84,6 +86,7 @@
         .navbar .links a:hover, .navbar .links button:hover { background:rgba(10,132,255,.1); color:var(--primary); }
         .navbar .links a.primary { background:var(--primary); color:#fff; font-weight:600; }
         .navbar .links a.primary:hover { background:var(--primary-dark); }
+
         .lang-switch { display:flex; gap:6px; }
         .lang-btn {
             padding: 6px 12px; border-radius:8px;
@@ -91,17 +94,26 @@
             font-size:.8rem; font-weight:600; color:var(--text); cursor:pointer; transition:all .2s;
         }
         .lang-btn.active { background:var(--primary); color:#fff; border-color:var(--primary); }
+
         .theme-btn {
             width:38px; height:38px; border-radius:10px; border:1.5px solid rgba(0,0,0,.12);
             background:rgba(255,255,255,.4); cursor:pointer; display:flex; align-items:center; justify-content:center;
             font-size:1rem; color:var(--text); transition:all .2s;
         }
         .theme-btn:hover { background:var(--primary); color:#fff; border-color:var(--primary); }
+
+        /* Hamburger — hidden on desktop */
         .nav-hamburger {
-            display:none; flex-direction:column; gap:5px;
+            display:none;
+            flex-direction:column; gap:5px;
             cursor:pointer; padding:8px; border-radius:10px; border:none; background:transparent;
         }
-        .nav-hamburger span { display:block; width:22px; height:2px; background:var(--text); border-radius:2px; transition:all .3s; }
+        .nav-hamburger span {
+            display:block; width:22px; height:2px;
+            background:var(--text); border-radius:2px; transition:all .3s;
+        }
+
+        /* Close button inside drawer — hidden by default */
         .mobile-close-btn { display:none !important; }
 
         /* ── HERO ── */
@@ -113,13 +125,11 @@
             color:#fff; text-align:center; position:relative; overflow:hidden;
         }
         .hero::before {
-            content:'';
-            position:absolute; inset:0;
+            content:''; position:absolute; inset:0;
             background: radial-gradient(ellipse 80% 80% at 50% 120%, rgba(255,255,255,.12) 0%, transparent 60%);
         }
         .hero::after {
-            content:'';
-            position:absolute; top:-40%; right:-10%;
+            content:''; position:absolute; top:-40%; right:-10%;
             width:500px; height:500px; border-radius:50%;
             background: radial-gradient(circle, rgba(255,255,255,.06) 0%, transparent 70%);
         }
@@ -214,7 +224,7 @@
         /* ── CAROUSEL ── */
         .carousel-wrap {
             position: relative;
-            padding: 0 50px; /* space for buttons on each side */
+            padding: 0 50px;
         }
         .carousel-track-outer {
             overflow: hidden;
@@ -226,7 +236,6 @@
             transition: transform .4s cubic-bezier(.4,0,.2,1);
             will-change: transform;
         }
-        /* Arrows sit in the padding zone, OUTSIDE the overflow:hidden track */
         .carousel-btn {
             position:absolute; top:50%; transform:translateY(-50%);
             width:40px; height:40px; border-radius:50%;
@@ -245,35 +254,6 @@
         .carousel-btn.prev { left:8px; }
         .carousel-btn.next { right:8px; }
         .carousel-btn:disabled { opacity:.3; pointer-events:none; cursor:not-allowed; }
-
-        /* Mobile carousel button enhancements */
-        @media (max-width: 768px) {
-            .carousel-btn {
-                width: 44px;
-                height: 44px;
-                font-size: 1rem;
-                background: rgba(10, 132, 255, 0.95);
-                color: #fff;
-                border: 2px solid var(--primary);
-                box-shadow: 0 6px 20px rgba(10, 132, 255, 0.4);
-            }
-            .carousel-btn:active {
-                transform: translateY(-50%) scale(0.9);
-            }
-            .carousel-btn:disabled {
-                opacity: 0.4;
-                background: rgba(107, 114, 128, 0.5);
-                border-color: rgba(107, 114, 128, 0.3);
-            }
-            /* One card at a time on mobile */
-            .carousel-track-outer {
-                height: 300px;
-            }
-            .prop-card {
-                flex: 0 0 calc(100vw - 120px) !important;
-                max-width: 100% !important;
-            }
-        }
 
         /* ── PROPERTY CARD ── */
         .prop-card {
@@ -299,7 +279,6 @@
         .prop-card:hover .prop-card-img img { transform:scale(1.06); }
         .prop-card-img-placeholder { width:100%; height:100%; display:flex; align-items:center; justify-content:center; font-size:1.8rem; }
 
-        /* Labels on card image */
         .card-labels {
             position:absolute; top:8px; left:8px;
             display:flex; flex-direction:column; gap:4px; z-index:2;
@@ -342,19 +321,17 @@
         .btn-manage-card { background:rgba(10,132,255,.1); color:var(--primary); }
         .btn-manage-card:hover { background:var(--primary); color:#fff; }
 
-        /* Loading skeleton */
+        /* Skeleton */
         .skeleton { animation: shimmer 1.5s infinite; background: linear-gradient(90deg, rgba(0,0,0,.04) 25%, rgba(0,0,0,.08) 50%, rgba(0,0,0,.04) 75%); background-size:200% 100%; border-radius:var(--card-r); }
         @keyframes shimmer { 0%{background-position:200% 0} 100%{background-position:-200% 0} }
         .skeleton-card { flex: 0 0 220px; height: 260px; }
 
-        /* ── SECTION SEPARATORS ── */
         .section-block { margin-bottom:32px; }
 
-        /* ── EMPTY STATE ── */
         .empty-state { text-align:center; padding:60px 20px; color:var(--muted); }
         .empty-state i { font-size:3rem; opacity:.3; margin-bottom:16px; display:block; }
 
-        /* ── PROFILE MODAL (kept from original) ── */
+        /* ── PROFILE MODAL ── */
         .modal-overlay { position:fixed; inset:0; background:rgba(0,0,0,.4); backdrop-filter:blur(4px); z-index:2999; display:none; }
         .profile-modal {
             position:fixed; top:50%; left:50%; transform:translate(-50%,-50%) scale(.9);
@@ -378,7 +355,7 @@
         .modal-footer button { background:rgba(255,59,48,.1); color:#ff3b30; }
         .modal-footer button:hover { background:#ff3b30; color:#fff; }
 
-        /* ── MSG SIDEBAR (kept from original) ── */
+        /* ── MSG SIDEBAR ── */
         .msg-toggle-btn {
             position:fixed; bottom:28px; right:24px; z-index:2000;
             width:56px; height:56px; border-radius:50%;
@@ -443,91 +420,14 @@
         .social-links a { width:36px; height:36px; border-radius:10px; background:rgba(10,132,255,.1); display:flex; align-items:center; justify-content:center; color:var(--primary); transition:.2s; }
         .social-links a:hover { background:var(--primary); color:#fff; transform:translateY(-2px); }
 
-        /* ══════════ MOBILE ══════════ */
-       @media (max-width: 768px) {
-    .carousel-wrap { padding: 0 46px; }
+        /* scroll animations */
+        @keyframes fadeUp { from{opacity:0;transform:translateY(18px)} to{opacity:1;transform:translateY(0)} }
+        .section-block { animation: fadeUp .5s ease both; }
+        .section-block:nth-child(2) { animation-delay:.08s; }
+        .section-block:nth-child(3) { animation-delay:.16s; }
+        .section-block:nth-child(4) { animation-delay:.24s; }
 
-    .carousel-btn {
-        width: 40px;
-        height: 40px;
-        font-size: 1rem;
-        background: var(--primary);
-        color: #fff;
-        border: none;
-        box-shadow: 0 4px 14px rgba(10,132,255,.4);
-    }
-    .carousel-btn:active { transform: translateY(-50%) scale(0.88); }
-    .carousel-btn:disabled {
-        opacity: 0.35;
-        background: rgba(107,114,128,0.45);
-        box-shadow: none;
-    }
-    .carousel-btn.prev { left: 3px; }
-    .carousel-btn.next { right: 3px; }
-
-    /* One card per view */
-    .carousel-track-outer { border-radius: 14px; }
-    .prop-card {
-        flex: 0 0 calc(100vw - 8% - 92px) !important;
-        min-width: 0 !important;
-    }
-}
-
-        /* Mobile nav dark mode — must be outside @media to work reliably */
-        [data-theme="dark"] .navbar .links {
-            background: rgba(13,15,18,.98);
-        }
-        [data-theme="dark"] .navbar .links a,
-        [data-theme="dark"] .navbar .links button.theme-btn {
-            background: rgba(255,255,255,.07);
-            border-color: rgba(255,255,255,.1);
-            color: #f1f5f9;
-        }
-        [data-theme="dark"] .navbar .links a.primary {
-            background: var(--primary); color:#fff; border-color:var(--primary);
-        }
-        /* Lang buttons dark mode */
-        [data-theme="dark"] .lang-btn {
-            border-color: rgba(255,255,255,.15);
-            color: var(--muted);
-        }
-        [data-theme="dark"] .lang-btn.active {
-            background: var(--primary); color:#fff; border-color:var(--primary);
-        }
-        [data-theme="dark"] .theme-btn {
-            background: rgba(255,255,255,.08);
-            border-color: rgba(255,255,255,.12);
-            color: #f1f5f9;
-        }
-        [data-theme="dark"] .theme-btn:hover {
-            background: var(--primary);
-            color: #fff;
-            border-color: var(--primary);
-        }
-        [data-theme="dark"] .navbar .links .lang-btn {
-            background: rgba(255,255,255,.06);
-            border-color: rgba(255,255,255,.15);
-            color: #cbd5e1;
-        }
-        [data-theme="dark"] .navbar .links .lang-btn.active {
-            background: var(--primary); color:#fff;
-        }
-
-        @media (max-width: 768px) {
-            .hero { margin: 12px 3% 0; padding: 36px 20px; }
-            .page-body { flex-direction:column; padding: 16px 3% 40px; }
-            .filter-panel { position:static; width:100%; max-height:0; overflow:hidden; padding:0 18px; transition:max-height .4s, padding .3s; border-radius:16px; }
-            .filter-panel.open { max-height:600px; padding:18px; }
-            .filter-toggle { display:flex !important; }
-            .carousel-wrap { padding: 0 38px; }
-            .msg-sidebar { width:100%; right:-100%; }
-            .msg-toggle-btn { bottom:20px; right:16px; width:50px; height:50px; font-size:1.2rem; }
-         }
-
-        @media (min-width: 769px) {
-            .filter-toggle { display:none !important; }
-        }
-
+        /* filter toggle button (mobile only) */
         .filter-toggle {
             display:none; width:100%; padding:11px 16px; border-radius:14px;
             border:1px solid var(--glass-border); background:var(--glass);
@@ -536,53 +436,198 @@
             align-items:center; gap:8px;
         }
 
-        /* Dark mode tweaks */
-        [data-theme="dark"] .navbar .links a { color:var(--text); }
+        /* ════════════════════════════════════
+           DARK MODE TWEAKS
+        ════════════════════════════════════ */
         [data-theme="dark"] .msg-received { background:rgba(255,255,255,.06); }
         [data-theme="dark"] .prop-card { background:rgba(28,30,36,.9); }
         [data-theme="dark"] .filter-panel { background:rgba(22,24,28,.92); }
         [data-theme="dark"] .site-footer { background:rgba(13,15,18,.7); }
         [data-theme="dark"] .qb-neutral { background:rgba(255,255,255,.08); }
+        [data-theme="dark"] .lang-btn { border-color:rgba(255,255,255,.15); color:var(--muted); }
+        [data-theme="dark"] .lang-btn.active { background:var(--primary); color:#fff; border-color:var(--primary); }
+        [data-theme="dark"] .theme-btn { background:rgba(255,255,255,.08); border-color:rgba(255,255,255,.12); color:#f1f5f9; }
+        [data-theme="dark"] .theme-btn:hover { background:var(--primary); color:#fff; border-color:var(--primary); }
 
-        /* scroll animations */
-        @keyframes fadeUp { from{opacity:0;transform:translateY(18px)} to{opacity:1;transform:translateY(0)} }
-        .section-block { animation: fadeUp .5s ease both; }
-        .section-block:nth-child(2) { animation-delay:.08s; }
-        .section-block:nth-child(3) { animation-delay:.16s; }
-        .section-block:nth-child(4) { animation-delay:.24s; }
+        /* ════════════════════════════════════
+           DESKTOP — min-width: 769px
+        ════════════════════════════════════ */
+        @media (min-width: 769px) {
+            .filter-toggle { display:none !important; }
+            .nav-hamburger { display:none !important; }
+            .navbar .links {
+                display:flex !important;
+                position:static;
+                height:auto; width:auto;
+                background:transparent;
+                backdrop-filter:none;
+                flex-direction:row;
+                align-items:center;
+                gap:8px;
+                padding:0;
+                z-index:auto;
+                border:none;
+                box-shadow:none;
+            }
+        }
+
+        /* ════════════════════════════════════
+           MOBILE — max-width: 768px
+        ════════════════════════════════════ */
+        @media (max-width: 768px) {
+
+            /* Show hamburger */
+            .nav-hamburger { display:flex !important; }
+
+            /* Mobile close button inside drawer */
+            .mobile-close-btn {
+                display:flex !important;
+                position:absolute; top:16px; right:16px;
+                width:40px; height:40px; border-radius:50%;
+                background:rgba(0,0,0,.06); border:none; font-size:1rem;
+                cursor:pointer; color:var(--muted);
+                align-items:center; justify-content:center; z-index:10;
+            }
+
+            /* Nav drawer */
+            .navbar .links {
+                display:flex !important;
+                position:fixed; top:0; right:-320px; bottom:0;
+                width:300px; max-width:85vw; height:100vh;
+                background:rgba(248,250,252,0.98);
+                border-left:1px solid rgba(255,255,255,0.6);
+                backdrop-filter:blur(28px); -webkit-backdrop-filter:blur(28px);
+                flex-direction:column; justify-content:flex-start; align-items:center;
+                gap:10px; z-index:1050; padding:80px 24px 40px;
+                direction:ltr !important;
+                transition:right 0.3s cubic-bezier(0.4,0,0.2,1);
+                overflow-y:auto;
+            }
+            .navbar .links.mobile-open { right:0; box-shadow:-8px 0 32px rgba(0,0,0,.1); }
+
+            /* Nav items inside drawer */
+            .navbar .links a,
+            .navbar .links button.theme-btn {
+                width:100%; max-width:280px;
+                padding:14px 20px; font-size:.95rem; font-weight:600;
+                border-radius:14px; border:1px solid rgba(0,0,0,.08);
+                background:rgba(255,255,255,.9); text-align:center;
+                display:flex; align-items:center; justify-content:center; gap:10px;
+                color:#111827; box-shadow:0 2px 8px rgba(0,0,0,.06);
+                text-decoration:none; white-space:nowrap;
+            }
+            .navbar .links a:hover { background:rgba(10,132,255,.08); color:var(--primary); }
+            .navbar .links a.primary { background:var(--primary); color:#fff; border-color:var(--primary); }
+
+            /* Lang switch row */
+            .navbar .links .lang-switch {
+                display:flex; gap:8px; flex-direction:row; direction:ltr;
+            }
+            .navbar .links .lang-btn {
+                padding:10px 28px; font-size:.9rem; border-radius:12px;
+                border:1.5px solid rgba(0,0,0,.15); background:rgba(255,255,255,.7);
+                font-weight:600; color:#111827; cursor:pointer;
+            }
+            .navbar .links .lang-btn.active { background:var(--primary); color:#fff; border-color:var(--primary); }
+
+            /* Profile pill inside drawer */
+            .navbar .links .nav-profile {
+                width:100%; max-width:280px;
+                padding:14px 20px; font-size:.95rem; font-weight:600;
+                border-radius:14px; border:1px solid rgba(0,0,0,.08);
+                background:rgba(255,255,255,.9); text-align:center;
+                display:flex; align-items:center; justify-content:center; gap:10px;
+                color:#111827; box-shadow:0 2px 8px rgba(0,0,0,.06);
+            }
+
+            /* Layout */
+            .hero { margin: 12px 3% 0; padding: 36px 20px; }
+            .page-body { flex-direction:column; padding: 16px 3% 40px; }
+            .filter-panel {
+                position:static; width:100%; max-height:0; overflow:hidden;
+                padding:0 18px; transition:max-height .4s, padding .3s; border-radius:16px;
+            }
+            .filter-panel.open { max-height:600px; padding:18px; }
+            .filter-toggle { display:flex !important; }
+
+            /* Carousel */
+            .carousel-wrap { padding: 0 46px; }
+            .carousel-btn {
+                width:40px; height:40px; font-size:1rem;
+                background:var(--primary); color:#fff; border:none;
+                box-shadow:0 4px 14px rgba(10,132,255,.4);
+            }
+            .carousel-btn:active { transform:translateY(-50%) scale(0.88); }
+            .carousel-btn:disabled { opacity:.35; background:rgba(107,114,128,0.45); box-shadow:none; }
+            .carousel-btn.prev { left:3px; }
+            .carousel-btn.next { right:3px; }
+            .carousel-track-outer { border-radius:14px; }
+            .prop-card { flex: 0 0 calc(100vw - 8% - 92px) !important; min-width:0 !important; }
+
+            /* Messaging */
+            .msg-sidebar { width:100%; right:-100%; }
+            .msg-toggle-btn { bottom:20px; right:16px; width:50px; height:50px; font-size:1.2rem; }
+        }
+
+        /* Dark mode — mobile drawer */
+        [data-theme="dark"] .navbar .links {
+            background:rgba(13,15,18,.98);
+        }
+        [data-theme="dark"] .navbar .links a,
+        [data-theme="dark"] .navbar .links button.theme-btn {
+            background:rgba(255,255,255,.07);
+            border-color:rgba(255,255,255,.1);
+            color:#f1f5f9;
+        }
+        [data-theme="dark"] .navbar .links a.primary {
+            background:var(--primary); color:#fff; border-color:var(--primary);
+        }
+        [data-theme="dark"] .navbar .links .lang-btn {
+            background:rgba(255,255,255,.06);
+            border-color:rgba(255,255,255,.15);
+            color:#cbd5e1;
+        }
+        [data-theme="dark"] .navbar .links .lang-btn.active {
+            background:var(--primary); color:#fff;
+        }
+        [data-theme="dark"] .mobile-close-btn {
+            background:rgba(255,255,255,.08); color:var(--muted);
+        }
+        [data-theme="dark"] .mobile-close-btn:hover {
+            background:rgba(255,59,48,.2); color:#ff453a;
+        }
+        [data-theme="dark"] .navbar .links .nav-profile {
+            background:rgba(255,255,255,.07);
+            border-color:rgba(255,255,255,.1);
+            color:#f1f5f9;
+        }
     </style>
 
-<script>
-// Override: NEVER flip page to RTL — keep LTR layout at all times
-// Arabic language only changes text content, not page direction
-(function(){
-    // Block any attempt to set dir=rtl on the root
-    var _obs = new MutationObserver(function(muts){
-        muts.forEach(function(m){
-            if(m.attributeName === 'dir' || m.attributeName === 'lang'){
-                var el = m.target;
-                if(el.getAttribute('dir') === 'rtl'){
-                    el.setAttribute('dir', 'ltr');
+    <script>
+    /* Block RTL — keep LTR layout at all times */
+    (function(){
+        var _obs = new MutationObserver(function(muts){
+            muts.forEach(function(m){
+                if(m.attributeName==='dir'||m.attributeName==='lang'){
+                    var el=m.target;
+                    if(el.getAttribute('dir')==='rtl') el.setAttribute('dir','ltr');
                 }
-            }
-        });
-    });
-    _obs.observe(document.documentElement, {attributes:true});
-    _obs.observe(document.body, {attributes:true});
-    // Override setLang from lang.js if it tries to flip direction
-    window.addEventListener('DOMContentLoaded', function(){
-        document.querySelectorAll('.lang-btn').forEach(function(btn){
-            btn.addEventListener('click', function(){
-                // After lang.js runs, force LTR back
-                setTimeout(function(){
-                    document.documentElement.setAttribute('dir','ltr');
-                    document.body.style.direction = 'ltr';
-                }, 0);
             });
         });
-    });
-})();
-</script>
+        _obs.observe(document.documentElement,{attributes:true});
+        _obs.observe(document.body,{attributes:true});
+        window.addEventListener('DOMContentLoaded',function(){
+            document.querySelectorAll('.lang-btn').forEach(function(btn){
+                btn.addEventListener('click',function(){
+                    setTimeout(function(){
+                        document.documentElement.setAttribute('dir','ltr');
+                        document.body.style.direction='ltr';
+                    },0);
+                });
+            });
+        });
+    })();
+    </script>
 </head>
 <body>
 
@@ -592,17 +637,30 @@
         <i class="fa-solid fa-house logo-icon"></i>
         <span data-i18n="nav_logo_text">DarLink</span>
     </a>
+
+    <!-- Hamburger (mobile only) -->
     <button class="nav-hamburger" id="navHamburger" onclick="toggleMobileNav()" aria-label="Menu">
         <span></span><span></span><span></span>
     </button>
+
     <div class="links" id="navLinks">
-        <button class="mobile-close-btn" onclick="closeMobileNav()"><i class="fa-solid fa-times"></i></button>
-        <button class="theme-btn" onclick="toggleTheme()" aria-label="Theme">
+        <!-- Close button (mobile drawer) -->
+        <button class="mobile-close-btn" onclick="closeMobileNav()" aria-label="Close menu">
+            <i class="fa-solid fa-times"></i>
+        </button>
+
+        <button class="theme-btn" onclick="toggleTheme()" aria-label="Toggle theme">
             <i class="fa-regular fa-moon" id="themeIcon"></i>
         </button>
-        <a href="index.html" data-i18n="nav_home" onclick="closeMobileNav()"><i class="fa-solid fa-house"></i> Home</a>
-        <a href="login.html" id="loginLink" data-i18n="nav_login" onclick="closeMobileNav()"><i class="fa-solid fa-right-to-bracket"></i> Login</a>
-        <a href="Register.html" id="registerLink" class="primary" data-i18n="nav_register" onclick="closeMobileNav()"><i class="fa-solid fa-user-plus"></i> Register</a>
+        <a href="index.html" data-i18n="nav_home" onclick="closeMobileNav()">
+            <i class="fa-solid fa-house"></i> Home
+        </a>
+        <a href="login.html" id="loginLink" data-i18n="nav_login" onclick="closeMobileNav()">
+            <i class="fa-solid fa-right-to-bracket"></i> Login
+        </a>
+        <a href="Register.html" id="registerLink" class="primary" data-i18n="nav_register" onclick="closeMobileNav()">
+            <i class="fa-solid fa-user-plus"></i> Register
+        </a>
         <div class="lang-switch">
             <button class="lang-btn" data-lang="en">EN</button>
             <button class="lang-btn" data-lang="ar">عربي</button>
@@ -614,7 +672,7 @@
 <!-- HERO -->
 <section class="hero">
     <div class="hero-inner">
-        <h1 data-i18n="hero_title">Transparency & Speed</h1>
+        <h1 data-i18n="hero_title">Transparency &amp; Speed</h1>
         <p data-i18n="hero_subtitle">Algeria's most trusted vacation rental platform. Real reviews, instant booking.</p>
         <a href="#sections" class="hero-btn" onclick="document.getElementById('sections').scrollIntoView({behavior:'smooth'});return false;">
             <span data-i18n="hero_btn">Explore Properties</span> <i class="fa-solid fa-arrow-down"></i>
@@ -676,7 +734,6 @@
             <i class="fa-solid fa-spinner fa-spin" style="font-size:2rem;color:var(--primary);display:block;margin-bottom:12px;"></i>
             Loading properties...
         </div>
-        <!-- Sections injected by JS -->
     </div>
 </div>
 
@@ -690,7 +747,7 @@
         <div class="footer-section">
             <h3 data-i18n="footer_contact">Contact</h3>
             <ul class="footer-links">
-                <li><i class="fa-solid fa-envelope"></i> <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="6e0a0f1c020700055f0a142e09030f0702400d0103">[email&#160;protected]</a></li>
+                <li><i class="fa-solid fa-envelope"></i> contact@darlink.dz</li>
                 <li><i class="fa-solid fa-phone"></i> +213 699 787 702</li>
             </ul>
         </div>
@@ -698,7 +755,7 @@
             <h3 data-i18n="footer_follow">Follow Us</h3>
             <div class="social-links">
                 <a href="https://www.instagram.com/darlink.dz" target="_blank"><i class="fa-brands fa-instagram"></i></a>
-                <a href="/cdn-cgi/l/email-protection#107471627c797e7b21746a50777d71797c3e737f7d"><i class="fa-solid fa-envelope"></i></a>
+                <a href="mailto:contact@darlink.dz"><i class="fa-solid fa-envelope"></i></a>
                 <a href="https://www.facebook.com/ferhi.tarek.2025" target="_blank"><i class="fa-brands fa-facebook-f"></i></a>
             </div>
         </div>
@@ -760,44 +817,67 @@
     </div>
 </div>
 
-
-
-
-<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+<script>
 /* ═══════════════════════ CONFIG ═══════════════════════ */
 const SERVER_URL = 'https://darlink-production.up.railway.app';
 const API_URL = SERVER_URL + '/api';
 
 window.I18N_MESSAGES = {
     nav_logo_text:{en:"DarLink",ar:"دارلينك"},
-    nav_home:{en:"Home",ar:"الرئيسية"},nav_login:{en:"Login",ar:"تسجيل الدخول"},
+    nav_home:{en:"Home",ar:"الرئيسية"},
+    nav_login:{en:"Login",ar:"تسجيل الدخول"},
     nav_register:{en:"Register",ar:"إنشاء حساب"},
     hero_title:{en:"Transparency & Speed",ar:"الشفافية والسرعة"},
-    hero_subtitle:{en:"Algeria\'s most trusted vacation rental platform. Real reviews, instant booking.",ar:"المنصة الأكثر ثقة لإيجار العطلات في الجزائر."},
+    hero_subtitle:{en:"Algeria's most trusted vacation rental platform. Real reviews, instant booking.",ar:"المنصة الأكثر ثقة لإيجار العطلات في الجزائر."},
     hero_btn:{en:"Explore Properties",ar:"استكشف العقارات"},
     dash_title:{en:"🚀 Quick Dashboard",ar:"🚀 لوحة تحكم سريعة"},
-    filter_wilaya:{en:"Wilaya",ar:"الولاية"},filter_all_wilayas:{en:"All Wilayas",ar:"كل الولايات"},
-    filter_type:{en:"Type",ar:"النوع"},filter_all_types:{en:"All Types",ar:"كل الأنواع"},
-    filter_rooms:{en:"Rooms",ar:"الغرف"},filter_price:{en:"Max Price / Night",ar:"السعر الأقصى"},
-    footer_contact:{en:"Contact",ar:"اتصل بنا"},footer_follow:{en:"Follow Us",ar:"تابعنا"},
+    filter_wilaya:{en:"Wilaya",ar:"الولاية"},
+    filter_all_wilayas:{en:"All Wilayas",ar:"كل الولايات"},
+    filter_type:{en:"Type",ar:"النوع"},
+    filter_all_types:{en:"All Types",ar:"كل الأنواع"},
+    filter_rooms:{en:"Rooms",ar:"الغرف"},
+    filter_price:{en:"Max Price / Night",ar:"السعر الأقصى"},
+    footer_contact:{en:"Contact",ar:"اتصل بنا"},
+    footer_follow:{en:"Follow Us",ar:"تابعنا"},
 };
 
 let currentUser = null;
 try { currentUser = JSON.parse(localStorage.getItem('user') || 'null'); } catch(e){}
 
-/* ═══════════════════════ NAV ═══════════════════════ */
-function toggleMobileNav(){ document.getElementById('navLinks').classList.toggle('mobile-open'); }
-function closeMobileNav(){ document.getElementById('navLinks').classList.remove('mobile-open'); }
+/* ═══════════════════════ THEME ═══════════════════════ */
+const _savedTheme = localStorage.getItem('site_theme') || 'light';
+document.documentElement.setAttribute('data-theme', _savedTheme);
+document.addEventListener('DOMContentLoaded', function(){
+    const icon = document.getElementById('themeIcon');
+    if(icon) icon.className = _savedTheme === 'dark' ? 'fa-solid fa-sun' : 'fa-regular fa-moon';
+});
 
 function toggleTheme(){
     const t = document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
     document.documentElement.setAttribute('data-theme', t);
     localStorage.setItem('site_theme', t);
-    document.getElementById('themeIcon').className = t==='dark' ? 'fa-solid fa-sun' : 'fa-regular fa-moon';
+    const icon = document.getElementById('themeIcon');
+    if(icon) icon.className = t === 'dark' ? 'fa-solid fa-sun' : 'fa-regular fa-moon';
 }
-const _savedTheme = localStorage.getItem('site_theme') || 'light';
-document.documentElement.setAttribute('data-theme', _savedTheme);
-document.getElementById('themeIcon').className = _savedTheme==='dark' ? 'fa-solid fa-sun' : 'fa-regular fa-moon';
+
+/* ═══════════════════════ NAV ═══════════════════════ */
+function toggleMobileNav(){
+    document.getElementById('navLinks').classList.toggle('mobile-open');
+}
+function closeMobileNav(){
+    document.getElementById('navLinks').classList.remove('mobile-open');
+}
+
+/* Close drawer when clicking outside */
+document.addEventListener('click', function(e){
+    const links = document.getElementById('navLinks');
+    const hamburger = document.getElementById('navHamburger');
+    if(links && links.classList.contains('mobile-open')){
+        if(!links.contains(e.target) && !hamburger.contains(e.target)){
+            closeMobileNav();
+        }
+    }
+});
 
 /* ═══════════════════════ FILTER TOGGLE (mobile) ═══════════════════════ */
 function toggleFilter(){
@@ -807,8 +887,11 @@ function toggleFilter(){
     c.style.transform = open ? 'rotate(180deg)' : 'rotate(0deg)';
 }
 
-document.getElementById('filterPrice').addEventListener('input', function(){
-    document.getElementById('priceOut').textContent = Number(this.value).toLocaleString() + ' DZD';
+document.addEventListener('DOMContentLoaded', function(){
+    const fp = document.getElementById('filterPrice');
+    if(fp) fp.addEventListener('input', function(){
+        document.getElementById('priceOut').textContent = Number(this.value).toLocaleString() + ' DZD';
+    });
 });
 
 /* ═══════════════════════ USER GREETING ═══════════════════════ */
@@ -822,7 +905,6 @@ function updateGreeting(){
     if(el) el.innerHTML = `<div class="nav-profile" onclick="toggleProfileModal()">${avatar}<span class="nav-user-name">${firstName}</span></div>`;
     document.getElementById('loginLink')?.setAttribute('style','display:none');
     document.getElementById('registerLink')?.setAttribute('style','display:none');
-    // Quick bar
     const bar = document.getElementById('dashQuickBar');
     const btns = document.getElementById('dashButtons');
     bar.classList.add('visible');
@@ -875,28 +957,26 @@ async function uploadProfilePic(input){
 /* ═══════════════════════ CAROUSEL ═══════════════════════ */
 const carousels = {};
 
-function buildCarousel(containerId, cards){
+function buildCarousel(containerId){
     const wrap = document.getElementById(containerId);
     if(!wrap) return;
     const trackOuter = wrap.querySelector('.carousel-track-outer');
     const track = wrap.querySelector('.carousel-track');
     const prevBtn = wrap.querySelector('.carousel-btn.prev');
     const nextBtn = wrap.querySelector('.carousel-btn.next');
-    const cardWidth = 194; // 180 + 14 gap (mobile) or use computed
     let pos = 0;
     let max = 0;
 
     function getCardWidth(){
         const firstCard = track.querySelector('.prop-card');
-        if(!firstCard) return 194;
-        const style = window.getComputedStyle(firstCard);
-        const marginRight = parseFloat(style.marginRight)||0;
+        if(!firstCard) return 234;
         const gapPx = window.innerWidth <= 768 ? 12 : 14;
         return firstCard.offsetWidth + gapPx;
     }
     function update(){
         const cw = getCardWidth();
-        const visible = Math.floor(track.parentElement.offsetWidth / cw);
+        const outerW = track.parentElement.offsetWidth;
+        const visible = Math.max(1, Math.floor(outerW / cw));
         const total = track.querySelectorAll('.prop-card').length;
         max = Math.max(0, total - visible);
         pos = Math.min(pos, max);
@@ -908,31 +988,24 @@ function buildCarousel(containerId, cards){
     prevBtn.onclick = (e) => { e.stopPropagation(); pos = Math.max(0, pos-1); update(); };
     nextBtn.onclick = (e) => { e.stopPropagation(); pos = Math.min(max, pos+1); update(); };
 
-    // Touch swipe — horizontal only, don't block vertical page scroll
+    /* Touch swipe */
     let txStart = 0, tyStart = 0, txDelta = 0, swiping = false;
-
     trackOuter.addEventListener('touchstart', (e) => {
         txStart = e.touches[0].clientX;
         tyStart = e.touches[0].clientY;
         txDelta = 0; swiping = false;
     }, {passive:true});
-
     trackOuter.addEventListener('touchmove', (e) => {
         if(!e.touches[0]) return;
         const dx = e.touches[0].clientX - txStart;
         const dy = Math.abs(e.touches[0].clientY - tyStart);
         txDelta = dx;
-        if(!swiping) {
-            // Only hijack if clearly horizontal (dx > dy) and moved enough
-            if(Math.abs(dx) > 10 && Math.abs(dx) > dy * 1.5) {
-                swiping = true;
-            } else if(dy > 10) {
-                return; // clearly vertical — let page scroll freely
-            }
+        if(!swiping){
+            if(Math.abs(dx) > 10 && Math.abs(dx) > dy * 1.5){ swiping = true; }
+            else if(dy > 10){ return; }
         }
         if(swiping) e.preventDefault();
     }, {passive:false});
-
     trackOuter.addEventListener('touchend', () => {
         if(!swiping) return;
         swiping = false;
@@ -976,24 +1049,22 @@ function calcDisplayPrice(p){
 
 function buildCard(p){
     const isOwner = currentUser && currentUser.UserType==='Owner' && currentUser.UserId===p.OwnerId;
-    const isMine = isOwner;
     const imgUrl = p.MainImage ? (p.MainImage.startsWith('http') ? p.MainImage : SERVER_URL+p.MainImage) : null;
     const {display, original, label} = calcDisplayPrice(p);
 
-    // Labels
     let labelHtml = '';
     if(p.IsFeatured) labelHtml += `<span class="card-label label-featured"><i class="fa-solid fa-star"></i> Premium</span>`;
     if(p.IsBoosted && !p.IsFeatured) labelHtml += `<span class="card-label label-boosted"><i class="fa-solid fa-bolt"></i> Boosted</span>`;
     if(p.HasPromotion && label) labelHtml += `<span class="card-label label-promo"><i class="fa-solid fa-tag"></i> ${label}</span>`;
-    if(isMine) labelHtml += `<span class="card-label label-mine"><i class="fa-solid fa-house-user"></i> Mine</span>`;
+    if(isOwner) labelHtml += `<span class="card-label label-mine"><i class="fa-solid fa-house-user"></i> Mine</span>`;
 
     const priceHtml = original
         ? `${Math.round(display).toLocaleString()} <span class="old-price">${Math.round(original).toLocaleString()}</span>`
         : Math.round(display).toLocaleString();
 
-    const actionBtn = isMine
+    const actionBtn = isOwner
         ? `<button class="btn-manage-card" onclick="window.location.href='edit-property.html?id=${p.PropertyId}'"><i class="fa-solid fa-pen"></i> Manage</button>`
-        : `<button class="btn-chat-card" onclick="openChat(event,${p.PropertyId},${p.OwnerId},'${(p.OwnerName||'Owner').replace(/'/g,"\'")}')"><i class="fa-solid fa-comment"></i></button>`;
+        : `<button class="btn-chat-card" onclick="openChat(event,${p.PropertyId},${p.OwnerId},'${(p.OwnerName||'Owner').replace(/'/g,"\\'")}')"><i class="fa-solid fa-comment"></i></button>`;
 
     return `
     <div class="prop-card" onclick="viewProperty(${p.PropertyId},${p.OwnerId})">
@@ -1029,10 +1100,10 @@ function buildSection(id, icon, title, badgeCount, badgeColor, cards){
                 <span class="badge" style="background:${badgeColor};color:#fff">${badgeCount}</span>
             </div>
         </div>
-        <div class="carousel-wrap">
+        <div class="carousel-wrap" id="${id}-wrap">
             <button class="carousel-btn prev" disabled><i class="fa-solid fa-chevron-left"></i></button>
             <div class="carousel-track-outer">
-                <div class="carousel-track" id="${id}-track">
+                <div class="carousel-track">
                     ${cards.map(buildCard).join('')}
                 </div>
             </div>
@@ -1044,20 +1115,22 @@ function buildSection(id, icon, title, badgeCount, badgeColor, cards){
 /* ═══════════════════════ LOAD PROPERTIES ═══════════════════════ */
 async function loadProperties(){
     const content = document.getElementById('contentArea');
+    content.innerHTML = `<div style="text-align:center;padding:60px;color:var(--muted);">
+        <i class="fa-solid fa-spinner fa-spin" style="font-size:2rem;color:var(--primary);display:block;margin-bottom:12px;"></i>
+        Loading properties...</div>`;
     try {
         const r = await fetch(`${API_URL}/properties`);
         if(!r.ok) throw new Error('HTTP '+r.status);
         let all = await r.json();
         if(!Array.isArray(all)) throw new Error('Bad data');
 
-        // Filters
-        const city = document.getElementById('filterCity').value;
-        const type = document.getElementById('filterType').value;
+        const city  = document.getElementById('filterCity').value;
+        const type  = document.getElementById('filterType').value;
         const rooms = document.getElementById('filterRooms').value;
         const price = parseInt(document.getElementById('filterPrice').value);
 
-        if(city) all = all.filter(p=>p.Wilaya===city||p.City===city);
-        if(type) all = all.filter(p=>p.PropertyType===type);
+        if(city)  all = all.filter(p=>p.Wilaya===city||p.City===city);
+        if(type)  all = all.filter(p=>p.PropertyType===type);
         if(rooms){ if(rooms==='3') all=all.filter(p=>p.NumofRooms>=3); else all=all.filter(p=>p.NumofRooms==rooms); }
         if(price) all = all.filter(p=>p.PricePerNight<=price);
 
@@ -1066,12 +1139,12 @@ async function loadProperties(){
             return;
         }
 
-        const promo     = all.filter(p=>p.HasPromotion && (parseFloat(p.DiscountPercentage)>0 || parseFloat(p.DiscountAmount)>0));
-        const featured  = all.filter(p=>p.IsFeatured && !p.HasPromotion);
-        const boosted   = all.filter(p=>p.IsBoosted && !p.IsFeatured && !p.HasPromotion);
-        const sorted    = [...all].sort((a,b)=>(b.ViewCount||0)-(a.ViewCount||0));
-        const popular   = sorted.slice(0,8).filter(p=>!p.IsFeatured&&!p.IsBoosted&&!p.HasPromotion);
-        const regular   = all.filter(p=>!p.IsFeatured&&!p.IsBoosted&&!p.HasPromotion&&!popular.includes(p));
+        const promo    = all.filter(p=>p.HasPromotion && (parseFloat(p.DiscountPercentage)>0 || parseFloat(p.DiscountAmount)>0));
+        const featured = all.filter(p=>p.IsFeatured && !p.HasPromotion);
+        const boosted  = all.filter(p=>p.IsBoosted && !p.IsFeatured && !p.HasPromotion);
+        const sorted   = [...all].sort((a,b)=>(b.ViewCount||0)-(a.ViewCount||0));
+        const popular  = sorted.slice(0,8).filter(p=>!p.IsFeatured&&!p.IsBoosted&&!p.HasPromotion);
+        const regular  = all.filter(p=>!p.IsFeatured&&!p.IsBoosted&&!p.HasPromotion&&!popular.includes(p));
 
         let html = '';
         if(promo.length)    html += buildSection('promo',   '🔥','Special Promotions', promo.length,   '#34C759', promo);
@@ -1082,13 +1155,8 @@ async function loadProperties(){
 
         content.innerHTML = html;
 
-        // Init carousels
         ['promo','featured','boosted','popular','regular'].forEach(id=>{
-            const wrap = content.querySelector(`#${id}-track`)?.closest('.carousel-wrap');
-            if(wrap){
-                wrap.id = id+'-wrap';
-                buildCarousel(id+'-wrap', []);
-            }
+            if(content.querySelector(`#${id}-wrap`)) buildCarousel(id+'-wrap');
         });
 
     } catch(err){
@@ -1097,6 +1165,7 @@ async function loadProperties(){
 }
 
 function applyFilters(){ loadProperties(); }
+
 function viewProperty(id, ownerId){
     if(!currentUser){ window.location.href=`property-detail.html?id=${id}`; return; }
     if(currentUser.UserId===ownerId){ window.location.href=`edit-property.html?id=${id}`; return; }
@@ -1105,84 +1174,107 @@ function viewProperty(id, ownerId){
 
 /* ═══════════════════════ MESSAGING ═══════════════════════ */
 let activeChat = null, chatPoll = null;
-function toggleMsgSidebar(){ const s=document.getElementById('msgSidebar'); s.classList.toggle('open'); if(s.classList.contains('open')&&!activeChat) loadConversations(); else stopPoll(); }
+
+function toggleMsgSidebar(){
+    const s = document.getElementById('msgSidebar');
+    s.classList.toggle('open');
+    if(s.classList.contains('open') && !activeChat) loadConversations();
+    else stopPoll();
+}
 function stopPoll(){ if(chatPoll){clearInterval(chatPoll);chatPoll=null;} }
-function backToMsgList(){ activeChat=null; stopPoll(); document.getElementById('msgChatView').style.display='none'; document.getElementById('msgListView').style.display='flex'; loadConversations(); }
+function backToMsgList(){
+    activeChat=null; stopPoll();
+    document.getElementById('msgChatView').style.display='none';
+    document.getElementById('msgListView').style.display='flex';
+    loadConversations();
+}
 
 async function loadConversations(){
     if(!currentUser) return;
     try{
-        const r=await fetch(`${API_URL}/conversations/${currentUser.UserId}`);
-        const convs=await r.json();
-        const list=document.getElementById('msgList');
+        const r = await fetch(`${API_URL}/conversations/${currentUser.UserId}`);
+        const convs = await r.json();
+        const list = document.getElementById('msgList');
         if(!convs.length){ list.innerHTML=`<div style="text-align:center;padding:40px;color:var(--muted)">No messages yet</div>`; return; }
-        list.innerHTML=convs.map(c=>`
+        list.innerHTML = convs.map(c=>`
             <div class="conv-item" onclick="openSidebarChat(${c.PropertyId},${currentUser.UserType==='Renter'?c.OwnerId:c.RenterId},'${c.OtherUserName}','${c.OtherUserAvatar||''}',${c.OtherUserRating||0})">
                 <div class="conv-avatar">${c.OtherUserAvatar?`<img src="${c.OtherUserAvatar}" class="conv-avatar-img">`:c.OtherUserName.charAt(0)}</div>
                 <div class="conv-info"><span class="conv-name">${c.OtherUserName}</span><span class="conv-property">${c.PropertyTitle||'Inquiry'}</span></div>
                 ${c.UnreadCount>0?`<span class="conv-unread">${c.UnreadCount}</span>`:''}
             </div>`).join('');
-        const total=convs.reduce((s,c)=>s+c.UnreadCount,0);
-        const badge=document.getElementById('msgBtnBadge');
+        const total = convs.reduce((s,c)=>s+c.UnreadCount,0);
+        const badge = document.getElementById('msgBtnBadge');
         badge.textContent=total; badge.style.display=total?'block':'none';
     }catch(e){}
 }
 
 async function openSidebarChat(propId, otherId, name, avatar, rating){
-    activeChat={propId,otherId,name,avatar,rating};
+    activeChat = {propId, otherId, name, avatar, rating};
     document.getElementById('msgListView').style.display='none';
     document.getElementById('msgChatView').style.display='flex';
     document.getElementById('activeChatName').textContent=name;
-    const av=document.getElementById('activeChatAvatar');
-    av.innerHTML=avatar&&avatar!=='null'?`<img src="${avatar}" style="width:100%;height:100%;border-radius:50%;object-fit:cover">`:name.charAt(0);
-    document.getElementById('activeChatRating').innerHTML=getStarIcons(rating);
-    loadSidebarMessages(); stopPoll(); chatPoll=setInterval(loadSidebarMessages,3000);
+    const av = document.getElementById('activeChatAvatar');
+    av.innerHTML = avatar&&avatar!=='null' ? `<img src="${avatar}" style="width:100%;height:100%;border-radius:50%;object-fit:cover">` : name.charAt(0);
+    document.getElementById('activeChatRating').innerHTML = getStarIcons(rating);
+    loadSidebarMessages();
+    stopPoll();
+    chatPoll = setInterval(loadSidebarMessages, 3000);
     document.getElementById('msgSidebar').classList.add('open');
 }
 
 async function loadSidebarMessages(){
     if(!activeChat||!currentUser) return;
     try{
-        const url=activeChat.propId?`${API_URL}/messages/${currentUser.UserId}/${activeChat.otherId}?propertyId=${activeChat.propId}`:`${API_URL}/messages/${currentUser.UserId}/${activeChat.otherId}`;
-        const r=await fetch(url); const msgs=await r.json();
-        const c=document.getElementById('chatMessages');
-        const atBottom=c.scrollHeight-c.scrollTop<=c.clientHeight+80;
-        c.innerHTML=msgs.map(m=>{
-            const sent=m.SenderId==currentUser.UserId;
-            const time=new Date(m.SentAt).toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'});
-            const safe=String(m.MessageText).replace(/</g,'&lt;').replace(/>/g,'&gt;');
+        const url = activeChat.propId
+            ? `${API_URL}/messages/${currentUser.UserId}/${activeChat.otherId}?propertyId=${activeChat.propId}`
+            : `${API_URL}/messages/${currentUser.UserId}/${activeChat.otherId}`;
+        const r = await fetch(url);
+        const msgs = await r.json();
+        const c = document.getElementById('chatMessages');
+        const atBottom = c.scrollHeight - c.scrollTop <= c.clientHeight + 80;
+        c.innerHTML = msgs.map(m=>{
+            const sent = m.SenderId == currentUser.UserId;
+            const time = new Date(m.SentAt).toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'});
+            const safe = String(m.MessageText).replace(/</g,'&lt;').replace(/>/g,'&gt;');
             return `<div class="msg-bubble ${sent?'msg-sent':'msg-received'}">${safe}<span class="msg-time">${time}</span></div>`;
         }).join('');
-        if(atBottom) c.scrollTop=c.scrollHeight;
+        if(atBottom) c.scrollTop = c.scrollHeight;
     }catch(e){}
 }
 
 async function sendSidebarMessage(){
-    const inp=document.getElementById('chatInput'); const text=inp.value.trim();
-    if(!text||!activeChat) return; inp.value='';
+    const inp = document.getElementById('chatInput');
+    const text = inp.value.trim();
+    if(!text||!activeChat) return;
+    inp.value='';
     try{
         await fetch(`${API_URL}/messages`,{method:'POST',headers:{'Content-Type':'application/json'},
-        body:JSON.stringify({senderId:currentUser.UserId,receiverId:activeChat.otherId,propertyId:activeChat.propId,messageText:text})});
+            body:JSON.stringify({senderId:currentUser.UserId,receiverId:activeChat.otherId,propertyId:activeChat.propId,messageText:text})});
         loadSidebarMessages();
     }catch(e){}
 }
 
 function openChat(e, propId, ownerId, ownerName){
     if(e) e.stopPropagation();
-    if(!currentUser){window.location.href='login.html';return;}
+    if(!currentUser){ window.location.href='login.html'; return; }
     openSidebarChat(propId, ownerId, ownerName, null, 0);
 }
 
 /* ═══════════════════════ INIT ═══════════════════════ */
 document.addEventListener('DOMContentLoaded', ()=>{
-    // Chat intent from property page
-    const intent=sessionStorage.getItem('openChatIntent');
-    if(intent){ sessionStorage.removeItem('openChatIntent'); try{ const {ownerId,ownerName,propId}=JSON.parse(intent); setTimeout(()=>openChat(null,propId,ownerId,ownerName),800); }catch(e){} }
+    /* Chat intent from property page */
+    const intent = sessionStorage.getItem('openChatIntent');
+    if(intent){
+        sessionStorage.removeItem('openChatIntent');
+        try{ const {ownerId,ownerName,propId}=JSON.parse(intent); setTimeout(()=>openChat(null,propId,ownerId,ownerName),800); }catch(e){}
+    }
 
-    // Populate wilaya filter
-    if(typeof populateWilayasSelect==='function'){ try{ populateWilayasSelect('filterCity','All Wilayas'); }catch(e){} }
+    /* Populate wilaya filter */
+    if(typeof populateWilayasSelect==='function'){
+        try{ populateWilayasSelect('filterCity','All Wilayas'); }catch(e){}
+    }
 
-    // User
+    /* User session */
     if(currentUser){ updateGreeting(); loadConversations(); setInterval(loadConversations,10000); }
 
     loadProperties();
