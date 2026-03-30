@@ -855,12 +855,6 @@ function nav(name, btn) {
     };
     if (typeof loaders[name] === 'function') loaders[name]();
 }
-
-// Logout function
-function logout() {
-    localStorage.removeItem('admin');
-    window.location.href = 'AdminLogin.html';
-}
 </script>
 <script src="admin.js"></script>
 </body>

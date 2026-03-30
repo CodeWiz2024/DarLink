@@ -73,7 +73,7 @@ function initAuth(){
     setText('adminName', name);
     setText('adminInitials', initials(name));
 }
-function logout(){ localStorage.removeItem('admin'); window.location.href='login.html'; }
+function logout(){ localStorage.removeItem('admin'); window.location.href='AdminLogin.html'; }
 
 // ── Overview ─────────────────────────────────────────────────
 
