@@ -567,6 +567,11 @@
             /* Messaging */
             .msg-sidebar { width:100%; right:-100%; }
             .msg-toggle-btn { bottom:20px; right:16px; width:50px; height:50px; font-size:1.2rem; }
+            /* Hide the floating chat button when sidebar is open */
+             .msg-sidebar.open ~ .msg-toggle-btn,
+             .msg-toggle-btn.hidden {
+            display: none !important;
+    }
         }
 
         /* Dark mode — mobile drawer */
@@ -1175,20 +1180,29 @@ function viewProperty(id, ownerId){
 /* ═══════════════════════ MESSAGING ═══════════════════════ */
 let activeChat = null, chatPoll = null;
 
-function toggleMsgSidebar(){
+  function toggleMsgSidebar(){
     const s = document.getElementById('msgSidebar');
+    const btn = document.getElementById('msgToggleBtn');
     s.classList.toggle('open');
-    if(s.classList.contains('open') && !activeChat) loadConversations();
-    else stopPoll();
-}
-function stopPoll(){ if(chatPoll){clearInterval(chatPoll);chatPoll=null;} }
-function backToMsgList(){
-    activeChat=null; stopPoll();
-    document.getElementById('msgChatView').style.display='none';
-    document.getElementById('msgListView').style.display='flex';
-    loadConversations();
+    // Hide the toggle button while sidebar is open on mobile
+    if(s.classList.contains('open')){
+        btn.classList.add('hidden');
+        if(!activeChat) loadConversations();
+    } else {
+        btn.classList.remove('hidden');
+        stopPoll();
+    }
 }
 
+
+function stopPoll(){ if(chatPoll){clearInterval(chatPoll);chatPoll=null;} }
+function backToMsgList(){
+    activeChat = null; stopPoll();
+    document.getElementById('msgChatView').style.display = 'none';
+    document.getElementById('msgListView').style.display = 'flex';
+    loadConversations();
+    // button stays hidden — sidebar is still open
+}
 async function loadConversations(){
     if(!currentUser) return;
     try{

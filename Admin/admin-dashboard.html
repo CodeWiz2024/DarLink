@@ -641,7 +641,9 @@ tbody tr:hover td{background:var(--s2);color:var(--t1)}
       <div class="foot-name" id="adminName">Admin</div>
       <div class="foot-role">Super Admin</div>
     </div>
-
+    <button class="foot-out" onclick="logout()" title="Logout">
+      <i class="fa-solid fa-sign-out-alt"></i>
+    </button>
   </div>
 </aside>
 
@@ -852,6 +854,12 @@ function nav(name, btn) {
         reviews: loadReviews, banned: loadBanned,
     };
     if (typeof loaders[name] === 'function') loaders[name]();
+}
+
+// Logout function
+function logout() {
+    localStorage.removeItem('admin');
+    window.location.href = 'AdminLogin.html';
 }
 </script>
 <script src="admin.js"></script>
