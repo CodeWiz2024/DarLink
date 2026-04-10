@@ -210,57 +210,64 @@
             padding: 3px 10px; border-radius:999px; font-size:.72rem; font-weight:700;
         }
 
-        /* ── CAROUSEL ── */
-        .carousel-wrap {
-            position: relative;
+        /* MOBILE CAROUSEL — smaller cards, peek next, slower scroll */
+        .carousel-wrap { padding: 0 20px; }
+        .carousel-btn { display: none !important; }
+
+        .carousel-track-outer {
+            border-radius: 14px;
+            overflow-x: auto;
+            scroll-snap-type: x mandatory;
+            scroll-behavior: smooth;
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+            -webkit-overflow-scrolling: touch;
+            overscroll-behavior-x: contain;
         }
+        .carousel-track-outer::-webkit-scrollbar { display: none; }
+
+        .carousel-track {
+            display: flex;
+            gap: 12px;
+            transition: none;
+            padding: 4px 0 8px;
+        }
+
+        .prop-card {
+            flex: 0 0 78% !important;
+            min-width: 0 !important;
+            border-radius: 14px;
+            scroll-snap-align: start;
+            scroll-snap-stop: always;
+        }
+        .prop-card:last-child { margin-right: 20px; }
+
+        .prop-card-img { height: 130px !important; }
+
+        .prop-card-body { padding: 8px 10px 4px !important; gap: 3px !important; }
+        .prop-card-title { font-size: .8rem !important; }
+        .prop-card-loc { font-size: .68rem !important; }
+        .prop-card-meta { font-size: .66rem !important; }
+        .prop-card-price { font-size: .82rem !important; padding-top: 3px !important; }
+
+        .prop-card-actions { padding: 0 8px 8px !important; gap: 5px !important; }
+        .prop-card-actions button { padding: 7px 4px !important; font-size: .7rem !important; }
+
+        .carousel-dots { display: flex; }
 
         /* Desktop: with padding for arrows */
         @media (min-width: 769px) {
             .carousel-wrap { padding: 0 50px; }
-        }
-
-        .carousel-track-outer {
-            overflow: hidden;
-            border-radius: var(--card-r);
-            overscroll-behavior-x: contain;
-            /* Enable smooth scroll snap on mobile */
-            -webkit-overflow-scrolling: touch;
-        }
-        .carousel-track {
-            display:flex; gap:14px;
-            transition: transform .4s cubic-bezier(.4,0,.2,1);
-            will-change: transform;
-        }
-
-        /* Desktop arrow buttons */
-        .carousel-btn {
-            position:absolute; top:50%; transform:translateY(-50%);
-            width:40px; height:40px; border-radius:50%;
-            background: var(--glass);
-            backdrop-filter: blur(10px);
-            border: 1.5px solid var(--glass-border);
-            box-shadow: 0 4px 16px rgba(0,0,0,0.18);
-            display:flex; align-items:center; justify-content:center;
-            cursor:pointer; z-index:20; transition:all .3s;
-            color: var(--primary); font-size:0.9rem; font-weight:600;
-        }
-        @media (hover: hover) {
-            .carousel-btn:hover { background:var(--primary); color:#fff; border-color:var(--primary); transform:translateY(-50%) scale(1.12); box-shadow: 0 6px 20px rgba(10,132,255,0.3); }
-        }
-        .carousel-btn:active { transform:translateY(-50%) scale(0.95); }
-        .carousel-btn.prev { left:8px; }
-        .carousel-btn.next { right:8px; }
-        .carousel-btn:disabled { opacity:.3; pointer-events:none; cursor:not-allowed; }
-
-        /* MOBILE: hide arrows completely */
-        @media (max-width: 768px) {
-            .carousel-btn {
-                display: none !important;
-            }
-            .carousel-wrap {
-                padding: 0;
-            }
+            .carousel-btn { display: flex !important; }
+            .prop-card { flex: 0 0 220px !important; }
+            .prop-card-img { height: 140px !important; }
+            .prop-card-body { padding: 14px !important; gap: 6px !important; }
+            .prop-card-title { font-size: 1rem !important; }
+            .prop-card-loc { font-size: 0.85rem !important; }
+            .prop-card-meta { font-size: 0.8rem !important; }
+            .prop-card-price { font-size: 1rem !important; }
+            .prop-card-actions { padding: 10px 14px 14px !important; gap: 8px !important; }
+            .prop-card-actions button { padding: 8px 12px !important; font-size: 0.85rem !important; }
         }
 
         /* ── PROPERTY CARD ── */
