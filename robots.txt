@@ -1,0 +1,18 @@
+# Robots.txt for DarLink - tells Google how to crawl your site
+User-agent: *
+Allow: /
+Allow: /client/
+Disallow: /Server/
+Disallow: /Admin/
+Disallow: /*.js
+Disallow: /*.css
+Crawl-delay: 1
+
+# Bing bot
+User-agent: Bingbot
+Allow: /
+Crawl-delay: 1
+
+# Specific rule for all bots
+User-agent: *
+Sitemap: https://dar-link-mocha.vercel.app/sitemap.xml
