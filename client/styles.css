@@ -834,8 +834,8 @@ a:hover { text-decoration: underline; }
 /* Cards grid */
 .cards-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-    gap: 30px;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 24px;
 }
 .card {
     background: var(--glass-bg);
@@ -845,7 +845,7 @@ a:hover { text-decoration: underline; }
     overflow: hidden;
     box-shadow: var(--card-shadow);
     border: 1px solid var(--glass-border);
-    transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+    transition: all 0.7s cubic-bezier(0.25, 0.8, 0.25, 1);
     position: relative;
     display: flex;
     flex-direction: column;
@@ -1601,6 +1601,15 @@ a:hover { text-decoration: underline; }
     .info-row { grid-template-columns: 1fr; }
     .property-header { flex-direction: column; }
     .booking-header { flex-direction: column; }
+    
+    /* Mobile card adjustments - smaller and slower */
+    .cards-grid { grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 16px; }
+    .card { transition: all 0.9s cubic-bezier(0.25, 0.8, 0.25, 1); }
+    .card-img { height: 180px; }
+    .card-body { padding: 16px; }
+    .card-body h3 { font-size: 1.1rem; }
+    .card-body .price { font-size: 1.15rem; }
+    .card-body .features { gap: 8px; font-size: 0.8rem; }
 }
 
 /* Dark mode packages button */
