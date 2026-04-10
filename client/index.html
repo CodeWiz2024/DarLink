@@ -3,29 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DarLink - Vacation Rental | Book Unique Properties in Algeria</title>
-    
-    <!-- SEO Meta Tags -->
-    <meta name="description" content="DarLink - Discover and book unique vacation rental properties across Algeria. Find affordable accommodations, apartments, and homes for your next trip. Easy booking, secure payments.">
-    <meta name="keywords" content="vacation rental, rental properties, accommodation, Algeria, booking, airbnb alternative, property rental, travel">
-    <meta name="author" content="DarLink">
-    <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
-    
-    <!-- Open Graph Meta Tags (for social media sharing) -->
-    <meta property="og:title" content="DarLink - Find Your Perfect Vacation Rental">
-    <meta property="og:description" content="Browse and book unique vacation properties across Algeria. Affordable, secure, and trusted rental platform.">
-    <meta property="og:type" content="website">
-    <meta property="og:url" content="https://dar-link-mocha.vercel.app/">
-    <meta property="og:image" content="https://dar-link-mocha.vercel.app/og-image.png">
-    
-    <!-- Twitter Card Tags -->
-    <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="DarLink - Vacation Rental Platform">
-    <meta name="twitter:description" content="Book unique vacation properties across Algeria on DarLink.">
-    
-    <!-- Canonical URL (prevents duplicate content issues) -->
-    <link rel="canonical" href="https://dar-link-mocha.vercel.app/">
-    
+    <title>DarLink - Vacation Rental</title>
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -613,7 +591,7 @@
                 gap: 0;
                 transition: none; /* let native scroll handle it */
             }
-            /* Each card = full width snap point */
+            /* Each card = full width snap point, compact height */
             .prop-card {
                 flex: 0 0 100% !important;
                 min-width: 0 !important;
@@ -622,6 +600,26 @@
                 margin-right: 12px;
             }
             .prop-card:last-child { margin-right: 0; }
+
+            /* Smaller image on mobile */
+            .prop-card-img { height: 160px !important; }
+
+            /* Tighter body padding */
+            .prop-card-body { padding: 10px 12px 6px !important; gap: 3px !important; }
+
+            /* Smaller title */
+            .prop-card-title { font-size: .82rem !important; }
+
+            /* Smaller location & meta text */
+            .prop-card-loc { font-size: .7rem !important; }
+            .prop-card-meta { font-size: .68rem !important; }
+
+            /* Smaller price */
+            .prop-card-price { font-size: .85rem !important; padding-top: 4px !important; }
+
+            /* Tighter action buttons */
+            .prop-card-actions { padding: 0 10px 10px !important; gap: 6px !important; }
+            .prop-card-actions button { padding: 8px 4px !important; font-size: .72rem !important; }
 
             /* Show swipe dots on mobile */
             .carousel-dots { display: flex; }
@@ -808,7 +806,7 @@
         <div class="footer-section">
             <h3 data-i18n="footer_contact">Contact</h3>
             <ul class="footer-links">
-                <li><i class="fa-solid fa-envelope"></i> contact@darlink.dz</li>
+                <li><i class="fa-solid fa-envelope"></i> <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="e88b87869c898b9ca88c899a84818683c68c92">[email&#160;protected]</a></li>
                 <li><i class="fa-solid fa-phone"></i> +213 699 787 702</li>
             </ul>
         </div>
@@ -816,7 +814,7 @@
             <h3 data-i18n="footer_follow">Follow Us</h3>
             <div class="social-links">
                 <a href="https://www.instagram.com/darlink.dz" target="_blank"><i class="fa-brands fa-instagram"></i></a>
-                <a href="mailto:contact@darlink.dz"><i class="fa-solid fa-envelope"></i></a>
+                <a href="/cdn-cgi/l/email-protection#84e7ebeaf0e5e7f0c4e0e5f6e8edeaefaae0fe"><i class="fa-solid fa-envelope"></i></a>
                 <a href="https://www.facebook.com/ferhi.tarek.2025" target="_blank"><i class="fa-brands fa-facebook-f"></i></a>
             </div>
         </div>
@@ -878,7 +876,7 @@
     </div>
 </div>
 
-<script>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
 /* ═══════════════════════ CONFIG ═══════════════════════ */
 const SERVER_URL = 'https://darlink-production.up.railway.app';
 const API_URL = SERVER_URL + '/api';
@@ -1479,13 +1477,12 @@ document.addEventListener('DOMContentLoaded', ()=>{
         try{ const {ownerId,ownerName,propId}=JSON.parse(intent); setTimeout(()=>openChat(null,propId,ownerId,ownerName),800); }catch(e){}
     }
 
-    if(typeof populateWilayasSelect==='function'){
-        try{ populateWilayasSelect('filterCity','All Wilayas'); }catch(e){}
+    if(typeof popertyIdFromURL === 'number'){
+        setTimeout(()=>viewProperty(propertyIdFromURL),500);
+    } else {
+        loadProperties();
     }
-
-    if(currentUser){ updateGreeting(); loadConversations(); setInterval(loadConversations,10000); }
-
-    loadProperties();
+    updateGreeting();
 });
 </script>
 </body>
