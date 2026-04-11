@@ -249,7 +249,7 @@
             will-change: transform;
         }
 
-        /* ── ARROW BUTTONS ── */
+        /* ── ARROW BUTTONS: solid blue circle ── */
         .carousel-btn {
             position:absolute; top:50%; transform:translateY(-50%);
             width:42px; height:42px; border-radius:50%;
@@ -582,6 +582,7 @@
             .carousel-btn { display: none !important; }
             .carousel-track-outer {
                 border-radius:14px;
+                /* Use scroll snap for smooth native swipe */
                 overflow-x: auto;
                 scroll-snap-type: x mandatory;
                 scroll-behavior: smooth;
@@ -592,14 +593,13 @@
             .carousel-track {
                 display: flex;
                 gap: 0;
-                transition: none;
+                transition: none; /* let native scroll handle it */
             }
-
-            /* ── MOBILE CARD: compact size ── */
+            /* ── MOBILE CARD: fixed compact size, fits any phone screen ── */
             .prop-card {
                 flex: 0 0 100% !important;
                 min-width: 0 !important;
-                max-height: 230px !important;
+                max-height: 290px !important;   /* hard cap — card never taller than this */
                 border-radius: 14px;
                 scroll-snap-align: start;
                 scroll-snap-stop: always;
@@ -608,24 +608,24 @@
                 overflow: hidden !important;
             }
 
-            /* Image */
-            .prop-card-img { height: 90px !important; flex-shrink: 0 !important; }
+            /* Image — fixed short height */
+            .prop-card-img { height: 120px !important; flex-shrink: 0 !important; }
 
-            /* Body */
+            /* Body — compact, no wrap */
             .prop-card-body {
-                padding: 5px 9px 2px !important;
-                gap: 1px !important;
+                padding: 7px 10px 3px !important;
+                gap: 2px !important;
                 flex: 1 !important;
                 overflow: hidden !important;
             }
-            .prop-card-title { font-size: .72rem !important; line-height: 1.15 !important; }
-            .prop-card-loc   { font-size: .62rem !important; }
-            .prop-card-meta  { font-size: .60rem !important; }
-            .prop-card-price { font-size: .74rem !important; padding-top: 1px !important; margin-top: auto !important; }
+            .prop-card-title { font-size: .78rem !important; line-height: 1.2 !important; }
+            .prop-card-loc   { font-size: .66rem !important; }
+            .prop-card-meta  { font-size: .63rem !important; }
+            .prop-card-price { font-size: .8rem !important; padding-top: 2px !important; margin-top: auto !important; }
 
-            /* Buttons */
-            .prop-card-actions { padding: 0 7px 6px !important; gap: 4px !important; flex-shrink: 0 !important; }
-            .prop-card-actions button { padding: 5px 4px !important; font-size: .63rem !important; border-radius: 7px !important; }
+            /* Buttons — slim */
+            .prop-card-actions { padding: 0 8px 7px !important; gap: 5px !important; flex-shrink: 0 !important; }
+            .prop-card-actions button { padding: 6px 4px !important; font-size: .68rem !important; border-radius: 8px !important; }
 
             /* Show swipe dots on mobile */
             .carousel-dots { display: flex; }
@@ -812,7 +812,7 @@
         <div class="footer-section">
             <h3 data-i18n="footer_contact">Contact</h3>
             <ul class="footer-links">
-                <li><i class="fa-solid fa-envelope"></i> support@darlink.dz</li>
+                <li><i class="fa-solid fa-envelope"></i> <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="e88b87869c898b9ca88c899a84818683c68c92">[email&#160;protected]</a></li>
                 <li><i class="fa-solid fa-phone"></i> +213 699 787 702</li>
             </ul>
         </div>
@@ -820,7 +820,7 @@
             <h3 data-i18n="footer_follow">Follow Us</h3>
             <div class="social-links">
                 <a href="https://www.instagram.com/darlink.dz" target="_blank"><i class="fa-brands fa-instagram"></i></a>
-                <a href="mailto:support@darlink.dz"><i class="fa-solid fa-envelope"></i></a>
+                <a href="/cdn-cgi/l/email-protection#84e7ebeaf0e5e7f0c4e0e5f6e8edeaefaae0fe"><i class="fa-solid fa-envelope"></i></a>
                 <a href="https://www.facebook.com/ferhi.tarek.2025" target="_blank"><i class="fa-brands fa-facebook-f"></i></a>
             </div>
         </div>
@@ -882,7 +882,7 @@
     </div>
 </div>
 
-<script>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
 /* ═══════════════════════ CONFIG ═══════════════════════ */
 const SERVER_URL = 'https://darlink-production.up.railway.app';
 const API_URL = SERVER_URL + '/api';
@@ -1035,6 +1035,7 @@ function buildCarousel(containerId){
 
     const totalCards = track.querySelectorAll('.prop-card').length;
 
+    // Build dots for mobile
     if(dotsContainer && totalCards > 0) {
         dotsContainer.innerHTML = '';
         for(let i = 0; i < totalCards; i++){
@@ -1042,6 +1043,7 @@ function buildCarousel(containerId){
             dot.className = 'carousel-dot' + (i === 0 ? ' active' : '');
             dot.onclick = () => {
                 if(isMobile()) {
+                    // scroll snap approach
                     const cardWidth = trackOuter.scrollWidth / totalCards;
                     trackOuter.scrollTo({ left: cardWidth * i, behavior: 'smooth' });
                 } else {
@@ -1068,7 +1070,7 @@ function buildCarousel(containerId){
     }
 
     function update(){
-        if(isMobile()) return;
+        if(isMobile()) return; // mobile uses native scroll
         const cw = getCardWidth();
         const outerW = trackOuter.offsetWidth;
         const visible = Math.max(1, Math.floor(outerW / cw));
@@ -1083,6 +1085,7 @@ function buildCarousel(containerId){
     if(prevBtn) prevBtn.onclick = (e) => { e.stopPropagation(); pos = Math.max(0, pos-1); update(); };
     if(nextBtn) nextBtn.onclick = (e) => { e.stopPropagation(); pos = Math.min(max, pos+1); update(); };
 
+    // Mobile: listen to scroll events for dot updates
     if(trackOuter) {
         trackOuter.addEventListener('scroll', () => {
             if(!isMobile()) return;
@@ -1094,6 +1097,7 @@ function buildCarousel(containerId){
         }, { passive: true });
     }
 
+    // Desktop touch swipe (keep existing logic)
     let txStart = 0, tyStart = 0, txDelta = 0, swiping = false;
     if(trackOuter && !isMobile()) {
         trackOuter.addEventListener('touchstart', (e) => {
@@ -1123,7 +1127,7 @@ function buildCarousel(containerId){
 
     window.addEventListener('resize', () => {
         if(!isMobile()) {
-            track.style.transform = '';
+            track.style.transform = ''; // reset any mobile scroll position
             update();
         }
     });
@@ -1268,13 +1272,17 @@ async function loadProperties(){
 
         content.innerHTML = html;
 
+        // Wire up dot containers then build carousels
         ['promo','featured','boosted','popular','regular'].forEach(id=>{
             const wrapEl = content.querySelector(`#${id}-wrap`);
             if(!wrapEl) return;
+            // Move dots div inside the section block after wrap
             const dotsEl = content.querySelector(`#${id}-dots`);
             if(dotsEl) {
                 wrapEl.parentNode.insertBefore(dotsEl, wrapEl.nextSibling);
             }
+            // Override dots container reference in buildCarousel
+            wrapEl.querySelector('.carousel-dots-placeholder');
             buildCarouselWithDots(id+'-wrap', id+'-dots');
         });
 
@@ -1296,6 +1304,7 @@ function buildCarouselWithDots(wrapId, dotsId) {
 
     const totalCards = track.querySelectorAll('.prop-card').length;
 
+    // Build dots
     if(dotsContainer && totalCards > 1) {
         dotsContainer.innerHTML = '';
         dotsContainer.style.display = 'flex';
@@ -1304,7 +1313,7 @@ function buildCarouselWithDots(wrapId, dotsId) {
             dot.className = 'carousel-dot' + (i === 0 ? ' active' : '');
             dot.onclick = () => {
                 if(isMobile()) {
-                    const cardWidth = trackOuter.offsetWidth + 12;
+                    const cardWidth = trackOuter.offsetWidth + 12; // card + gap
                     trackOuter.scrollTo({ left: cardWidth * i, behavior: 'smooth' });
                 } else {
                     pos = i; update();
@@ -1343,6 +1352,7 @@ function buildCarouselWithDots(wrapId, dotsId) {
     if(prevBtn) prevBtn.onclick = (e) => { e.stopPropagation(); pos = Math.max(0, pos-1); update(); };
     if(nextBtn) nextBtn.onclick = (e) => { e.stopPropagation(); pos = Math.min(max, pos+1); update(); };
 
+    // Mobile scroll → update dots
     trackOuter.addEventListener('scroll', () => {
         if(!isMobile()) return;
         const cardW = trackOuter.offsetWidth + 12;
@@ -1476,6 +1486,7 @@ document.addEventListener('DOMContentLoaded', ()=>{
     if(typeof popertyIdFromURL === 'number'){
         setTimeout(()=>viewProperty(propertyIdFromURL),500);
     } else {
+        /* Populate wilaya filter */
         if(typeof populateWilayasSelect==='function'){
             try{ populateWilayasSelect('filterCity','All Wilayas'); }catch(e){
                 console.error('Error occurred while populating wilayas select:', e);
@@ -1484,6 +1495,7 @@ document.addEventListener('DOMContentLoaded', ()=>{
         loadProperties();
     }
 
+    /* User session */
     if(currentUser){ updateGreeting(); loadConversations(); setInterval(loadConversations,10000); }
 });
 </script>
