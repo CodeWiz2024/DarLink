@@ -585,12 +585,11 @@
                 overflow: auto !important;
                 overflow-x: auto !important;
                 overflow-y: hidden !important;
-                scroll-snap-type: x mandatory;
-                scroll-behavior: smooth;
                 -webkit-overflow-scrolling: touch;
                 -ms-overflow-style: none;
                 scrollbar-width: none;
                 padding-right: 24px;
+                touch-action: pan-x pan-y;
             }
             .carousel-track-outer::-webkit-scrollbar { display: none; }
             .carousel-track { display: flex !important; gap: 10px; transition: none !important; transform: none !important; width: max-content !important; }
@@ -600,8 +599,6 @@
                 min-width: 0 !important;
                 max-height: 240px !important;
                 border-radius: 14px;
-                scroll-snap-align: start;
-                scroll-snap-stop: always;
                 display: flex !important;
                 flex-direction: column !important;
                 overflow: hidden !important;
