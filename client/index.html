@@ -47,7 +47,6 @@
             transition: background .3s, color .3s;
         }
 
-        /* ── NAVBAR ── */
         .navbar {
             position: sticky; top:0; z-index:1000;
             height: var(--nav-h);
@@ -78,7 +77,6 @@
         .navbar .links a:hover, .navbar .links button:hover { background:rgba(10,132,255,.1); color:var(--primary); }
         .navbar .links a.primary { background:var(--primary); color:#fff; font-weight:600; }
         .navbar .links a.primary:hover { background:var(--primary-dark); }
-
         .lang-switch { display:flex; gap:6px; }
         .lang-btn {
             padding: 6px 12px; border-radius:8px;
@@ -86,26 +84,20 @@
             font-size:.8rem; font-weight:600; color:var(--text); cursor:pointer; transition:all .2s;
         }
         .lang-btn.active { background:var(--primary); color:#fff; border-color:var(--primary); }
-
         .theme-btn {
             width:38px; height:38px; border-radius:10px; border:1.5px solid rgba(0,0,0,.12);
             background:rgba(255,255,255,.4); cursor:pointer; display:flex; align-items:center; justify-content:center;
             font-size:1rem; color:var(--text); transition:all .2s;
         }
         .theme-btn:hover { background:var(--primary); color:#fff; border-color:var(--primary); }
-
         .nav-hamburger {
             display:none;
             flex-direction:column; gap:5px;
             cursor:pointer; padding:8px; border-radius:10px; border:none; background:transparent;
         }
-        .nav-hamburger span {
-            display:block; width:22px; height:2px;
-            background:var(--text); border-radius:2px; transition:all .3s;
-        }
+        .nav-hamburger span { display:block; width:22px; height:2px; background:var(--text); border-radius:2px; transition:all .3s; }
         .mobile-close-btn { display:none !important; }
 
-        /* ── HERO ── */
         .hero {
             margin: 20px 4% 0;
             border-radius: 24px;
@@ -113,21 +105,10 @@
             padding: clamp(40px, 6vw, 70px) clamp(24px, 5%, 60px);
             color:#fff; text-align:center; position:relative; overflow:hidden;
         }
-        .hero::before {
-            content:''; position:absolute; inset:0;
-            background: radial-gradient(ellipse 80% 80% at 50% 120%, rgba(255,255,255,.12) 0%, transparent 60%);
-        }
-        .hero::after {
-            content:''; position:absolute; top:-40%; right:-10%;
-            width:500px; height:500px; border-radius:50%;
-            background: radial-gradient(circle, rgba(255,255,255,.06) 0%, transparent 70%);
-        }
+        .hero::before { content:''; position:absolute; inset:0; background: radial-gradient(ellipse 80% 80% at 50% 120%, rgba(255,255,255,.12) 0%, transparent 60%); }
+        .hero::after { content:''; position:absolute; top:-40%; right:-10%; width:500px; height:500px; border-radius:50%; background: radial-gradient(circle, rgba(255,255,255,.06) 0%, transparent 70%); }
         .hero-inner { position:relative; z-index:1; max-width:680px; margin:0 auto; }
-        .hero h1 {
-            font-family: var(--font-display);
-            font-size: clamp(1.8rem, 5vw, 3rem);
-            font-weight:800; line-height:1.15; margin-bottom:14px; letter-spacing:-.03em;
-        }
+        .hero h1 { font-family: var(--font-display); font-size: clamp(1.8rem, 5vw, 3rem); font-weight:800; line-height:1.15; margin-bottom:14px; letter-spacing:-.03em; }
         .hero p { font-size: clamp(.9rem, 2vw, 1.1rem); opacity:.85; margin-bottom:24px; line-height:1.6; }
         .hero-btn {
             display:inline-flex; align-items:center; gap:8px;
@@ -139,7 +120,6 @@
         }
         .hero-btn:hover { background:rgba(255,255,255,.28); transform:translateY(-2px); }
 
-        /* ── DASHBOARD QUICK BAR ── */
         .quick-bar {
             display:none; margin: 16px 4% 0;
             background: var(--glass); backdrop-filter:blur(16px);
@@ -150,19 +130,14 @@
         .quick-bar.visible { display:flex; }
         .quick-bar-title { font-family:var(--font-display); font-weight:700; font-size:.95rem; }
         .quick-bar-actions { display:flex; gap:8px; flex-wrap:wrap; }
-        .quick-bar-actions a {
-            padding: 8px 16px; border-radius:10px; font-size:.85rem; font-weight:600;
-            text-decoration:none; transition:all .2s; display:flex; align-items:center; gap:6px;
-        }
+        .quick-bar-actions a { padding: 8px 16px; border-radius:10px; font-size:.85rem; font-weight:600; text-decoration:none; transition:all .2s; display:flex; align-items:center; gap:6px; }
         .qb-primary { background:var(--primary); color:#fff; }
         .qb-secondary { background:rgba(10,132,255,.1); color:var(--primary); }
         .qb-neutral { background:rgba(0,0,0,.06); color:var(--text); }
         [data-theme="dark"] .qb-neutral { background:rgba(255,255,255,.08); }
 
-        /* ── MAIN LAYOUT ── */
         .page-body { display:flex; gap:20px; padding: 20px 4% 50px; align-items:flex-start; }
 
-        /* ── FILTER SIDEBAR ── */
         .filter-panel {
             flex: 0 0 240px; position:sticky; top: calc(var(--nav-h) + 12px);
             background: var(--glass); backdrop-filter:blur(16px);
@@ -170,44 +145,28 @@
             border-radius: 20px; padding: 20px;
             box-shadow: 0 4px 20px rgba(0,0,0,.05);
         }
-        .filter-title {
-            font-family:var(--font-display); font-weight:700; font-size:1rem;
-            margin-bottom:18px; display:flex; align-items:center; gap:8px;
-            color: var(--text);
-        }
+        .filter-title { font-family:var(--font-display); font-weight:700; font-size:1rem; margin-bottom:18px; display:flex; align-items:center; gap:8px; color: var(--text); }
         .filter-group { margin-bottom:16px; }
-        .filter-group label {
-            display:block; font-size:.72rem; font-weight:700; color:var(--muted);
-            margin-bottom:7px; text-transform:uppercase; letter-spacing:.07em;
-        }
+        .filter-group label { display:block; font-size:.72rem; font-weight:700; color:var(--muted); margin-bottom:7px; text-transform:uppercase; letter-spacing:.07em; }
         .filter-group select, .filter-group input[type=range] {
             width:100%; padding:10px 14px; border-radius:12px;
             border: 1.5px solid rgba(0,0,0,.12); background:rgba(255,255,255,.8);
             font-family:var(--font-body); font-size:.9rem; color:var(--text);
-            transition:all .2s; outline:none; -webkit-appearance:none; appearance:none;
-            cursor: pointer;
+            transition:all .2s; outline:none; -webkit-appearance:none; appearance:none; cursor: pointer;
         }
         .filter-group select {
             background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%236B7280' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
-            background-repeat: no-repeat;
-            background-position: right 12px center;
-            padding-right: 36px;
+            background-repeat: no-repeat; background-position: right 12px center; padding-right: 36px;
         }
         [data-theme="dark"] .filter-group select {
             background:rgba(255,255,255,.07);
             background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%2394A3B8' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
-            background-repeat: no-repeat;
-            background-position: right 12px center;
-            padding-right: 36px;
+            background-repeat: no-repeat; background-position: right 12px center; padding-right: 36px;
             border-color:rgba(255,255,255,.12); color:var(--text);
         }
         [data-theme="dark"] select option { background:#1e2028; color:#F1F5F9; }
         .filter-group select:focus { border-color:var(--primary); box-shadow:0 0 0 3px rgba(10,132,255,.15); }
-        .filter-group input[type=range] {
-            padding:0; accent-color:var(--primary);
-            height:6px; background:rgba(10,132,255,.15); border:none; cursor:pointer;
-            border-radius:3px;
-        }
+        .filter-group input[type=range] { padding:0; accent-color:var(--primary); height:6px; background:rgba(10,132,255,.15); border:none; cursor:pointer; border-radius:3px; }
         .price-labels { display:flex; justify-content:space-between; font-size:.78rem; color:var(--muted); margin-top:8px; font-weight:600; }
         .filter-apply {
             width:100%; padding:12px; border-radius:12px; border:none;
@@ -217,44 +176,20 @@
         }
         .filter-apply:hover { background:var(--primary-dark); transform:translateY(-1px); box-shadow: 0 4px 12px rgba(10,132,255,.3); }
 
-        /* ── CONTENT AREA ── */
         .content-area { flex:1; min-width:0; }
 
-        /* ── SECTION HEADER ── */
-        .section-header {
-            display:flex; align-items:center; justify-content:space-between;
-            margin-bottom:12px; margin-top:4px;
-        }
-        .section-label {
-            display:inline-flex; align-items:center; gap:7px;
-            font-family:var(--font-display); font-size:.95rem; font-weight:700;
-        }
-        .section-label .badge {
-            padding: 3px 10px; border-radius:999px; font-size:.72rem; font-weight:700;
-        }
+        .section-header { display:flex; align-items:center; justify-content:space-between; margin-bottom:12px; margin-top:4px; }
+        .section-label { display:inline-flex; align-items:center; gap:7px; font-family:var(--font-display); font-size:.95rem; font-weight:700; }
+        .section-label .badge { padding: 3px 10px; border-radius:999px; font-size:.72rem; font-weight:700; }
 
-        /* ── CAROUSEL ── */
-        .carousel-wrap {
-            position: relative;
-            padding: 0 50px;
-        }
-        .carousel-track-outer {
-            overflow: hidden;
-            border-radius: var(--card-r);
-            overscroll-behavior-x: contain;
-        }
-        .carousel-track {
-            display:flex; gap:14px;
-            transition: transform .4s cubic-bezier(.4,0,.2,1);
-            will-change: transform;
-        }
+        .carousel-wrap { position: relative; padding: 0 50px; }
+        .carousel-track-outer { overflow: hidden; border-radius: var(--card-r); overscroll-behavior-x: contain; }
+        .carousel-track { display:flex; gap:14px; transition: transform .4s cubic-bezier(.4,0,.2,1); will-change: transform; }
 
-        /* ── ARROW BUTTONS: solid blue circle ── */
         .carousel-btn {
             position:absolute; top:50%; transform:translateY(-50%);
             width:42px; height:42px; border-radius:50%;
-            background: var(--primary);
-            border: none;
+            background: var(--primary); border: none;
             box-shadow: 0 4px 14px rgba(10,132,255,0.45);
             display:flex; align-items:center; justify-content:center;
             cursor:pointer; z-index:20; transition:all .25s;
@@ -267,34 +202,25 @@
         .carousel-btn:disabled { background:rgba(107,114,128,.35); box-shadow:none; pointer-events:none; }
         [data-theme="dark"] .carousel-btn:disabled { background:rgba(255,255,255,.12); }
 
-        /* ── PROPERTY CARD ── */
         .prop-card {
             flex: 0 0 220px;
             background: var(--glass); backdrop-filter:blur(16px);
             border: 1px solid var(--glass-border);
-            border-radius: var(--card-r);
-            overflow:hidden;
+            border-radius: var(--card-r); overflow:hidden;
             box-shadow: 0 4px 16px rgba(0,0,0,.06);
             transition: transform .3s, box-shadow .3s;
-            cursor:pointer;
-            display:flex; flex-direction:column;
-            position:relative;
+            cursor:pointer; display:flex; flex-direction:column; position:relative;
         }
         .prop-card:hover { transform:translateY(-4px); box-shadow:0 12px 32px rgba(0,0,0,.12); }
         .prop-card-img {
             width:100%; height:150px; object-fit:cover;
-            background:rgba(0,0,0,.06);
-            display:flex; align-items:center; justify-content:center;
+            background:rgba(0,0,0,.06); display:flex; align-items:center; justify-content:center;
             color:var(--muted); font-size:2rem; position:relative; overflow:hidden;
         }
         .prop-card-img img { width:100%; height:100%; object-fit:cover; transition:transform .5s; }
         .prop-card:hover .prop-card-img img { transform:scale(1.06); }
         .prop-card-img-placeholder { width:100%; height:100%; display:flex; align-items:center; justify-content:center; font-size:1.8rem; }
-
-        .card-labels {
-            position:absolute; top:8px; left:8px;
-            display:flex; flex-direction:column; gap:4px; z-index:2;
-        }
+        .card-labels { position:absolute; top:8px; left:8px; display:flex; flex-direction:column; gap:4px; z-index:2; }
         .card-label {
             display:inline-flex; align-items:center; gap:4px;
             padding: 3px 8px; border-radius:999px;
@@ -305,26 +231,14 @@
         .label-boosted  { background:rgba(255,59,48,.88); color:#fff; }
         .label-promo    { background:rgba(52,199,89,.9); color:#fff; }
         .label-mine     { background:rgba(10,132,255,.88); color:#fff; }
-
         .prop-card-body { padding:12px; flex:1; display:flex; flex-direction:column; gap:5px; }
-        .prop-card-title {
-            font-family:var(--font-display); font-weight:700; font-size:.9rem;
-            line-height:1.3; color:var(--text);
-            white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
-        }
+        .prop-card-title { font-family:var(--font-display); font-weight:700; font-size:.9rem; line-height:1.3; color:var(--text); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
         .prop-card-loc { font-size:.73rem; color:var(--muted); display:flex; align-items:center; gap:3px; }
         .prop-card-meta { display:flex; align-items:center; gap:8px; font-size:.72rem; color:var(--muted); }
-        .prop-card-price {
-            font-family:var(--font-display); font-weight:800; font-size:.95rem; color:var(--primary);
-            margin-top:auto; padding-top:6px;
-        }
+        .prop-card-price { font-family:var(--font-display); font-weight:800; font-size:.95rem; color:var(--primary); margin-top:auto; padding-top:6px; }
         .prop-card-price .old-price { font-size:.72rem; color:var(--muted); text-decoration:line-through; font-weight:400; margin-left:4px; }
         .prop-card-actions { display:flex; gap:6px; padding: 0 12px 12px; }
-        .prop-card-actions button {
-            flex:1; padding:7px 4px; border-radius:10px; border:none;
-            font-size:.75rem; font-weight:600; cursor:pointer; transition:all .2s;
-            font-family:var(--font-body);
-        }
+        .prop-card-actions button { flex:1; padding:7px 4px; border-radius:10px; border:none; font-size:.75rem; font-weight:600; cursor:pointer; transition:all .2s; font-family:var(--font-body); }
         .btn-view-card { background:var(--primary); color:#fff; }
         .btn-view-card:hover { background:var(--primary-dark); }
         .btn-chat-card { background:rgba(52,199,89,.12); color:#1a7a35; }
@@ -333,17 +247,13 @@
         .btn-manage-card { background:rgba(10,132,255,.1); color:var(--primary); }
         .btn-manage-card:hover { background:var(--primary); color:#fff; }
 
-        /* Skeleton */
         .skeleton { animation: shimmer 1.5s infinite; background: linear-gradient(90deg, rgba(0,0,0,.04) 25%, rgba(0,0,0,.08) 50%, rgba(0,0,0,.04) 75%); background-size:200% 100%; border-radius:var(--card-r); }
         @keyframes shimmer { 0%{background-position:200% 0} 100%{background-position:-200% 0} }
         .skeleton-card { flex: 0 0 220px; height: 260px; }
-
         .section-block { margin-bottom:32px; }
-
         .empty-state { text-align:center; padding:60px 20px; color:var(--muted); }
         .empty-state i { font-size:3rem; opacity:.3; margin-bottom:16px; display:block; }
 
-        /* ── PROFILE MODAL ── */
         .modal-overlay { position:fixed; inset:0; background:rgba(0,0,0,.4); backdrop-filter:blur(4px); z-index:2999; display:none; }
         .profile-modal {
             position:fixed; top:50%; left:50%; transform:translate(-50%,-50%) scale(.9);
@@ -367,7 +277,6 @@
         .modal-footer button { background:rgba(255,59,48,.1); color:#ff3b30; }
         .modal-footer button:hover { background:#ff3b30; color:#fff; }
 
-        /* ── MSG SIDEBAR ── */
         .msg-toggle-btn {
             position:fixed; bottom:28px; right:24px; z-index:2000;
             width:56px; height:56px; border-radius:50%;
@@ -416,13 +325,11 @@
         .back-to-list:hover { color:var(--primary); }
         #msgChatView { display:flex; flex-direction:column; height:100%; }
 
-        /* ── NAV PROFILE PILL ── */
         .nav-profile { display:flex; align-items:center; gap:8px; padding:5px 12px; background:rgba(10,132,255,.08); border-radius:999px; cursor:pointer; transition:.2s; }
         .nav-profile:hover { background:rgba(10,132,255,.15); }
         .nav-avatar-placeholder, .nav-avatar-img { width:28px; height:28px; border-radius:50%; background:var(--primary); color:#fff; display:flex; align-items:center; justify-content:center; font-weight:700; font-size:.8rem; overflow:hidden; object-fit:cover; }
         .nav-user-name { font-size:.85rem; font-weight:600; }
 
-        /* ── FOOTER ── */
         .site-footer { background:var(--glass); backdrop-filter:blur(16px); border-top:1px solid var(--glass-border); padding:40px 5%; margin-top:20px; }
         .footer-grid { display:grid; grid-template-columns:repeat(auto-fit, minmax(180px,1fr)); gap:28px; max-width:900px; margin:0 auto; }
         .footer-section h3 { font-family:var(--font-display); font-size:.9rem; font-weight:700; margin-bottom:12px; }
@@ -432,14 +339,12 @@
         .social-links a { width:36px; height:36px; border-radius:10px; background:rgba(10,132,255,.1); display:flex; align-items:center; justify-content:center; color:var(--primary); transition:.2s; }
         .social-links a:hover { background:var(--primary); color:#fff; transform:translateY(-2px); }
 
-        /* scroll animations */
         @keyframes fadeUp { from{opacity:0;transform:translateY(18px)} to{opacity:1;transform:translateY(0)} }
         .section-block { animation: fadeUp .5s ease both; }
         .section-block:nth-child(2) { animation-delay:.08s; }
         .section-block:nth-child(3) { animation-delay:.16s; }
         .section-block:nth-child(4) { animation-delay:.24s; }
 
-        /* filter toggle button (mobile only) */
         .filter-toggle {
             display:none; width:100%; padding:11px 16px; border-radius:14px;
             border:1px solid var(--glass-border); background:var(--glass);
@@ -448,29 +353,10 @@
             align-items:center; gap:8px;
         }
 
-        /* ── SWIPE DOTS (mobile only) ── */
-        .carousel-dots {
-            display: none;
-            justify-content: center;
-            gap: 6px;
-            padding: 10px 0 4px;
-        }
-        .carousel-dot {
-            width: 6px; height: 6px;
-            border-radius: 50%;
-            background: var(--muted);
-            opacity: 0.4;
-            transition: all .3s;
-            cursor: pointer;
-        }
-        .carousel-dot.active {
-            background: var(--primary);
-            opacity: 1;
-            width: 18px;
-            border-radius: 3px;
-        }
+        .carousel-dots { display: none; justify-content: center; gap: 6px; padding: 10px 0 4px; }
+        .carousel-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--muted); opacity: 0.4; transition: all .3s; cursor: pointer; }
+        .carousel-dot.active { background: var(--primary); opacity: 1; width: 18px; border-radius: 3px; }
 
-        /* DARK MODE TWEAKS */
         [data-theme="dark"] .msg-received { background:rgba(255,255,255,.06); }
         [data-theme="dark"] .prop-card { background:rgba(28,30,36,.9); }
         [data-theme="dark"] .filter-panel { background:rgba(22,24,28,.92); }
@@ -481,125 +367,83 @@
         [data-theme="dark"] .theme-btn { background:rgba(255,255,255,.08); border-color:rgba(255,255,255,.12); color:#f1f5f9; }
         [data-theme="dark"] .theme-btn:hover { background:var(--primary); color:#fff; border-color:var(--primary); }
 
-        /* ════════════════════════════════════
-           DESKTOP — min-width: 769px
-        ════════════════════════════════════ */
         @media (min-width: 769px) {
             .filter-toggle { display:none !important; }
             .nav-hamburger { display:none !important; }
             .navbar .links {
-                display:flex !important;
-                position:static;
-                height:auto; width:auto;
-                background:transparent;
-                backdrop-filter:none;
-                flex-direction:row;
-                align-items:center;
-                gap:8px;
-                padding:0;
-                z-index:auto;
-                border:none;
-                box-shadow:none;
+                display:flex !important; position:static; height:auto; width:auto;
+                background:transparent; backdrop-filter:none; flex-direction:row;
+                align-items:center; gap:8px; padding:0; z-index:auto; border:none; box-shadow:none;
             }
         }
 
-        /* ════════════════════════════════════
-           MOBILE — max-width: 768px
-        ════════════════════════════════════ */
         @media (max-width: 768px) {
-            /* Show hamburger */
             .nav-hamburger { display:flex !important; }
-
             .mobile-close-btn {
-                display:flex !important;
-                position:absolute; top:16px; right:16px;
+                display:flex !important; position:absolute; top:16px; right:16px;
                 width:40px; height:40px; border-radius:50%;
                 background:rgba(0,0,0,.06); border:none; font-size:1rem;
-                cursor:pointer; color:var(--muted);
-                align-items:center; justify-content:center; z-index:10;
+                cursor:pointer; color:var(--muted); align-items:center; justify-content:center; z-index:10;
             }
-
-            /* Nav drawer */
             .navbar .links {
-                display:flex !important;
-                position:fixed; top:0; right:-320px; bottom:0;
+                display:flex !important; position:fixed; top:0; right:-320px; bottom:0;
                 width:300px; max-width:85vw; height:100vh;
-                background:rgba(248,250,252,0.98);
-                border-left:1px solid rgba(255,255,255,0.6);
+                background:rgba(248,250,252,0.98); border-left:1px solid rgba(255,255,255,0.6);
                 backdrop-filter:blur(28px); -webkit-backdrop-filter:blur(28px);
                 flex-direction:column; justify-content:flex-start; align-items:center;
-                gap:10px; z-index:1050; padding:80px 24px 40px;
-                direction:ltr !important;
-                transition:right 0.3s cubic-bezier(0.4,0,0.2,1);
-                overflow-y:auto;
+                gap:10px; z-index:1050; padding:80px 24px 40px; direction:ltr !important;
+                transition:right 0.3s cubic-bezier(0.4,0,0.2,1); overflow-y:auto;
             }
             .navbar .links.mobile-open { right:0; box-shadow:-8px 0 32px rgba(0,0,0,.1); }
-
-            .navbar .links a,
-            .navbar .links button.theme-btn {
-                width:100%; max-width:280px;
-                padding:14px 20px; font-size:.95rem; font-weight:600;
-                border-radius:14px; border:1px solid rgba(0,0,0,.08);
-                background:rgba(255,255,255,.9); text-align:center;
-                display:flex; align-items:center; justify-content:center; gap:10px;
-                color:#111827; box-shadow:0 2px 8px rgba(0,0,0,.06);
-                text-decoration:none; white-space:nowrap;
+            .navbar .links a, .navbar .links button.theme-btn {
+                width:100%; max-width:280px; padding:14px 20px; font-size:.95rem; font-weight:600;
+                border-radius:14px; border:1px solid rgba(0,0,0,.08); background:rgba(255,255,255,.9);
+                text-align:center; display:flex; align-items:center; justify-content:center; gap:10px;
+                color:#111827; box-shadow:0 2px 8px rgba(0,0,0,.06); text-decoration:none; white-space:nowrap;
             }
             .navbar .links a:hover { background:rgba(10,132,255,.08); color:var(--primary); }
             .navbar .links a.primary { background:var(--primary); color:#fff; border-color:var(--primary); }
-
-            .navbar .links .lang-switch {
-                display:flex; gap:8px; flex-direction:row; direction:ltr;
-            }
+            .navbar .links .lang-switch { display:flex; gap:8px; flex-direction:row; direction:ltr; }
             .navbar .links .lang-btn {
                 padding:10px 28px; font-size:.9rem; border-radius:12px;
                 border:1.5px solid rgba(0,0,0,.15); background:rgba(255,255,255,.7);
                 font-weight:600; color:#111827; cursor:pointer;
             }
             .navbar .links .lang-btn.active { background:var(--primary); color:#fff; border-color:var(--primary); }
-
             .navbar .links .nav-profile {
-                width:100%; max-width:280px;
-                padding:14px 20px; font-size:.95rem; font-weight:600;
-                border-radius:14px; border:1px solid rgba(0,0,0,.08);
-                background:rgba(255,255,255,.9); text-align:center;
-                display:flex; align-items:center; justify-content:center; gap:10px;
+                width:100%; max-width:280px; padding:14px 20px; font-size:.95rem; font-weight:600;
+                border-radius:14px; border:1px solid rgba(0,0,0,.08); background:rgba(255,255,255,.9);
+                text-align:center; display:flex; align-items:center; justify-content:center; gap:10px;
                 color:#111827; box-shadow:0 2px 8px rgba(0,0,0,.06);
             }
 
-            /* Layout */
             .hero { margin: 12px 3% 0; padding: 36px 20px; }
             .page-body { flex-direction:column; padding: 16px 3% 40px; }
-            .filter-panel {
-                position:static; width:100%; max-height:0; overflow:hidden;
-                padding:0 18px; transition:max-height .4s, padding .3s; border-radius:16px;
-            }
+            .filter-panel { position:static; width:100%; max-height:0; overflow:hidden; padding:0 18px; transition:max-height .4s, padding .3s; border-radius:16px; }
             .filter-panel.open { max-height:600px; padding:18px; }
             .filter-toggle { display:flex !important; }
 
-            /* MOBILE CAROUSEL: 1 card, no arrows, swipe enabled */
+            /* ── MOBILE CAROUSEL ── */
             .carousel-wrap { padding: 0; }
             .carousel-btn { display: none !important; }
             .carousel-track-outer {
-                border-radius:14px;
-                /* Use scroll snap for smooth native swipe */
+                border-radius: 14px;
                 overflow-x: auto;
                 scroll-snap-type: x mandatory;
                 scroll-behavior: smooth;
                 -ms-overflow-style: none;
                 scrollbar-width: none;
+                /* leave right gap so next card peeks */
+                padding-right: 24px;
             }
             .carousel-track-outer::-webkit-scrollbar { display: none; }
-            .carousel-track {
-                display: flex;
-                gap: 0;
-                transition: none; /* let native scroll handle it */
-            }
-            /* ── MOBILE CARD: fixed compact size, fits any phone screen ── */
+            .carousel-track { display: flex; gap: 10px; transition: none; }
+
+            /* ── KEY FIX: 72vw wide = not full width, shows peek of next card ── */
             .prop-card {
-                flex: 0 0 100% !important;
+                flex: 0 0 72vw !important;
                 min-width: 0 !important;
-                max-height: 290px !important;   /* hard cap — card never taller than this */
+                max-height: 240px !important;
                 border-radius: 14px;
                 scroll-snap-align: start;
                 scroll-snap-stop: always;
@@ -608,67 +452,39 @@
                 overflow: hidden !important;
             }
 
-            /* Image — fixed short height */
-            .prop-card-img { height: 120px !important; flex-shrink: 0 !important; }
+            .prop-card-img { height: 100px !important; flex-shrink: 0 !important; }
 
-            /* Body — compact, no wrap */
             .prop-card-body {
-                padding: 7px 10px 3px !important;
+                padding: 6px 10px 2px !important;
                 gap: 2px !important;
                 flex: 1 !important;
                 overflow: hidden !important;
             }
-            .prop-card-title { font-size: .78rem !important; line-height: 1.2 !important; }
-            .prop-card-loc   { font-size: .66rem !important; }
-            .prop-card-meta  { font-size: .63rem !important; }
-            .prop-card-price { font-size: .8rem !important; padding-top: 2px !important; margin-top: auto !important; }
+            .prop-card-title { font-size: .76rem !important; line-height: 1.15 !important; }
+            .prop-card-loc   { font-size: .64rem !important; }
+            .prop-card-meta  { font-size: .61rem !important; }
+            .prop-card-price { font-size: .76rem !important; padding-top: 2px !important; margin-top: auto !important; }
 
-            /* Buttons — slim */
             .prop-card-actions { padding: 0 8px 7px !important; gap: 5px !important; flex-shrink: 0 !important; }
-            .prop-card-actions button { padding: 6px 4px !important; font-size: .68rem !important; border-radius: 8px !important; }
+            .prop-card-actions button { padding: 5px 4px !important; font-size: .65rem !important; border-radius: 8px !important; }
 
-            /* Show swipe dots on mobile */
             .carousel-dots { display: flex; }
 
-            /* Messaging */
             .msg-sidebar { width:100%; right:-100%; }
             .msg-toggle-btn { bottom:20px; right:16px; width:50px; height:50px; font-size:1.2rem; }
             .msg-sidebar.open ~ .msg-toggle-btn,
             .msg-toggle-btn.hidden { display: none !important; }
         }
 
-        /* Dark mode — mobile drawer */
-        [data-theme="dark"] .navbar .links {
-            background:rgba(13,15,18,.98);
-        }
+        [data-theme="dark"] .navbar .links { background:rgba(13,15,18,.98); }
         [data-theme="dark"] .navbar .links a,
-        [data-theme="dark"] .navbar .links button.theme-btn {
-            background:rgba(255,255,255,.07);
-            border-color:rgba(255,255,255,.1);
-            color:#f1f5f9;
-        }
-        [data-theme="dark"] .navbar .links a.primary {
-            background:var(--primary); color:#fff; border-color:var(--primary);
-        }
-        [data-theme="dark"] .navbar .links .lang-btn {
-            background:rgba(255,255,255,.06);
-            border-color:rgba(255,255,255,.15);
-            color:#cbd5e1;
-        }
-        [data-theme="dark"] .navbar .links .lang-btn.active {
-            background:var(--primary); color:#fff;
-        }
-        [data-theme="dark"] .mobile-close-btn {
-            background:rgba(255,255,255,.08); color:var(--muted);
-        }
-        [data-theme="dark"] .mobile-close-btn:hover {
-            background:rgba(255,59,48,.2); color:#ff453a;
-        }
-        [data-theme="dark"] .navbar .links .nav-profile {
-            background:rgba(255,255,255,.07);
-            border-color:rgba(255,255,255,.1);
-            color:#f1f5f9;
-        }
+        [data-theme="dark"] .navbar .links button.theme-btn { background:rgba(255,255,255,.07); border-color:rgba(255,255,255,.1); color:#f1f5f9; }
+        [data-theme="dark"] .navbar .links a.primary { background:var(--primary); color:#fff; border-color:var(--primary); }
+        [data-theme="dark"] .navbar .links .lang-btn { background:rgba(255,255,255,.06); border-color:rgba(255,255,255,.15); color:#cbd5e1; }
+        [data-theme="dark"] .navbar .links .lang-btn.active { background:var(--primary); color:#fff; }
+        [data-theme="dark"] .mobile-close-btn { background:rgba(255,255,255,.08); color:var(--muted); }
+        [data-theme="dark"] .mobile-close-btn:hover { background:rgba(255,59,48,.2); color:#ff453a; }
+        [data-theme="dark"] .navbar .links .nav-profile { background:rgba(255,255,255,.07); border-color:rgba(255,255,255,.1); color:#f1f5f9; }
     </style>
 
     <script>
@@ -698,34 +514,24 @@
 </head>
 <body>
 
-<!-- NAVBAR -->
 <nav class="navbar">
     <a href="index.html" class="logo">
         <i class="fa-solid fa-house logo-icon"></i>
         <span data-i18n="nav_logo_text">DarLink</span>
     </a>
-
     <button class="nav-hamburger" id="navHamburger" onclick="toggleMobileNav()" aria-label="Menu">
         <span></span><span></span><span></span>
     </button>
-
     <div class="links" id="navLinks">
         <button class="mobile-close-btn" onclick="closeMobileNav()" aria-label="Close menu">
             <i class="fa-solid fa-times"></i>
         </button>
-
         <button class="theme-btn" onclick="toggleTheme()" aria-label="Toggle theme">
             <i class="fa-regular fa-moon" id="themeIcon"></i>
         </button>
-        <a href="index.html" data-i18n="nav_home" onclick="closeMobileNav()">
-            <i class="fa-solid fa-house"></i> Home
-        </a>
-        <a href="login.html" id="loginLink" data-i18n="nav_login" onclick="closeMobileNav()">
-            <i class="fa-solid fa-right-to-bracket"></i> Login
-        </a>
-        <a href="Register.html" id="registerLink" class="primary" data-i18n="nav_register" onclick="closeMobileNav()">
-            <i class="fa-solid fa-user-plus"></i> Register
-        </a>
+        <a href="index.html" data-i18n="nav_home" onclick="closeMobileNav()"><i class="fa-solid fa-house"></i> Home</a>
+        <a href="login.html" id="loginLink" data-i18n="nav_login" onclick="closeMobileNav()"><i class="fa-solid fa-right-to-bracket"></i> Login</a>
+        <a href="Register.html" id="registerLink" class="primary" data-i18n="nav_register" onclick="closeMobileNav()"><i class="fa-solid fa-user-plus"></i> Register</a>
         <div class="lang-switch">
             <button class="lang-btn" data-lang="en">EN</button>
             <button class="lang-btn" data-lang="ar">عربي</button>
@@ -734,7 +540,6 @@
     </div>
 </nav>
 
-<!-- HERO -->
 <section class="hero">
     <div class="hero-inner">
         <h1 data-i18n="hero_title">Transparency &amp; Speed</h1>
@@ -745,15 +550,12 @@
     </div>
 </section>
 
-<!-- DASHBOARD QUICK BAR -->
 <div class="quick-bar" id="dashQuickBar">
     <span class="quick-bar-title" data-i18n="dash_title">🚀 Quick Dashboard</span>
     <div class="quick-bar-actions" id="dashButtons"></div>
 </div>
 
-<!-- MAIN BODY -->
 <div class="page-body" id="sections">
-    <!-- FILTER SIDEBAR -->
     <aside>
         <button class="filter-toggle" id="filterToggle" onclick="toggleFilter()">
             <i class="fa-solid fa-sliders"></i> <span>Filters</span>
@@ -793,7 +595,6 @@
         </div>
     </aside>
 
-    <!-- CONTENT -->
     <div class="content-area" id="contentArea">
         <div id="loadingState" style="text-align:center;padding:60px;color:var(--muted);">
             <i class="fa-solid fa-spinner fa-spin" style="font-size:2rem;color:var(--primary);display:block;margin-bottom:12px;"></i>
@@ -802,7 +603,6 @@
     </div>
 </div>
 
-<!-- FOOTER -->
 <footer class="site-footer">
     <div class="footer-grid">
         <div class="footer-section">
@@ -812,7 +612,7 @@
         <div class="footer-section">
             <h3 data-i18n="footer_contact">Contact</h3>
             <ul class="footer-links">
-                <li><i class="fa-solid fa-envelope"></i> <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="e88b87869c898b9ca88c899a84818683c68c92">[email&#160;protected]</a></li>
+                <li><i class="fa-solid fa-envelope"></i> support@darlink.dz</li>
                 <li><i class="fa-solid fa-phone"></i> +213 699 787 702</li>
             </ul>
         </div>
@@ -820,14 +620,13 @@
             <h3 data-i18n="footer_follow">Follow Us</h3>
             <div class="social-links">
                 <a href="https://www.instagram.com/darlink.dz" target="_blank"><i class="fa-brands fa-instagram"></i></a>
-                <a href="/cdn-cgi/l/email-protection#84e7ebeaf0e5e7f0c4e0e5f6e8edeaefaae0fe"><i class="fa-solid fa-envelope"></i></a>
+                <a href="mailto:support@darlink.dz"><i class="fa-solid fa-envelope"></i></a>
                 <a href="https://www.facebook.com/ferhi.tarek.2025" target="_blank"><i class="fa-brands fa-facebook-f"></i></a>
             </div>
         </div>
     </div>
 </footer>
 
-<!-- PROFILE MODAL -->
 <div class="modal-overlay" id="modalOverlay" onclick="closeProfileModal()"></div>
 <div class="profile-modal" id="profileModal">
     <div class="modal-header">
@@ -847,13 +646,11 @@
     </div>
 </div>
 
-<!-- MSG TOGGLE -->
 <button class="msg-toggle-btn" id="msgToggleBtn" onclick="toggleMsgSidebar()">
     <i class="fa-solid fa-message"></i>
     <span class="msg-badge" id="msgBtnBadge" style="display:none">0</span>
 </button>
 
-<!-- MSG SIDEBAR -->
 <div class="msg-sidebar" id="msgSidebar">
     <div id="msgListView" class="msg-view">
         <div class="msg-sidebar-header">
@@ -882,34 +679,26 @@
     </div>
 </div>
 
-<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
-/* ═══════════════════════ CONFIG ═══════════════════════ */
+<script>
 const SERVER_URL = 'https://darlink-production.up.railway.app';
 const API_URL = SERVER_URL + '/api';
 
 window.I18N_MESSAGES = {
-    nav_logo_text:{en:"DarLink",ar:"دارلينك"},
-    nav_home:{en:"Home",ar:"الرئيسية"},
-    nav_login:{en:"Login",ar:"تسجيل الدخول"},
-    nav_register:{en:"Register",ar:"إنشاء حساب"},
+    nav_logo_text:{en:"DarLink",ar:"دارلينك"},nav_home:{en:"Home",ar:"الرئيسية"},
+    nav_login:{en:"Login",ar:"تسجيل الدخول"},nav_register:{en:"Register",ar:"إنشاء حساب"},
     hero_title:{en:"Transparency & Speed",ar:"الشفافية والسرعة"},
     hero_subtitle:{en:"Algeria's most trusted vacation rental platform. Real reviews, instant booking.",ar:"المنصة الأكثر ثقة لإيجار العطلات في الجزائر."},
     hero_btn:{en:"Explore Properties",ar:"استكشف العقارات"},
     dash_title:{en:"🚀 Quick Dashboard",ar:"🚀 لوحة تحكم سريعة"},
-    filter_wilaya:{en:"Wilaya",ar:"الولاية"},
-    filter_all_wilayas:{en:"All Wilayas",ar:"كل الولايات"},
-    filter_type:{en:"Type",ar:"النوع"},
-    filter_all_types:{en:"All Types",ar:"كل الأنواع"},
-    filter_rooms:{en:"Rooms",ar:"الغرف"},
-    filter_price:{en:"Max Price / Night",ar:"السعر الأقصى"},
-    footer_contact:{en:"Contact",ar:"اتصل بنا"},
-    footer_follow:{en:"Follow Us",ar:"تابعنا"},
+    filter_wilaya:{en:"Wilaya",ar:"الولاية"},filter_all_wilayas:{en:"All Wilayas",ar:"كل الولايات"},
+    filter_type:{en:"Type",ar:"النوع"},filter_all_types:{en:"All Types",ar:"كل الأنواع"},
+    filter_rooms:{en:"Rooms",ar:"الغرف"},filter_price:{en:"Max Price / Night",ar:"السعر الأقصى"},
+    footer_contact:{en:"Contact",ar:"اتصل بنا"},footer_follow:{en:"Follow Us",ar:"تابعنا"},
 };
 
 let currentUser = null;
 try { currentUser = JSON.parse(localStorage.getItem('user') || 'null'); } catch(e){}
 
-/* ═══════════════════════ THEME ═══════════════════════ */
 const _savedTheme = localStorage.getItem('site_theme') || 'light';
 document.documentElement.setAttribute('data-theme', _savedTheme);
 document.addEventListener('DOMContentLoaded', function(){
@@ -925,25 +714,16 @@ function toggleTheme(){
     if(icon) icon.className = t === 'dark' ? 'fa-solid fa-sun' : 'fa-regular fa-moon';
 }
 
-/* ═══════════════════════ NAV ═══════════════════════ */
-function toggleMobileNav(){
-    document.getElementById('navLinks').classList.toggle('mobile-open');
-}
-function closeMobileNav(){
-    document.getElementById('navLinks').classList.remove('mobile-open');
-}
-
+function toggleMobileNav(){ document.getElementById('navLinks').classList.toggle('mobile-open'); }
+function closeMobileNav(){ document.getElementById('navLinks').classList.remove('mobile-open'); }
 document.addEventListener('click', function(e){
     const links = document.getElementById('navLinks');
     const hamburger = document.getElementById('navHamburger');
     if(links && links.classList.contains('mobile-open')){
-        if(!links.contains(e.target) && !hamburger.contains(e.target)){
-            closeMobileNav();
-        }
+        if(!links.contains(e.target) && !hamburger.contains(e.target)) closeMobileNav();
     }
 });
 
-/* ═══════════════════════ FILTER TOGGLE (mobile) ═══════════════════════ */
 function toggleFilter(){
     const p = document.getElementById('filterPanel');
     const c = document.getElementById('filterChev');
@@ -958,7 +738,6 @@ document.addEventListener('DOMContentLoaded', function(){
     });
 });
 
-/* ═══════════════════════ USER GREETING ═══════════════════════ */
 function updateGreeting(){
     if(!currentUser) return;
     const firstName = currentUser.FirstName || 'User';
@@ -1018,124 +797,9 @@ async function uploadProfilePic(input){
     }catch(e){}
 }
 
-/* ═══════════════════════ CAROUSEL ═══════════════════════ */
 const carousels = {};
 const isMobile = () => window.innerWidth <= 768;
 
-function buildCarousel(containerId){
-    const wrap = document.getElementById(containerId);
-    if(!wrap) return;
-    const trackOuter = wrap.querySelector('.carousel-track-outer');
-    const track = wrap.querySelector('.carousel-track');
-    const prevBtn = wrap.querySelector('.carousel-btn.prev');
-    const nextBtn = wrap.querySelector('.carousel-btn.next');
-    const dotsContainer = wrap.querySelector('.carousel-dots');
-    let pos = 0;
-    let max = 0;
-
-    const totalCards = track.querySelectorAll('.prop-card').length;
-
-    // Build dots for mobile
-    if(dotsContainer && totalCards > 0) {
-        dotsContainer.innerHTML = '';
-        for(let i = 0; i < totalCards; i++){
-            const dot = document.createElement('div');
-            dot.className = 'carousel-dot' + (i === 0 ? ' active' : '');
-            dot.onclick = () => {
-                if(isMobile()) {
-                    // scroll snap approach
-                    const cardWidth = trackOuter.scrollWidth / totalCards;
-                    trackOuter.scrollTo({ left: cardWidth * i, behavior: 'smooth' });
-                } else {
-                    pos = i;
-                    update();
-                }
-            };
-            dotsContainer.appendChild(dot);
-        }
-    }
-
-    function updateDots(activeIndex) {
-        if(!dotsContainer) return;
-        dotsContainer.querySelectorAll('.carousel-dot').forEach((d, i) => {
-            d.classList.toggle('active', i === activeIndex);
-        });
-    }
-
-    function getCardWidth(){
-        const firstCard = track.querySelector('.prop-card');
-        if(!firstCard) return 234;
-        const gapPx = 14;
-        return firstCard.offsetWidth + gapPx;
-    }
-
-    function update(){
-        if(isMobile()) return; // mobile uses native scroll
-        const cw = getCardWidth();
-        const outerW = trackOuter.offsetWidth;
-        const visible = Math.max(1, Math.floor(outerW / cw));
-        max = Math.max(0, totalCards - visible);
-        pos = Math.min(pos, max);
-        track.style.transform = `translateX(-${pos * cw}px)`;
-        if(prevBtn) prevBtn.disabled = pos === 0;
-        if(nextBtn) nextBtn.disabled = pos >= max;
-        updateDots(pos);
-    }
-
-    if(prevBtn) prevBtn.onclick = (e) => { e.stopPropagation(); pos = Math.max(0, pos-1); update(); };
-    if(nextBtn) nextBtn.onclick = (e) => { e.stopPropagation(); pos = Math.min(max, pos+1); update(); };
-
-    // Mobile: listen to scroll events for dot updates
-    if(trackOuter) {
-        trackOuter.addEventListener('scroll', () => {
-            if(!isMobile()) return;
-            const cardWidth = trackOuter.scrollWidth / totalCards;
-            if(cardWidth > 0) {
-                const activeIndex = Math.round(trackOuter.scrollLeft / cardWidth);
-                updateDots(activeIndex);
-            }
-        }, { passive: true });
-    }
-
-    // Desktop touch swipe (keep existing logic)
-    let txStart = 0, tyStart = 0, txDelta = 0, swiping = false;
-    if(trackOuter && !isMobile()) {
-        trackOuter.addEventListener('touchstart', (e) => {
-            txStart = e.touches[0].clientX;
-            tyStart = e.touches[0].clientY;
-            txDelta = 0; swiping = false;
-        }, {passive:true});
-        trackOuter.addEventListener('touchmove', (e) => {
-            if(!e.touches[0]) return;
-            const dx = e.touches[0].clientX - txStart;
-            const dy = Math.abs(e.touches[0].clientY - tyStart);
-            txDelta = dx;
-            if(!swiping){
-                if(Math.abs(dx) > 10 && Math.abs(dx) > dy * 1.5){ swiping = true; }
-                else if(dy > 10){ return; }
-            }
-            if(swiping) e.preventDefault();
-        }, {passive:false});
-        trackOuter.addEventListener('touchend', () => {
-            if(!swiping) return;
-            swiping = false;
-            if(txDelta < -40) pos = Math.min(max, pos + 1);
-            else if(txDelta > 40) pos = Math.max(0, pos - 1);
-            update();
-        }, {passive:true});
-    }
-
-    window.addEventListener('resize', () => {
-        if(!isMobile()) {
-            track.style.transform = ''; // reset any mobile scroll position
-            update();
-        }
-    });
-    setTimeout(update, 50);
-    carousels[containerId] = {update};
-}
-
-/* ═══════════════════════ CARD BUILDER ═══════════════════════ */
 function getStarIcons(r){
     let s=''; const rating = parseFloat(r)||0;
     for(let i=1;i<=5;i++){
@@ -1153,12 +817,10 @@ function calcDisplayPrice(p){
     let after = base, label = '';
     if(p.DiscountType==='Percentage' && parseFloat(p.DiscountPercentage)>0){
         const d = parseFloat(p.DiscountPercentage);
-        after = base*(1-d/100);
-        label = `${d}% OFF`;
+        after = base*(1-d/100); label = `${d}% OFF`;
     } else if(p.DiscountType==='FixedAmount' && parseFloat(p.DiscountAmount)>0){
         const d = parseFloat(p.DiscountAmount);
-        after = base - d;
-        label = `${d.toLocaleString()} DZD OFF`;
+        after = base - d; label = `${d.toLocaleString()} DZD OFF`;
     }
     return {display: after*1.1, original: priceInDB, label};
 }
@@ -1167,28 +829,22 @@ function buildCard(p){
     const isOwner = currentUser && currentUser.UserType==='Owner' && currentUser.UserId===p.OwnerId;
     const imgUrl = p.MainImage ? (p.MainImage.startsWith('http') ? p.MainImage : SERVER_URL+p.MainImage) : null;
     const {display, original, label} = calcDisplayPrice(p);
-
     let labelHtml = '';
     if(p.IsFeatured) labelHtml += `<span class="card-label label-featured"><i class="fa-solid fa-star"></i> Premium</span>`;
     if(p.IsBoosted && !p.IsFeatured) labelHtml += `<span class="card-label label-boosted"><i class="fa-solid fa-bolt"></i> Boosted</span>`;
     if(p.HasPromotion && label) labelHtml += `<span class="card-label label-promo"><i class="fa-solid fa-tag"></i> ${label}</span>`;
     if(isOwner) labelHtml += `<span class="card-label label-mine"><i class="fa-solid fa-house-user"></i> Mine</span>`;
-
     const priceHtml = original
         ? `${Math.round(display).toLocaleString()} <span class="old-price">${Math.round(original).toLocaleString()}</span>`
         : Math.round(display).toLocaleString();
-
     const actionBtn = isOwner
         ? `<button class="btn-manage-card" onclick="window.location.href='edit-property.html?id=${p.PropertyId}'"><i class="fa-solid fa-pen"></i> Manage</button>`
         : `<button class="btn-chat-card" onclick="openChat(event,${p.PropertyId},${p.OwnerId},'${(p.OwnerName||'Owner').replace(/'/g,"\\'")}')"><i class="fa-solid fa-comment"></i></button>`;
-
     return `
     <div class="prop-card" onclick="viewProperty(${p.PropertyId},${p.OwnerId})">
         <div class="prop-card-img">
             <div class="card-labels">${labelHtml}</div>
-            ${imgUrl
-                ? `<img src="${imgUrl}" alt="${p.Title}" loading="lazy">`
-                : `<div class="prop-card-img-placeholder"><i class="fa-solid fa-house"></i></div>`}
+            ${imgUrl ? `<img src="${imgUrl}" alt="${p.Title}" loading="lazy">` : `<div class="prop-card-img-placeholder"><i class="fa-solid fa-house"></i></div>`}
         </div>
         <div class="prop-card-body">
             <div class="prop-card-title">${p.Title}</div>
@@ -1219,9 +875,7 @@ function buildSection(id, icon, title, badgeCount, badgeColor, cards){
         <div class="carousel-wrap" id="${id}-wrap">
             <button class="carousel-btn prev" disabled><i class="fa-solid fa-chevron-left"></i></button>
             <div class="carousel-track-outer">
-                <div class="carousel-track">
-                    ${cards.map(buildCard).join('')}
-                </div>
+                <div class="carousel-track">${cards.map(buildCard).join('')}</div>
             </div>
             <button class="carousel-btn next" ${cards.length<=1?'disabled':''}><i class="fa-solid fa-chevron-right"></i></button>
         </div>
@@ -1229,12 +883,9 @@ function buildSection(id, icon, title, badgeCount, badgeColor, cards){
     </div>`;
 }
 
-/* ═══════════════════════ LOAD PROPERTIES ═══════════════════════ */
 async function loadProperties(){
     const content = document.getElementById('contentArea');
-    content.innerHTML = `<div style="text-align:center;padding:60px;color:var(--muted);">
-        <i class="fa-solid fa-spinner fa-spin" style="font-size:2rem;color:var(--primary);display:block;margin-bottom:12px;"></i>
-        Loading properties...</div>`;
+    content.innerHTML = `<div style="text-align:center;padding:60px;color:var(--muted);"><i class="fa-solid fa-spinner fa-spin" style="font-size:2rem;color:var(--primary);display:block;margin-bottom:12px;"></i>Loading properties...</div>`;
     try {
         const r = await fetch(`${API_URL}/properties`);
         if(!r.ok) throw new Error('HTTP '+r.status);
@@ -1251,10 +902,7 @@ async function loadProperties(){
         if(rooms){ if(rooms==='3') all=all.filter(p=>p.NumofRooms>=3); else all=all.filter(p=>p.NumofRooms==rooms); }
         if(price) all = all.filter(p=>p.PricePerNight<=price);
 
-        if(!all.length){
-            content.innerHTML = `<div class="empty-state"><i class="fa-solid fa-house-crack"></i><h3>No Properties Found</h3><p>Try adjusting your filters</p></div>`;
-            return;
-        }
+        if(!all.length){ content.innerHTML = `<div class="empty-state"><i class="fa-solid fa-house-crack"></i><h3>No Properties Found</h3><p>Try adjusting your filters</p></div>`; return; }
 
         const promo    = all.filter(p=>p.HasPromotion && (parseFloat(p.DiscountPercentage)>0 || parseFloat(p.DiscountAmount)>0));
         const featured = all.filter(p=>p.IsFeatured && !p.HasPromotion);
@@ -1272,17 +920,11 @@ async function loadProperties(){
 
         content.innerHTML = html;
 
-        // Wire up dot containers then build carousels
         ['promo','featured','boosted','popular','regular'].forEach(id=>{
             const wrapEl = content.querySelector(`#${id}-wrap`);
             if(!wrapEl) return;
-            // Move dots div inside the section block after wrap
             const dotsEl = content.querySelector(`#${id}-dots`);
-            if(dotsEl) {
-                wrapEl.parentNode.insertBefore(dotsEl, wrapEl.nextSibling);
-            }
-            // Override dots container reference in buildCarousel
-            wrapEl.querySelector('.carousel-dots-placeholder');
+            if(dotsEl) wrapEl.parentNode.insertBefore(dotsEl, wrapEl.nextSibling);
             buildCarouselWithDots(id+'-wrap', id+'-dots');
         });
 
@@ -1299,12 +941,9 @@ function buildCarouselWithDots(wrapId, dotsId) {
     const track = wrap.querySelector('.carousel-track');
     const prevBtn = wrap.querySelector('.carousel-btn.prev');
     const nextBtn = wrap.querySelector('.carousel-btn.next');
-    let pos = 0;
-    let max = 0;
-
+    let pos = 0, max = 0;
     const totalCards = track.querySelectorAll('.prop-card').length;
 
-    // Build dots
     if(dotsContainer && totalCards > 1) {
         dotsContainer.innerHTML = '';
         dotsContainer.style.display = 'flex';
@@ -1312,12 +951,8 @@ function buildCarouselWithDots(wrapId, dotsId) {
             const dot = document.createElement('div');
             dot.className = 'carousel-dot' + (i === 0 ? ' active' : '');
             dot.onclick = () => {
-                if(isMobile()) {
-                    const cardWidth = trackOuter.offsetWidth + 12; // card + gap
-                    trackOuter.scrollTo({ left: cardWidth * i, behavior: 'smooth' });
-                } else {
-                    pos = i; update();
-                }
+                if(isMobile()){ trackOuter.scrollTo({ left: trackOuter.offsetWidth * i, behavior: 'smooth' }); }
+                else { pos = i; update(); }
             };
             dotsContainer.appendChild(dot);
         }
@@ -1325,9 +960,7 @@ function buildCarouselWithDots(wrapId, dotsId) {
 
     function updateDots(activeIndex) {
         if(!dotsContainer) return;
-        dotsContainer.querySelectorAll('.carousel-dot').forEach((d, i) => {
-            d.classList.toggle('active', i === activeIndex);
-        });
+        dotsContainer.querySelectorAll('.carousel-dot').forEach((d, i) => d.classList.toggle('active', i === activeIndex));
     }
 
     function getCardWidth(){
@@ -1352,22 +985,15 @@ function buildCarouselWithDots(wrapId, dotsId) {
     if(prevBtn) prevBtn.onclick = (e) => { e.stopPropagation(); pos = Math.max(0, pos-1); update(); };
     if(nextBtn) nextBtn.onclick = (e) => { e.stopPropagation(); pos = Math.min(max, pos+1); update(); };
 
-    // Mobile scroll → update dots
     trackOuter.addEventListener('scroll', () => {
         if(!isMobile()) return;
-        const cardW = trackOuter.offsetWidth + 12;
-        if(cardW > 0) {
-            const activeIndex = Math.round(trackOuter.scrollLeft / (trackOuter.offsetWidth));
-            updateDots(Math.min(activeIndex, totalCards - 1));
-        }
+        const cardW = trackOuter.offsetWidth;
+        if(cardW > 0) updateDots(Math.min(Math.round(trackOuter.scrollLeft / cardW), totalCards - 1));
     }, { passive: true });
 
     window.addEventListener('resize', () => {
-        if(isMobile()) {
-            track.style.transform = 'none';
-        } else {
-            update();
-        }
+        if(isMobile()) track.style.transform = 'none';
+        else update();
     });
 
     setTimeout(update, 50);
@@ -1381,20 +1007,14 @@ function viewProperty(id, ownerId){
     window.location.href=`property-detail.html?id=${id}`;
 }
 
-/* ═══════════════════════ MESSAGING ═══════════════════════ */
 let activeChat = null, chatPoll = null;
 
 function toggleMsgSidebar(){
     const s = document.getElementById('msgSidebar');
     const btn = document.getElementById('msgToggleBtn');
     s.classList.toggle('open');
-    if(s.classList.contains('open')){
-        btn.classList.add('hidden');
-        if(!activeChat) loadConversations();
-    } else {
-        btn.classList.remove('hidden');
-        stopPoll();
-    }
+    if(s.classList.contains('open')){ btn.classList.add('hidden'); if(!activeChat) loadConversations(); }
+    else { btn.classList.remove('hidden'); stopPoll(); }
 }
 
 function stopPoll(){ if(chatPoll){clearInterval(chatPoll);chatPoll=null;} }
@@ -1404,6 +1024,7 @@ function backToMsgList(){
     document.getElementById('msgListView').style.display = 'flex';
     loadConversations();
 }
+
 async function loadConversations(){
     if(!currentUser) return;
     try{
@@ -1475,27 +1096,20 @@ function openChat(e, propId, ownerId, ownerName){
     openSidebarChat(propId, ownerId, ownerName, null, 0);
 }
 
-/* ═══════════════════════ INIT ═══════════════════════ */
 document.addEventListener('DOMContentLoaded', ()=>{
     const intent = sessionStorage.getItem('openChatIntent');
     if(intent){
         sessionStorage.removeItem('openChatIntent');
         try{ const {ownerId,ownerName,propId}=JSON.parse(intent); setTimeout(()=>openChat(null,propId,ownerId,ownerName),800); }catch(e){}
     }
-
     if(typeof popertyIdFromURL === 'number'){
         setTimeout(()=>viewProperty(propertyIdFromURL),500);
     } else {
-        /* Populate wilaya filter */
         if(typeof populateWilayasSelect==='function'){
-            try{ populateWilayasSelect('filterCity','All Wilayas'); }catch(e){
-                console.error('Error occurred while populating wilayas select:', e);
-            }
+            try{ populateWilayasSelect('filterCity','All Wilayas'); }catch(e){}
         }
         loadProperties();
     }
-
-    /* User session */
     if(currentUser){ updateGreeting(); loadConversations(); setInterval(loadConversations,10000); }
 });
 </script>
