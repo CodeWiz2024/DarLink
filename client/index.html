@@ -1366,7 +1366,13 @@ function buildCarouselWithDots(wrapId, dotsId) {
         }
     });
 
-    setTimeout(update, 50);
+    // On mobile: never set transform, just reset it and let CSS scroll work
+    if(isMobile()) {
+        track.style.transform = 'none';
+        track.style.transition = 'none';
+    } else {
+        setTimeout(update, 50);
+    }
 }
 
 function applyFilters(){ loadProperties(); }
