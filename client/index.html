@@ -577,11 +577,11 @@
             .filter-panel.open { max-height:600px; padding:18px; }
             .filter-toggle { display:flex !important; }
 
-            /* MOBILE CAROUSEL: 1 card, no arrows, swipe enabled */
+            /* ── MOBILE CAROUSEL ── */
             .carousel-wrap { padding: 0; }
             .carousel-btn { display: none !important; }
             .carousel-track-outer {
-                border-radius:14px;
+                border-radius: 14px;
                 overflow: auto !important;
                 overflow-x: auto !important;
                 overflow-y: hidden !important;
@@ -590,19 +590,15 @@
                 -webkit-overflow-scrolling: touch;
                 -ms-overflow-style: none;
                 scrollbar-width: none;
+                padding-right: 24px;
             }
             .carousel-track-outer::-webkit-scrollbar { display: none; }
-            .carousel-track {
-                display: flex !important;
-                gap: 0 !important;
-                transform: none !important;
-                transition: none !important;
-            }
-            /* ── MOBILE CARD: fixed compact size, fits any phone screen ── */
+            .carousel-track { display: flex !important; gap: 10px; transition: none !important; transform: none !important; }
+
             .prop-card {
-                flex: 0 0 100% !important;
+                flex: 0 0 72vw !important;
                 min-width: 0 !important;
-                max-height: 290px !important;   /* hard cap — card never taller than this */
+                max-height: 240px !important;
                 border-radius: 14px;
                 scroll-snap-align: start;
                 scroll-snap-stop: always;
@@ -611,24 +607,21 @@
                 overflow: hidden !important;
             }
 
-            /* Image — fixed short height */
-            .prop-card-img { height: 120px !important; flex-shrink: 0 !important; }
+            .prop-card-img { height: 100px !important; flex-shrink: 0 !important; }
 
-            /* Body — compact, no wrap */
             .prop-card-body {
-                padding: 7px 10px 3px !important;
+                padding: 6px 10px 2px !important;
                 gap: 2px !important;
                 flex: 1 !important;
                 overflow: hidden !important;
             }
-            .prop-card-title { font-size: .78rem !important; line-height: 1.2 !important; }
-            .prop-card-loc   { font-size: .66rem !important; }
-            .prop-card-meta  { font-size: .63rem !important; }
-            .prop-card-price { font-size: .8rem !important; padding-top: 2px !important; margin-top: auto !important; }
+            .prop-card-title { font-size: .76rem !important; line-height: 1.15 !important; }
+            .prop-card-loc   { font-size: .64rem !important; }
+            .prop-card-meta  { font-size: .61rem !important; }
+            .prop-card-price { font-size: .76rem !important; padding-top: 2px !important; margin-top: auto !important; }
 
-            /* Buttons — slim */
             .prop-card-actions { padding: 0 8px 7px !important; gap: 5px !important; flex-shrink: 0 !important; }
-            .prop-card-actions button { padding: 6px 4px !important; font-size: .68rem !important; border-radius: 8px !important; }
+            .prop-card-actions button { padding: 5px 4px !important; font-size: .65rem !important; border-radius: 8px !important; }
 
             /* Show swipe dots on mobile */
             .carousel-dots { display: flex; }
