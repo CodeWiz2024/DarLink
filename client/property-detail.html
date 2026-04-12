@@ -144,34 +144,44 @@
             color: #fff;
         }
 
-        /* Lang buttons */
-        .lang-switch {
-            display: flex;
-            gap: 5px;
+        /* ── Language Toggle ── */
+        .lang-toggle {
+            display: inline-flex;
+            align-items: center;
+            background: rgba(255, 255, 255, 0.5);
+            border: 1.5px solid rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            padding: 3px;
+            gap: 0;
+            flex-shrink: 0;
+        }
+
+        [data-theme="dark"] .lang-toggle {
+            background: rgba(255, 255, 255, 0.08);
+            border-color: rgba(255, 255, 255, 0.12);
         }
 
         .lang-btn {
-            padding: 5px 10px;
+            padding: 5px 11px;
             border-radius: 7px;
-            border: 1.5px solid rgba(0, 0, 0, .15);
-            background: rgba(255, 255, 255, .5);
-            font-size: .75rem;
-            font-weight: 600;
-            color: var(--text);
+            border: none;
+            background: transparent;
+            font-size: 0.76rem;
+            font-weight: 700;
+            color: var(--muted);
             cursor: pointer;
-            transition: all .2s;
+            transition: all 0.18s;
+            line-height: 1;
+            white-space: nowrap;
         }
 
         .lang-btn.active {
             background: var(--primary);
             color: #fff;
-            border-color: var(--primary);
         }
 
         [data-theme="dark"] .lang-btn {
-            background: rgba(255, 255, 255, .08);
-            border-color: rgba(255, 255, 255, .15);
-            color: #cbd5e1;
+            color: #94A3B8;
         }
 
         [data-theme="dark"] .lang-btn.active {
@@ -275,13 +285,10 @@
             border-color: var(--primary);
         }
 
-        .nav-drawer .lang-switch {
+        .nav-drawer .lang-toggle {
             justify-content: center;
-        }
-
-        .nav-drawer .lang-btn {
-            padding: 8px 20px;
-            font-size: .85rem;
+            align-self: center;
+            margin-top: 8px;
         }
 
         .nav-drawer-overlay {
@@ -1068,9 +1075,9 @@
         </a>
 
         <div class="nav-actions">
-            <div class="lang-switch">
+            <div class="lang-toggle">
                 <button class="lang-btn" data-lang="en">EN</button>
-                <button class="lang-btn" data-lang="ar">عربي</button>
+                <button class="lang-btn" data-lang="ar">عَ</button>
             </div>
             <button class="nav-btn" onclick="toggleTheme()" aria-label="Toggle theme">
                 <i class="fa-regular fa-moon" id="themeIcon"></i>
@@ -1096,9 +1103,9 @@
                 data-i18n="nav_bookings">My Bookings</span></a>
         <a href="profile.html" id="drawerProfile" style="display:none"><i class="fa-solid fa-user"></i> <span
                 data-i18n="nav_profile">Profile</span></a>
-        <div class="lang-switch" style="justify-content:center;margin-top:8px">
+        <div class="lang-toggle" style="justify-content:center; margin-top:8px; align-self:center;">
             <button class="lang-btn" data-lang="en">EN</button>
-            <button class="lang-btn" data-lang="ar">عربي</button>
+            <button class="lang-btn" data-lang="ar">عَ</button>
         </div>
     </div>
 
