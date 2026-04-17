@@ -102,6 +102,16 @@ a:hover { text-decoration: underline; }
     font-family: var(--font-display);
     letter-spacing: -0.02em;
 }
+/* Same cyan as index.html; beats parent .nav-logo / .navbar .logo color */
+.navbar .logo .logo-word,
+.side-nav-logo .logo .logo-word,
+.nav-logo .logo-word {
+    color: #00d4ff;
+}
+[data-theme="dark"] .navbar .logo .logo-word,
+[data-theme="dark"] .side-nav-logo .logo .logo-word {
+    color: #00d4ff;
+}
 .side-nav-logo .logo {
     display: inline-flex;
     align-items: center;
