@@ -1,5 +1,5 @@
 /* Shared IHM - Vacation Rental | Premium iOS Glassmorphism */
-@import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Cairo:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700;800&display=swap');
 
 * { margin: 0; padding: 0; box-sizing: border-box; }
 :root {
@@ -12,6 +12,7 @@
     --radius: 16px;
     --radius-lg: 24px;
     --font: 'Inter', 'Cairo', -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+    --font-display: 'Syne', 'Inter', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
     --glass-bg: rgba(255, 255, 255, 0.75);
     --glass-border: rgba(255, 255, 255, 0.6);
     --text-main: #1d1d1f;
@@ -74,7 +75,40 @@ a:hover { text-decoration: underline; }
     transition: all 0.3s ease;
 }
 .navbar:hover { background: rgba(255, 255, 255, 0.85); }
-.navbar .logo { display: inline-flex; align-items: center; gap: 10px; font-size: 1.5rem; font-weight: 800; color: var(--primary); letter-spacing: -0.03em; }
+.navbar .logo {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 1.5rem;
+    font-weight: 800;
+    color: var(--primary);
+    letter-spacing: -0.03em;
+    text-decoration: none;
+}
+.navbar .logo:hover { text-decoration: none; }
+.logo svg {
+    flex-shrink: 0;
+    display: block;
+    animation: logoPulse 3s ease-in-out infinite;
+}
+@keyframes logoPulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.92; transform: scale(1.02); }
+}
+.logo-word {
+    color: #00d4ff;
+    font-size: 22px;
+    font-weight: 700;
+    font-family: var(--font-display);
+    letter-spacing: -0.02em;
+}
+.side-nav-logo .logo {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    text-decoration: none;
+}
+.side-nav-logo .logo:hover { text-decoration: none; }
 .logo-icon { font-size: 1.4rem; }
 .navbar .links { display: flex; gap: 6px; align-items: center; }
 .navbar .links a, .navbar .links button {
