@@ -252,7 +252,6 @@
             padding-right: 24px;
         }
         [data-theme="dark"] .hero-stat + .hero-stat { border-left-color: rgba(255,255,255,.07); }
-        [data-theme="dark"][dir="rtl"] .hero-stat + .hero-stat { border-right-color: rgba(255,255,255,.07); border-left-color: transparent; }
         .hero-stat-num {
             font-family: var(--font-display); font-size: 1.7rem; font-weight: 800;
             color: var(--primary); display: block; line-height: 1;
@@ -445,7 +444,7 @@
         .prop-card-img { width: 100%; height: 150px; background: rgba(0,0,0,.06); position: relative; overflow: hidden; }
         .prop-card-img img { width: 100%; height: 100%; object-fit: cover; transition: transform .6s cubic-bezier(.175,.885,.32,1.275); }
         .prop-card:hover .prop-card-img img { transform: scale(1.1); }
-        .prop-card-img-placeholder { width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; font-size: 1.8rem; }
+        .prop-card-img-placeholder { width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; font-size: 1.8rem; color: var(--muted); }
         .card-labels { position: absolute; top: 8px; left: 8px; display: flex; flex-direction: column; gap: 4px; z-index: 2; }
         .card-label {
             display: inline-flex; align-items: center; gap: 4px; padding: 3px 8px; border-radius: 999px;
@@ -470,7 +469,7 @@
         .prop-card-actions button { flex: 1; padding: 7px 4px; border-radius: 10px; border: none; font-size: .75rem; font-weight: 600; cursor: pointer; transition: all .2s; font-family: var(--font-body); }
         .btn-view-card   { background: var(--primary); color: #fff; box-shadow: 0 2px 8px rgba(10,132,255,.25); }
         .btn-view-card:hover { background: var(--primary-dark); transform: translateY(-1px); box-shadow: 0 4px 12px rgba(10,132,255,.4); }
-        .btn-chat-card   { background: rgba(52,199,89,.12); color: #1a7a35; }
+        .btn-chat-card   { background: rgba(52,199,89,.12); color: #1a7a35; max-width: 38px; }
         .btn-chat-card:hover { background: var(--accent); color: #fff; transform: translateY(-1px); }
         [data-theme="dark"] .btn-chat-card { color: var(--accent); }
         .btn-manage-card { background: rgba(10,132,255,.1); color: var(--primary); }
@@ -508,11 +507,6 @@
             display: flex; align-items: center; justify-content: center;
             font-size: 2rem; font-weight: 800; overflow: hidden;
             box-shadow: 0 8px 24px rgba(10,132,255,.3);
-            animation: avatarGlow 3s ease-in-out infinite;
-        }
-        @keyframes avatarGlow {
-            0%, 100% { box-shadow: 0 8px 24px rgba(10,132,255,.3); }
-            50%       { box-shadow: 0 8px 36px rgba(10,132,255,.55); }
         }
         .upload-btn-label { padding: 8px 18px; background: var(--primary); color: #fff; border-radius: 10px; cursor: pointer; font-size: .85rem; font-weight: 600; }
         .modal-footer { border-top: 1px solid var(--glass-border); padding-top: 16px; margin-top: 16px; display: flex; flex-direction: column; gap: 8px; }
@@ -535,8 +529,7 @@
             50%       { box-shadow: 0 8px 40px rgba(10,132,255,.7), 0 0 0 8px rgba(10,132,255,.1); }
         }
         .msg-toggle-btn:hover { transform: scale(1.1) rotate(-5deg); }
-        .msg-badge { position: absolute; top: -4px; right: -4px; background: #ff3b30; color: #fff; font-size: .7rem; padding: 2px 6px; border-radius: 999px; font-weight: 800; border: 2px solid #fff; animation: badgeBounce .5s ease infinite alternate; }
-        @keyframes badgeBounce { from { transform: scale(1); } to { transform: scale(1.15); } }
+        .msg-badge { position: absolute; top: -4px; right: -4px; background: #ff3b30; color: #fff; font-size: .7rem; padding: 2px 6px; border-radius: 999px; font-weight: 800; border: 2px solid #fff; }
         .msg-sidebar {
             position: fixed; top: 0; right: -380px; width: 360px; height: 100vh;
             background: var(--glass); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
@@ -687,15 +680,11 @@
     </div>
     <div class="bg-noise"></div>
 
-    <!-- ══ I18N MESSAGES ══ -->
     <script>
     window.I18N_MESSAGES = {
-        /* ─── Navbar ─── */
         nav_home:           { en: 'Home',           ar: 'الرئيسية' },
         nav_login:          { en: 'Login',          ar: 'تسجيل الدخول' },
         nav_register:       { en: 'Register',       ar: 'إنشاء حساب' },
-
-        /* ─── Hero ─── */
         hero_badge:         { en: "Algeria's #1 Rental Platform", ar: 'المنصة الأولى للإيجار في الجزائر' },
         hero_title_1:       { en: 'Transparency',   ar: 'الشفافية' },
         hero_title_2:       { en: 'Speed',          ar: 'السرعة' },
@@ -704,27 +693,19 @@
                               ar: 'منصة الإيجار السياحي الأكثر موثوقية في الجزائر.\nتقييمات حقيقية، حجز فوري، إقامات لا تُنسى.' },
         hero_btn_explore:   { en: 'Explore Properties', ar: 'استكشف العقارات' },
         hero_btn_start:     { en: 'Get Started Free',   ar: 'ابدأ مجانًا' },
-
-        /* ─── Stats ─── */
         stat_properties:    { en: 'Properties',     ar: 'عقارات' },
         stat_guests:        { en: 'Happy Guests',   ar: 'ضيف سعيد' },
         stat_wilayas:       { en: 'Wilayas',        ar: 'ولاية' },
         stat_satisfaction:  { en: 'Satisfaction',   ar: 'رضا' },
-
-        /* ─── Floating card ─── */
         live_available:     { en: 'Available Now',  ar: 'متاح الآن' },
         float_card_title:   { en: 'Vila F5 — Annaba', ar: 'فيلا F5 — عنابة' },
         float_card_loc:     { en: 'Annaba, Algeria',  ar: 'عنابة، الجزائر' },
         float_price_unit:   { en: 'DZD / night',    ar: 'د.ج / ليلة' },
-
-        /* ─── Quick bar ─── */
         quick_bar_title:    { en: '🚀 Quick Dashboard', ar: '🚀 لوحة التحكم السريعة' },
         qb_add_prop:        { en: 'Add Property',    ar: 'إضافة عقار' },
         qb_my_props:        { en: 'My Properties',   ar: 'عقاراتي' },
         qb_profile:         { en: 'Profile',         ar: 'ملفي' },
         qb_bookings:        { en: 'My Bookings',     ar: 'حجوزاتي' },
-
-        /* ─── Filters ─── */
         filter_title:       { en: 'Filters',         ar: 'التصفية' },
         filter_toggle_lbl:  { en: 'Filters',         ar: 'التصفية' },
         filter_wilaya_lbl:  { en: 'Wilaya',          ar: 'الولاية' },
@@ -742,22 +723,14 @@
         filter_house:       { en: 'House',           ar: 'بيت' },
         filter_room:        { en: 'Room',            ar: 'غرفة' },
         filter_cottage:     { en: 'Cottage',         ar: 'كوخ' },
-
-        /* ─── Loading ─── */
         loading_props:      { en: 'Loading properties…', ar: 'جاري تحميل العقارات…' },
-
-        /* ─── Messages sidebar ─── */
         msg_sidebar_title:  { en: 'Messages',        ar: 'الرسائل' },
         msg_loading:        { en: 'Loading…',        ar: 'جاري التحميل…' },
         chat_placeholder:   { en: 'Type…',           ar: 'اكتب…' },
-
-        /* ─── Profile modal ─── */
         profile_title:      { en: 'Profile',         ar: 'الملف الشخصي' },
         profile_change_photo:{ en: 'Change Photo',   ar: 'تغيير الصورة' },
         profile_dashboard:  { en: 'Dashboard',       ar: 'لوحة التحكم' },
         profile_logout:     { en: 'Logout',          ar: 'تسجيل الخروج' },
-
-        /* ─── Footer ─── */
         footer_tagline:     { en: "Algeria's trusted vacation rental platform — where every stay tells a story.",
                               ar: 'منصة الإيجار السياحي الموثوقة في الجزائر — حيث تحكي كل إقامة قصة.' },
         footer_contact:     { en: 'Contact',         ar: 'التواصل' },
@@ -772,7 +745,7 @@
 
     <!-- NAVBAR -->
     <nav class="navbar" id="mainNav">
-        <a class="logo" href="../client/" style="text-decoration:none;">
+        <a class="logo" href="index.html" style="text-decoration:none;">
             <svg width="36" height="32" viewBox="0 0 110 100" fill="none">
                 <path d="M55 8 L98 42 L98 92 L12 92 L12 42 Z" fill="none" stroke="#00d4ff" stroke-width="6" stroke-linejoin="round"/>
                 <rect x="72" y="10" width="10" height="18" fill="none" stroke="#00d4ff" stroke-width="5.5"/>
@@ -805,26 +778,21 @@
         </div>
     </nav>
 
-    <!-- ══ SPLIT-SCREEN HERO ══ -->
+    <!-- HERO -->
     <section class="hero-split">
-
-        <!-- LEFT: content -->
         <div class="hero-left">
             <div class="hero-badge">
                 <div class="dot"></div>
                 <span data-i18n="hero_badge">Algeria's #1 Rental Platform</span>
             </div>
-
             <h1 class="hero-title">
                 <span data-i18n="hero_title_1">Transparency</span><br>
                 <span data-i18n="hero_title_amp">&amp; </span><span class="highlight" data-i18n="hero_title_2">Speed</span>
             </h1>
-
             <p class="hero-sub" data-i18n="hero_sub">
                 Algeria's most trusted vacation rental platform.<br>
                 Real reviews, instant booking, unforgettable stays.
             </p>
-
             <div class="hero-actions">
                 <a href="#sections" class="hero-btn-solid"
                    onclick="document.getElementById('sections').scrollIntoView({behavior:'smooth'});return false;">
@@ -834,7 +802,6 @@
                     <i class="fa-solid fa-user-plus"></i> <span data-i18n="hero_btn_start">Get Started Free</span>
                 </a>
             </div>
-
             <div class="hero-stats">
                 <div class="hero-stat">
                     <span class="hero-stat-num" data-count="1200">0</span>
@@ -854,17 +821,12 @@
                 </div>
             </div>
         </div>
-
-        <!-- RIGHT: image -->
         <div class="hero-right">
-            <img src="https://images.unsplash.com/photo-1539635278303-d4002c07eae3?w=1400&q=85"
-                 alt="Algeria coastal view" loading="eager">
-
+            <img src="https://images.unsplash.com/photo-1539635278303-d4002c07eae3?w=1400&q=85" alt="Algeria coastal view" loading="eager">
             <div class="img-live-badge">
                 <div class="live-dot"></div>
                 <span data-i18n="live_available">Available Now</span>
             </div>
-
             <div class="img-float-card">
                 <div class="ifc-title" data-i18n="float_card_title">Vila F5 — Annaba</div>
                 <div class="ifc-loc"><i class="fa-solid fa-location-dot"></i> <span data-i18n="float_card_loc">Annaba, Algeria</span></div>
@@ -872,7 +834,6 @@
                 <div class="ifc-price">9,900 <span data-i18n="float_price_unit">DZD / night</span></div>
             </div>
         </div>
-
     </section>
 
     <!-- DASHBOARD QUICK BAR -->
@@ -901,16 +862,17 @@
                         <option value="" data-i18n="filter_all_wilayas">All Wilayas</option>
                         <option>Algiers</option><option>Oran</option><option>Constantine</option>
                         <option>Annaba</option><option>Blida</option><option>Tlemcen</option>
+                        <option>Guelma</option><option>Sétif</option><option>Batna</option>
                     </select>
                 </div>
                 <div class="filter-group">
                     <label data-i18n="filter_type_lbl">Type</label>
                     <select id="filterType">
                         <option value="" data-i18n="filter_all_types">All Types</option>
-                        <option data-i18n="filter_apartment">Apartment</option>
-                        <option data-i18n="filter_house">House</option>
-                        <option data-i18n="filter_room">Room</option>
-                        <option data-i18n="filter_cottage">Cottage</option>
+                        <option value="Apartment" data-i18n="filter_apartment">Apartment</option>
+                        <option value="House" data-i18n="filter_house">House</option>
+                        <option value="Room" data-i18n="filter_room">Room</option>
+                        <option value="Cottage" data-i18n="filter_cottage">Cottage</option>
                     </select>
                 </div>
                 <div class="filter-group">
@@ -927,7 +889,7 @@
                     <input type="range" id="filterPrice" min="1000" max="50000" step="500" value="50000">
                     <div class="price-labels"><span>1,000</span><span id="priceOut">50,000 DZD</span></div>
                 </div>
-                <button class="filter-apply">
+                <button class="filter-apply" onclick="applyFilters()">
                     <i class="fa-solid fa-search"></i>
                     <span data-i18n="filter_apply_btn">Apply Filters</span>
                 </button>
@@ -997,9 +959,8 @@
             <input type="file" id="profilePicInput" style="display:none" accept="image/*">
         </div>
         <h3 id="modalUserName" style="text-align:center;margin-bottom:4px;font-family:var(--font-display)"></h3>
-        <p id="modalUserRating" style="text-align:center;color:#ffc107;font-size:.9rem"></p>
         <div class="modal-footer">
-            <a href="#" id="modalDashboardBtn" data-i18n="profile_dashboard">Dashboard</a>
+            <a href="Rent.html" id="modalDashboardBtn"><span data-i18n="profile_dashboard">Dashboard</span></a>
             <button onclick="logout()" data-i18n="profile_logout">Logout</button>
         </div>
     </div>
@@ -1046,7 +1007,7 @@
         </div>
     </div>
 
-    <!-- ══ i18n engine (must come before other scripts) ══ -->
+    <!-- i18n engine -->
     <script src="lang.js"></script>
 
     <script>
@@ -1124,18 +1085,37 @@
         }
 
         /* ═══════ USER GREETING ═══════ */
+        function userIsOwner(u) {
+            if (!u || u.UserType == null) return false;
+            const t = String(u.UserType).trim().toLowerCase();
+            return t === 'owner';
+        }
+
+        function dashboardHrefForUser(u) {
+            return userIsOwner(u) ? 'AddHome.html' : 'Rent.html';
+        }
+
+        function syncModalDashboardHref() {
+            const dashLink = document.getElementById('modalDashboardBtn');
+            if (!dashLink) return;
+            let u = currentUser;
+            try { u = JSON.parse(localStorage.getItem('user') || 'null'); } catch (e) {}
+            if (!u) return;
+            dashLink.href = dashboardHrefForUser(u);
+        }
+
         function buildDashButtons(lang) {
             const btns = document.getElementById('dashButtons');
             if (!btns || !currentUser) return;
-            if (currentUser.UserType === 'Owner') {
+            if (userIsOwner(currentUser)) {
                 btns.innerHTML = `
-                    <a href="add-new-home.html" class="qb-primary"><i class="fa-solid fa-plus"></i> ${window.I18N.t('qb_add_prop')}</a>
-                    <a href="my-property.html" class="qb-secondary"><i class="fa-solid fa-list"></i> ${window.I18N.t('qb_my_props')}</a>
-                    <a href="profile.html" class="qb-neutral"><i class="fa-solid fa-user"></i> ${window.I18N.t('qb_profile')}</a>`;
+                    <a href="add-new-home.html" class="qb-primary"><i class="fa-solid fa-plus"></i> ${window.I18N ? window.I18N.t('qb_add_prop') : 'Add Property'}</a>
+                    <a href="my-property.html" class="qb-secondary"><i class="fa-solid fa-list"></i> ${window.I18N ? window.I18N.t('qb_my_props') : 'My Properties'}</a>
+                    <a href="profile.html" class="qb-neutral"><i class="fa-solid fa-user"></i> ${window.I18N ? window.I18N.t('qb_profile') : 'Profile'}</a>`;
             } else {
                 btns.innerHTML = `
-                    <a href="my-bookings.html" class="qb-secondary"><i class="fa-solid fa-calendar"></i> ${window.I18N.t('qb_bookings')}</a>
-                    <a href="profile.html" class="qb-neutral"><i class="fa-solid fa-user"></i> ${window.I18N.t('qb_profile')}</a>`;
+                    <a href="my-bookings.html" class="qb-secondary"><i class="fa-solid fa-calendar"></i> ${window.I18N ? window.I18N.t('qb_bookings') : 'My Bookings'}</a>
+                    <a href="profile.html" class="qb-neutral"><i class="fa-solid fa-user"></i> ${window.I18N ? window.I18N.t('qb_profile') : 'Profile'}</a>`;
             }
         }
 
@@ -1151,15 +1131,14 @@
             document.getElementById('registerLink')?.setAttribute('style','display:none');
             const bar = document.getElementById('dashQuickBar');
             if (bar) bar.classList.add('visible');
-            buildDashButtons(window.I18N ? window.I18N.getCurrentLang() : 'en');
+            buildDashButtons(localStorage.getItem('site_lang') || 'en');
+            syncModalDashboardHref();
         }
 
-        /* Re-render dynamic text when language switches */
-        window.onLangChange = function(lang) {
-            buildDashButtons(lang);
-        };
+        window.onLangChange = function(lang) { buildDashButtons(lang); };
 
         function toggleProfileModal() {
+            try { currentUser = JSON.parse(localStorage.getItem('user') || 'null'); } catch (e) {}
             if (!currentUser) return;
             const firstName = currentUser.FirstName || 'User';
             const lastName  = currentUser.LastName  || '';
@@ -1170,6 +1149,7 @@
             } else {
                 av.textContent = (firstName.charAt(0) + (lastName.charAt(0) || '')).toUpperCase();
             }
+            syncModalDashboardHref();
             document.getElementById('modalOverlay').style.display = 'block';
             document.getElementById('profileModal').classList.add('show');
         }
@@ -1196,12 +1176,170 @@
             document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
         }
 
-        /* ═══════ INIT ALL ═══════ */
-        function initAll() {
-            animateCounters();
-            initPriceRange();
-            updateGreeting();
-            initScrollReveal();
+        /* ═══════ PROPERTY DISPLAY ═══════ */
+        let allProperties = [];
+
+        function calcDisplayPrice(p) {
+            const dbPrice = parseFloat(p.PricePerNight);
+            if (!p.HasPromotion) return { display: dbPrice, original: null };
+            const ownerBase = dbPrice / 1.1;
+            let discounted = ownerBase;
+            if (p.DiscountType === 'Percentage' && parseFloat(p.DiscountPercentage) > 0) {
+                discounted = ownerBase * (1 - parseFloat(p.DiscountPercentage) / 100);
+            } else if (p.DiscountType === 'FixedAmount' && parseFloat(p.DiscountAmount) > 0) {
+                discounted = Math.max(0, ownerBase - parseFloat(p.DiscountAmount));
+            }
+            return { display: discounted * 1.1, original: dbPrice };
+        }
+
+        function getCardLabels(p) {
+            let labels = '';
+            if (p.HasPromotion)  labels += `<span class="card-label label-promo">🔥 Promo</span>`;
+            if (p.IsFeatured)    labels += `<span class="card-label label-featured">⭐ Featured</span>`;
+            if (p.IsBoosted && !p.IsFeatured) labels += `<span class="card-label label-boosted">🚀 Boosted</span>`;
+            if (currentUser && p.OwnerId === currentUser.UserId) labels += `<span class="card-label label-mine">Mine</span>`;
+            return labels;
+        }
+
+        function buildCard(p) {
+            const { display, original } = calcDisplayPrice(p);
+            const imgUrl = p.MainImage ? (p.MainImage.startsWith('http') ? p.MainImage : SERVER_URL + p.MainImage) : null;
+            const isOwner = currentUser && userIsOwner(currentUser) && p.OwnerId === currentUser.UserId;
+            const ratingHtml = p.AverageRating > 0 ? `<span>⭐ ${Number(p.AverageRating).toFixed(1)}</span>` : '';
+            const priceHtml = original
+                ? `<div class="prop-card-price"><span class="old-price">${Math.round(original).toLocaleString()}</span> ${Math.round(display).toLocaleString()} DZD<small style="font-size:.65rem;font-weight:400;color:var(--muted)">/night</small></div>`
+                : `<div class="prop-card-price">${Math.round(display).toLocaleString()} DZD<small style="font-size:.65rem;font-weight:400;color:var(--muted)">/night</small></div>`;
+
+            const chatBtn = (!isOwner && currentUser)
+                ? `<button class="btn-chat-card" onclick="event.stopPropagation();window.location.href='chat.html?propertyId=${p.PropertyId}&ownerId=${p.OwnerId}&ownerName=${encodeURIComponent(p.OwnerName||'Owner')}'"><i class="fa-solid fa-comment"></i></button>`
+                : '';
+            const manageBtn = isOwner
+                ? `<button class="btn-manage-card" onclick="event.stopPropagation();window.location.href='edit-property.html?id=${p.PropertyId}'"><i class="fa-solid fa-pen"></i> Edit</button>`
+                : '';
+
+            return `
+            <div class="prop-card" onclick="window.location.href='property-detail.html?id=${p.PropertyId}'">
+                <div class="prop-card-img">
+                    ${imgUrl
+                        ? `<img src="${imgUrl}" alt="${p.Title}" loading="lazy">`
+                        : `<div class="prop-card-img-placeholder"><i class="fa-solid fa-house"></i></div>`}
+                    <div class="card-labels">${getCardLabels(p)}</div>
+                </div>
+                <div class="prop-card-body">
+                    <div class="prop-card-title">${p.Title}</div>
+                    <div class="prop-card-loc"><i class="fa-solid fa-location-dot" style="color:var(--primary)"></i> ${p.City}, ${p.Wilaya}</div>
+                    <div class="prop-card-meta">
+                        <span><i class="fa-solid fa-door-open"></i> ${p.NumofRooms}</span>
+                        <span><i class="fa-solid fa-house"></i> ${p.PropertyType}</span>
+                        ${ratingHtml}
+                    </div>
+                    ${priceHtml}
+                </div>
+                <div class="prop-card-actions">
+                    <button class="btn-view-card" onclick="event.stopPropagation();window.location.href='property-detail.html?id=${p.PropertyId}'">
+                        <i class="fa-solid fa-eye"></i> View
+                    </button>
+                    ${chatBtn}${manageBtn}
+                </div>
+            </div>`;
+        }
+
+        function buildSection(emoji, title, props, id) {
+            if (!props.length) return '';
+            return `
+            <div class="section-block reveal" id="sb-${id}">
+                <div class="section-header">
+                    <div class="section-label">
+                        ${emoji} ${title}
+                        <span class="badge" style="background:rgba(10,132,255,.1);color:var(--primary);padding:3px 10px;border-radius:999px;font-size:.72rem;margin-left:6px;">${props.length}</span>
+                    </div>
+                </div>
+                <div class="carousel-wrap" id="wrap-${id}">
+                    <button class="carousel-btn prev" aria-label="prev"><i class="fa-solid fa-chevron-left"></i></button>
+                    <div class="carousel-track-outer">
+                        <div class="carousel-track" id="track-${id}">
+                            ${props.map(buildCard).join('')}
+                        </div>
+                    </div>
+                    <button class="carousel-btn next" aria-label="next"><i class="fa-solid fa-chevron-right"></i></button>
+                    <div class="carousel-dots"></div>
+                </div>
+            </div>`;
+        }
+
+        async function loadProperties() {
+            try {
+                const res = await fetch(`${API_URL}/properties`);
+                if (!res.ok) throw new Error('HTTP ' + res.status);
+                allProperties = await res.json();
+
+                document.getElementById('loadingState').style.display = 'none';
+
+                if (!allProperties.length) {
+                    document.getElementById('contentArea').innerHTML =
+                        `<div class="empty-state"><i class="fa-solid fa-house-circle-xmark"></i><p style="font-size:1.1rem;">No properties available yet.</p></div>`;
+                    return;
+                }
+
+                // Partition into 4 ordered groups
+                const featured = allProperties.filter(p => p.IsFeatured);
+                const boosted  = allProperties.filter(p => p.IsBoosted && !p.IsFeatured);
+                const promo    = allProperties.filter(p => p.HasPromotion && !p.IsFeatured && !p.IsBoosted);
+                // All properties sorted by ViewCount
+                const allSorted = [...allProperties].sort((a, b) => b.ViewCount - a.ViewCount);
+
+                let html = '';
+                if (featured.length) html += buildSection('⭐', 'Featured Properties', featured, 'featured');
+                if (boosted.length)  html += buildSection('🚀', 'Boosted Properties', boosted, 'boosted');
+                if (promo.length)    html += buildSection('🔥', 'Special Promotions', promo, 'promo');
+                html += buildSection('🏠', 'All Properties', allSorted, 'all');
+
+                document.getElementById('contentArea').innerHTML = html;
+
+                // Build carousels
+                ['featured','boosted','promo','all'].forEach(id => {
+                    if (document.getElementById('wrap-' + id)) buildCarousel('wrap-' + id);
+                });
+
+                initScrollReveal();
+
+            } catch(err) {
+                document.getElementById('loadingState').innerHTML =
+                    `<div style="text-align:center;padding:60px;color:#ff3b30;">
+                        <i class="fa-solid fa-triangle-exclamation" style="font-size:2rem;display:block;margin-bottom:12px;"></i>
+                        Failed to load properties: ${err.message}
+                    </div>`;
+                console.error(err);
+            }
+        }
+
+        function applyFilters() {
+            const city     = document.getElementById('filterCity')?.value.toLowerCase() || '';
+            const type     = document.getElementById('filterType')?.value || '';
+            const rooms    = document.getElementById('filterRooms')?.value || '';
+            const maxPrice = parseFloat(document.getElementById('filterPrice')?.value || 50000);
+
+            const filtered = allProperties.filter(p => {
+                if (city && !p.City.toLowerCase().includes(city) && !p.Wilaya.toLowerCase().includes(city)) return false;
+                if (type && p.PropertyType !== type) return false;
+                if (rooms) {
+                    const r = parseInt(rooms);
+                    if (rooms === '3' && p.NumofRooms < 3) return false;
+                    if (rooms !== '3' && p.NumofRooms !== r) return false;
+                }
+                if (parseFloat(p.PricePerNight) > maxPrice) return false;
+                return true;
+            });
+
+            // Update all-properties section with filtered results
+            const track = document.getElementById('track-all');
+            if (track) {
+                const sorted = [...filtered].sort((a,b) => b.ViewCount - a.ViewCount);
+                track.innerHTML = sorted.length
+                    ? sorted.map(buildCard).join('')
+                    : `<div style="padding:40px;color:var(--muted);font-size:.95rem;">No properties match your filters.</div>`;
+                if (document.getElementById('wrap-all')) buildCarousel('wrap-all');
+            }
         }
 
         /* ═══════ CAROUSEL ═══════ */
@@ -1221,7 +1359,7 @@
 
             if (dotsContainer && totalCards > 0) {
                 dotsContainer.innerHTML = '';
-                for (let i = 0; i < totalCards; i++) {
+                for (let i = 0; i < Math.min(totalCards, 10); i++) {
                     const dot = document.createElement('div');
                     dot.className = 'carousel-dot' + (i === 0 ? ' active' : '');
                     dot.onclick = () => {
@@ -1270,6 +1408,15 @@
             window.addEventListener('resize', () => { if (!isMobile()) { track.style.transform = ''; update(); } });
             setTimeout(update, 50);
             carousels[containerId] = { update };
+        }
+
+        /* ═══════ INIT ALL ═══════ */
+        function initAll() {
+            animateCounters();
+            initPriceRange();
+            updateGreeting();
+            initScrollReveal();
+            loadProperties();
         }
     </script>
 </body>
