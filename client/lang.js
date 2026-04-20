@@ -62,6 +62,18 @@
     setDirAndLang(lang);
     applyTranslations(lang);
     updateLangButtons(lang);
+
+    // Reset all carousels to position 0 and re-run update()
+    // so translateX direction is recalculated for the new dir (RTL/LTR)
+    if (window.carousels) {
+      Object.values(window.carousels).forEach(function(c) {
+        if (c && typeof c.reset === 'function') c.reset();
+        else if (c && typeof c.update === 'function') c.update();
+      });
+    }
+
+    // Notify page scripts that need to rebuild lang-sensitive content
+    if (typeof window.onLangChange === 'function') window.onLangChange(lang);
   }
 
   function handleLangButtonClicks() {

@@ -1545,7 +1545,8 @@
                         if (isMobile()) {
                             const step = getMobileStepWidth();
                             if (!step) return;
-                            trackOuter.scrollTo({ left: step * i, behavior: 'smooth' });
+                            const scrollLeft = isRtl() ? -(step * i) : step * i;
+                            trackOuter.scrollTo({ left: scrollLeft, behavior: 'smooth' });
                         } else { pos = i; update(); }
                     };
                     dotsContainer.appendChild(dot);
@@ -1568,7 +1569,8 @@
                 const visible = Math.max(1, Math.floor(outerW / cw));
                 max = Math.max(0, totalCards - visible);
                 pos = Math.min(pos, max);
-                track.style.transform = `translateX(-${pos * cw}px)`;
+                const dir = isRtl() ? 1 : -1;
+                track.style.transform = `translateX(${dir * pos * cw}px)`;
                 if (prevBtn) prevBtn.disabled = pos === 0;
                 if (nextBtn) nextBtn.disabled = pos >= max;
                 updateDots(pos);
@@ -1587,7 +1589,8 @@
 
             window.addEventListener('resize', () => { if (!isMobile()) { track.style.transform = ''; update(); } });
             setTimeout(update, 50);
-            carousels[containerId] = { update };
+            function reset() { pos = 0; track.style.transform = ''; update(); }
+            carousels[containerId] = { update, reset };
         }
 
         /* ═══════ INIT ALL ═══════ */

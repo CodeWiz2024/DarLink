@@ -1,0 +1,105 @@
+[33mf7bfbc6[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m, [m[1;31morigin/main[m[33m, [m[1;31morigin/HEAD[m[33m)[m index2222
+[33ma169c5e[m index 11111
+[33mdc552b7[m detail 1
+[33m5e21759[m index1112
+[33m959e465[m index11
+[33ma85a659[m logo upt3
+[33ma2e7b1c[m logo upd2
+[33ma6d7b16[m logo upt
+[33m540158d[m index12345
+[33m2fd7f11[m index58869
+[33m0c63f45[m proDetLn1
+[33m0b675af[m proDetLn
+[33m5f0f5cf[m proDetLn
+[33m8342029[m index1010
+[33m35e5489[m index1009
+[33ma138123[m index1008
+[33m928f2e0[m index1007
+[33mcf51e25[m index1006
+[33mfd920c2[m index1005
+[33m2c60239[m index1004
+[33m22c4f61[m index1003
+[33maafdb76[m index1002
+[33m1db250b[m index 10001
+[33m7f4a011[m index 10000
+[33ma556e7d[m Reduce property card size on mobile - 65% width, compact spacing
+[33mde8572a[m Update carousel styling for mobile - smaller cards, peek effect
+[33mec9dbee[m index 16
+[33m5ecdb65[m upd google 2
+[33mcbdf46a[m upd google 1
+[33mcc0472a[m upd google
+[33m6e1be6b[m upd google
+[33mb28a581[m Phone v1
+[33m840b159[m Phone v
+[33m625ebba[m logout1
+[33mdb9507e[m logo
+[33m9b42a8a[m admin logout
+[33me0dd1ac[m logout
+[33m7509bbc[m fix message but & add logout btn to adminDash
+[33mb37bb28[m what the fuck now
+[33mab6fcb9[m admin updt
+[33m90c9efd[m fix client url
+[33m1a913c8[m Fix routing for Admin and client folders
+[33m35ff5c1[m Add admin routes and fix API URL
+[33m45f507f[m admin1
+[33ma1d9450[m last
+[33m88ebb32[m dyn1
+[33m45629a8[m dyn
+[33mfa3ef9c[m index P dynamic2
+[33m5cbf529[m index P dynamic
+[33m73bda9c[m littel fix
+[33m75ae1fd[m nav bar
+[33m965af65[m fix pay
+[33m4849cc5[m BooFail&BooSuc
+[33m7e112f7[m url client
+[33mb92dd26[m payemtn
+[33m073bae8[m index 10
+[33mae430d2[m index 10
+[33m19f69ee[m index 9
+[33mfaba63e[m index 8
+[33m6b44d09[m index 7
+[33m0a2fcee[m index 6
+[33m28a1515[m index 5
+[33mcd6fb18[m index5
+[33m86bb55f[m index4
+[33m1e21ed2[m update in index3
+[33m02b944f[m index3
+[33mcde6b73[m update in index2
+[33m4217c7a[m update in index1
+[33m1b4fb75[m update img10
+[33mab9f57a[m update img9
+[33m192488a[m Add streamifier for Cloudinary upload
+[33ma01aee6[m update img8
+[33m969eb1c[m update img7
+[33m6535fa5[m update img7
+[33m1119fd2[m update img6
+[33mefbd71f[m update img5
+[33me4cdb34[m update img4
+[33m29da685[m update img frontend
+[33mbccc8e5[m update img3
+[33m9913da6[m update img2
+[33m38ab79a[m fix the image 1
+[33mdfa3608[m update phone 2
+[33md7b8f6c[m update phone 1
+[33m37139aa[m new update of ar and emj
+[33ma0d9bf6[m Trigger redeploy with client files
+[33m5256d9e[m Final fix: edit property with images working
+[33m221b04a[m Final fix: edit property with proper FormData handling
+[33m6895b91[m Fix edit property to handle image uploads
+[33m029b56d[m Complete edit-property with image upload and map
+[33md25840e[m Fix image URLs for production (corrected)
+[33mbad9319[m Fix SERVER_URL to use Railway backend
+[33ma885229[m Update frontend API URLs for production deployment
+[33m63f5daf[m Fix image URLs for production
+[33m7e4eb7f[m Fix GROUP BY clause for MySQL strict mode
+[33m8dafb16[m Use DB_NAME in connect.js
+[33m0c5e9da[m Force redeploy
+[33m806526b[m Fix connect.js to use DB_HOST and DB_NAME variables
+[33md9343d5[m Fix connect.js to use DB_HOST and DB_NAME variables
+[33m6241e39[m Use DB_NAME environment variable in connect.js
+[33m5a1caa8[m Restore original app.js and connect.js
+[33mc963921[m Use DB_NAME environment variable
+[33ma29349b[m Remove index.php from Server folder
+[33me7ce5a2[m Merge pull request #1 from CodeWiz2024/railway/code-change-8LuP9N
+[33m621ae0a[m[33m ([m[1;31morigin/railway/code-change-8LuP9N[m[33m)[m fix: add start script to Server/package.json
+[33mc9d1fbd[m Initial commit - DarLink vacation rental platform
