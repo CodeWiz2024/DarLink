@@ -529,6 +529,7 @@
             50%       { box-shadow: 0 8px 40px rgba(10,132,255,.7), 0 0 0 8px rgba(10,132,255,.1); }
         }
         .msg-toggle-btn:hover { transform: scale(1.1) rotate(-5deg); }
+        .msg-toggle-btn.hidden { opacity: 0; pointer-events: none; transform: scale(.85); }
         .msg-badge { position: absolute; top: -4px; right: -4px; background: #ff3b30; color: #fff; font-size: .7rem; padding: 2px 6px; border-radius: 999px; font-weight: 800; border: 2px solid #fff; }
         .msg-sidebar {
             position: fixed; top: 0; right: -380px; width: 360px; height: 100vh;
@@ -1144,8 +1145,189 @@
         function logout() { localStorage.removeItem('user'); location.reload(); }
 
         /* ═══════ MSG SIDEBAR ═══════ */
-        function toggleMsgSidebar() { document.getElementById('msgSidebar').classList.toggle('open'); }
+        let msgConversations = [];
+        let activeConversation = null;
+        let msgPollTimer = null;
+        let chatPollTimer = null;
+
+        function escapeHtml(v) {
+            return String(v || '')
+                .replaceAll('&', '&amp;')
+                .replaceAll('<', '&lt;')
+                .replaceAll('>', '&gt;')
+                .replaceAll('"', '&quot;')
+                .replaceAll("'", '&#039;');
+        }
+
+        function toggleMsgFabVisibility() {
+            const btn = document.getElementById('msgToggleBtn');
+            const sidebar = document.getElementById('msgSidebar');
+            if (!btn || !sidebar) return;
+            btn.classList.toggle('hidden', sidebar.classList.contains('open'));
+        }
+
+        async function loadMsgUnreadBadge() {
+            const btn = document.getElementById('msgToggleBtn');
+            const badge = document.getElementById('msgBtnBadge');
+            if (!btn || !badge) return;
+
+            if (!currentUser || !currentUser.UserId) {
+                btn.style.display = 'none';
+                badge.style.display = 'none';
+                return;
+            }
+
+            btn.style.display = 'flex';
+            try {
+                const res = await fetch(`${API_URL}/messages/unread/${currentUser.UserId}`);
+                if (!res.ok) throw new Error('Unread failed');
+                const data = await res.json();
+                const count = parseInt(data.unreadCount) || 0;
+                badge.style.display = count > 0 ? 'inline-flex' : 'none';
+                if (count > 0) badge.textContent = count > 99 ? '99+' : String(count);
+            } catch {
+                badge.style.display = 'none';
+            }
+        }
+
+        function renderMsgConversations(list) {
+            const msgList = document.getElementById('msgList');
+            if (!msgList) return;
+            if (!list.length) {
+                msgList.innerHTML = `<div style="text-align:center;padding:40px;color:var(--muted)">No conversations yet.</div>`;
+                return;
+            }
+            msgList.innerHTML = list.map((c, i) => {
+                const name = c.OtherUserName || 'User';
+                const initials = name.split(' ').map(s => s[0]).join('').slice(0, 2).toUpperCase();
+                const unread = parseInt(c.UnreadCount) || 0;
+                const prop = c.PropertyTitle ? escapeHtml(c.PropertyTitle) : 'Property';
+                return `
+                    <div class="conv-item" onclick="openMsgConversation(${i})">
+                        <div class="conv-avatar">${escapeHtml(initials)}</div>
+                        <div class="conv-info">
+                            <span class="conv-name">${escapeHtml(name)}</span>
+                            <span class="conv-property"><i class="fa-solid fa-house"></i> ${prop}</span>
+                        </div>
+                        ${unread > 0 ? `<span class="conv-unread">${unread}</span>` : ''}
+                    </div>
+                `;
+            }).join('');
+        }
+
+        async function loadMsgConversations() {
+            const msgList = document.getElementById('msgList');
+            if (!msgList) return;
+            if (!currentUser || !currentUser.UserId) {
+                msgList.innerHTML = `<div style="text-align:center;padding:40px;color:var(--muted)">Please login to view messages.</div>`;
+                return;
+            }
+            msgList.innerHTML = `<div style="text-align:center;padding:40px;color:var(--muted)">Loading…</div>`;
+            try {
+                const res = await fetch(`${API_URL}/conversations/${currentUser.UserId}`);
+                if (!res.ok) throw new Error('Conversation fetch failed');
+                msgConversations = await res.json();
+                renderMsgConversations(msgConversations);
+            } catch {
+                msgList.innerHTML = `<div style="text-align:center;padding:40px;color:#ff3b30">Failed to load conversations.</div>`;
+            }
+        }
+
+        async function loadActiveChatMessages() {
+            if (!activeConversation || !currentUser) return;
+            const otherId = (currentUser.UserType === 'Renter')
+                ? activeConversation.OwnerId
+                : activeConversation.RenterId;
+            const query = activeConversation.PropertyId ? `?propertyId=${activeConversation.PropertyId}` : '';
+            try {
+                const res = await fetch(`${API_URL}/messages/${currentUser.UserId}/${otherId}${query}`);
+                if (!res.ok) throw new Error('Messages fetch failed');
+                const messages = await res.json();
+                const box = document.getElementById('chatMessages');
+                if (!box) return;
+                if (!messages.length) {
+                    box.innerHTML = `<div style="text-align:center;color:var(--muted);padding:24px">No messages yet.</div>`;
+                    return;
+                }
+                box.innerHTML = messages.map(m => {
+                    const sent = parseInt(m.SenderId) === parseInt(currentUser.UserId);
+                    const cls = sent ? 'msg-sent' : 'msg-received';
+                    const t = new Date(m.SentAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+                    return `<div class="msg-bubble ${cls}">${escapeHtml(m.MessageText)}<span class="msg-time">${t}</span></div>`;
+                }).join('');
+                box.scrollTop = box.scrollHeight;
+                await loadMsgUnreadBadge();
+            } catch {
+                const box = document.getElementById('chatMessages');
+                if (box) box.innerHTML = `<div style="text-align:center;color:#ff3b30;padding:24px">Failed to load messages.</div>`;
+            }
+        }
+
+        function openMsgConversation(index) {
+            activeConversation = msgConversations[index];
+            if (!activeConversation) return;
+            document.getElementById('msgListView').style.display = 'none';
+            document.getElementById('msgChatView').style.display = 'flex';
+            const name = activeConversation.OtherUserName || 'User';
+            document.getElementById('activeChatName').textContent = name;
+            document.getElementById('activeChatAvatar').textContent = name.split(' ').map(s => s[0]).join('').slice(0, 2).toUpperCase();
+            document.getElementById('activeChatRating').textContent = activeConversation.PropertyTitle || '';
+            loadActiveChatMessages();
+            if (chatPollTimer) clearInterval(chatPollTimer);
+            chatPollTimer = setInterval(loadActiveChatMessages, 5000);
+        }
+
+        async function sendSidebarMessage() {
+            if (!activeConversation || !currentUser) return;
+            const input = document.getElementById('chatInput');
+            const text = (input?.value || '').trim();
+            if (!text) return;
+            const receiverId = (currentUser.UserType === 'Renter')
+                ? activeConversation.OwnerId
+                : activeConversation.RenterId;
+            try {
+                const res = await fetch(`${API_URL}/messages`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        senderId: parseInt(currentUser.UserId),
+                        receiverId: parseInt(receiverId),
+                        propertyId: activeConversation.PropertyId || null,
+                        messageText: text
+                    })
+                });
+                if (!res.ok) throw new Error('Send failed');
+                input.value = '';
+                await loadActiveChatMessages();
+                await loadMsgConversations();
+            } catch {
+                alert('Failed to send message.');
+            }
+        }
+
+        async function toggleMsgSidebar(forceOpen) {
+            const sidebar = document.getElementById('msgSidebar');
+            if (!sidebar) return;
+            const shouldOpen = typeof forceOpen === 'boolean'
+                ? forceOpen
+                : !sidebar.classList.contains('open');
+            sidebar.classList.toggle('open', shouldOpen);
+            toggleMsgFabVisibility();
+
+            if (shouldOpen) {
+                backToMsgList();
+                await loadMsgConversations();
+                if (msgPollTimer) clearInterval(msgPollTimer);
+                msgPollTimer = setInterval(loadMsgConversations, 10000);
+            } else {
+                if (msgPollTimer) { clearInterval(msgPollTimer); msgPollTimer = null; }
+                if (chatPollTimer) { clearInterval(chatPollTimer); chatPollTimer = null; }
+            }
+        }
+
         function backToMsgList() {
+            activeConversation = null;
+            if (chatPollTimer) { clearInterval(chatPollTimer); chatPollTimer = null; }
             document.getElementById('msgChatView').style.display = 'none';
             document.getElementById('msgListView').style.display = 'flex';
         }
@@ -1415,6 +1597,18 @@
             updateGreeting();
             initScrollReveal();
             loadProperties();
+            loadMsgUnreadBadge();
+            const sendBtn = document.querySelector('#msgChatView .chat-send-btn');
+            const input = document.getElementById('chatInput');
+            if (sendBtn) sendBtn.onclick = sendSidebarMessage;
+            if (input) {
+                input.addEventListener('keydown', e => {
+                    if (e.key === 'Enter') {
+                        e.preventDefault();
+                        sendSidebarMessage();
+                    }
+                });
+            }
         }
     </script>
 </body>
