@@ -40,7 +40,7 @@
             -webkit-tap-highlight-color: transparent;
         }
 
-        html, body { overflow-x: hidden; max-width: 100%; scroll-behavior: smooth; }
+        html, body { overflow-x: clip; max-width: 100%; scroll-behavior: smooth; }
 
         body {
             font-family: var(--font-body);
@@ -655,10 +655,10 @@
             .filter-toggle { display: flex !important; }
             .carousel-wrap { padding: 0; }
             .carousel-btn { display: none !important; }
-            .carousel-track-outer { overflow: auto !important; overflow-x: auto !important; overflow-y: hidden !important; scroll-snap-type: x mandatory; scroll-behavior: smooth; -webkit-overflow-scrolling: touch; -ms-overflow-style: none; scrollbar-width: none; padding-inline-end: 14px; direction: inherit; }
+            .carousel-track-outer { overflow: auto !important; overflow-x: auto !important; overflow-y: hidden !important; scroll-snap-type: x mandatory; scroll-behavior: smooth; -webkit-overflow-scrolling: touch; -ms-overflow-style: none; scrollbar-width: none; padding-inline-end: 14px; direction: inherit; touch-action: pan-x; cursor: grab; }
             .carousel-track-outer::-webkit-scrollbar { display: none; }
-            .carousel-track { display: flex !important; gap: 10px; transition: none !important; transform: none !important; direction: inherit; }
-            .prop-card { flex: 0 0 min(92vw, 360px) !important; scroll-snap-align: start; scroll-snap-stop: always; }
+            .carousel-track { display: flex !important; gap: 10px; transition: none !important; transform: none !important; direction: inherit; touch-action: pan-x; }
+            .prop-card { flex: 0 0 min(92vw, 360px) !important; scroll-snap-align: start; scroll-snap-stop: always; touch-action: pan-x; }
             .carousel-dots { display: flex; }
             .msg-sidebar { width: 100%; right: -100%; }
             .msg-toggle-btn { bottom: 20px; right: 16px; width: 50px; height: 50px; font-size: 1.2rem; }
