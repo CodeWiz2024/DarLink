@@ -655,10 +655,10 @@
             .filter-toggle { display: flex !important; }
             .carousel-wrap { padding: 0; }
             .carousel-btn { display: none !important; }
-            .carousel-track-outer { overflow: auto !important; overflow-x: auto !important; overflow-y: hidden !important; scroll-snap-type: x mandatory; scroll-behavior: smooth; -webkit-overflow-scrolling: touch; -ms-overflow-style: none; scrollbar-width: none; padding-inline-end: 14px; direction: inherit; touch-action: pan-x; cursor: grab; }
+            .carousel-track-outer { overflow: hidden !important; position: relative; cursor: grab; user-select: none; -webkit-user-select: none; }
             .carousel-track-outer::-webkit-scrollbar { display: none; }
-            .carousel-track { display: flex !important; gap: 10px; transition: none !important; transform: none !important; direction: inherit; touch-action: pan-x; }
-            .prop-card { flex: 0 0 min(92vw, 360px) !important; scroll-snap-align: start; scroll-snap-stop: always; touch-action: pan-x; }
+            .carousel-track { display: flex !important; gap: 10px; transition: none !important; transform: none !important; will-change: transform; }
+            .prop-card { flex: 0 0 min(84vw, 320px) !important; scroll-snap-align: start; }
             .carousel-dots { display: flex; }
             .msg-sidebar { width: 100%; right: -100%; }
             .msg-toggle-btn { bottom: 20px; right: 16px; width: 50px; height: 50px; font-size: 1.2rem; }
@@ -1579,17 +1579,53 @@
             if (prevBtn) prevBtn.onclick = e => { e.stopPropagation(); pos = Math.max(0, pos - 1); update(); };
             if (nextBtn) nextBtn.onclick = e => { e.stopPropagation(); pos = Math.min(max, pos + 1); update(); };
 
+            /* ── Mobile JS touch drag ── */
+            let touchX0 = 0, mobileOffset = 0, snapIndex = 0, dragging = false;
+
+            function mobileSnap(idx) {
+                const step = getMobileStepWidth();
+                if (!step) return;
+                snapIndex = Math.max(0, Math.min(idx, totalCards - 1));
+                mobileOffset = isRtl() ? snapIndex * step : -snapIndex * step;
+                track.style.transition = 'transform .35s cubic-bezier(.4,0,.2,1)';
+                track.style.transform = `translateX(${mobileOffset}px)`;
+                updateDots(snapIndex);
+            }
+
             if (trackOuter) {
-                trackOuter.addEventListener('scroll', () => {
+                trackOuter.addEventListener('touchstart', e => {
                     if (!isMobile()) return;
+                    dragging = true;
+                    touchX0 = e.touches[0].clientX;
+                    track.style.transition = 'none';
+                }, { passive: true });
+
+                trackOuter.addEventListener('touchmove', e => {
+                    if (!isMobile() || !dragging) return;
+                    const dx = e.touches[0].clientX - touchX0;
+                    track.style.transform = `translateX(${mobileOffset + dx}px)`;
+                }, { passive: true });
+
+                trackOuter.addEventListener('touchend', e => {
+                    if (!isMobile() || !dragging) return;
+                    dragging = false;
+                    const dx = e.changedTouches[0].clientX - touchX0;
                     const step = getMobileStepWidth();
-                    if (step > 0) updateDots(Math.round(getMobileScrollLeft() / step));
+                    const threshold = step * 0.25;
+                    const goRight = isRtl() ? dx > threshold : dx < -threshold;
+                    const goLeft  = isRtl() ? dx < -threshold : dx > threshold;
+                    if (goRight) mobileSnap(snapIndex + 1);
+                    else if (goLeft) mobileSnap(snapIndex - 1);
+                    else mobileSnap(snapIndex);
                 }, { passive: true });
             }
 
-            window.addEventListener('resize', () => { if (!isMobile()) { track.style.transform = ''; update(); } });
-            setTimeout(update, 50);
-            function reset() { pos = 0; track.style.transform = ''; update(); }
+            window.addEventListener('resize', () => {
+                if (isMobile()) { mobileSnap(snapIndex); }
+                else { track.style.transform = ''; update(); }
+            });
+            setTimeout(() => { if (isMobile()) mobileSnap(0); else update(); }, 50);
+            function reset() { pos = 0; snapIndex = 0; mobileOffset = 0; track.style.transform = ''; if (!isMobile()) update(); }
             carousels[containerId] = { update, reset };
         }
 
