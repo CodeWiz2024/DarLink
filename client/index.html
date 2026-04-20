@@ -654,10 +654,10 @@
             .filter-toggle { display: flex !important; }
             .carousel-wrap { padding: 0; }
             .carousel-btn { display: none !important; }
-            .carousel-track-outer { overflow: auto !important; overflow-x: auto !important; overflow-y: hidden !important; scroll-snap-type: x mandatory; scroll-behavior: smooth; -webkit-overflow-scrolling: touch; -ms-overflow-style: none; scrollbar-width: none; padding-right: 24px; }
+            .carousel-track-outer { overflow: auto !important; overflow-x: auto !important; overflow-y: hidden !important; scroll-snap-type: x mandatory; scroll-behavior: smooth; -webkit-overflow-scrolling: touch; -ms-overflow-style: none; scrollbar-width: none; padding-inline-end: 14px; direction: inherit; }
             .carousel-track-outer::-webkit-scrollbar { display: none; }
-            .carousel-track { display: flex !important; gap: 10px; transition: none !important; transform: none !important; }
-            .prop-card { flex: 0 0 72vw !important; scroll-snap-align: start; scroll-snap-stop: always; }
+            .carousel-track { display: flex !important; gap: 10px; transition: none !important; transform: none !important; direction: inherit; }
+            .prop-card { flex: 0 0 min(92vw, 360px) !important; scroll-snap-align: start; scroll-snap-stop: always; }
             .carousel-dots { display: flex; }
             .msg-sidebar { width: 100%; right: -100%; }
             .msg-toggle-btn { bottom: 20px; right: 16px; width: 50px; height: 50px; font-size: 1.2rem; }
@@ -827,12 +827,7 @@
                 <div class="live-dot"></div>
                 <span data-i18n="live_available">Available Now</span>
             </div>
-            <div class="img-float-card">
-                <div class="ifc-title" data-i18n="float_card_title">Vila F5 — Annaba</div>
-                <div class="ifc-loc"><i class="fa-solid fa-location-dot"></i> <span data-i18n="float_card_loc">Annaba, Algeria</span></div>
-                <div class="ifc-stars">★★★★★</div>
-                <div class="ifc-price">9,900 <span data-i18n="float_price_unit">DZD / night</span></div>
-            </div>
+            
         </div>
     </section>
 
@@ -960,7 +955,7 @@
         </div>
         <h3 id="modalUserName" style="text-align:center;margin-bottom:4px;font-family:var(--font-display)"></h3>
         <div class="modal-footer">
-            <a href="Rent.html" id="modalDashboardBtn"><span data-i18n="profile_dashboard">Dashboard</span></a>
+            <a href="#" id="modalDashboardBtn" data-i18n="profile_dashboard">Dashboard</a>
             <button onclick="logout()" data-i18n="profile_logout">Logout</button>
         </div>
     </div>
@@ -1085,37 +1080,24 @@
         }
 
         /* ═══════ USER GREETING ═══════ */
-        function userIsOwner(u) {
-            if (!u || u.UserType == null) return false;
-            const t = String(u.UserType).trim().toLowerCase();
-            return t === 'owner';
-        }
-
-        function dashboardHrefForUser(u) {
-            return userIsOwner(u) ? 'AddHome.html' : 'Rent.html';
-        }
-
-        function syncModalDashboardHref() {
-            const dashLink = document.getElementById('modalDashboardBtn');
-            if (!dashLink) return;
-            let u = currentUser;
-            try { u = JSON.parse(localStorage.getItem('user') || 'null'); } catch (e) {}
-            if (!u) return;
-            dashLink.href = dashboardHrefForUser(u);
+        function tLabel(key, fallback, lang) {
+            const chosenLang = lang || (localStorage.getItem('site_lang') || 'en');
+            const dict = window.I18N_MESSAGES || {};
+            return (dict[key] && dict[key][chosenLang]) ? dict[key][chosenLang] : fallback;
         }
 
         function buildDashButtons(lang) {
             const btns = document.getElementById('dashButtons');
             if (!btns || !currentUser) return;
-            if (userIsOwner(currentUser)) {
+            if (currentUser.UserType === 'Owner') {
                 btns.innerHTML = `
-                    <a href="add-new-home.html" class="qb-primary"><i class="fa-solid fa-plus"></i> ${window.I18N ? window.I18N.t('qb_add_prop') : 'Add Property'}</a>
-                    <a href="my-property.html" class="qb-secondary"><i class="fa-solid fa-list"></i> ${window.I18N ? window.I18N.t('qb_my_props') : 'My Properties'}</a>
-                    <a href="profile.html" class="qb-neutral"><i class="fa-solid fa-user"></i> ${window.I18N ? window.I18N.t('qb_profile') : 'Profile'}</a>`;
+                    <a href="add-new-home.html" class="qb-primary"><i class="fa-solid fa-plus"></i> ${tLabel('qb_add_prop', 'Add Property', lang)}</a>
+                    <a href="my-property.html" class="qb-secondary"><i class="fa-solid fa-list"></i> ${tLabel('qb_my_props', 'My Properties', lang)}</a>
+                    <a href="profile.html" class="qb-neutral"><i class="fa-solid fa-user"></i> ${tLabel('qb_profile', 'Profile', lang)}</a>`;
             } else {
                 btns.innerHTML = `
-                    <a href="my-bookings.html" class="qb-secondary"><i class="fa-solid fa-calendar"></i> ${window.I18N ? window.I18N.t('qb_bookings') : 'My Bookings'}</a>
-                    <a href="profile.html" class="qb-neutral"><i class="fa-solid fa-user"></i> ${window.I18N ? window.I18N.t('qb_profile') : 'Profile'}</a>`;
+                    <a href="my-bookings.html" class="qb-secondary"><i class="fa-solid fa-calendar"></i> ${tLabel('qb_bookings', 'My Bookings', lang)}</a>
+                    <a href="profile.html" class="qb-neutral"><i class="fa-solid fa-user"></i> ${tLabel('qb_profile', 'Profile', lang)}</a>`;
             }
         }
 
@@ -1132,13 +1114,11 @@
             const bar = document.getElementById('dashQuickBar');
             if (bar) bar.classList.add('visible');
             buildDashButtons(localStorage.getItem('site_lang') || 'en');
-            syncModalDashboardHref();
         }
 
         window.onLangChange = function(lang) { buildDashButtons(lang); };
 
         function toggleProfileModal() {
-            try { currentUser = JSON.parse(localStorage.getItem('user') || 'null'); } catch (e) {}
             if (!currentUser) return;
             const firstName = currentUser.FirstName || 'User';
             const lastName  = currentUser.LastName  || '';
@@ -1149,7 +1129,9 @@
             } else {
                 av.textContent = (firstName.charAt(0) + (lastName.charAt(0) || '')).toUpperCase();
             }
-            syncModalDashboardHref();
+            // Set dashboard link
+            const dashLink = document.getElementById('modalDashboardBtn');
+            if (dashLink) dashLink.href = currentUser.UserType === 'Owner' ? 'AddHome.html' : 'Rent.html';
             document.getElementById('modalOverlay').style.display = 'block';
             document.getElementById('profileModal').classList.add('show');
         }
@@ -1204,7 +1186,7 @@
         function buildCard(p) {
             const { display, original } = calcDisplayPrice(p);
             const imgUrl = p.MainImage ? (p.MainImage.startsWith('http') ? p.MainImage : SERVER_URL + p.MainImage) : null;
-            const isOwner = currentUser && userIsOwner(currentUser) && p.OwnerId === currentUser.UserId;
+            const isOwner = currentUser && currentUser.UserType === 'Owner' && p.OwnerId === currentUser.UserId;
             const ratingHtml = p.AverageRating > 0 ? `<span>⭐ ${Number(p.AverageRating).toFixed(1)}</span>` : '';
             const priceHtml = original
                 ? `<div class="prop-card-price"><span class="old-price">${Math.round(original).toLocaleString()}</span> ${Math.round(display).toLocaleString()} DZD<small style="font-size:.65rem;font-weight:400;color:var(--muted)">/night</small></div>`
@@ -1281,23 +1263,24 @@
                     return;
                 }
 
-                // Partition into 4 ordered groups
-                const featured = allProperties.filter(p => p.IsFeatured);
-                const boosted  = allProperties.filter(p => p.IsBoosted && !p.IsFeatured);
-                const promo    = allProperties.filter(p => p.HasPromotion && !p.IsFeatured && !p.IsBoosted);
-                // All properties sorted by ViewCount
-                const allSorted = [...allProperties].sort((a, b) => b.ViewCount - a.ViewCount);
+                // Partition into 4 ordered groups as requested:
+                // Promotion -> Premium -> Boost -> All (most popular first)
+                const promo   = allProperties.filter(p => p.HasPromotion);
+                const premium = allProperties.filter(p => p.IsFeatured);
+                const boost   = allProperties.filter(p => p.IsBoosted && !p.IsFeatured);
+                // All properties sorted by popularity (ViewCount desc)
+                const allSorted = [...allProperties].sort((a, b) => (parseInt(b.ViewCount) || 0) - (parseInt(a.ViewCount) || 0));
 
                 let html = '';
-                if (featured.length) html += buildSection('⭐', 'Featured Properties', featured, 'featured');
-                if (boosted.length)  html += buildSection('🚀', 'Boosted Properties', boosted, 'boosted');
-                if (promo.length)    html += buildSection('🔥', 'Special Promotions', promo, 'promo');
+                if (promo.length)   html += buildSection('🔥', 'Promotion', promo, 'promotion');
+                if (premium.length) html += buildSection('⭐', 'Premium', premium, 'premium');
+                if (boost.length)   html += buildSection('🚀', 'Boost', boost, 'boost');
                 html += buildSection('🏠', 'All Properties', allSorted, 'all');
 
                 document.getElementById('contentArea').innerHTML = html;
 
                 // Build carousels
-                ['featured','boosted','promo','all'].forEach(id => {
+                ['promotion','premium','boost','all'].forEach(id => {
                     if (document.getElementById('wrap-' + id)) buildCarousel('wrap-' + id);
                 });
 
@@ -1334,7 +1317,7 @@
             // Update all-properties section with filtered results
             const track = document.getElementById('track-all');
             if (track) {
-                const sorted = [...filtered].sort((a,b) => b.ViewCount - a.ViewCount);
+                const sorted = [...filtered].sort((a,b) => (parseInt(b.ViewCount) || 0) - (parseInt(a.ViewCount) || 0));
                 track.innerHTML = sorted.length
                     ? sorted.map(buildCard).join('')
                     : `<div style="padding:40px;color:var(--muted);font-size:.95rem;">No properties match your filters.</div>`;
@@ -1356,6 +1339,20 @@
             const dotsContainer = wrap.querySelector('.carousel-dots');
             let pos = 0, max = 0;
             const totalCards = track.querySelectorAll('.prop-card').length;
+            const isRtl = () => document.documentElement.getAttribute('dir') === 'rtl';
+
+            function getMobileStepWidth() {
+                const card = track.querySelector('.prop-card');
+                if (!card) return 0;
+                const styles = window.getComputedStyle(track);
+                const gap = parseFloat(styles.columnGap || styles.gap || 0) || 0;
+                return card.getBoundingClientRect().width + gap;
+            }
+
+            function getMobileScrollLeft() {
+                // Normalize RTL/LTR differences across browsers.
+                return Math.abs(trackOuter.scrollLeft || 0);
+            }
 
             if (dotsContainer && totalCards > 0) {
                 dotsContainer.innerHTML = '';
@@ -1364,8 +1361,9 @@
                     dot.className = 'carousel-dot' + (i === 0 ? ' active' : '');
                     dot.onclick = () => {
                         if (isMobile()) {
-                            const cw = trackOuter.scrollWidth / totalCards;
-                            trackOuter.scrollTo({ left: cw * i, behavior: 'smooth' });
+                            const step = getMobileStepWidth();
+                            if (!step) return;
+                            trackOuter.scrollTo({ left: step * i, behavior: 'smooth' });
                         } else { pos = i; update(); }
                     };
                     dotsContainer.appendChild(dot);
@@ -1400,8 +1398,8 @@
             if (trackOuter) {
                 trackOuter.addEventListener('scroll', () => {
                     if (!isMobile()) return;
-                    const cw = trackOuter.scrollWidth / totalCards;
-                    if (cw > 0) updateDots(Math.round(trackOuter.scrollLeft / cw));
+                    const step = getMobileStepWidth();
+                    if (step > 0) updateDots(Math.round(getMobileScrollLeft() / step));
                 }, { passive: true });
             }
 
