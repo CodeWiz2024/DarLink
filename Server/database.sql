@@ -11,8 +11,8 @@ CREATE TABLE `Admin` (
   `Name` varchar(255) NOT NULL,
   `Email` varchar(255) NOT NULL,
   `Password` varchar(300) NOT NULL,
-  `UserId` int(11) NOT NULL,
-  `PropertyId` int(11) NOT NULL
+  `UserId` int(11)  NULL,
+  `PropertyId` int(11)  NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- AdvertPackage table
