@@ -1,3283 +1,635 @@
 <!DOCTYPE html>
-<html lang="en" dir="ltr">
-
+<html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>DarLink - Vacation Rental</title>
+    <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link
-        href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500;600&display=swap"
-        rel="stylesheet">
-    <style>
-        :root {
-            --primary: #0A84FF;
-            --primary-dark: #0062D1;
-            --primary-glow: rgba(10, 132, 255, 0.4);
-            --accent: #34C759;
-            --gold: #F5A623;
-            --red: #FF3B30;
-            --cyan: #00d4ff;
-            --font-display: 'Syne', sans-serif;
-            --font-body: 'DM Sans', sans-serif;
-            --bg: #F0F2F5;
-            --glass: rgba(255, 255, 255, 0.82);
-            --glass-border: rgba(255, 255, 255, 0.6);
-            --text: #111827;
-            --muted: #6B7280;
-            --card-r: 18px;
-            --nav-h: 64px;
-        }
-
-        [data-theme="dark"] {
-            --bg: #080A0E;
-            --glass: rgba(16, 18, 24, 0.88);
-            --glass-border: rgba(255, 255, 255, 0.07);
-            --text: #F1F5F9;
-            --muted: #94A3B8;
-        }
-
-        *,
-        *::before,
-        *::after {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            -webkit-tap-highlight-color: transparent;
-        }
-
-        html,
-        body {
-            overflow-x: clip;
-            max-width: 100%;
-            scroll-behavior: smooth;
-        }
-
-        body {
-            font-family: var(--font-body);
-            background: var(--bg);
-            color: var(--text);
-            min-height: 100vh;
-            transition: background .3s, color .3s;
-        }
-
-        /* ── ANIMATED BG ── */
-        .bg-orbs {
-            position: fixed;
-            inset: 0;
-            pointer-events: none;
-            z-index: 0;
-            overflow: hidden;
-        }
-
-        .orb {
-            position: absolute;
-            border-radius: 50%;
-            filter: blur(80px);
-            animation: orbFloat 12s ease-in-out infinite;
-            opacity: 0.12;
-        }
-
-        [data-theme="dark"] .orb {
-            opacity: 0.18;
-        }
-
-        .orb-1 {
-            width: 500px;
-            height: 500px;
-            background: #0A84FF;
-            top: -200px;
-            left: -100px;
-        }
-
-        .orb-2 {
-            width: 400px;
-            height: 400px;
-            background: #34C759;
-            top: 30%;
-            right: -150px;
-            animation-delay: -4s;
-        }
-
-        .orb-3 {
-            width: 350px;
-            height: 350px;
-            background: #00d4ff;
-            bottom: 10%;
-            left: 20%;
-            animation-delay: -8s;
-        }
-
-        .orb-4 {
-            width: 300px;
-            height: 300px;
-            background: #F5A623;
-            bottom: -100px;
-            right: 30%;
-            animation-delay: -2s;
-        }
-
-        @keyframes orbFloat {
-
-            0%,
-            100% {
-                transform: translate(0, 0) scale(1);
-            }
-
-            33% {
-                transform: translate(30px, -40px) scale(1.05);
-            }
-
-            66% {
-                transform: translate(-20px, 30px) scale(0.95);
-            }
-        }
-
-        .bg-noise {
-            position: fixed;
-            inset: 0;
-            pointer-events: none;
-            z-index: 1;
-            opacity: 0.025;
-            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
-        }
-
-        /* ── NAVBAR ── */
-        .navbar {
-            position: sticky;
-            top: 0;
-            z-index: 1000;
-            height: var(--nav-h);
-            padding: 0 5%;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 12px;
-            background: var(--glass);
-            backdrop-filter: saturate(180%) blur(20px);
-            -webkit-backdrop-filter: saturate(180%) blur(20px);
-            border-bottom: 1px solid var(--glass-border);
-            box-shadow: 0 1px 0 rgba(0, 0, 0, .04), 0 4px 24px rgba(10, 132, 255, .06);
-            transition: all .3s;
-        }
-
-        .navbar.scrolled {
-            box-shadow: 0 4px 32px rgba(10, 132, 255, .12), 0 1px 0 var(--glass-border);
-        }
-
-        .navbar .logo {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            font-family: var(--font-display);
-            font-size: 1.4rem;
-            font-weight: 800;
-            color: var(--primary);
-            letter-spacing: -.03em;
-            text-decoration: none;
-            flex-shrink: 0;
-        }
-
-        .logo svg {
-            animation: logoPulse 3s ease-in-out infinite;
-        }
-
-        @keyframes logoPulse {
-
-            0%,
-            100% {
-                filter: drop-shadow(0 0 4px rgba(0, 212, 255, 0.3));
-            }
-
-            50% {
-                filter: drop-shadow(0 0 12px rgba(0, 212, 255, 0.7));
-            }
-        }
-
-        .navbar .links {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .navbar .links a,
-        .navbar .links button {
-            padding: 8px 16px;
-            border-radius: 10px;
-            font-family: var(--font-body);
-            font-size: .9rem;
-            font-weight: 500;
-            color: var(--text);
-            border: none;
-            background: transparent;
-            cursor: pointer;
-            white-space: nowrap;
-            transition: all .2s;
-            text-decoration: none;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .navbar .links a::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 0;
-            height: 2px;
-            background: var(--primary);
-            border-radius: 2px;
-            transition: width .3s;
-        }
-
-        .navbar .links a:hover::after {
-            width: 60%;
-        }
-
-        .navbar .links a:hover,
-        .navbar .links button:hover {
-            background: rgba(10, 132, 255, .1);
-            color: var(--primary);
-        }
-
-        .navbar .links a.primary {
-            background: var(--primary);
-            color: #fff;
-            font-weight: 600;
-            box-shadow: 0 4px 14px rgba(10, 132, 255, .35);
-            animation: navBtnGlow 2.5s ease-in-out infinite;
-        }
-
-        @keyframes navBtnGlow {
-
-            0%,
-            100% {
-                box-shadow: 0 4px 14px rgba(10, 132, 255, .35);
-            }
-
-            50% {
-                box-shadow: 0 4px 24px rgba(10, 132, 255, .6);
-            }
-        }
-
-        .navbar .links a.primary:hover {
-            background: var(--primary-dark);
-        }
-
-        .navbar .links a.primary::after {
-            display: none;
-        }
-
-        .lang-switch {
-            display: flex;
-            gap: 6px;
-        }
-
-        .lang-btn {
-            padding: 6px 12px;
-            border-radius: 8px;
-            border: 1.5px solid rgba(0, 0, 0, .15);
-            background: rgba(255, 255, 255, .5);
-            font-size: .8rem;
-            font-weight: 600;
-            color: var(--text);
-            cursor: pointer;
-            transition: all .2s;
-        }
-
-        .lang-btn.active {
-            background: var(--primary);
-            color: #fff;
-            border-color: var(--primary);
-        }
-
-        .theme-btn {
-            width: 38px;
-            height: 38px;
-            border-radius: 10px;
-            border: 1.5px solid rgba(0, 0, 0, .12);
-            background: rgba(255, 255, 255, .4);
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1rem;
-            color: var(--text);
-            transition: all .3s;
-        }
-
-        .theme-btn:hover {
-            background: var(--primary);
-            color: #fff;
-            border-color: var(--primary);
-            transform: rotate(20deg);
-        }
-
-        /* ══ SPLIT-SCREEN HERO ══ */
-        .hero-split {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            min-height: calc(100vh - var(--nav-h));
-            position: relative;
-            z-index: 2;
-        }
-
-        /* ── LEFT PANEL ── */
-        .hero-left {
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            padding: clamp(40px, 6vw, 90px) clamp(28px, 5vw, 72px);
-            background: var(--bg);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .hero-left::before {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background: radial-gradient(ellipse at 20% 50%, rgba(10, 132, 255, .07) 0%, transparent 65%);
-            pointer-events: none;
-        }
-
-        .hero-left::after {
-            content: '';
-            position: absolute;
-            bottom: -80px;
-            left: -80px;
-            width: 240px;
-            height: 240px;
-            border-radius: 50%;
-            border: 1px solid rgba(10, 132, 255, .1);
-            pointer-events: none;
-        }
-
-        .hero-badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            padding: 6px 16px;
-            border-radius: 999px;
-            background: rgba(10, 132, 255, .08);
-            border: 1px solid rgba(10, 132, 255, .2);
-            font-size: .75rem;
-            font-weight: 700;
-            letter-spacing: .07em;
-            text-transform: uppercase;
-            color: var(--primary);
-            margin-bottom: 24px;
-            width: fit-content;
-            animation: badgeFade .6s ease both;
-        }
-
-        .hero-badge .dot {
-            width: 7px;
-            height: 7px;
-            border-radius: 50%;
-            background: var(--accent);
-            animation: dotPing 1.5s ease-in-out infinite;
-            flex-shrink: 0;
-        }
-
-        @keyframes dotPing {
-            0% {
-                box-shadow: 0 0 0 0 rgba(52, 199, 89, .6);
-            }
-
-            70% {
-                box-shadow: 0 0 0 8px rgba(52, 199, 89, 0);
-            }
-
-            100% {
-                box-shadow: 0 0 0 0 rgba(52, 199, 89, 0);
-            }
-        }
-
-        @keyframes badgeFade {
-            from {
-                opacity: 0;
-                transform: translateY(10px);
-            }
-
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .hero-title {
-            font-family: var(--font-display);
-            font-size: clamp(2.2rem, 4.5vw, 3.8rem);
-            font-weight: 800;
-            line-height: 1.08;
-            letter-spacing: -.04em;
-            color: var(--text);
-            margin-bottom: 20px;
-            animation: slideUp .7s .1s ease both;
-        }
-
-        .hero-title .highlight {
-            background: linear-gradient(90deg, var(--primary), var(--cyan));
-            -webkit-background-clip: text;
-            background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        .hero-sub {
-            font-size: clamp(.95rem, 1.8vw, 1.1rem);
-            color: var(--muted);
-            line-height: 1.75;
-            max-width: 420px;
-            margin-bottom: 36px;
-            animation: slideUp .7s .2s ease both;
-        }
-
-        @keyframes slideUp {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .hero-actions {
-            display: flex;
-            gap: 12px;
-            flex-wrap: wrap;
-            animation: slideUp .7s .3s ease both;
-        }
-
-        .hero-btn-solid {
-            display: inline-flex;
-            align-items: center;
-            gap: 10px;
-            padding: 14px 28px;
-            border-radius: 14px;
-            background: var(--primary);
-            color: #fff;
-            font-weight: 700;
-            font-size: .95rem;
-            cursor: pointer;
-            text-decoration: none;
-            border: none;
-            box-shadow: 0 8px 24px rgba(10, 132, 255, .35);
-            transition: all .3s;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .hero-btn-solid::before {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, .15), transparent);
-            transform: translateX(-100%);
-            transition: .5s;
-        }
-
-        .hero-btn-solid:hover::before {
-            transform: translateX(100%);
-        }
-
-        .hero-btn-solid:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 12px 32px rgba(10, 132, 255, .45);
-            background: var(--primary-dark);
-        }
-
-        .hero-btn-ghost {
-            display: inline-flex;
-            align-items: center;
-            gap: 10px;
-            padding: 14px 28px;
-            border-radius: 14px;
-            background: transparent;
-            color: var(--text);
-            font-weight: 600;
-            font-size: .95rem;
-            cursor: pointer;
-            text-decoration: none;
-            border: 1.5px solid rgba(0, 0, 0, .12);
-            transition: all .3s;
-        }
-
-        [data-theme="dark"] .hero-btn-ghost {
-            border-color: rgba(255, 255, 255, .15);
-        }
-
-        .hero-btn-ghost:hover {
-            border-color: var(--primary);
-            color: var(--primary);
-            transform: translateY(-2px);
-            background: rgba(10, 132, 255, .05);
-        }
-
-        .hero-stats {
-            display: flex;
-            gap: 0;
-            margin-top: 44px;
-            flex-wrap: wrap;
-            animation: slideUp .7s .4s ease both;
-            padding-top: 32px;
-            border-top: 1px solid rgba(0, 0, 0, .08);
-        }
-
-        [data-theme="dark"] .hero-stats {
-            border-top-color: rgba(255, 255, 255, .07);
-        }
-
-        .hero-stat {
-            flex: 1;
-            min-width: 70px;
-        }
-
-        .hero-stat+.hero-stat {
-            border-left: 1px solid rgba(0, 0, 0, .08);
-            padding-left: 24px;
-        }
-
-        [dir="rtl"] .hero-stat+.hero-stat {
-            border-left: none;
-            border-right: 1px solid rgba(0, 0, 0, .08);
-            padding-left: 0;
-            padding-right: 24px;
-        }
-
-        [data-theme="dark"] .hero-stat+.hero-stat {
-            border-left-color: rgba(255, 255, 255, .07);
-        }
-
-        .hero-stat-num {
-            font-family: var(--font-display);
-            font-size: 1.7rem;
-            font-weight: 800;
-            color: var(--primary);
-            display: block;
-            line-height: 1;
-        }
-
-        .hero-stat-label {
-            font-size: .72rem;
-            color: var(--muted);
-            margin-top: 4px;
-            text-transform: uppercase;
-            letter-spacing: .07em;
-        }
-
-        /* ── RIGHT PANEL ── */
-        .hero-right {
-            position: relative;
-            overflow: hidden;
-            min-height: 500px;
-        }
-
-        .hero-right img {
-            position: absolute;
-            inset: 0;
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            animation: kenBurns 14s ease-in-out infinite alternate;
-        }
-
-        @keyframes kenBurns {
-            from {
-                transform: scale(1) translateY(0);
-            }
-
-            to {
-                transform: scale(1.08) translateY(-2%);
-            }
-        }
-
-        .hero-right::before {
-            content: '';
-            position: absolute;
-            inset: 0;
-            z-index: 1;
-            pointer-events: none;
-            background: linear-gradient(to right, var(--bg) 0%, transparent 22%);
-        }
-
-        [data-theme="dark"] .hero-right::before {
-            background: linear-gradient(to right, #080A0E 0%, transparent 22%);
-        }
-
-        .hero-right::after {
-            content: '';
-            position: absolute;
-            inset: 0;
-            z-index: 1;
-            pointer-events: none;
-            background: linear-gradient(to top, rgba(0, 0, 0, .5) 0%, transparent 55%);
-        }
-
-        .img-float-card {
-            position: absolute;
-            bottom: 28px;
-            right: 20px;
-            z-index: 2;
-            background: rgba(255, 255, 255, .12);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 255, 255, .25);
-            border-radius: 16px;
-            padding: 14px 18px;
-            color: #fff;
-            min-width: 190px;
-            animation: cardFloat 4s ease-in-out infinite;
-        }
-
-        @keyframes cardFloat {
-
-            0%,
-            100% {
-                transform: translateY(0);
-            }
-
-            50% {
-                transform: translateY(-8px);
-            }
-        }
-
-        .ifc-title {
-            font-weight: 700;
-            font-size: .92rem;
-            margin-bottom: 3px;
-        }
-
-        .ifc-loc {
-            font-size: .73rem;
-            opacity: .8;
-            display: flex;
-            align-items: center;
-            gap: 4px;
-            margin-bottom: 8px;
-        }
-
-        .ifc-stars {
-            color: #ffc107;
-            font-size: .78rem;
-            margin-bottom: 6px;
-        }
-
-        .ifc-price {
-            font-family: var(--font-display);
-            font-weight: 800;
-            font-size: 1.08rem;
-        }
-
-        .ifc-price span {
-            font-size: .7rem;
-            font-weight: 400;
-            opacity: .75;
-        }
-
-        .img-live-badge {
-            position: absolute;
-            top: 24px;
-            right: 20px;
-            z-index: 2;
-            background: rgba(52, 199, 89, .18);
-            backdrop-filter: blur(16px);
-            border: 1px solid rgba(52, 199, 89, .4);
-            border-radius: 10px;
-            padding: 8px 14px;
-            color: #fff;
-            font-size: .78rem;
-            font-weight: 700;
-            display: flex;
-            align-items: center;
-            gap: 7px;
-            animation: cardFloat 4s 2s ease-in-out infinite;
-        }
-
-        .live-dot {
-            width: 8px;
-            height: 8px;
-            border-radius: 50%;
-            background: var(--accent);
-            animation: dotPing 1.5s infinite;
-        }
-
-        /* ── QUICK BAR ── */
-        .quick-bar {
-            display: none;
-            margin: 16px 4% 0;
-            background: var(--glass);
-            backdrop-filter: blur(16px);
-            border: 1px solid var(--glass-border);
-            border-radius: 16px;
-            padding: 14px 20px;
-            align-items: center;
-            justify-content: space-between;
-            gap: 12px;
-            flex-wrap: wrap;
-            box-shadow: 0 4px 20px rgba(10, 132, 255, .08);
-            animation: slideDown .4s ease both;
-        }
-
-        @keyframes slideDown {
-            from {
-                opacity: 0;
-                transform: translateY(-10px);
-            }
-
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .quick-bar.visible {
-            display: flex;
-        }
-
-        .quick-bar-title {
-            font-family: var(--font-display);
-            font-weight: 700;
-            font-size: .95rem;
-        }
-
-        .quick-bar-actions {
-            display: flex;
-            gap: 8px;
-            flex-wrap: wrap;
-        }
-
-        .quick-bar-actions a {
-            padding: 8px 16px;
-            border-radius: 10px;
-            font-size: .85rem;
-            font-weight: 600;
-            text-decoration: none;
-            transition: all .2s;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
-
-        .qb-primary {
-            background: var(--primary);
-            color: #fff;
-            box-shadow: 0 4px 12px rgba(10, 132, 255, .3);
-        }
-
-        .qb-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 18px rgba(10, 132, 255, .4);
-        }
-
-        .qb-secondary {
-            background: rgba(10, 132, 255, .1);
-            color: var(--primary);
-        }
-
-        .qb-secondary:hover {
-            background: rgba(10, 132, 255, .18);
-            transform: translateY(-1px);
-        }
-
-        .qb-neutral {
-            background: rgba(0, 0, 0, .06);
-            color: var(--text);
-        }
-
-        [data-theme="dark"] .qb-neutral {
-            background: rgba(255, 255, 255, .08);
-        }
-
-        /* ── MAIN LAYOUT ── */
-        .page-body {
-            display: flex;
-            gap: 20px;
-            padding: 20px 4% 50px;
-            align-items: flex-start;
-            position: relative;
-            z-index: 2;
-        }
-
-        /* ── FILTER SIDEBAR ── */
-        .filter-panel {
-            flex: 0 0 240px;
-            position: sticky;
-            top: calc(var(--nav-h) + 12px);
-            background: var(--glass);
-            backdrop-filter: blur(16px);
-            border: 1px solid var(--glass-border);
-            border-radius: 20px;
-            padding: 20px;
-            box-shadow: 0 4px 24px rgba(0, 0, 0, .06);
-            transition: box-shadow .3s;
-        }
-
-        .filter-panel:hover {
-            box-shadow: 0 8px 32px rgba(10, 132, 255, .1);
-        }
-
-        .filter-title {
-            font-family: var(--font-display);
-            font-weight: 700;
-            font-size: 1rem;
-            margin-bottom: 18px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            color: var(--text);
-        }
-
-        .filter-group {
-            margin-bottom: 16px;
-        }
-
-        .filter-group label {
-            display: block;
-            font-size: .72rem;
-            font-weight: 700;
-            color: var(--muted);
-            margin-bottom: 7px;
-            text-transform: uppercase;
-            letter-spacing: .07em;
-        }
-
-        .filter-group select,
-        .filter-group input[type=range] {
-            width: 100%;
-            padding: 10px 14px;
-            border-radius: 12px;
-            border: 1.5px solid rgba(0, 0, 0, .12);
-            background: rgba(255, 255, 255, .8);
-            font-family: var(--font-body);
-            font-size: .9rem;
-            color: var(--text);
-            transition: all .2s;
-            outline: none;
-            -webkit-appearance: none;
-            appearance: none;
-            cursor: pointer;
-        }
-
-        .filter-group select {
-            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%236B7280' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
-            background-repeat: no-repeat;
-            background-position: right 12px center;
-            padding-right: 36px;
-        }
-
-        [data-theme="dark"] .filter-group select {
-            background: rgba(255, 255, 255, .07);
-            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%2394A3B8' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
-            background-repeat: no-repeat;
-            background-position: right 12px center;
-            padding-right: 36px;
-            border-color: rgba(255, 255, 255, .12);
-            color: var(--text);
-        }
-
-        [data-theme="dark"] select option {
-            background: #1e2028;
-            color: #F1F5F9;
-        }
-
-        .filter-group select:focus {
-            border-color: var(--primary);
-            box-shadow: 0 0 0 3px rgba(10, 132, 255, .15);
-        }
-
-        .filter-group input[type=range] {
-            padding: 0;
-            accent-color: var(--primary);
-            height: 6px;
-            background: rgba(10, 132, 255, .15);
-            border: none;
-            cursor: pointer;
-            border-radius: 3px;
-        }
-
-        .price-labels {
-            display: flex;
-            justify-content: space-between;
-            font-size: .78rem;
-            color: var(--muted);
-            margin-top: 8px;
-            font-weight: 600;
-        }
-
-        .filter-apply {
-            width: 100%;
-            padding: 12px;
-            border-radius: 12px;
-            border: none;
-            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
-            color: #fff;
-            font-weight: 700;
-            font-size: .9rem;
-            cursor: pointer;
-            transition: all .3s;
-            margin-top: 8px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            box-shadow: 0 4px 16px rgba(10, 132, 255, .35);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .filter-apply::before {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, .15), transparent);
-            transform: translateX(-100%);
-            transition: transform .5s;
-        }
-
-        .filter-apply:hover::before {
-            transform: translateX(100%);
-        }
-
-        .filter-apply:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 24px rgba(10, 132, 255, .45);
-        }
-
-        .content-area {
-            flex: 1;
-            min-width: 0;
-        }
-
-        /* ── SECTION HEADER ── */
-        .section-header {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            margin-bottom: 12px;
-            margin-top: 4px;
-        }
-
-        .section-label {
-            display: inline-flex;
-            align-items: center;
-            gap: 7px;
-            font-family: var(--font-display);
-            font-size: .95rem;
-            font-weight: 700;
-        }
-
-        .section-label .badge {
-            padding: 3px 10px;
-            border-radius: 999px;
-            font-size: .72rem;
-            font-weight: 700;
-        }
-
-        /* ── CAROUSEL ── */
-        .carousel-wrap {
-            position: relative;
-            padding: 0 50px;
-        }
-
-        .carousel-track-outer {
-            overflow: hidden;
-            border-radius: var(--card-r);
-            overscroll-behavior-x: contain;
-        }
-
-        .carousel-track {
-            display: flex;
-            gap: 14px;
-            transition: transform .4s cubic-bezier(.4, 0, .2, 1);
-            will-change: transform;
-        }
-
-        .carousel-btn {
-            position: absolute;
-            top: 50%;
-            transform: translateY(-50%);
-            width: 42px;
-            height: 42px;
-            border-radius: 50%;
-            background: var(--primary);
-            border: none;
-            box-shadow: 0 4px 14px rgba(10, 132, 255, .45);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            z-index: 20;
-            transition: all .25s;
-            color: #fff;
-            font-size: .85rem;
-        }
-
-        .carousel-btn:hover {
-            background: var(--primary-dark);
-            transform: translateY(-50%) scale(1.1);
-            box-shadow: 0 6px 20px rgba(10, 132, 255, .55);
-        }
-
-        .carousel-btn:active {
-            transform: translateY(-50%) scale(0.94);
-        }
-
-        .carousel-btn.prev {
-            left: 2px;
-        }
-
-        .carousel-btn.next {
-            right: 2px;
-        }
-
-        .carousel-btn:disabled {
-            background: rgba(107, 114, 128, .35);
-            box-shadow: none;
-            pointer-events: none;
-        }
-
-        /* ── PROPERTY CARD ── */
-        .prop-card {
-            flex: 0 0 220px;
-            background: var(--glass);
-            backdrop-filter: blur(16px);
-            border: 1px solid var(--glass-border);
-            border-radius: var(--card-r);
-            overflow: hidden;
-            box-shadow: 0 4px 16px rgba(0, 0, 0, .06);
-            transition: transform .3s cubic-bezier(.175, .885, .32, 1.275), box-shadow .3s;
-            cursor: pointer;
-            display: flex;
-            flex-direction: column;
-            position: relative;
-        }
-
-        .prop-card:hover {
-            transform: translateY(-8px) scale(1.02);
-            box-shadow: 0 20px 40px rgba(10, 132, 255, .15), 0 8px 16px rgba(0, 0, 0, .1);
-            border-color: rgba(10, 132, 255, .25);
-        }
-
-        .prop-card::after {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background: linear-gradient(135deg, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, .04) 50%, rgba(255, 255, 255, 0) 100%);
-            opacity: 0;
-            transition: opacity .3s;
-            pointer-events: none;
-            z-index: 1;
-        }
-
-        .prop-card:hover::after {
-            opacity: 1;
-        }
-
-        .prop-card-img {
-            width: 100%;
-            height: 150px;
-            background: rgba(0, 0, 0, .06);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .prop-card-img img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            transition: transform .6s cubic-bezier(.175, .885, .32, 1.275);
-        }
-
-        .prop-card:hover .prop-card-img img {
-            transform: scale(1.1);
-        }
-
-        .prop-card-img-placeholder {
-            width: 100%;
-            height: 100%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.8rem;
-            color: var(--muted);
-        }
-
-        .card-labels {
-            position: absolute;
-            top: 8px;
-            left: 8px;
-            display: flex;
-            flex-direction: column;
-            gap: 4px;
-            z-index: 2;
-        }
-
-        .card-label {
-            display: inline-flex;
-            align-items: center;
-            gap: 4px;
-            padding: 3px 8px;
-            border-radius: 999px;
-            font-size: .65rem;
-            font-weight: 700;
-            letter-spacing: .02em;
-            backdrop-filter: blur(8px);
-            border: 1px solid rgba(255, 255, 255, .3);
-        }
-
-        .label-featured {
-            background: rgba(245, 166, 35, .9);
-            color: #fff;
-        }
-
-        .label-boosted {
-            background: rgba(255, 59, 48, .88);
-            color: #fff;
-        }
-
-        .label-promo {
-            background: rgba(52, 199, 89, .9);
-            color: #fff;
-            animation: labelPulse 2s ease-in-out infinite;
-        }
-
-        .label-mine {
-            background: rgba(10, 132, 255, .88);
-            color: #fff;
-        }
-
-        @keyframes labelPulse {
-
-            0%,
-            100% {
-                box-shadow: 0 0 0 0 rgba(52, 199, 89, .4);
-            }
-
-            50% {
-                box-shadow: 0 0 0 4px rgba(52, 199, 89, .15);
-            }
-        }
-
-        .prop-card-body {
-            padding: 12px;
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            gap: 5px;
-        }
-
-        .prop-card-title {
-            font-family: var(--font-display);
-            font-weight: 700;
-            font-size: .9rem;
-            line-height: 1.3;
-            color: var(--text);
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
-
-        .prop-card-loc {
-            font-size: .73rem;
-            color: var(--muted);
-            display: flex;
-            align-items: center;
-            gap: 3px;
-        }
-
-        .prop-card-meta {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            font-size: .72rem;
-            color: var(--muted);
-        }
-
-        .prop-card-price {
-            font-family: var(--font-display);
-            font-weight: 800;
-            font-size: .95rem;
-            color: var(--primary);
-            margin-top: auto;
-            padding-top: 6px;
-        }
-
-        .prop-card-price .old-price {
-            font-size: .72rem;
-            color: var(--muted);
-            text-decoration: line-through;
-            font-weight: 400;
-            margin-left: 4px;
-        }
-
-        .prop-card-actions {
-            display: flex;
-            gap: 6px;
-            padding: 0 12px 12px;
-        }
-
-        .prop-card-actions button {
-            flex: 1;
-            padding: 7px 4px;
-            border-radius: 10px;
-            border: none;
-            font-size: .75rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all .2s;
-            font-family: var(--font-body);
-        }
-
-        .btn-view-card {
-            background: var(--primary);
-            color: #fff;
-            box-shadow: 0 2px 8px rgba(10, 132, 255, .25);
-        }
-
-        .btn-view-card:hover {
-            background: var(--primary-dark);
-            transform: translateY(-1px);
-            box-shadow: 0 4px 12px rgba(10, 132, 255, .4);
-        }
-
-        .btn-chat-card {
-            background: rgba(52, 199, 89, .12);
-            color: #1a7a35;
-            max-width: 38px;
-        }
-
-        .btn-chat-card:hover {
-            background: var(--accent);
-            color: #fff;
-            transform: translateY(-1px);
-        }
-
-        [data-theme="dark"] .btn-chat-card {
-            color: var(--accent);
-        }
-
-        .btn-manage-card {
-            background: rgba(10, 132, 255, .1);
-            color: var(--primary);
-        }
-
-        .btn-manage-card:hover {
-            background: var(--primary);
-            color: #fff;
-        }
-
-        /* ── SKELETON ── */
-        .skeleton {
-            animation: shimmer 1.5s infinite;
-            background: linear-gradient(90deg, rgba(0, 0, 0, .04) 25%, rgba(0, 0, 0, .08) 50%, rgba(0, 0, 0, .04) 75%);
-            background-size: 200% 100%;
-            border-radius: var(--card-r);
-        }
-
-        @keyframes shimmer {
-            0% {
-                background-position: 200% 0
-            }
-
-            100% {
-                background-position: -200% 0
-            }
-        }
-
-        .skeleton-card {
-            flex: 0 0 220px;
-            height: 260px;
-        }
-
-        .section-block {
-            margin-bottom: 32px;
-        }
-
-        .empty-state {
-            text-align: center;
-            padding: 60px 20px;
-            color: var(--muted);
-        }
-
-        .empty-state i {
-            font-size: 3rem;
-            opacity: .3;
-            margin-bottom: 16px;
-            display: block;
-        }
-
-        /* ── PROFILE MODAL ── */
-        .modal-overlay {
-            position: fixed;
-            inset: 0;
-            background: rgba(0, 0, 0, .4);
-            backdrop-filter: blur(4px);
-            z-index: 2999;
-            display: none;
-        }
-
-        .profile-modal {
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%) scale(.9);
-            width: 90%;
-            max-width: 380px;
-            background: var(--glass);
-            backdrop-filter: blur(20px);
-            border: 1px solid var(--glass-border);
-            padding: 28px;
-            border-radius: 20px;
-            z-index: 3000;
-            display: none;
-            opacity: 0;
-            transition: all .3s cubic-bezier(.175, .885, .32, 1.275);
-            box-shadow: 0 20px 50px rgba(0, 0, 0, .2);
-        }
-
-        .profile-modal.show {
-            display: block;
-            opacity: 1;
-            transform: translate(-50%, -50%) scale(1);
-        }
-
-        .modal-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 20px;
-        }
-
-        .modal-header h2 {
-            font-family: var(--font-display);
-            font-size: 1.1rem;
-            font-weight: 800;
-        }
-
-        .modal-close {
-            cursor: pointer;
-            color: var(--muted);
-            font-size: 1.1rem;
-        }
-
-        .modal-close:hover {
-            color: #ff3b30;
-        }
-
-        .profile-pic-editor {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 14px;
-            margin-bottom: 20px;
-        }
-
-        .big-avatar {
-            width: 90px;
-            height: 90px;
-            border-radius: 50%;
-            background: var(--primary);
-            color: #fff;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 2rem;
-            font-weight: 800;
-            overflow: hidden;
-            box-shadow: 0 8px 24px rgba(10, 132, 255, .3);
-        }
-
-        .upload-btn-label {
-            padding: 8px 18px;
-            background: var(--primary);
-            color: #fff;
-            border-radius: 10px;
-            cursor: pointer;
-            font-size: .85rem;
-            font-weight: 600;
-        }
-
-        .modal-footer {
-            border-top: 1px solid var(--glass-border);
-            padding-top: 16px;
-            margin-top: 16px;
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-        }
-
-        .modal-footer a,
-        .modal-footer button {
-            padding: 11px;
-            border-radius: 12px;
-            text-align: center;
-            font-weight: 600;
-            font-size: .9rem;
-            cursor: pointer;
-            transition: all .2s;
-            text-decoration: none;
-            display: block;
-            border: none;
-        }
-
-        .modal-footer a {
-            background: var(--primary);
-            color: #fff;
-        }
-
-        .modal-footer button {
-            background: rgba(255, 59, 48, .1);
-            color: #ff3b30;
-        }
-
-        .modal-footer button:hover {
-            background: #ff3b30;
-            color: #fff;
-        }
-
-        /* ── MSG SIDEBAR ── */
-        .msg-toggle-btn {
-            position: fixed;
-            bottom: 28px;
-            right: 24px;
-            z-index: 2000;
-            width: 56px;
-            height: 56px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
-            color: #fff;
-            border: none;
-            cursor: pointer;
-            box-shadow: 0 8px 28px rgba(10, 132, 255, .5);
-            font-size: 1.4rem;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: all .3s;
-            animation: fabPulse 3s ease-in-out infinite;
-        }
-
-        @keyframes fabPulse {
-
-            0%,
-            100% {
-                box-shadow: 0 8px 28px rgba(10, 132, 255, .4);
-            }
-
-            50% {
-                box-shadow: 0 8px 40px rgba(10, 132, 255, .7), 0 0 0 8px rgba(10, 132, 255, .1);
-            }
-        }
-
-        .msg-toggle-btn:hover {
-            transform: scale(1.1) rotate(-5deg);
-        }
-
-        .msg-toggle-btn.hidden {
-            opacity: 0;
-            pointer-events: none;
-            transform: scale(.85);
-        }
-
-        .msg-badge {
-            position: absolute;
-            top: -4px;
-            right: -4px;
-            background: #ff3b30;
-            color: #fff;
-            font-size: .7rem;
-            padding: 2px 6px;
-            border-radius: 999px;
-            font-weight: 800;
-            border: 2px solid #fff;
-        }
-
-        .msg-sidebar {
-            position: fixed;
-            top: 0;
-            right: -380px;
-            width: 360px;
-            height: 100vh;
-            background: var(--glass);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border-left: 1px solid var(--glass-border);
-            z-index: 1500;
-            transition: right .4s cubic-bezier(.4, 0, .2, 1);
-            display: flex;
-            flex-direction: column;
-            padding-top: 16px;
-            box-shadow: -8px 0 32px rgba(0, 0, 0, .08);
-        }
-
-        .msg-sidebar.open {
-            right: 0;
-        }
-
-        .msg-sidebar-header {
-            padding: 12px 20px;
-            border-bottom: 1px solid var(--glass-border);
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-
-        .msg-view {
-            display: flex;
-            flex-direction: column;
-            height: 100%;
-            overflow: hidden;
-        }
-
-        .msg-list {
-            flex: 1;
-            overflow-y: auto;
-            padding: 12px;
-        }
-
-        .conv-item {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            padding: 12px;
-            border-radius: 14px;
-            cursor: pointer;
-            transition: all .2s;
-            margin-bottom: 6px;
-        }
-
-        .conv-item:hover {
-            background: rgba(10, 132, 255, .06);
-            transform: translateX(4px);
-        }
-
-        .conv-avatar {
-            width: 44px;
-            height: 44px;
-            border-radius: 50%;
-            background: var(--primary);
-            color: #fff;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.1rem;
-            font-weight: 700;
-            flex-shrink: 0;
-        }
-
-        .conv-info {
-            flex: 1;
-            min-width: 0;
-        }
-
-        .conv-name {
-            font-weight: 700;
-            font-size: .9rem;
-            display: block;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            white-space: nowrap;
-        }
-
-        .conv-property {
-            font-size: .75rem;
-            color: var(--muted);
-            display: block;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            white-space: nowrap;
-        }
-
-        .conv-unread {
-            background: var(--primary);
-            color: #fff;
-            padding: 2px 7px;
-            border-radius: 999px;
-            font-size: .68rem;
-            font-weight: 700;
-        }
-
-        .chat-messages {
-            flex: 1;
-            overflow-y: auto;
-            padding: 16px;
-            background: rgba(0, 0, 0, .02);
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-        }
-
-        .msg-bubble {
-            max-width: 78%;
-            padding: 9px 13px;
-            border-radius: 16px;
-            font-size: .88rem;
-            line-height: 1.4;
-        }
-
-        .msg-sent {
-            background: var(--primary);
-            color: #fff;
-            align-self: flex-end;
-            border-bottom-right-radius: 4px;
-        }
-
-        .msg-received {
-            background: rgba(255, 255, 255, .8);
-            color: var(--text);
-            align-self: flex-start;
-            border-bottom-left-radius: 4px;
-            border: 1px solid var(--glass-border);
-        }
-
-        .msg-time {
-            font-size: .65rem;
-            opacity: .6;
-            margin-top: 3px;
-            display: block;
-            text-align: right;
-        }
-
-        .chat-input-area {
-            padding: 12px;
-            border-top: 1px solid var(--glass-border);
-            display: flex;
-            gap: 8px;
-            background: var(--glass);
-        }
-
-        .chat-input {
-            flex: 1;
-            border: 1px solid var(--glass-border);
-            padding: 9px 14px;
-            border-radius: 20px;
-            background: rgba(255, 255, 255, .6);
-            font-family: var(--font-body);
-            font-size: .88rem;
-            color: var(--text);
-            outline: none;
-        }
-
-        .chat-input:focus {
-            border-color: var(--primary);
-            box-shadow: 0 0 0 3px rgba(10, 132, 255, .1);
-        }
-
-        .chat-send-btn {
-            width: 36px;
-            height: 36px;
-            border-radius: 50%;
-            background: var(--primary);
-            color: #fff;
-            border: none;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: all .2s;
-        }
-
-        .chat-send-btn:hover {
-            transform: scale(1.1);
-            background: var(--primary-dark);
-        }
-
-        .chat-header-user {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            flex: 1;
-        }
-
-        .chat-user-avatar {
-            width: 36px;
-            height: 36px;
-            border-radius: 50%;
-            background: var(--primary);
-            color: #fff;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: 700;
-            overflow: hidden;
-        }
-
-        .chat-user-info {
-            display: flex;
-            flex-direction: column;
-        }
-
-        .chat-user-name {
-            font-weight: 700;
-            font-size: .88rem;
-        }
-
-        .chat-user-rating {
-            color: #ffc107;
-            font-size: .72rem;
-        }
-
-        .back-to-list {
-            cursor: pointer;
-            color: var(--muted);
-            font-size: 1.1rem;
-            transition: .2s;
-        }
-
-        .back-to-list:hover {
-            color: var(--primary);
-            transform: translateX(-3px);
-        }
-
-        #msgChatView {
-            display: flex;
-            flex-direction: column;
-            height: 100%;
-        }
-
-        /* ── NAV PROFILE PILL ── */
-        .nav-profile {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            padding: 5px 12px;
-            background: rgba(10, 132, 255, .08);
-            border-radius: 999px;
-            cursor: pointer;
-            transition: .2s;
-        }
-
-        .nav-profile:hover {
-            background: rgba(10, 132, 255, .15);
-            transform: scale(1.02);
-        }
-
-        .nav-avatar-placeholder,
-        .nav-avatar-img {
-            width: 28px;
-            height: 28px;
-            border-radius: 50%;
-            background: var(--primary);
-            color: #fff;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: 700;
-            font-size: .8rem;
-            overflow: hidden;
-            object-fit: cover;
-        }
-
-        .nav-user-name {
-            font-size: .85rem;
-            font-weight: 600;
-        }
-
-        /* ── FOOTER ── */
-        .site-footer {
-            background: var(--glass);
-            backdrop-filter: blur(16px);
-            border-top: 1px solid var(--glass-border);
-            padding: 40px 5%;
-            margin-top: 20px;
-            position: relative;
-            z-index: 2;
-        }
-
-        .footer-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-            gap: 28px;
-            max-width: 900px;
-            margin: 0 auto;
-        }
-
-        .footer-section h3 {
-            font-family: var(--font-display);
-            font-size: .9rem;
-            font-weight: 700;
-            margin-bottom: 12px;
-        }
-
-        .footer-links {
-            list-style: none;
-        }
-
-        .footer-links li {
-            margin: 8px 0;
-            font-size: .85rem;
-            color: var(--muted);
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            transition: .2s;
-        }
-
-        .footer-links li:hover {
-            color: var(--primary);
-            transform: translateX(4px);
-        }
-
-        .social-links {
-            display: flex;
-            gap: 10px;
-            margin-top: 10px;
-        }
-
-        .social-links a {
-            width: 36px;
-            height: 36px;
-            border-radius: 10px;
-            background: rgba(10, 132, 255, .1);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: var(--primary);
-            transition: all .3s;
-        }
-
-        .social-links a:hover {
-            background: var(--primary);
-            color: #fff;
-            transform: translateY(-3px) scale(1.1);
-            box-shadow: 0 6px 16px rgba(10, 132, 255, .35);
-        }
-
-        /* ── SECTION ANIMATIONS ── */
-        @keyframes fadeUp {
-            from {
-                opacity: 0;
-                transform: translateY(24px);
-            }
-
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .section-block {
-            animation: fadeUp .6s cubic-bezier(.175, .885, .32, 1.275) both;
-        }
-
-        .section-block:nth-child(1) {
-            animation-delay: .05s;
-        }
-
-        .section-block:nth-child(2) {
-            animation-delay: .12s;
-        }
-
-        .section-block:nth-child(3) {
-            animation-delay: .2s;
-        }
-
-        .section-block:nth-child(4) {
-            animation-delay: .28s;
-        }
-
-        /* ── DOTS ── */
-        .carousel-dots {
-            display: none;
-            justify-content: center;
-            gap: 6px;
-            padding: 10px 0 4px;
-        }
-
-        .carousel-dot {
-            width: 6px;
-            height: 6px;
-            border-radius: 50%;
-            background: var(--muted);
-            opacity: .4;
-            transition: all .3s;
-            cursor: pointer;
-        }
-
-        .carousel-dot.active {
-            background: var(--primary);
-            opacity: 1;
-            width: 18px;
-            border-radius: 3px;
-        }
-
-        /* ── FILTER TOGGLE ── */
-        .filter-toggle {
-            display: none;
-            width: 100%;
-            padding: 11px 16px;
-            border-radius: 14px;
-            border: 1px solid var(--glass-border);
-            background: var(--glass);
-            font-family: var(--font-body);
-            font-size: .9rem;
-            font-weight: 600;
-            color: var(--primary);
-            cursor: pointer;
-            margin-bottom: 12px;
-            align-items: center;
-            gap: 8px;
-        }
-
-        /* ── NAV HAMBURGER ── */
-        .nav-hamburger {
-            display: none;
-            flex-direction: column;
-            gap: 5px;
-            cursor: pointer;
-            padding: 8px;
-            border-radius: 10px;
-            border: none;
-            background: transparent;
-        }
-
-        .nav-hamburger span {
-            display: block;
-            width: 22px;
-            height: 2px;
-            background: var(--text);
-            border-radius: 2px;
-            transition: all .3s;
-        }
-
-        .mobile-close-btn {
-            display: none !important;
-        }
-
-        /* ── DARK MODE ── */
-        [data-theme="dark"] .msg-received {
-            background: rgba(255, 255, 255, .06);
-        }
-
-        [data-theme="dark"] .prop-card {
-            background: rgba(22, 26, 32, .9);
-        }
-
-        [data-theme="dark"] .filter-panel {
-            background: rgba(16, 18, 24, .92);
-        }
-
-        [data-theme="dark"] .site-footer {
-            background: rgba(8, 10, 14, .7);
-        }
-
-        [data-theme="dark"] .lang-btn {
-            border-color: rgba(255, 255, 255, .15);
-            color: var(--muted);
-        }
-
-        [data-theme="dark"] .lang-btn.active {
-            background: var(--primary);
-            color: #fff;
-            border-color: var(--primary);
-        }
-
-        [data-theme="dark"] .theme-btn {
-            background: rgba(255, 255, 255, .08);
-            border-color: rgba(255, 255, 255, .12);
-            color: #f1f5f9;
-        }
-
-        /* ── SCROLL REVEAL ── */
-        .reveal {
-            opacity: 0;
-            transform: translateY(20px);
-            transition: opacity .6s ease, transform .6s ease;
-        }
-
-        .reveal.visible {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        /* ════════ DESKTOP ════════ */
-        @media (min-width: 769px) {
-            .filter-toggle {
-                display: none !important;
-            }
-
-            .nav-hamburger {
-                display: none !important;
-            }
-
-            .navbar .links {
-                display: flex !important;
-                position: static;
-                height: auto;
-                width: auto;
-                background: transparent;
-                backdrop-filter: none;
-                flex-direction: row;
-                align-items: center;
-                gap: 8px;
-                padding: 0;
-                z-index: auto;
-                border: none;
-                box-shadow: none;
-            }
-        }
-
-        /* ════════ MOBILE ════════ */
-        @media (max-width: 768px) {
-            .nav-hamburger {
-                display: flex !important;
-            }
-
-            .mobile-close-btn {
-                display: flex !important;
-                position: absolute;
-                top: 16px;
-                right: 16px;
-                width: 40px;
-                height: 40px;
-                border-radius: 50%;
-                background: rgba(0, 0, 0, .06);
-                border: none;
-                font-size: 1rem;
-                cursor: pointer;
-                color: var(--muted);
-                align-items: center;
-                justify-content: center;
-                z-index: 10;
-            }
-
-            .navbar .links {
-                display: flex !important;
-                position: fixed;
-                top: 0;
-                right: -320px;
-                bottom: 0;
-                width: 300px;
-                max-width: 85vw;
-                height: 100vh;
-                background: rgba(248, 250, 252, 0.98);
-                border-left: 1px solid rgba(255, 255, 255, 0.6);
-                backdrop-filter: blur(28px);
-                -webkit-backdrop-filter: blur(28px);
-                flex-direction: column;
-                justify-content: flex-start;
-                align-items: center;
-                gap: 10px;
-                z-index: 1050;
-                padding: 80px 24px 40px;
-                direction: ltr !important;
-                transition: right 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-                overflow-y: auto;
-            }
-
-            .navbar .links.mobile-open {
-                right: 0;
-                box-shadow: -8px 0 32px rgba(0, 0, 0, .1);
-            }
-
-            .navbar .links a,
-            .navbar .links button.theme-btn {
-                width: 100%;
-                max-width: 280px;
-                padding: 14px 20px;
-                font-size: .95rem;
-                font-weight: 600;
-                border-radius: 14px;
-                border: 1px solid rgba(0, 0, 0, .08);
-                background: rgba(255, 255, 255, .9);
-                text-align: center;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                gap: 10px;
-                color: #111827;
-                box-shadow: 0 2px 8px rgba(0, 0, 0, .06);
-                text-decoration: none;
-                white-space: nowrap;
-            }
-
-            .navbar .links a.primary {
-                background: var(--primary);
-                color: #fff;
-                border-color: var(--primary);
-            }
-
-            .navbar .links .lang-switch {
-                display: flex;
-                gap: 8px;
-                flex-direction: row;
-                direction: ltr;
-            }
-
-            .navbar .links .lang-btn {
-                padding: 10px 28px;
-                font-size: .9rem;
-                border-radius: 12px;
-                border: 1.5px solid rgba(0, 0, 0, .15);
-                background: rgba(255, 255, 255, .7);
-                font-weight: 600;
-                color: #111827;
-                cursor: pointer;
-            }
-
-            .navbar .links .lang-btn.active {
-                background: var(--primary);
-                color: #fff;
-                border-color: var(--primary);
-            }
-
-            .hero-split {
-                grid-template-columns: 1fr;
-                min-height: auto;
-            }
-
-            .hero-right {
-                min-height: 55vw;
-                order: -1;
-            }
-
-            .hero-right::before {
-                background: linear-gradient(to bottom, transparent 55%, var(--bg) 100%);
-            }
-
-            [data-theme="dark"] .hero-right::before {
-                background: linear-gradient(to bottom, transparent 55%, #080A0E 100%);
-            }
-
-            .hero-left {
-                padding: 32px 24px;
-            }
-
-            .hero-title {
-                font-size: 2rem;
-            }
-
-            .hero-stats {
-                gap: 0;
-            }
-
-            .img-float-card {
-                bottom: 16px;
-                right: 12px;
-            }
-
-            .img-live-badge {
-                top: 12px;
-                right: 12px;
-            }
-
-            .page-body {
-                flex-direction: column;
-                padding: 16px 3% 40px;
-            }
-
-            .filter-panel {
-                position: static;
-                width: 100%;
-                max-height: 0;
-                overflow: hidden;
-                padding: 0 18px;
-                transition: max-height .4s, padding .3s;
-                border-radius: 16px;
-            }
-
-            .filter-panel.open {
-                max-height: 600px;
-                padding: 18px;
-            }
-
-            .filter-toggle {
-                display: flex !important;
-            }
-
-            .carousel-wrap {
-                padding: 0;
-            }
-
-            .carousel-btn {
-                display: none !important;
-            }
-
-            .carousel-track-outer {
-                overflow: hidden !important;
-                position: relative;
-                cursor: grab;
-                user-select: none;
-                -webkit-user-select: none;
-            }
-
-            .carousel-track-outer::-webkit-scrollbar {
-                display: none;
-            }
-
-            .carousel-track {
-                display: flex !important;
-                gap: 10px;
-                will-change: transform;
-            }
-
-            .prop-card {
-                flex: 0 0 min(84vw, 320px) !important;
-                scroll-snap-align: start;
-            }
-
-            .carousel-dots {
-                display: flex;
-            }
-
-            .msg-sidebar {
-                width: 100%;
-                right: -100%;
-            }
-
-            .msg-toggle-btn {
-                bottom: 20px;
-                right: 16px;
-                width: 50px;
-                height: 50px;
-                font-size: 1.2rem;
-            }
-        }
-
-        [data-theme="dark"] .navbar .links {
-            background: rgba(8, 10, 14, .98);
-        }
-
-        [data-theme="dark"] .navbar .links a,
-        [data-theme="dark"] .navbar .links button.theme-btn {
-            background: rgba(255, 255, 255, .07);
-            border-color: rgba(255, 255, 255, .1);
-            color: #f1f5f9;
-        }
-
-        [data-theme="dark"] .navbar .links a.primary {
-            background: var(--primary);
-            color: #fff;
-            border-color: var(--primary);
-        }
-
-        [data-theme="dark"] .mobile-close-btn {
-            background: rgba(255, 255, 255, .08);
-            color: var(--muted);
-        }
-
-        [data-theme="dark"] .mobile-close-btn:hover {
-            background: rgba(255, 59, 48, .2);
-            color: #ff453a;
-        }
-    </style>
-</head>
-
-<body>
-    <div class="bg-orbs">
-        <div class="orb orb-1"></div>
-        <div class="orb orb-2"></div>
-        <div class="orb orb-3"></div>
-        <div class="orb orb-4"></div>
-    </div>
-    <div class="bg-noise"></div>
-
-    <script>
-        window.I18N_MESSAGES = {
-            nav_home: { en: 'Home', ar: 'الرئيسية' },
-            nav_login: { en: 'Login', ar: 'تسجيل الدخول' },
-            nav_register: { en: 'Register', ar: 'إنشاء حساب' },
-            hero_badge: { en: "Algeria's #1 Rental Platform", ar: 'المنصة الأولى للإيجار في الجزائر' },
-            hero_title_1: { en: 'Transparency', ar: 'الشفافية' },
-            hero_title_2: { en: 'Speed', ar: 'السرعة' },
-            hero_title_amp: { en: '& ', ar: 'و' },
-            hero_sub: {
-                en: "Algeria's most trusted vacation rental platform.\nReal reviews, instant booking, unforgettable stays.",
-                ar: 'منصة الإيجار السياحي الأكثر موثوقية في الجزائر.\nتقييمات حقيقية، حجز فوري، إقامات لا تُنسى.'
-            },
-            hero_btn_explore: { en: 'Explore Properties', ar: 'استكشف العقارات' },
-            hero_btn_start: { en: 'Get Started Free', ar: 'ابدأ مجانًا' },
-            stat_properties: { en: 'Properties', ar: 'عقارات' },
-            stat_guests: { en: 'Happy Guests', ar: 'ضيف سعيد' },
-            stat_wilayas: { en: 'Wilayas', ar: 'ولاية' },
-            stat_satisfaction: { en: 'Satisfaction', ar: 'رضا' },
-            live_available: { en: 'Available Now', ar: 'متاح الآن' },
-            float_card_title: { en: 'Vila F5 — Annaba', ar: 'فيلا F5 — عنابة' },
-            float_card_loc: { en: 'Annaba, Algeria', ar: 'عنابة، الجزائر' },
-            float_price_unit: { en: 'DZD / night', ar: 'د.ج / ليلة' },
-            quick_bar_title: { en: '🚀 Quick Dashboard', ar: '🚀 لوحة التحكم السريعة' },
-            qb_add_prop: { en: 'Add Property', ar: 'إضافة عقار' },
-            qb_my_props: { en: 'My Properties', ar: 'عقاراتي' },
-            qb_profile: { en: 'Profile', ar: 'ملفي' },
-            qb_bookings: { en: 'My Bookings', ar: 'حجوزاتي' },
-            filter_title: { en: 'Filters', ar: 'التصفية' },
-            filter_toggle_lbl: { en: 'Filters', ar: 'التصفية' },
-            filter_wilaya_lbl: { en: 'Wilaya', ar: 'الولاية' },
-            filter_type_lbl: { en: 'Type', ar: 'النوع' },
-            filter_rooms_lbl: { en: 'Rooms', ar: 'الغرف' },
-            filter_price_lbl: { en: 'Max Price / Night', ar: 'أقصى سعر / ليلة' },
-            filter_apply_btn: { en: 'Apply Filters', ar: 'تطبيق الفلاتر' },
-            filter_all_wilayas: { en: 'All Wilayas', ar: 'كل الولايات' },
-            filter_all_types: { en: 'All Types', ar: 'كل الأنواع' },
-            filter_any_rooms: { en: 'Any', ar: 'أي عدد' },
-            filter_1room: { en: '1 Room', ar: 'غرفة واحدة' },
-            filter_2rooms: { en: '2 Rooms', ar: 'غرفتان' },
-            filter_3rooms: { en: '3+ Rooms', ar: '3+ غرف' },
-            filter_apartment: { en: 'Apartment', ar: 'شقة' },
-            filter_house: { en: 'House', ar: 'بيت' },
-            filter_room: { en: 'Room', ar: 'غرفة' },
-            filter_cottage: { en: 'Cottage', ar: 'كوخ' },
-            loading_props: { en: 'Loading properties…', ar: 'جاري تحميل العقارات…' },
-            msg_sidebar_title: { en: 'Messages', ar: 'الرسائل' },
-            msg_loading: { en: 'Loading…', ar: 'جاري التحميل…' },
-            chat_placeholder: { en: 'Type…', ar: 'اكتب…' },
-            profile_title: { en: 'Profile', ar: 'الملف الشخصي' },
-            profile_change_photo: { en: 'Change Photo', ar: 'تغيير الصورة' },
-            profile_dashboard: { en: 'Dashboard', ar: 'لوحة التحكم' },
-            profile_logout: { en: 'Logout', ar: 'تسجيل الخروج' },
-            footer_tagline: {
-                en: "Algeria's trusted vacation rental platform — where every stay tells a story.",
-                ar: 'منصة الإيجار السياحي الموثوقة في الجزائر — حيث تحكي كل إقامة قصة.'
-            },
-            footer_contact: { en: 'Contact', ar: 'التواصل' },
-            footer_platform: { en: 'Platform', ar: 'المنصة' },
-            footer_list_prop: { en: 'List your property', ar: 'أضف عقارك' },
-            footer_how: { en: 'How it works', ar: 'كيف يعمل' },
-            footer_support: { en: 'Support', ar: 'الدعم' },
-            footer_copy: {
-                en: '© 2026 DarLink · Made with ❤️ in Algeria',
-                ar: '© 2026 DarLink · صُنع بـ ❤️ في الجزائر'
-            },
-        };
-    </script>
-
-    <!-- NAVBAR -->
-    <nav class="navbar" id="mainNav">
-        <a class="logo" href="index.html" style="text-decoration:none;">
-            <svg width="36" height="32" viewBox="0 0 110 100" fill="none">
-                <path d="M55 8 L98 42 L98 92 L12 92 L12 42 Z" fill="none" stroke="#00d4ff" stroke-width="6"
-                    stroke-linejoin="round" />
-                <rect x="72" y="10" width="10" height="18" fill="none" stroke="#00d4ff" stroke-width="5.5" />
-                <path d="M55 22 L88 50 L88 88 L22 88 L22 50 Z" fill="none" stroke="#5aa8c0" stroke-width="5"
-                    stroke-linejoin="round" />
-                <path d="M32 88 L32 52 Q32 30 52 30 Q72 30 72 52 Q72 68 58 72 Q44 76 32 72" fill="none" stroke="#5aa8c0"
-                    stroke-width="5.5" stroke-linecap="round" />
-                <line x1="32" y1="88" x2="75" y2="88" stroke="#5aa8c0" stroke-width="5.5" stroke-linecap="round" />
-            </svg>
-            <span style="color:#00d4ff;font-size:22px;font-weight:700;font-family:var(--font-display)">DarLink</span>
-        </a>
-
-        <button class="nav-hamburger" id="navHamburger" onclick="toggleMobileNav()" aria-label="Menu">
-            <span></span><span></span><span></span>
-        </button>
-
-        <div class="links" id="navLinks">
-            <button class="mobile-close-btn" onclick="closeMobileNav()" aria-label="Close menu">
-                <i class="fa-solid fa-times"></i>
-            </button>
-            <button class="theme-btn" onclick="toggleTheme()" aria-label="Toggle theme">
-                <i class="fa-regular fa-moon" id="themeIcon"></i>
-            </button>
-            <a href="index.html"><i class="fa-solid fa-house"></i> <span data-i18n="nav_home">Home</span></a>
-            <a href="login.html" id="loginLink"><i class="fa-solid fa-right-to-bracket"></i> <span
-                    data-i18n="nav_login">Login</span></a>
-            <a href="Register.html" id="registerLink" class="primary"><i class="fa-solid fa-user-plus"></i> <span
-                    data-i18n="nav_register">Register</span></a>
-            <div class="lang-switch">
-                <button class="lang-btn active" data-lang="en">EN</button>
-                <button class="lang-btn" data-lang="ar">عربي</button>
-            </div>
-            <span id="userGreeting"></span>
-        </div>
-    </nav>
-
-    <!-- HERO -->
-    <section class="hero-split">
-        <div class="hero-left">
-            <div class="hero-badge">
-                <div class="dot"></div>
-                <span data-i18n="hero_badge">Algeria's #1 Rental Platform</span>
-            </div>
-            <h1 class="hero-title">
-                <span data-i18n="hero_title_1">Transparency</span><br>
-                <span data-i18n="hero_title_amp">&amp; </span><span class="highlight"
-                    data-i18n="hero_title_2">Speed</span>
-            </h1>
-            <p class="hero-sub" data-i18n="hero_sub">
-                Algeria's most trusted vacation rental platform.<br>
-                Real reviews, instant booking, unforgettable stays.
-            </p>
-            <div class="hero-actions">
-                <a href="#sections" class="hero-btn-solid"
-                    onclick="document.getElementById('sections').scrollIntoView({behavior:'smooth'});return false;">
-                    <i class="fa-solid fa-compass"></i> <span data-i18n="hero_btn_explore">Explore Properties</span>
-                </a>
-                <a href="Register.html" class="hero-btn-ghost">
-                    <i class="fa-solid fa-user-plus"></i> <span data-i18n="hero_btn_start">Get Started Free</span>
-                </a>
-            </div>
-            <div class="hero-stats">
-                <div class="hero-stat">
-                    <span class="hero-stat-num" data-count="1200">0</span>
-                    <span class="hero-stat-label" data-i18n="stat_properties">Properties</span>
-                </div>
-                <div class="hero-stat">
-                    <span class="hero-stat-num" data-count="8500">0</span>
-                    <span class="hero-stat-label" data-i18n="stat_guests">Happy Guests</span>
-                </div>
-                <div class="hero-stat">
-                    <span class="hero-stat-num" data-count="48">0</span>
-                    <span class="hero-stat-label" data-i18n="stat_wilayas">Wilayas</span>
-                </div>
-                <div class="hero-stat">
-                    <span class="hero-stat-num" data-count="98">0</span>%
-                    <span class="hero-stat-label" data-i18n="stat_satisfaction">Satisfaction</span>
-                </div>
-            </div>
-        </div>
-        <div class="hero-right">
-            <img src="https://images.unsplash.com/photo-1539635278303-d4002c07eae3?w=1400&q=85"
-                alt="Algeria coastal view" loading="eager">
-            <div class="img-live-badge">
-                <div class="live-dot"></div>
-                <span data-i18n="live_available">Available Now</span>
-            </div>
-
-        </div>
-    </section>
-
-    <!-- DASHBOARD QUICK BAR -->
-    <div class="quick-bar" id="dashQuickBar">
-        <span class="quick-bar-title" data-i18n="quick_bar_title">🚀 Quick Dashboard</span>
-        <div class="quick-bar-actions" id="dashButtons"></div>
-    </div>
-
-    <!-- MAIN BODY -->
-    <div class="page-body" id="sections">
-        <!-- FILTER SIDEBAR -->
-        <aside>
-            <button class="filter-toggle" id="filterToggle" onclick="toggleFilter()">
-                <i class="fa-solid fa-sliders"></i>
-                <span data-i18n="filter_toggle_lbl">Filters</span>
-                <i class="fa-solid fa-chevron-down" id="filterChev" style="margin-left:auto;transition:.3s;"></i>
-            </button>
-            <div class="filter-panel" id="filterPanel">
-                <div class="filter-title">
-                    <i class="fa-solid fa-sliders" style="color:var(--primary)"></i>
-                    <span data-i18n="filter_title">Filters</span>
-                </div>
-                <div class="filter-group">
-                    <label data-i18n="filter_wilaya_lbl">Wilaya</label>
-                    <select id="filterCity">
-                        <option value="" data-i18n="filter_all_wilayas">All Wilayas</option>
-                        <option>Algiers</option>
-                        <option>Oran</option>
-                        <option>Constantine</option>
-                        <option>Annaba</option>
-                        <option>Blida</option>
-                        <option>Tlemcen</option>
-                        <option>Guelma</option>
-                        <option>Sétif</option>
-                        <option>Batna</option>
-                    </select>
-                </div>
-                <div class="filter-group">
-                    <label data-i18n="filter_type_lbl">Type</label>
-                    <select id="filterType">
-                        <option value="" data-i18n="filter_all_types">All Types</option>
-                        <option value="Apartment" data-i18n="filter_apartment">Apartment</option>
-                        <option value="House" data-i18n="filter_house">House</option>
-                        <option value="Room" data-i18n="filter_room">Room</option>
-                        <option value="Cottage" data-i18n="filter_cottage">Cottage</option>
-                    </select>
-                </div>
-                <div class="filter-group">
-                    <label data-i18n="filter_rooms_lbl">Rooms</label>
-                    <select id="filterRooms">
-                        <option value="" data-i18n="filter_any_rooms">Any</option>
-                        <option value="1" data-i18n="filter_1room">1 Room</option>
-                        <option value="2" data-i18n="filter_2rooms">2 Rooms</option>
-                        <option value="3" data-i18n="filter_3rooms">3+ Rooms</option>
-                    </select>
-                </div>
-                <div class="filter-group">
-                    <label data-i18n="filter_price_lbl">Max Price / Night</label>
-                    <input type="range" id="filterPrice" min="1000" max="50000" step="500" value="50000">
-                    <div class="price-labels"><span>1,000</span><span id="priceOut">50,000 DZD</span></div>
-                </div>
-                <button class="filter-apply" onclick="applyFilters()">
-                    <i class="fa-solid fa-search"></i>
-                    <span data-i18n="filter_apply_btn">Apply Filters</span>
-                </button>
-            </div>
-        </aside>
-
-        <!-- CONTENT -->
-        <div class="content-area" id="contentArea">
-            <div id="loadingState" style="text-align:center;padding:60px;color:var(--muted);">
-                <i class="fa-solid fa-spinner fa-spin"
-                    style="font-size:2rem;color:var(--primary);display:block;margin-bottom:12px;"></i>
-                <span data-i18n="loading_props">Loading properties…</span>
-            </div>
-        </div>
-    </div>
-
-    <!-- FOOTER -->
-    <footer class="site-footer">
-        <div class="footer-grid">
-            <div class="footer-section">
-                <h3 style="color:var(--primary);font-size:1.2rem;">DarLink</h3>
-                <p style="font-size:.85rem;color:var(--muted);line-height:1.6;margin-top:8px;"
-                    data-i18n="footer_tagline">
-                    Algeria's trusted vacation rental platform — where every stay tells a story.
-                </p>
-                <div class="social-links">
-                    <a href="https://www.instagram.com/darlink.dz" target="_blank"><i
-                            class="fa-brands fa-instagram"></i></a>
-                    <a href="#"><i class="fa-solid fa-envelope"></i></a>
-                    <a href="https://www.facebook.com/ferhi.tarek.2025" target="_blank"><i
-                            class="fa-brands fa-facebook-f"></i></a>
-                </div>
-            </div>
-            <div class="footer-section">
-                <h3 data-i18n="footer_contact">Contact</h3>
-                <ul class="footer-links">
-                    <li><i class="fa-solid fa-envelope" style="color:var(--primary)"></i> contact@darlink.dz</li>
-                    <li><i class="fa-solid fa-phone" style="color:var(--accent)"></i> +213 699 787 702</li>
-                    <li><i class="fa-solid fa-location-dot" style="color:var(--gold)"></i> Algeria 🇩🇿</li>
-                </ul>
-            </div>
-            <div class="footer-section">
-                <h3 data-i18n="footer_platform">Platform</h3>
-                <ul class="footer-links">
-                    <li><i class="fa-solid fa-arrow-right" style="color:var(--primary)"></i>
-                        <a href="Register.html" style="color:inherit;text-decoration:none"
-                            data-i18n="footer_list_prop">List your property</a>
-                    </li>
-                    <li><i class="fa-solid fa-arrow-right" style="color:var(--primary)"></i>
-                        <a href="#" style="color:inherit;text-decoration:none" data-i18n="footer_how">How it works</a>
-                    </li>
-                    <li><i class="fa-solid fa-arrow-right" style="color:var(--primary)"></i>
-                        <a href="#" style="color:inherit;text-decoration:none" data-i18n="footer_support">Support</a>
-                    </li>
-                </ul>
-            </div>
-        </div>
-        <div
-            style="text-align:center;margin-top:24px;padding-top:20px;border-top:1px solid var(--glass-border);color:var(--muted);font-size:.8rem;">
-            <span data-i18n="footer_copy">© 2026 DarLink · Made with ❤️ in Algeria</span>
-        </div>
-    </footer>
-
-    <!-- PROFILE MODAL -->
-    <div class="modal-overlay" id="modalOverlay" onclick="closeProfileModal()"></div>
-    <div class="profile-modal" id="profileModal">
-        <div class="modal-header">
-            <h2 data-i18n="profile_title">Profile</h2>
-            <i class="fa-solid fa-times modal-close" onclick="closeProfileModal()"></i>
-        </div>
-        <div class="profile-pic-editor">
-            <div id="bigAvatar" class="big-avatar">?</div>
-            <label for="profilePicInput" class="upload-btn-label">
-                <i class="fa-solid fa-camera"></i> <span data-i18n="profile_change_photo">Change Photo</span>
-            </label>
-            <input type="file" id="profilePicInput" style="display:none" accept="image/*">
-        </div>
-        <h3 id="modalUserName" style="text-align:center;margin-bottom:4px;font-family:var(--font-display)"></h3>
-        <div class="modal-footer">
-            <a href="#" id="modalDashboardBtn" data-i18n="profile_dashboard">Dashboard</a>
-            <button onclick="logout()" data-i18n="profile_logout">Logout</button>
-        </div>
-    </div>
-
-    <!-- MSG TOGGLE -->
-    <button class="msg-toggle-btn" id="msgToggleBtn" onclick="toggleMsgSidebar()">
-        <i class="fa-solid fa-message"></i>
-        <span class="msg-badge" id="msgBtnBadge" style="display:none">0</span>
-    </button>
-
-    <!-- MSG SIDEBAR -->
-    <div class="msg-sidebar" id="msgSidebar">
-        <div id="msgListView" class="msg-view">
-            <div class="msg-sidebar-header">
-                <h2 style="font-family:var(--font-display);font-size:1rem;font-weight:800;flex:1"
-                    data-i18n="msg_sidebar_title">Messages</h2>
-                <button onclick="toggleMsgSidebar()"
-                    style="background:none;border:none;font-size:1.1rem;cursor:pointer;color:var(--muted)">
-                    <i class="fa-solid fa-times"></i>
-                </button>
-            </div>
-            <div class="msg-list" id="msgList">
-                <div style="text-align:center;padding:40px;color:var(--muted)" data-i18n="msg_loading">Loading…</div>
-            </div>
-        </div>
-        <div id="msgChatView" style="display:none">
-            <div class="msg-sidebar-header">
-                <i class="fa-solid fa-arrow-left back-to-list" onclick="backToMsgList()"></i>
-                <div class="chat-header-user">
-                    <div id="activeChatAvatar" class="chat-user-avatar">?</div>
-                    <div class="chat-user-info">
-                        <span id="activeChatName" class="chat-user-name">User</span>
-                        <span id="activeChatRating" class="chat-user-rating"></span>
-                    </div>
-                </div>
-                <button onclick="toggleMsgSidebar()"
-                    style="background:none;border:none;font-size:1.1rem;cursor:pointer;color:var(--muted)">
-                    <i class="fa-solid fa-times"></i>
-                </button>
-            </div>
-            <div id="chatMessages" class="chat-messages"></div>
-            <div class="chat-input-area">
-                <input type="text" id="chatInput" class="chat-input" data-i18n-placeholder="chat_placeholder"
-                    placeholder="Type…">
-                <button class="chat-send-btn"><i class="fa-solid fa-paper-plane"></i></button>
-            </div>
-        </div>
-    </div>
-
-    <!-- i18n engine -->
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&family=Tajawal:wght@400;500;700;800&family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <script src="js/wilayas.js"></script>
+    <script src="js/i18n-dashboard.js"></script>
     <script src="lang.js"></script>
+    <script src="js/theme.js"></script>
+    <link rel="stylesheet" href="index-premium.css">
+    <style>
+        /* Minimal inline for footer and remaining elements */
+        .site-footer{padding:40px 4%;background:var(--card-bg);border-top:1px solid var(--glass-border);;margin-top:0;} .footer-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:30px;} .footer-section h3{font-family:var(--font-display);font-size:1.1rem;margin-bottom:15px;color:var(--text);} .footer-links{list-style:none;} .footer-links li{margin-bottom:10px;color:var(--muted);display:flex;align-items:center;gap:8px;} .footer-links a{color:var(--muted);text-decoration:none;transition:.3s;} .footer-links a:hover{color:var(--primary);} .social-links{display:flex;gap:12px;} .social-links a{width:36px;height:36px;border-radius:50%;background:rgba(0,0,0,.05);display:flex;align-items:center;justify-content:center;color:var(--text);transition:.3s;} .social-links a:hover{background:var(--primary);color:#fff;transform:translateY(-2px);} [data-theme="dark"] .social-links a{background:rgba(255,255,255,.05);}
+        /* Modal Overlay */ .modal-overlay{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.5);z-index:1000;display:none;backdrop-filter:blur(5px);} .profile-modal{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%) scale(.9);background:var(--bg);padding:30px;border-radius:24px;z-index:1001;display:none;opacity:0;transition:all .3s;} .profile-modal.show{display:block;opacity:1;transform:translate(-50%,-50%) scale(1);} .modal-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;} .modal-header h2{font-family:var(--font-display);font-size:1.3rem;} .modal-close{cursor:pointer;font-size:1.2rem;color:var(--muted);} .profile-pic-editor{position:relative;width:120px;height:120px;margin:0 auto 20px;} .big-avatar{width:100%;height:100%;border-radius:50%;background:var(--primary-light);color:var(--primary);display:flex;align-items:center;justify-content:center;font-size:3rem;font-weight:700;} .upload-btn-label{position:absolute;bottom:-10px;left:50%;transform:translateX(-50%);background:var(--primary);color:#fff;padding:6px 12px;border-radius:20px;font-size:.75rem;font-weight:600;cursor:pointer;white-space:nowrap;} .modal-footer{display:flex;gap:10px;margin-top:20px;} .modal-footer a, .modal-footer button{flex:1;padding:10px;border-radius:12px;border:none;font-weight:600;cursor:pointer;text-align:center;} .modal-footer a{background:var(--primary-light);color:var(--primary);} .modal-footer button{background:var(--text);color:var(--bg);}
+        /* Sidebar */ .msg-toggle-btn{position:fixed;bottom:30px;right:30px;width:60px;height:60px;border-radius:50%;background:var(--primary);color:#fff;font-size:1.4rem;display:flex;align-items:center;justify-content:center;border:none;cursor:pointer;box-shadow:0 10px 30px rgba(94,93,240,.4);z-index:900;transition:.3s;} .msg-toggle-btn:hover{transform:scale(1.1);} .msg-badge{position:absolute;top:-5px;right:-5px;background:var(--accent);color:#fff;font-size:.7rem;font-weight:800;width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;border:2px solid #fff;} .msg-sidebar{position:fixed;top:0;right:-400px;width:400px;height:100vh;background:var(--glass);backdrop-filter:blur(30px);border-left:1px solid var(--glass-border);z-index:1000;transition:.4s cubic-bezier(.2,.8,.2,1);display:flex;flex-direction:column;box-shadow:-10px 0 30px rgba(0,0,0,.05);} .msg-sidebar.open{right:0;} .msg-view{flex:1;display:flex;flex-direction:column;} .msg-sidebar-header{padding:20px;border-bottom:1px solid var(--glass-border);display:flex;align-items:center;} .msg-list{flex:1;overflow-y:auto;padding:10px;} .conv-item{padding:12px;border-radius:12px;display:flex;align-items:center;gap:12px;cursor:pointer;transition:.2s;} .conv-item:hover{background:var(--primary-light);} .conv-avatar{width:45px;height:45px;border-radius:50%;background:var(--primary-light);color:var(--primary);display:flex;align-items:center;justify-content:center;font-weight:700;} .conv-avatar-img{width:100%;height:100%;border-radius:50%;object-fit:cover;} .conv-info{flex:1;} .conv-name{display:block;font-weight:700;font-size:.95rem;} .conv-property{display:block;font-size:.8rem;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;} .conv-unread{background:var(--accent);color:#fff;font-size:.7rem;font-weight:800;padding:2px 6px;border-radius:10px;} .chat-header-user{display:flex;align-items:center;gap:10px;flex:1;} .chat-user-avatar{width:40px;height:40px;border-radius:50%;background:var(--primary-light);color:var(--primary);display:flex;align-items:center;justify-content:center;font-weight:700;} .chat-user-name{display:block;font-weight:700;font-size:.95rem;} .chat-user-rating{font-size:.75rem;color:var(--gold);} .back-to-list{cursor:pointer;padding:10px;margin-right:10px;border-radius:50%;background:var(--primary-light);color:var(--primary);} .chat-messages{flex:1;overflow-y:auto;padding:20px;display:flex;flex-direction:column;gap:10px;} .msg-bubble{max-width:75%;padding:10px 14px;border-radius:16px;font-size:.9rem;line-height:1.4;position:relative;} .msg-sent{align-self:flex-end;background:var(--primary);color:#fff;border-bottom-right-radius:4px;} .msg-received{align-self:flex-start;background:#fff;color:var(--text);border-bottom-left-radius:4px;box-shadow:0 2px 10px rgba(0,0,0,.05);} .msg-time{display:block;font-size:.65rem;opacity:.7;margin-top:4px;text-align:right;} .chat-input-area{padding:15px;border-top:1px solid var(--glass-border);display:flex;gap:10px;} .chat-input{flex:1;padding:12px 16px;border-radius:20px;border:1px solid var(--glass-border);background:var(--card-bg);color:var(--text);font-family:var(--font-body);outline:none;transition:.2s;} .chat-input:focus{border-color:var(--primary);} .chat-send-btn{width:45px;height:45px;border-radius:50%;background:var(--primary);color:#fff;border:none;cursor:pointer;transition:.2s;} .chat-send-btn:hover{transform:scale(1.05);}
+    </style>
 
-    <script>
-        /* ═══════ CONFIG ═══════ */
-        const SERVER_URL = 'https://darlink-production.up.railway.app';
-        const API_URL = SERVER_URL + '/api';
+<!-- Removed anti-RTL block -->
+</head>
+<body>
 
-        let currentUser = null;
-        try { currentUser = JSON.parse(localStorage.getItem('user') || 'null'); } catch (e) { }
+<!-- NAVBAR -->
+<nav class="navbar">
+    <a class="darlink-logo blue small" href="index.html" style="display:flex; flex-direction:row; align-items:center; gap:8px; text-decoration:none;">
+        <svg width="36" height="32" viewBox="0 0 110 100" fill="none">
+            <path d="M55 8 L98 42 L98 92 L12 92 L12 42 Z" fill="none" stroke="#00d4ff" stroke-width="6" stroke-linejoin="round"/>
+            <rect x="72" y="10" width="10" height="18" fill="none" stroke="#00d4ff" stroke-width="5.5"/>
+            <path d="M55 22 L88 50 L88 88 L22 88 L22 50 Z" fill="none" stroke="#5aa8c0" stroke-width="5" stroke-linejoin="round"/>
+            <path d="M32 88 L32 52 Q32 30 52 30 Q72 30 72 52 Q72 68 58 72 Q44 76 32 72" fill="none" stroke="#5aa8c0" stroke-width="5.5" stroke-linecap="round"/>
+            <line x1="32" y1="88" x2="75" y2="88" stroke="#5aa8c0" stroke-width="5.5" stroke-linecap="round"/>
+        </svg>
+        <span style="color:#00d4ff; font-size:22px; font-weight:700;">DarLink</span>
+    </a>
+    <button class="nav-hamburger" id="navHamburger" onclick="toggleMobileNav()" aria-label="Menu">
+        <span></span><span></span><span></span>
+    </button>
+    <div class="links" id="navLinks">
+        <button class="mobile-close-btn" onclick="closeMobileNav()"><i class="fa-solid fa-times"></i></button>
+        <button class="theme-btn" onclick="toggleTheme()" aria-label="Theme">
+            <i class="fa-solid fa-moon" id="themeIcon"></i>
+        </button>
+        <a href="index.html" data-i18n="nav_home" onclick="closeMobileNav()"><i class="fa-solid fa-house"></i> Home</a>
+        <a href="login.html" id="loginLink" data-i18n="nav_login" onclick="closeMobileNav()"><i class="fa-solid fa-right-to-bracket"></i> Login</a>
+        <a href="Register.html" id="registerLink" class="primary" data-i18n="nav_register" onclick="closeMobileNav()"><i class="fa-solid fa-bolt"></i> Get Started</a>
+        <div class="lang-switch">
+            <button class="lang-btn" data-lang="en">EN</button>
+            <button class="lang-btn" data-lang="ar">عربي</button>
+        </div>
+        <span id="userGreeting"></span>
+    </div>
+</nav>
 
-        /* ═══════ THEME ═══════ */
-        const _savedTheme = localStorage.getItem('site_theme') || 'light';
-        document.documentElement.setAttribute('data-theme', _savedTheme);
+<!-- HERO -->
+<section class="hero">
+    <div class="hero-inner">
+        <h1 data-i18n="hero_title">Discover Your Perfect Gateway</h1>
+        <p data-i18n="hero_subtitle">Algeria's most exquisite vacation rental platform. Stunning stays, instant booking, absolute trust.</p>
+        
+        <div class="hero-search-bar">
+            <div class="hero-search-group">
+                <label data-i18n="filter_wilaya">Destination</label>
+                <select id="filterCity"><option value="" data-i18n="filter_all_wilayas">Anywhere</option></select>
+            </div>
+            <div class="hero-search-group">
+                <label data-i18n="filter_type">Property Type</label>
+                <select id="filterType">
+                    <option value="" data-i18n="filter_all_types">All Spaces</option>
+                    <option value="Apartment">Apartment</option>
+                    <option value="House">House</option>
+                    <option value="Room">Room</option>
+                    <option value="Cottage">Cottage</option>
+                </select>
+            </div>
+            <div class="hero-search-group">
+                <label data-i18n="filter_rooms">Bedrooms</label>
+                <select id="filterRooms">
+                    <option value="">Any Size</option>
+                    <option value="1">1 Room</option>
+                    <option value="2">2 Rooms</option>
+                    <option value="3">3+ Rooms</option>
+                </select>
+            </div>
+            <div class="hero-search-group" style="display:none;">
+                <input type="range" id="filterPrice" min="1000" max="50000" step="500" value="50000">
+                <span id="priceOut">50000</span>
+            </div>
+            <button class="hero-search-btn" onclick="applyFilters()"><i class="fa-solid fa-magnifying-glass"></i></button>
+        </div>
+    </div>
+</section>
 
-        window.addEventListener('DOMContentLoaded', () => {
-            const icon = document.getElementById('themeIcon');
-            if (icon) icon.className = _savedTheme === 'dark' ? 'fa-solid fa-sun' : 'fa-regular fa-moon';
-            initAll();
+<!-- DASHBOARD QUICK BAR -->
+<div class="quick-bar" id="dashQuickBar">
+    <span class="quick-bar-title" data-i18n="dash_title">✨ Your Dashboard</span>
+    <div class="quick-bar-actions" id="dashButtons"></div>
+</div>
+
+<!-- MAIN BODY -->
+<div class="page-body" id="sections">
+    <div class="content-area" id="contentArea" style="flex:1;">
+        <div id="loadingState" style="text-align:center;padding:60px;color:var(--muted);">
+            <i class="fa-solid fa-spinner fa-spin" style="font-size:2rem;color:var(--primary);display:block;margin-bottom:12px;"></i>
+            Loading properties...
+        </div>
+    </div>
+</div>
+
+<!-- FOOTER -->
+<footer class="site-footer">
+    <div class="footer-grid">
+        <div class="footer-section">
+            <h3>DarLink</h3>
+            <p style="font-size:.85rem;color:var(--muted);line-height:1.6">Algeria's trusted vacation rental platform.</p>
+        </div>
+        <div class="footer-section">
+            <h3 data-i18n="footer_contact">Contact</h3>
+            <ul class="footer-links">
+                <li><i class="fa-solid fa-envelope"></i> <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="6e0a0f1c020700055f0a142e09030f0702400d0103">[email&#160;protected]</a></li>
+                <li><i class="fa-solid fa-phone"></i> +213 699 787 702</li>
+            </ul>
+        </div>
+        <div class="footer-section">
+            <h3 data-i18n="footer_follow">Follow Us</h3>
+            <div class="social-links">
+                <a href="https://www.instagram.com/darlink.dz" target="_blank"><i class="fa-brands fa-instagram"></i></a>
+                <a href="/cdn-cgi/l/email-protection#107471627c797e7b21746a50777d71797c3e737f7d"><i class="fa-solid fa-envelope"></i></a>
+                <a href="https://www.facebook.com/ferhi.tarek.2025" target="_blank"><i class="fa-brands fa-facebook-f"></i></a>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- PROFILE MODAL -->
+<div class="modal-overlay" id="modalOverlay" onclick="closeProfileModal()"></div>
+<div class="profile-modal" id="profileModal">
+    <div class="modal-header">
+        <h2>Profile</h2>
+        <i class="fa-solid fa-times modal-close" onclick="closeProfileModal()"></i>
+    </div>
+    <div class="profile-pic-editor">
+        <div id="bigAvatar" class="big-avatar">?</div>
+        <label for="profilePicInput" class="upload-btn-label"><i class="fa-solid fa-camera"></i> Change Photo</label>
+        <input type="file" id="profilePicInput" style="display:none" accept="image/*" onchange="uploadProfilePic(this)">
+    </div>
+    <h3 id="modalUserName" style="text-align:center;margin-bottom:4px;font-family:var(--font-display)"></h3>
+    <p id="modalUserRating" style="text-align:center;color:#ffc107;font-size:.9rem"></p>
+    <div class="modal-footer">
+        <a href="#" id="modalDashboardBtn" style="text-decoration:none">Dashboard</a>
+        <button onclick="logout()">Logout</button>
+    </div>
+</div>
+
+<!-- MSG TOGGLE -->
+<button class="msg-toggle-btn" id="msgToggleBtn" onclick="toggleMsgSidebar()">
+    <i class="fa-solid fa-message"></i>
+    <span class="msg-badge" id="msgBtnBadge" style="display:none">0</span>
+</button>
+
+<!-- MSG SIDEBAR -->
+<div class="msg-sidebar" id="msgSidebar">
+    <div id="msgListView" class="msg-view">
+        <div class="msg-sidebar-header">
+            <h2 style="font-family:var(--font-display);font-size:1rem;font-weight:800;flex:1">Messages</h2>
+            <button onclick="toggleMsgSidebar()" style="background:none;border:none;font-size:1.1rem;cursor:pointer;color:var(--muted)"><i class="fa-solid fa-times"></i></button>
+        </div>
+        <div class="msg-list" id="msgList"><div style="text-align:center;padding:40px;color:var(--muted)">Loading…</div></div>
+    </div>
+    <div id="msgChatView" style="display:none">
+        <div class="msg-sidebar-header">
+            <i class="fa-solid fa-arrow-left back-to-list" onclick="backToMsgList()"></i>
+            <div class="chat-header-user">
+                <div id="activeChatAvatar" class="chat-user-avatar">?</div>
+                <div class="chat-user-info">
+                    <span id="activeChatName" class="chat-user-name">User</span>
+                    <span id="activeChatRating" class="chat-user-rating"></span>
+                </div>
+            </div>
+            <button onclick="toggleMsgSidebar()" style="background:none;border:none;font-size:1.1rem;cursor:pointer;color:var(--muted)"><i class="fa-solid fa-times"></i></button>
+        </div>
+        <div id="chatMessages" class="chat-messages"></div>
+        <div class="chat-input-area">
+            <input type="text" id="chatInput" class="chat-input" placeholder="Type…" onkeypress="if(event.key==='Enter')sendSidebarMessage()">
+            <button class="chat-send-btn" onclick="sendSidebarMessage()"><i class="fa-solid fa-paper-plane"></i></button>
+        </div>
+    </div>
+</div>
+
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+/* ═══════════════════════ CONFIG ═══════════════════════ */
+const SERVER_URL = 'https://darlink-production.up.railway.app';
+const API_URL = SERVER_URL + '/api';
+
+window.I18N_MESSAGES = {
+    nav_logo_text:{en:"DarLink",ar:"دارلينك"},
+    nav_home:{en:"Home",ar:"الرئيسية"},nav_login:{en:"Login",ar:"تسجيل الدخول"},
+    nav_register:{en:"Register",ar:"إنشاء حساب"},
+    hero_title:{en:"Transparency & Speed",ar:"الشفافية والسرعة"},
+    hero_subtitle:{en:"DarLink vacation rental platform. Real reviews, instant booking.",ar:" دار لينك المنصة لإيجار العطلات في الجزائر."},
+    hero_btn:{en:"Explore Properties",ar:"استكشف العقارات"},
+    dash_title:{en:"🚀 Quick Dashboard",ar:"🚀 لوحة تحكم سريعة"},
+    filter_wilaya:{en:"Wilaya",ar:"الولاية"},filter_all_wilayas:{en:"All Wilayas",ar:"كل الولايات"},
+    filter_type:{en:"Type",ar:"النوع"},filter_all_types:{en:"All Types",ar:"كل الأنواع"},
+    filter_rooms:{en:"Rooms",ar:"الغرف"},filter_price:{en:"Max Price / Night",ar:"السعر الأقصى"},
+    footer_contact:{en:"Contact",ar:"اتصل بنا"},footer_follow:{en:"Follow Us",ar:"تابعنا"},
+};
+
+let currentUser = null;
+try { currentUser = JSON.parse(localStorage.getItem('user') || 'null'); } catch(e){}
+
+/* ═══════════════════════ NAV ═══════════════════════ */
+function toggleMobileNav(){ document.getElementById('navLinks').classList.toggle('mobile-open'); }
+function closeMobileNav(){ document.getElementById('navLinks').classList.remove('mobile-open'); }
+
+function toggleTheme(){
+    const t = document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+    document.documentElement.setAttribute('data-theme', t);
+    localStorage.setItem('site_theme', t);
+    document.getElementById('themeIcon').className = t==='dark' ? 'fa-solid fa-sun' : 'fa-regular fa-moon';
+}
+const _savedTheme = localStorage.getItem('site_theme') || 'light';
+document.documentElement.setAttribute('data-theme', _savedTheme);
+document.getElementById('themeIcon').className = _savedTheme==='dark' ? 'fa-solid fa-sun' : 'fa-regular fa-moon';
+
+/* ═══════════════════════ FILTER TOGGLE (mobile) ═══════════════════════ */
+function toggleFilter(){
+    const p = document.getElementById('filterPanel');
+    const c = document.getElementById('filterChev');
+    const open = p.classList.toggle('open');
+    c.style.transform = open ? 'rotate(180deg)' : 'rotate(0deg)';
+}
+
+document.getElementById('filterPrice').addEventListener('input', function(){
+    document.getElementById('priceOut').textContent = Number(this.value).toLocaleString() + ' DZD';
+});
+
+/* ═══════════════════════ USER GREETING ═══════════════════════ */
+function updateGreeting(){
+    if(!currentUser) return;
+    const firstName = currentUser.FirstName || 'User';
+    const avatar = currentUser.ProfilePicturePath
+        ? `<img src="${currentUser.ProfilePicturePath}" class="nav-avatar-img">`
+        : `<div class="nav-avatar-placeholder">${firstName.charAt(0).toUpperCase()}</div>`;
+    const el = document.getElementById('userGreeting');
+    if(el) el.innerHTML = `<div class="nav-profile" onclick="toggleProfileModal()">${avatar}<span class="nav-user-name">${firstName}</span></div>`;
+    document.getElementById('loginLink')?.setAttribute('style','display:none');
+    document.getElementById('registerLink')?.setAttribute('style','display:none');
+    // Quick bar
+    const bar = document.getElementById('dashQuickBar');
+    const btns = document.getElementById('dashButtons');
+    bar.classList.add('visible');
+    if(currentUser.UserType === 'Owner'){
+        btns.innerHTML = `
+            <a href="add-new-home.html" class="qb-primary"><i class="fa-solid fa-plus"></i> Add Property</a>
+            <a href="my-property.html" class="qb-secondary"><i class="fa-solid fa-list"></i> My Properties</a>
+            <a href="profile.html" class="qb-neutral"><i class="fa-solid fa-user"></i> Profile</a>`;
+    } else {
+        btns.innerHTML = `
+            <a href="my-bookings.html" class="qb-secondary"><i class="fa-solid fa-calendar"></i> My Bookings</a>
+            <a href="profile.html" class="qb-neutral"><i class="fa-solid fa-user"></i> Profile</a>`;
+    }
+}
+
+function toggleProfileModal(){
+    if(!currentUser) return;
+    const firstName = currentUser.FirstName || 'User';
+    const lastName = currentUser.LastName || '';
+    document.getElementById('modalUserName').textContent = `${firstName} ${lastName}`.trim();
+    const av = document.getElementById('bigAvatar');
+    if(currentUser.ProfilePicturePath){
+        av.innerHTML = `<img src="${currentUser.ProfilePicturePath}" style="width:100%;height:100%;border-radius:50%;object-fit:cover">`;
+    } else { av.textContent = (firstName.charAt(0)+(lastName.charAt(0)||'')).toUpperCase(); }
+    document.getElementById('modalDashboardBtn').href = currentUser.UserType==='Owner' ? 'AddHome.html' : 'Rent.html';
+    fetch(`${API_URL}/users/${currentUser.UserId}`).then(r=>r.json()).then(d=>{
+        document.getElementById('modalUserRating').innerHTML = getStarIcons(d.AverageRating||0);
+    }).catch(()=>{});
+    document.getElementById('modalOverlay').style.display = 'block';
+    document.getElementById('profileModal').classList.add('show');
+}
+function closeProfileModal(){
+    document.getElementById('modalOverlay').style.display='none';
+    document.getElementById('profileModal').classList.remove('show');
+}
+function logout(){ localStorage.removeItem('user'); location.reload(); }
+
+async function uploadProfilePic(input){
+    if(!input.files||!input.files[0]) return;
+    const fd = new FormData();
+    fd.append('profilePic', input.files[0]);
+    fd.append('userId', currentUser.UserId);
+    try {
+        const r = await fetch(`${API_URL}/users/profile-picture`, {method:'POST',body:fd});
+        const d = await r.json();
+        if(d.success){ currentUser.ProfilePicturePath=d.avatarPath; localStorage.setItem('user',JSON.stringify(currentUser)); updateGreeting(); }
+    }catch(e){}
+}
+
+/* ═══════════════════════ CAROUSEL ═══════════════════════ */
+const carousels = {};
+
+function buildCarousel(containerId, cards){
+    const wrap = document.getElementById(containerId);
+    if(!wrap) return;
+    const trackOuter = wrap.querySelector('.carousel-track-outer');
+    const track = wrap.querySelector('.carousel-track');
+    const prevBtn = wrap.querySelector('.carousel-btn.prev');
+    const nextBtn = wrap.querySelector('.carousel-btn.next');
+    const cardWidth = 194; // 180 + 14 gap (mobile) or use computed
+    let pos = 0;
+    let max = 0;
+
+    function getCardWidth(){
+        const firstCard = track.querySelector('.prop-card');
+        if(!firstCard) return 194;
+        const style = window.getComputedStyle(firstCard);
+        const gapPx = parseFloat(window.getComputedStyle(track).gap) || 14;
+        return firstCard.offsetWidth + gapPx;
+    }
+    function update(){
+        const cw = getCardWidth();
+        const visible = Math.floor(track.parentElement.offsetWidth / cw);
+        const total = track.querySelectorAll('.prop-card').length;
+        max = Math.max(0, total - visible + 1); // +1 allows scrolling to end smoothly
+        pos = Math.min(pos, max);
+        const rtl = document.documentElement.dir === 'rtl';
+        const sign = rtl ? 1 : -1;
+        track.style.transform = `translateX(${sign * pos * cw}px)`;
+        prevBtn.disabled = pos === 0;
+        nextBtn.disabled = pos >= max;
+    }
+
+    prevBtn.onclick = (e) => { e.stopPropagation(); pos = Math.max(0, pos-1); update(); };
+    nextBtn.onclick = (e) => { e.stopPropagation(); pos = Math.min(max, pos+1); update(); };
+
+    // Touch swipe — horizontal only, don't block vertical page scroll
+    let txStart = 0, tyStart = 0, txDelta = 0, swiping = false;
+
+    trackOuter.addEventListener('touchstart', (e) => {
+        txStart = e.touches[0].clientX;
+        tyStart = e.touches[0].clientY;
+        txDelta = 0; swiping = false;
+    }, {passive:true});
+
+    trackOuter.addEventListener('touchmove', (e) => {
+        if(!e.touches[0]) return;
+        const dx = e.touches[0].clientX - txStart;
+        const dy = Math.abs(e.touches[0].clientY - tyStart);
+        txDelta = dx;
+        if(!swiping) {
+            // Only hijack if clearly horizontal (dx > dy) and moved enough
+            if(Math.abs(dx) > 10 && Math.abs(dx) > dy * 1.5) {
+                swiping = true;
+            } else if(dy > 10) {
+                return; // clearly vertical — let page scroll freely
+            }
+        }
+        if(swiping) e.preventDefault();
+    }, {passive:false});
+
+    trackOuter.addEventListener('touchend', () => {
+        if(!swiping) return;
+        swiping = false;
+        const rtl = document.documentElement.dir === 'rtl';
+        // In LTR: dragging left (negative txDelta) means Next. Right means Prev.
+        // In RTL: dragging right (positive txDelta) means Next. Left means Prev.
+        if (rtl) {
+            if(txDelta > 40) pos = Math.min(max, pos + 1);
+            else if(txDelta < -40) pos = Math.max(0, pos - 1);
+        } else {
+            if(txDelta < -40) pos = Math.min(max, pos + 1);
+            else if(txDelta > 40) pos = Math.max(0, pos - 1);
+        }
+        update();
+    }, {passive:true});
+
+    window.addEventListener('resize', update);
+    setTimeout(update, 50);
+    carousels[containerId] = {update};
+}
+
+/* ═══════════════════════ CARD BUILDER ═══════════════════════ */
+function getStarIcons(r){
+    let s=''; const rating = parseFloat(r)||0;
+    for(let i=1;i<=5;i++){
+        if(i<=Math.floor(rating)) s+='<i class="fa-solid fa-star"></i>';
+        else if(i-0.5<=rating) s+='<i class="fa-solid fa-star-half-stroke"></i>';
+        else s+='<i class="fa-regular fa-star"></i>';
+    }
+    return s+` (${rating.toFixed(1)})`;
+}
+
+function calcDisplayPrice(p){
+    const priceInDB = parseFloat(p.PricePerNight);
+    if(!p.HasPromotion) return {display: priceInDB, original: null, label:null};
+    const base = priceInDB / 1.1;
+    let after = base, label = '';
+    if(p.DiscountType==='Percentage' && parseFloat(p.DiscountPercentage)>0){
+        const d = parseFloat(p.DiscountPercentage);
+        after = base*(1-d/100);
+        label = `${d}% OFF`;
+    } else if(p.DiscountType==='FixedAmount' && parseFloat(p.DiscountAmount)>0){
+        const d = parseFloat(p.DiscountAmount);
+        after = base - d;
+        label = `${d.toLocaleString()} DZD OFF`;
+    }
+    return {display: after*1.1, original: priceInDB, label};
+}
+
+function buildCard(p){
+    const isOwner = currentUser && currentUser.UserType==='Owner' && currentUser.UserId===p.OwnerId;
+    const isMine = isOwner;
+    const imgUrl = p.MainImage ? (p.MainImage.startsWith('http') ? p.MainImage : SERVER_URL+p.MainImage) : null;
+    const {display, original, label} = calcDisplayPrice(p);
+
+    let labelHtml = '';
+    const topLabels = [];
+    if(p.IsFeatured) topLabels.push(`<span class="card-label label-featured"><i class="fa-solid fa-crown"></i> Premium</span>`);
+    if(p.IsBoosted && !p.IsFeatured) topLabels.push(`<span class="card-label label-boosted"><i class="fa-solid fa-bolt"></i> Boosted</span>`);
+    if(p.HasPromotion && label) topLabels.push(`<span class="card-label label-promo"><i class="fa-solid fa-percent"></i> ${label}</span>`);
+    
+    labelHtml = `<div class="card-labels"><div style="display:flex;gap:6px;flex-wrap:wrap">` + topLabels.join('') + `</div>`;
+    if(isMine) labelHtml += `<span class="card-label" style="background:var(--text);color:var(--bg)"><i class="fa-solid fa-house-user"></i> Mine</span>`;
+    labelHtml += `</div>`;
+
+    const priceHtml = original
+        ? `${Math.round(display).toLocaleString()} <span class="old-price">${Math.round(original).toLocaleString()}</span>`
+        : Math.round(display).toLocaleString();
+
+    const actionBtn = isMine
+        ? `<button class="btn-manage-card" onclick="window.location.href='edit-property.html?id=${p.PropertyId}'"><i class="fa-solid fa-pen"></i> Edit Space</button>`
+        : `<button class="btn-chat-card" onclick="openChat(event,${p.PropertyId},${p.OwnerId},'${(p.OwnerName||'Owner').replace(/\'/g,"\\'")}')"><i class="fa-solid fa-comment-dots"></i></button>`;
+
+    return `
+    <div class="prop-card" onclick="viewProperty(${p.PropertyId},${p.OwnerId})">
+        <div class="prop-card-img">
+            ${labelHtml}
+            <div class="card-like-btn" onclick="event.stopPropagation();"><i class="fa-solid fa-heart"></i></div>
+            ${imgUrl
+                ? `<img src="${imgUrl}" alt="${p.Title}" loading="lazy">`
+                : `<div class="prop-card-img-placeholder"><i class="fa-solid fa-image"></i></div>`}
+        </div>
+        <div class="prop-card-body">
+            <div class="prop-card-title">${p.Title}</div>
+            <div class="prop-card-loc"><i class="fa-solid fa-location-dot" style="color:var(--primary)"></i> ${p.City}, ${p.Wilaya}</div>
+            <div class="prop-card-meta">
+                <span><i class="fa-solid fa-bed"></i> ${p.NumofRooms}</span>
+                <span><i class="fa-solid fa-building"></i> ${p.PropertyType}</span>
+                ${p.AverageRating>0 ? `<span style="color:var(--gold)"><i class="fa-solid fa-star"></i> ${Number(p.AverageRating).toFixed(1)}</span>` : ''}
+            </div>
+            <div class="prop-card-price-row">
+                <div class="prop-card-price">${priceHtml} <span class="unit">DZD / night</span></div>
+            </div>
+            <div class="prop-card-actions" onclick="event.stopPropagation()">
+                <button class="btn-view-card" onclick="viewProperty(${p.PropertyId},${p.OwnerId})"><i class="fa-solid fa-arrow-right"></i> Details</button>
+                ${actionBtn}
+            </div>
+        </div>
+    </div>`;
+}
+
+function buildSection(id, icon, title, badgeCount, badgeColor, cards){
+    return `
+    <div class="section-block">
+        <div class="section-header">
+            <div class="section-label">
+                <span style="font-size:1.6rem; transform:translateY(-2px); display:inline-block">${icon}</span> ${title}
+                <span class="badge" style="background:${badgeColor};color:#fff">${badgeCount}</span>
+            </div>
+        </div>
+        <div class="carousel-wrap">
+            <button class="carousel-btn prev" disabled><i class="fa-solid fa-arrow-left"></i></button>
+            <div class="carousel-track-outer">
+                <div class="carousel-track" id="${id}-track">
+                    ${cards.map(buildCard).join('')}
+                </div>
+            </div>
+            <button class="carousel-btn next" ${cards.length<=1?'disabled':''}><i class="fa-solid fa-arrow-right"></i></button>
+        </div>
+    </div>`;
+}
+
+
+/* ═══════════════════════ LOAD PROPERTIES ═══════════════════════ */
+async function loadProperties(){
+    const content = document.getElementById('contentArea');
+    try {
+        const r = await fetch(`${API_URL}/properties`);
+        if(!r.ok) throw new Error('HTTP '+r.status);
+        let all = await r.json();
+        if(!Array.isArray(all)) throw new Error('Bad data');
+
+        // Filters
+        const city = document.getElementById('filterCity').value;
+        const type = document.getElementById('filterType').value;
+        const rooms = document.getElementById('filterRooms').value;
+        const price = parseInt(document.getElementById('filterPrice').value);
+
+        if(city) all = all.filter(p=>p.Wilaya===city||p.City===city);
+        if(type) all = all.filter(p=>p.PropertyType===type);
+        if(rooms){ if(rooms==='3') all=all.filter(p=>p.NumofRooms>=3); else all=all.filter(p=>p.NumofRooms==rooms); }
+        if(price) all = all.filter(p=>p.PricePerNight<=price);
+
+        if(!all.length){
+            content.innerHTML = `<div class="empty-state"><i class="fa-solid fa-house-crack"></i><h3>No Properties Found</h3><p>Try adjusting your filters</p></div>`;
+            return;
+        }
+
+        const promo     = all.filter(p=>p.HasPromotion && (parseFloat(p.DiscountPercentage)>0 || parseFloat(p.DiscountAmount)>0));
+        const featured  = all.filter(p=>p.IsFeatured && !p.HasPromotion);
+        const boosted   = all.filter(p=>p.IsBoosted && !p.IsFeatured && !p.HasPromotion);
+        const sorted    = [...all].sort((a,b)=>(b.ViewCount||0)-(a.ViewCount||0));
+        const popular   = sorted.slice(0,8).filter(p=>!p.IsFeatured&&!p.IsBoosted&&!p.HasPromotion);
+        const regular   = all.filter(p=>!p.IsFeatured&&!p.IsBoosted&&!p.HasPromotion&&!popular.includes(p));
+
+        let html = '';
+        if(promo.length)    html += buildSection('promo',   '🔥','Special Promotions', promo.length,   '#34C759', promo);
+        if(featured.length) html += buildSection('featured','⭐','Premium Listings',   featured.length, '#F5A623', featured);
+        if(boosted.length)  html += buildSection('boosted', '🚀','Boosted Properties', boosted.length,  '#FF3B30', boosted);
+        if(popular.length)  html += buildSection('popular', '📈','Most Popular',        popular.length,  '#0A84FF', popular);
+        if(regular.length)  html += buildSection('regular', '🏠','All Properties',      regular.length,  '#6B7280', regular);
+
+        content.innerHTML = html;
+
+        // Init carousels
+        ['promo','featured','boosted','popular','regular'].forEach(id=>{
+            const wrap = content.querySelector(`#${id}-track`)?.closest('.carousel-wrap');
+            if(wrap){
+                wrap.id = id+'-wrap';
+                buildCarousel(id+'-wrap', []);
+            }
         });
 
-        function toggleTheme() {
-            const t = document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
-            document.documentElement.setAttribute('data-theme', t);
-            localStorage.setItem('site_theme', t);
-            const icon = document.getElementById('themeIcon');
-            if (icon) icon.className = t === 'dark' ? 'fa-solid fa-sun' : 'fa-regular fa-moon';
-        }
+    } catch(err){
+        content.innerHTML = `<div class="empty-state"><i class="fa-solid fa-triangle-exclamation"></i><h3>Connection Error</h3><p>${err.message}</p><button class="filter-apply" onclick="loadProperties()" style="width:auto;padding:10px 24px;margin-top:12px">Retry</button></div>`;
+    }
+}
 
-        /* ═══════ NAV ═══════ */
-        function toggleMobileNav() { document.getElementById('navLinks').classList.toggle('mobile-open'); }
-        function closeMobileNav() { document.getElementById('navLinks').classList.remove('mobile-open'); }
+function applyFilters(){ loadProperties(); }
+function viewProperty(id, ownerId){
+    if(!currentUser){ window.location.href=`property-detail.html?id=${id}`; return; }
+    if(currentUser.UserId===ownerId){ window.location.href=`edit-property.html?id=${id}`; return; }
+    window.location.href=`property-detail.html?id=${id}`;
+}
 
-        document.addEventListener('click', e => {
-            const links = document.getElementById('navLinks');
-            const hamburger = document.getElementById('navHamburger');
-            if (links && links.classList.contains('mobile-open') && !links.contains(e.target) && !hamburger.contains(e.target))
-                closeMobileNav();
-        });
+/* ═══════════════════════ MESSAGING ═══════════════════════ */
+let activeChat = null, chatPoll = null;
+function toggleMsgSidebar(){ const s=document.getElementById('msgSidebar'); s.classList.toggle('open'); if(s.classList.contains('open')&&!activeChat) loadConversations(); else stopPoll(); }
+function stopPoll(){ if(chatPoll){clearInterval(chatPoll);chatPoll=null;} }
+function backToMsgList(){ activeChat=null; stopPoll(); document.getElementById('msgChatView').style.display='none'; document.getElementById('msgListView').style.display='flex'; loadConversations(); }
 
-        window.addEventListener('scroll', () => {
-            const nav = document.getElementById('mainNav');
-            if (nav) nav.classList.toggle('scrolled', window.scrollY > 20);
-        });
+async function loadConversations(){
+    if(!currentUser) return;
+    try{
+        const r=await fetch(`${API_URL}/conversations/${currentUser.UserId}`);
+        const convs=await r.json();
+        const list=document.getElementById('msgList');
+        if(!convs.length){ list.innerHTML=`<div style="text-align:center;padding:40px;color:var(--muted)">No messages yet</div>`; return; }
+        list.innerHTML=convs.map(c=>`
+            <div class="conv-item" onclick="openSidebarChat(${c.PropertyId},${currentUser.UserType==='Renter'?c.OwnerId:c.RenterId},'${c.OtherUserName}','${c.OtherUserAvatar||''}',${c.OtherUserRating||0})">
+                <div class="conv-avatar">${c.OtherUserAvatar?`<img src="${c.OtherUserAvatar}" class="conv-avatar-img">`:c.OtherUserName.charAt(0)}</div>
+                <div class="conv-info"><span class="conv-name">${c.OtherUserName}</span><span class="conv-property">${c.PropertyTitle||'Inquiry'}</span></div>
+                ${c.UnreadCount>0?`<span class="conv-unread">${c.UnreadCount}</span>`:''}
+            </div>`).join('');
+        const total=convs.reduce((s,c)=>s+c.UnreadCount,0);
+        const badge=document.getElementById('msgBtnBadge');
+        badge.textContent=total; badge.style.display=total?'block':'none';
+    }catch(e){}
+}
 
-        /* ═══════ FILTER TOGGLE ═══════ */
-        function toggleFilter() {
-            const p = document.getElementById('filterPanel');
-            const c = document.getElementById('filterChev');
-            const open = p.classList.toggle('open');
-            c.style.transform = open ? 'rotate(180deg)' : 'rotate(0deg)';
-        }
+async function openSidebarChat(propId, otherId, name, avatar, rating){
+    activeChat={propId,otherId,name,avatar,rating};
+    document.getElementById('msgListView').style.display='none';
+    document.getElementById('msgChatView').style.display='flex';
+    document.getElementById('activeChatName').textContent=name;
+    const av=document.getElementById('activeChatAvatar');
+    av.innerHTML=avatar&&avatar!=='null'?`<img src="${avatar}" style="width:100%;height:100%;border-radius:50%;object-fit:cover">`:name.charAt(0);
+    document.getElementById('activeChatRating').innerHTML=getStarIcons(rating);
+    loadSidebarMessages(); stopPoll(); chatPoll=setInterval(loadSidebarMessages,3000);
+    document.getElementById('msgSidebar').classList.add('open');
+}
 
-        /* ═══════ COUNTER ANIMATION ═══════ */
-        function animateCounters() {
-            document.querySelectorAll('[data-count]').forEach(el => {
-                const target = parseInt(el.dataset.count);
-                const start = performance.now();
-                const update = now => {
-                    const p = Math.min((now - start) / 2000, 1);
-                    const e = 1 - Math.pow(1 - p, 3);
-                    el.textContent = Math.floor(e * target).toLocaleString();
-                    if (p < 1) requestAnimationFrame(update);
-                    else el.textContent = target.toLocaleString();
-                };
-                requestAnimationFrame(update);
-            });
-        }
+async function loadSidebarMessages(){
+    if(!activeChat||!currentUser) return;
+    try{
+        const url=activeChat.propId?`${API_URL}/messages/${currentUser.UserId}/${activeChat.otherId}?propertyId=${activeChat.propId}`:`${API_URL}/messages/${currentUser.UserId}/${activeChat.otherId}`;
+        const r=await fetch(url); const msgs=await r.json();
+        const c=document.getElementById('chatMessages');
+        const atBottom=c.scrollHeight-c.scrollTop<=c.clientHeight+80;
+        c.innerHTML=msgs.map(m=>{
+            const sent=m.SenderId==currentUser.UserId;
+            const time=new Date(m.SentAt).toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'});
+            const safe=String(m.MessageText).replace(/</g,'&lt;').replace(/>/g,'&gt;');
+            return `<div class="msg-bubble ${sent?'msg-sent':'msg-received'}">${safe}<span class="msg-time">${time}</span></div>`;
+        }).join('');
+        if(atBottom) c.scrollTop=c.scrollHeight;
+    }catch(e){}
+}
 
-        /* ═══════ PRICE RANGE ═══════ */
-        function initPriceRange() {
-            const fp = document.getElementById('filterPrice');
-            if (fp) fp.addEventListener('input', function () {
-                document.getElementById('priceOut').textContent = Number(this.value).toLocaleString() + ' DZD';
-            });
-        }
+async function sendSidebarMessage(){
+    const inp=document.getElementById('chatInput'); const text=inp.value.trim();
+    if(!text||!activeChat) return; inp.value='';
+    try{
+        await fetch(`${API_URL}/messages`,{method:'POST',headers:{'Content-Type':'application/json'},
+        body:JSON.stringify({senderId:currentUser.UserId,receiverId:activeChat.otherId,propertyId:activeChat.propId,messageText:text})});
+        loadSidebarMessages();
+    }catch(e){}
+}
 
-        /* ═══════ USER GREETING ═══════ */
-        function tLabel(key, fallback, lang) {
-            const chosenLang = lang || (localStorage.getItem('site_lang') || 'en');
-            const dict = window.I18N_MESSAGES || {};
-            return (dict[key] && dict[key][chosenLang]) ? dict[key][chosenLang] : fallback;
-        }
+function openChat(e, propId, ownerId, ownerName){
+    if(e) e.stopPropagation();
+    if(!currentUser){window.location.href='login.html';return;}
+    openSidebarChat(propId, ownerId, ownerName, null, 0);
+}
 
-        function buildDashButtons(lang) {
-            const btns = document.getElementById('dashButtons');
-            if (!btns || !currentUser) return;
-            if (currentUser.UserType === 'Owner') {
-                btns.innerHTML = `
-                    <a href="add-new-home.html" class="qb-primary"><i class="fa-solid fa-plus"></i> ${tLabel('qb_add_prop', 'Add Property', lang)}</a>
-                    <a href="my-property.html" class="qb-secondary"><i class="fa-solid fa-list"></i> ${tLabel('qb_my_props', 'My Properties', lang)}</a>
-                    <a href="profile.html" class="qb-neutral"><i class="fa-solid fa-user"></i> ${tLabel('qb_profile', 'Profile', lang)}</a>`;
-            } else {
-                btns.innerHTML = `
-                    <a href="my-bookings.html" class="qb-secondary"><i class="fa-solid fa-calendar"></i> ${tLabel('qb_bookings', 'My Bookings', lang)}</a>
-                    <a href="profile.html" class="qb-neutral"><i class="fa-solid fa-user"></i> ${tLabel('qb_profile', 'Profile', lang)}</a>`;
-            }
-        }
+/* ═══════════════════════ INIT ═══════════════════════ */
+document.addEventListener('DOMContentLoaded', ()=>{
+    // Chat intent from property page
+    const intent=sessionStorage.getItem('openChatIntent');
+    if(intent){ sessionStorage.removeItem('openChatIntent'); try{ const {ownerId,ownerName,propId}=JSON.parse(intent); setTimeout(()=>openChat(null,propId,ownerId,ownerName),800); }catch(e){} }
 
-        function updateGreeting() {
-            if (!currentUser) return;
-            const firstName = currentUser.FirstName || 'User';
-            const avatar = currentUser.ProfilePicturePath
-                ? `<img src="${currentUser.ProfilePicturePath}" class="nav-avatar-img">`
-                : `<div class="nav-avatar-placeholder">${firstName.charAt(0).toUpperCase()}</div>`;
-            const el = document.getElementById('userGreeting');
-            if (el) el.innerHTML = `<div class="nav-profile" onclick="toggleProfileModal()">${avatar}<span class="nav-user-name">${firstName}</span></div>`;
-            document.getElementById('loginLink')?.setAttribute('style', 'display:none');
-            document.getElementById('registerLink')?.setAttribute('style', 'display:none');
-            const bar = document.getElementById('dashQuickBar');
-            if (bar) bar.classList.add('visible');
-            buildDashButtons(localStorage.getItem('site_lang') || 'en');
-        }
+    // Populate wilaya filter
+    if(typeof populateWilayasSelect==='function'){ try{ populateWilayasSelect('filterCity','All Wilayas'); }catch(e){} }
 
-        window.onLangChange = function (lang) { buildDashButtons(lang); };
+    // User
+    if(currentUser){ updateGreeting(); loadConversations(); setInterval(loadConversations,10000); }
 
-        function toggleProfileModal() {
-            if (!currentUser) return;
-            const firstName = currentUser.FirstName || 'User';
-            const lastName = currentUser.LastName || '';
-            document.getElementById('modalUserName').textContent = `${firstName} ${lastName}`.trim();
-            const av = document.getElementById('bigAvatar');
-            if (currentUser.ProfilePicturePath) {
-                av.innerHTML = `<img src="${currentUser.ProfilePicturePath}" style="width:100%;height:100%;border-radius:50%;object-fit:cover">`;
-            } else {
-                av.textContent = (firstName.charAt(0) + (lastName.charAt(0) || '')).toUpperCase();
-            }
-            // Set dashboard link
-            const dashLink = document.getElementById('modalDashboardBtn');
-            if (dashLink) dashLink.href = currentUser.UserType === 'Owner' ? 'AddHome.html' : 'Rent.html';
-            document.getElementById('modalOverlay').style.display = 'block';
-            document.getElementById('profileModal').classList.add('show');
-        }
-
-        function closeProfileModal() {
-            document.getElementById('modalOverlay').style.display = 'none';
-            document.getElementById('profileModal').classList.remove('show');
-        }
-
-        function logout() { localStorage.removeItem('user'); location.reload(); }
-
-        /* ═══════ MSG SIDEBAR ═══════ */
-        let msgConversations = [];
-        let activeConversation = null;
-        let msgPollTimer = null;
-        let chatPollTimer = null;
-
-        function escapeHtml(v) {
-            return String(v || '')
-                .replaceAll('&', '&amp;')
-                .replaceAll('<', '&lt;')
-                .replaceAll('>', '&gt;')
-                .replaceAll('"', '&quot;')
-                .replaceAll("'", '&#039;');
-        }
-
-        function toggleMsgFabVisibility() {
-            const btn = document.getElementById('msgToggleBtn');
-            const sidebar = document.getElementById('msgSidebar');
-            if (!btn || !sidebar) return;
-            btn.classList.toggle('hidden', sidebar.classList.contains('open'));
-        }
-
-        async function loadMsgUnreadBadge() {
-            const btn = document.getElementById('msgToggleBtn');
-            const badge = document.getElementById('msgBtnBadge');
-            if (!btn || !badge) return;
-
-            if (!currentUser || !currentUser.UserId) {
-                btn.style.display = 'none';
-                badge.style.display = 'none';
-                return;
-            }
-
-            btn.style.display = 'flex';
-            try {
-                const res = await fetch(`${API_URL}/messages/unread/${currentUser.UserId}`);
-                if (!res.ok) throw new Error('Unread failed');
-                const data = await res.json();
-                const count = parseInt(data.unreadCount) || 0;
-                badge.style.display = count > 0 ? 'inline-flex' : 'none';
-                if (count > 0) badge.textContent = count > 99 ? '99+' : String(count);
-            } catch {
-                badge.style.display = 'none';
-            }
-        }
-
-        function renderMsgConversations(list) {
-            const msgList = document.getElementById('msgList');
-            if (!msgList) return;
-            if (!list.length) {
-                msgList.innerHTML = `<div style="text-align:center;padding:40px;color:var(--muted)">No conversations yet.</div>`;
-                return;
-            }
-            msgList.innerHTML = list.map((c, i) => {
-                const name = c.OtherUserName || 'User';
-                const initials = name.split(' ').map(s => s[0]).join('').slice(0, 2).toUpperCase();
-                const unread = parseInt(c.UnreadCount) || 0;
-                const prop = c.PropertyTitle ? escapeHtml(c.PropertyTitle) : 'Property';
-                return `
-                    <div class="conv-item" onclick="openMsgConversation(${i})">
-                        <div class="conv-avatar">${escapeHtml(initials)}</div>
-                        <div class="conv-info">
-                            <span class="conv-name">${escapeHtml(name)}</span>
-                            <span class="conv-property"><i class="fa-solid fa-house"></i> ${prop}</span>
-                        </div>
-                        ${unread > 0 ? `<span class="conv-unread">${unread}</span>` : ''}
-                    </div>
-                `;
-            }).join('');
-        }
-
-        async function loadMsgConversations() {
-            const msgList = document.getElementById('msgList');
-            if (!msgList) return;
-            if (!currentUser || !currentUser.UserId) {
-                msgList.innerHTML = `<div style="text-align:center;padding:40px;color:var(--muted)">Please login to view messages.</div>`;
-                return;
-            }
-            msgList.innerHTML = `<div style="text-align:center;padding:40px;color:var(--muted)">Loading…</div>`;
-            try {
-                const res = await fetch(`${API_URL}/conversations/${currentUser.UserId}`);
-                if (!res.ok) throw new Error('Conversation fetch failed');
-                msgConversations = await res.json();
-                renderMsgConversations(msgConversations);
-            } catch {
-                msgList.innerHTML = `<div style="text-align:center;padding:40px;color:#ff3b30">Failed to load conversations.</div>`;
-            }
-        }
-
-        async function loadActiveChatMessages() {
-            if (!activeConversation || !currentUser) return;
-            const otherId = (currentUser.UserType === 'Renter')
-                ? activeConversation.OwnerId
-                : activeConversation.RenterId;
-            const query = activeConversation.PropertyId ? `?propertyId=${activeConversation.PropertyId}` : '';
-            try {
-                const res = await fetch(`${API_URL}/messages/${currentUser.UserId}/${otherId}${query}`);
-                if (!res.ok) throw new Error('Messages fetch failed');
-                const messages = await res.json();
-                const box = document.getElementById('chatMessages');
-                if (!box) return;
-                if (!messages.length) {
-                    box.innerHTML = `<div style="text-align:center;color:var(--muted);padding:24px">No messages yet.</div>`;
-                    return;
-                }
-                box.innerHTML = messages.map(m => {
-                    const sent = parseInt(m.SenderId) === parseInt(currentUser.UserId);
-                    const cls = sent ? 'msg-sent' : 'msg-received';
-                    const t = new Date(m.SentAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-                    return `<div class="msg-bubble ${cls}">${escapeHtml(m.MessageText)}<span class="msg-time">${t}</span></div>`;
-                }).join('');
-                box.scrollTop = box.scrollHeight;
-                await loadMsgUnreadBadge();
-            } catch {
-                const box = document.getElementById('chatMessages');
-                if (box) box.innerHTML = `<div style="text-align:center;color:#ff3b30;padding:24px">Failed to load messages.</div>`;
-            }
-        }
-
-        function openMsgConversation(index) {
-            activeConversation = msgConversations[index];
-            if (!activeConversation) return;
-            document.getElementById('msgListView').style.display = 'none';
-            document.getElementById('msgChatView').style.display = 'flex';
-            const name = activeConversation.OtherUserName || 'User';
-            document.getElementById('activeChatName').textContent = name;
-            document.getElementById('activeChatAvatar').textContent = name.split(' ').map(s => s[0]).join('').slice(0, 2).toUpperCase();
-            document.getElementById('activeChatRating').textContent = activeConversation.PropertyTitle || '';
-            loadActiveChatMessages();
-            if (chatPollTimer) clearInterval(chatPollTimer);
-            chatPollTimer = setInterval(loadActiveChatMessages, 5000);
-        }
-
-        async function sendSidebarMessage() {
-            if (!activeConversation || !currentUser) return;
-            const input = document.getElementById('chatInput');
-            const text = (input?.value || '').trim();
-            if (!text) return;
-            const receiverId = (currentUser.UserType === 'Renter')
-                ? activeConversation.OwnerId
-                : activeConversation.RenterId;
-            try {
-                const res = await fetch(`${API_URL}/messages`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        senderId: parseInt(currentUser.UserId),
-                        receiverId: parseInt(receiverId),
-                        propertyId: activeConversation.PropertyId || null,
-                        messageText: text
-                    })
-                });
-                if (!res.ok) throw new Error('Send failed');
-                input.value = '';
-                await loadActiveChatMessages();
-                await loadMsgConversations();
-            } catch {
-                alert('Failed to send message.');
-            }
-        }
-
-        async function toggleMsgSidebar(forceOpen) {
-            const sidebar = document.getElementById('msgSidebar');
-            if (!sidebar) return;
-            const shouldOpen = typeof forceOpen === 'boolean'
-                ? forceOpen
-                : !sidebar.classList.contains('open');
-            sidebar.classList.toggle('open', shouldOpen);
-            toggleMsgFabVisibility();
-
-            if (shouldOpen) {
-                backToMsgList();
-                await loadMsgConversations();
-                if (msgPollTimer) clearInterval(msgPollTimer);
-                msgPollTimer = setInterval(loadMsgConversations, 10000);
-            } else {
-                if (msgPollTimer) { clearInterval(msgPollTimer); msgPollTimer = null; }
-                if (chatPollTimer) { clearInterval(chatPollTimer); chatPollTimer = null; }
-            }
-        }
-
-        function backToMsgList() {
-            activeConversation = null;
-            if (chatPollTimer) { clearInterval(chatPollTimer); chatPollTimer = null; }
-            document.getElementById('msgChatView').style.display = 'none';
-            document.getElementById('msgListView').style.display = 'flex';
-        }
-
-        /* ═══════ SCROLL REVEAL ═══════ */
-        function initScrollReveal() {
-            const obs = new IntersectionObserver(entries => {
-                entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
-            }, { threshold: 0.1 });
-            document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
-        }
-
-        /* ═══════ PROPERTY DISPLAY ═══════ */
-        let allProperties = [];
-
-        function calcDisplayPrice(p) {
-            const dbPrice = parseFloat(p.PricePerNight);
-            if (!p.HasPromotion) return { display: dbPrice, original: null };
-            const ownerBase = dbPrice / 1.1;
-            let discounted = ownerBase;
-            if (p.DiscountType === 'Percentage' && parseFloat(p.DiscountPercentage) > 0) {
-                discounted = ownerBase * (1 - parseFloat(p.DiscountPercentage) / 100);
-            } else if (p.DiscountType === 'FixedAmount' && parseFloat(p.DiscountAmount) > 0) {
-                discounted = Math.max(0, ownerBase - parseFloat(p.DiscountAmount));
-            }
-            return { display: discounted * 1.1, original: dbPrice };
-        }
-
-        function getCardLabels(p) {
-            let labels = '';
-            if (p.HasPromotion) labels += `<span class="card-label label-promo">🔥 Promo</span>`;
-            if (p.IsFeatured) labels += `<span class="card-label label-featured">⭐ Featured</span>`;
-            if (p.IsBoosted && !p.IsFeatured) labels += `<span class="card-label label-boosted">🚀 Boosted</span>`;
-            if (currentUser && p.OwnerId === currentUser.UserId) labels += `<span class="card-label label-mine">Mine</span>`;
-            return labels;
-        }
-
-        function buildCard(p) {
-            const { display, original } = calcDisplayPrice(p);
-            const imgUrl = p.MainImage ? (p.MainImage.startsWith('http') ? p.MainImage : SERVER_URL + p.MainImage) : null;
-            const isOwner = currentUser && currentUser.UserType === 'Owner' && p.OwnerId === currentUser.UserId;
-            const ratingHtml = p.AverageRating > 0 ? `<span>⭐ ${Number(p.AverageRating).toFixed(1)}</span>` : '';
-            const priceHtml = original
-                ? `<div class="prop-card-price"><span class="old-price">${Math.round(original).toLocaleString()}</span> ${Math.round(display).toLocaleString()} DZD<small style="font-size:.65rem;font-weight:400;color:var(--muted)">/night</small></div>`
-                : `<div class="prop-card-price">${Math.round(display).toLocaleString()} DZD<small style="font-size:.65rem;font-weight:400;color:var(--muted)">/night</small></div>`;
-
-            const chatBtn = (!isOwner && currentUser)
-                ? `<button class="btn-chat-card" onclick="event.stopPropagation();window.location.href='chat.html?propertyId=${p.PropertyId}&ownerId=${p.OwnerId}&ownerName=${encodeURIComponent(p.OwnerName || 'Owner')}'"><i class="fa-solid fa-comment"></i></button>`
-                : '';
-            const manageBtn = isOwner
-                ? `<button class="btn-manage-card" onclick="event.stopPropagation();window.location.href='edit-property.html?id=${p.PropertyId}'"><i class="fa-solid fa-pen"></i> Edit</button>`
-                : '';
-
-            return `
-            <div class="prop-card" onclick="window.location.href='property-detail.html?id=${p.PropertyId}'">
-                <div class="prop-card-img">
-                    ${imgUrl
-                    ? `<img src="${imgUrl}" alt="${p.Title}" loading="lazy">`
-                    : `<div class="prop-card-img-placeholder"><i class="fa-solid fa-house"></i></div>`}
-                    <div class="card-labels">${getCardLabels(p)}</div>
-                </div>
-                <div class="prop-card-body">
-                    <div class="prop-card-title">${p.Title}</div>
-                    <div class="prop-card-loc"><i class="fa-solid fa-location-dot" style="color:var(--primary)"></i> ${p.City}, ${p.Wilaya}</div>
-                    <div class="prop-card-meta">
-                        <span><i class="fa-solid fa-door-open"></i> ${p.NumofRooms}</span>
-                        <span><i class="fa-solid fa-house"></i> ${p.PropertyType}</span>
-                        ${ratingHtml}
-                    </div>
-                    ${priceHtml}
-                </div>
-                <div class="prop-card-actions">
-                    <button class="btn-view-card" onclick="event.stopPropagation();window.location.href='property-detail.html?id=${p.PropertyId}'">
-                        <i class="fa-solid fa-eye"></i> View
-                    </button>
-                    ${chatBtn}${manageBtn}
-                </div>
-            </div>`;
-        }
-
-        function buildSection(emoji, title, props, id) {
-            if (!props.length) return '';
-            return `
-            <div class="section-block reveal" id="sb-${id}">
-                <div class="section-header">
-                    <div class="section-label">
-                        ${emoji} ${title}
-                        <span class="badge" style="background:rgba(10,132,255,.1);color:var(--primary);padding:3px 10px;border-radius:999px;font-size:.72rem;margin-left:6px;">${props.length}</span>
-                    </div>
-                </div>
-                <div class="carousel-wrap" id="wrap-${id}">
-                    <button class="carousel-btn prev" aria-label="prev"><i class="fa-solid fa-chevron-left"></i></button>
-                    <div class="carousel-track-outer">
-                        <div class="carousel-track" id="track-${id}">
-                            ${props.map(buildCard).join('')}
-                        </div>
-                    </div>
-                    <button class="carousel-btn next" aria-label="next"><i class="fa-solid fa-chevron-right"></i></button>
-                    <div class="carousel-dots"></div>
-                </div>
-            </div>`;
-        }
-
-        async function loadProperties() {
-            try {
-                const res = await fetch(`${API_URL}/properties`);
-                if (!res.ok) throw new Error('HTTP ' + res.status);
-                allProperties = await res.json();
-
-                document.getElementById('loadingState').style.display = 'none';
-
-                if (!allProperties.length) {
-                    document.getElementById('contentArea').innerHTML =
-                        `<div class="empty-state"><i class="fa-solid fa-house-circle-xmark"></i><p style="font-size:1.1rem;">No properties available yet.</p></div>`;
-                    return;
-                }
-
-                // Partition into 4 ordered groups as requested:
-                // Promotion -> Premium -> Boost -> All (most popular first)
-                const promo = allProperties.filter(p => p.HasPromotion);
-                const premium = allProperties.filter(p => p.IsFeatured);
-                const boost = allProperties.filter(p => p.IsBoosted && !p.IsFeatured);
-                // All properties sorted by popularity (ViewCount desc)
-                const allSorted = [...allProperties].sort((a, b) => (parseInt(b.ViewCount) || 0) - (parseInt(a.ViewCount) || 0));
-
-                let html = '';
-                if (promo.length) html += buildSection('🔥', 'Promotion', promo, 'promotion');
-                if (premium.length) html += buildSection('⭐', 'Premium', premium, 'premium');
-                if (boost.length) html += buildSection('🚀', 'Boost', boost, 'boost');
-                html += buildSection('🏠', 'All Properties', allSorted, 'all');
-
-                document.getElementById('contentArea').innerHTML = html;
-
-                // Build carousels
-                ['promotion', 'premium', 'boost', 'all'].forEach(id => {
-                    if (document.getElementById('wrap-' + id)) buildCarousel('wrap-' + id);
-                });
-
-                initScrollReveal();
-
-            } catch (err) {
-                document.getElementById('loadingState').innerHTML =
-                    `<div style="text-align:center;padding:60px;color:#ff3b30;">
-                        <i class="fa-solid fa-triangle-exclamation" style="font-size:2rem;display:block;margin-bottom:12px;"></i>
-                        Failed to load properties: ${err.message}
-                    </div>`;
-                console.error(err);
-            }
-        }
-
-        function applyFilters() {
-            const city = document.getElementById('filterCity')?.value.toLowerCase() || '';
-            const type = document.getElementById('filterType')?.value || '';
-            const rooms = document.getElementById('filterRooms')?.value || '';
-            const maxPrice = parseFloat(document.getElementById('filterPrice')?.value || 50000);
-
-            const filtered = allProperties.filter(p => {
-                if (city && !p.City.toLowerCase().includes(city) && !p.Wilaya.toLowerCase().includes(city)) return false;
-                if (type && p.PropertyType !== type) return false;
-                if (rooms) {
-                    const r = parseInt(rooms);
-                    if (rooms === '3' && p.NumofRooms < 3) return false;
-                    if (rooms !== '3' && p.NumofRooms !== r) return false;
-                }
-                if (parseFloat(p.PricePerNight) > maxPrice) return false;
-                return true;
-            });
-
-            // Update all-properties section with filtered results
-            const track = document.getElementById('track-all');
-            if (track) {
-                const sorted = [...filtered].sort((a, b) => (parseInt(b.ViewCount) || 0) - (parseInt(a.ViewCount) || 0));
-                track.innerHTML = sorted.length
-                    ? sorted.map(buildCard).join('')
-                    : `<div style="padding:40px;color:var(--muted);font-size:.95rem;">No properties match your filters.</div>`;
-                if (document.getElementById('wrap-all')) buildCarousel('wrap-all');
-            }
-        }
-
-        /* ═══════ CAROUSEL ═══════ */
-        const carousels = {};
-        const isMobile = () => window.innerWidth <= 768;
-
-        function buildCarousel(containerId) {
-            const wrap = document.getElementById(containerId);
-            if (!wrap) return;
-            const trackOuter = wrap.querySelector('.carousel-track-outer');
-            const track = wrap.querySelector('.carousel-track');
-            const prevBtn = wrap.querySelector('.carousel-btn.prev');
-            const nextBtn = wrap.querySelector('.carousel-btn.next');
-            const dotsContainer = wrap.querySelector('.carousel-dots');
-            let pos = 0, max = 0;
-            const totalCards = track.querySelectorAll('.prop-card').length;
-            const isRtl = () => document.documentElement.getAttribute('dir') === 'rtl';
-
-            function getMobileStepWidth() {
-                const card = track.querySelector('.prop-card');
-                if (!card) return 0;
-                const styles = window.getComputedStyle(track);
-                const gap = parseFloat(styles.columnGap || styles.gap || 0) || 0;
-                return card.getBoundingClientRect().width + gap;
-            }
-
-            function getMobileScrollLeft() {
-                // Normalize RTL/LTR differences across browsers.
-                return Math.abs(trackOuter.scrollLeft || 0);
-            }
-
-            if (dotsContainer && totalCards > 0) {
-                dotsContainer.innerHTML = '';
-                for (let i = 0; i < Math.min(totalCards, 10); i++) {
-                    const dot = document.createElement('div');
-                    dot.className = 'carousel-dot' + (i === 0 ? ' active' : '');
-                    dot.onclick = () => {
-                        if (isMobile()) {
-                            const step = getMobileStepWidth();
-                            if (!step) return;
-                            const scrollLeft = isRtl() ? -(step * i) : step * i;
-                            trackOuter.scrollTo({ left: scrollLeft, behavior: 'smooth' });
-                        } else { pos = i; update(); }
-                    };
-                    dotsContainer.appendChild(dot);
-                }
-            }
-
-            function updateDots(idx) {
-                if (!dotsContainer) return;
-                dotsContainer.querySelectorAll('.carousel-dot').forEach((d, i) => d.classList.toggle('active', i === idx));
-            }
-
-            function getCardWidth() {
-                const c = track.querySelector('.prop-card');
-                return c ? c.offsetWidth + 14 : 234;
-            }
-
-            function update() {
-                if (isMobile()) return;
-                const cw = getCardWidth(), outerW = trackOuter.offsetWidth;
-                const visible = Math.max(1, Math.floor(outerW / cw));
-                max = Math.max(0, totalCards - visible);
-                pos = Math.min(pos, max);
-                const dir = isRtl() ? 1 : -1;
-                track.style.transform = `translateX(${dir * pos * cw}px)`;
-                if (prevBtn) prevBtn.disabled = pos === 0;
-                if (nextBtn) nextBtn.disabled = pos >= max;
-                updateDots(pos);
-            }
-
-            if (prevBtn) prevBtn.onclick = e => { e.stopPropagation(); pos = Math.max(0, pos - 1); update(); };
-            if (nextBtn) nextBtn.onclick = e => { e.stopPropagation(); pos = Math.min(max, pos + 1); update(); };
-
-            /* ── Mobile JS touch drag ── */
-            let touchX0 = 0, mobileOffset = 0, snapIndex = 0, dragging = false;
-
-            function mobileSnap(idx) {
-                const step = getMobileStepWidth();
-                if (!step) return;
-                snapIndex = Math.max(0, Math.min(idx, totalCards - 1));
-                mobileOffset = isRtl() ? snapIndex * step : -snapIndex * step;
-                track.style.transition = 'transform .35s cubic-bezier(.4,0,.2,1)';
-                track.style.transform = `translateX(${mobileOffset}px)`;
-                updateDots(snapIndex);
-            }
-
-            if (trackOuter) {
-                trackOuter.addEventListener('touchstart', e => {
-                    if (!isMobile()) return;
-                    dragging = true;
-                    touchX0 = e.touches[0].clientX;
-                    track.style.transition = 'none';
-                }, { passive: true });
-
-                trackOuter.addEventListener('touchmove', e => {
-                    if (!isMobile() || !dragging) return;
-                    const dx = e.touches[0].clientX - touchX0;
-                    track.style.transform = `translateX(${mobileOffset + dx}px)`;
-                }, { passive: true });
-
-                trackOuter.addEventListener('touchend', e => {
-                    if (!isMobile() || !dragging) return;
-                    dragging = false;
-                    const dx = e.changedTouches[0].clientX - touchX0;
-                    const step = getMobileStepWidth();
-                    const threshold = step * 0.25;
-                    const goRight = isRtl() ? dx > threshold : dx < -threshold;
-                    const goLeft = isRtl() ? dx < -threshold : dx > threshold;
-                    if (goRight) mobileSnap(snapIndex + 1);
-                    else if (goLeft) mobileSnap(snapIndex - 1);
-                    else mobileSnap(snapIndex);
-                }, { passive: true });
-            }
-
-            window.addEventListener('resize', () => {
-                if (isMobile()) { mobileSnap(snapIndex); }
-                else { track.style.transform = ''; update(); }
-            });
-            setTimeout(() => { if (isMobile()) mobileSnap(0); else update(); }, 50);
-            function reset() { pos = 0; snapIndex = 0; mobileOffset = 0; track.style.transform = ''; if (!isMobile()) update(); }
-            carousels[containerId] = { update, reset };
-        }
-
-        /* ═══════ INIT ALL ═══════ */
-        function initAll() {
-            animateCounters();
-            initPriceRange();
-            updateGreeting();
-            initScrollReveal();
-            loadProperties();
-            loadMsgUnreadBadge();
-            const sendBtn = document.querySelector('#msgChatView .chat-send-btn');
-            const input = document.getElementById('chatInput');
-            if (sendBtn) sendBtn.onclick = sendSidebarMessage;
-            if (input) {
-                input.addEventListener('keydown', e => {
-                    if (e.key === 'Enter') {
-                        e.preventDefault();
-                        sendSidebarMessage();
-                    }
-                });
-            }
-        }
-    </script>
+    loadProperties();
+});
+</script>
 </body>
-
 </html>
