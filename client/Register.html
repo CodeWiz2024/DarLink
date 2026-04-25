@@ -273,11 +273,17 @@
 
             <label><span data-i18n="register_password_label">Password</span><span class="required-star">*</span></label>
             <div class="password-container">
-                <input type="password" id="Password" minlength="6" placeholder="Minimum 6 characters" data-i18n-placeholder="register_password_placeholder" required>
+                <input type="password" id="Password" minlength="8" placeholder="Minimum 8 characters" data-i18n-placeholder="register_password_placeholder" required>
                 <span class="toggle-password" onclick="togglePasswordVisibility('Password', this)"><i class="fa fa-eye"></i></span>
             </div>
 
-
+            <div id="passwordMessage" style="display:none; font-size: 13px; margin-top: -10px; margin-bottom: 10px; background: rgba(0,0,0,0.05); padding: 10px; border-radius: 8px;">
+                <p style="margin: 0 0 5px 0; font-weight: 600;">Password must contain the following:</p>
+                <p id="letter" class="invalid" style="margin: 2px 0; color: red;">A <b>lowercase</b> letter</p>
+                <p id="capital" class="invalid" style="margin: 2px 0; color: red;">A <b>capital (uppercase)</b> letter</p>
+                <p id="number" class="invalid" style="margin: 2px 0; color: red;">A <b>number</b></p>
+                <p id="length" class="invalid" style="margin: 2px 0; color: red;">Minimum <b>8 characters</b></p>
+            </div>
 
             <label><span data-i18n="register_confirm_password_label">Confirm Password</span><span class="required-star">*</span></label>
             <div class="password-container">
@@ -359,7 +365,7 @@
             register_id_number_placeholder: { en: '18 digits', ar: '18 رقماً' },
             register_manual_btn: { en: '✏️ Edit Manually', ar: '✏️ تعديل يدوياً' },
             register_password_label: { en: 'Password', ar: 'كلمة المرور' },
-            register_password_placeholder: { en: 'Minimum 6 characters', ar: 'ستة أحرف على الأقل' },
+            register_password_placeholder: { en: 'Minimum 8 characters', ar: 'ثمانية أحرف على الأقل' },
             register_confirm_password_label: { en: 'Confirm Password', ar: 'تأكيد كلمة المرور' },
             register_confirm_password_placeholder: { en: 'Re-enter your password', ar: 'أعد إدخال كلمة المرور' },
             register_user_type_label: { en: 'User Type', ar: 'نوع المستخدم' },
@@ -471,9 +477,16 @@
             const dict = window.I18N_MESSAGES || {};
             const first = FirstName.value.trim(), last = LastName.value.trim(), pwd = Password.value, confirmPwd = ConfirmPassword.value;
             
+            if (!/^[a-zA-Z]+$/.test(first)) { message.innerHTML = '<div class="message error">❌ First name should contain only letters</div>'; goToStep(1); return; }
+            if (!/^[a-zA-Z]+$/.test(last)) { message.innerHTML = '<div class="message error">❌ Last name should contain only letters</div>'; goToStep(1); return; }
             if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(Email.value.trim())) { message.innerHTML = '<div class="message error">❌ Please enter a valid email address</div>'; goToStep(2); return; }
             if (PhoneNumber.value.trim().replace(/\D/g, '').length < 10) { message.innerHTML = '<div class="message error">❌ Please enter a valid phone number</div>'; goToStep(2); return; }
-            if (pwd.length < 6) { message.innerHTML = '<div class="message error">❌ Password must contain at least 6 characters</div>'; goToStep(2); return; }
+            
+            const hasLower = /[a-z]/g.test(pwd);
+            const hasUpper = /[A-Z]/g.test(pwd);
+            const hasNumber = /[0-9]/g.test(pwd);
+            const hasLength = pwd.length >= 8;
+            if (!hasLower || !hasUpper || !hasNumber || !hasLength) { message.innerHTML = '<div class="message error">❌ Password must contain at least 8 characters with uppercase, lowercase and number</div>'; goToStep(2); return; }
             if (pwd !== confirmPwd) { message.innerHTML = '<div class="message error">' + ((dict.register_password_mismatch && dict.register_password_mismatch[lang]) || '❌ Passwords do not match') + '</div>'; goToStep(2); return; }
             if (!UserType.value) { message.innerHTML = '<div class="message error">' + ((dict.register_select_user_type_error && dict.register_select_user_type_error[lang]) || '❌ Please select user type') + '</div>'; goToStep(1); return; }
             if (!frontFile) { message.innerHTML = '<div class="message error">' + (lang === 'ar' ? '❌ يرجى رفع صورة بطاقة الهوية' : '❌ Please upload your ID Card Image') + '</div>'; goToStep(3); return; }
@@ -548,8 +561,12 @@
                 
                 if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(em)) { alert('Please enter a valid email address'); return; }
                 if(ph.length < 10) { alert('Valid phone number required'); return; }
-                if(pwd.length < 6) {
-                    alert('Password must contain at least 6 characters'); return;
+                const hasLower = /[a-z]/g.test(pwd);
+                const hasUpper = /[A-Z]/g.test(pwd);
+                const hasNumber = /[0-9]/g.test(pwd);
+                const hasLength = pwd.length >= 8;
+                if (!hasLower || !hasUpper || !hasNumber || !hasLength) {
+                    alert('Password must contain at least 8 characters with uppercase, lowercase and number'); return;
                 }
                 if(pwd !== cpwd) { alert('Passwords do not match'); return; }
             }
@@ -564,7 +581,256 @@
     </script>
 
     <script>
-/* Replaced dynamically */
-</script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Get form elements
+            const firstNameInput = document.getElementById('FirstName');
+            const lastNameInput = document.getElementById('LastName');
+            const emailInput = document.getElementById('Email');
+            const phoneInput = document.getElementById('PhoneNumber');
+            const passwordInput = document.getElementById('Password');
+            const confirmPasswordInput = document.getElementById('ConfirmPassword');
+            const submitBtn = document.getElementById('submitBtn');
+            const userTypeInput = document.getElementById('UserType');
+            
+            // Get validation message containers
+            const firstNameValidation = document.getElementById('firstNameValidation');
+            const lastNameValidation = document.getElementById('lastNameValidation');
+            const emailValidation = document.getElementById('emailValidation');
+            const phoneValidation = document.getElementById('phoneValidation');
+            const confirmPasswordValidation = document.getElementById('confirmPasswordValidation');
+            
+            // Get password message elements
+            const passwordMessage = document.getElementById('passwordMessage');
+            const letter = document.getElementById('letter');
+            const capital = document.getElementById('capital');
+            const number = document.getElementById('number');
+            const length = document.getElementById('length');
+
+            // Name validation function - only letters (a-z, A-Z)
+            function validateName(name) {
+                return /^[a-zA-Z]+$/.test(name);
+            }
+
+            // Email validation function
+            function validateEmail(email) {
+                return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+            }
+
+            // Phone validation function (basic - at least 10 digits)
+            function validatePhone(phone) {
+                const digits = phone.replace(/\D/g, '');
+                return digits.length >= 10;
+            }
+
+            // First Name validation
+            firstNameInput.addEventListener('input', function() {
+                const value = firstNameInput.value.trim();
+                
+                if (value === '') {
+                    firstNameValidation.textContent = '';
+                    firstNameInput.style.borderColor = '#ccc';
+                } else if (validateName(value)) {
+                    firstNameValidation.textContent = '✓ Valid first name';
+                    firstNameValidation.style.color = 'green';
+                    firstNameInput.style.borderColor = 'green';
+                } else {
+                    firstNameValidation.textContent = '✗ First name should contain only letters';
+                    firstNameValidation.style.color = 'red';
+                    firstNameInput.style.borderColor = 'red';
+                }
+            });
+
+            // Last Name validation
+            lastNameInput.addEventListener('input', function() {
+                const value = lastNameInput.value.trim();
+                
+                if (value === '') {
+                    lastNameValidation.textContent = '';
+                    lastNameInput.style.borderColor = '#ccc';
+                } else if (validateName(value)) {
+                    lastNameValidation.textContent = '✓ Valid last name';
+                    lastNameValidation.style.color = 'green';
+                    lastNameInput.style.borderColor = 'green';
+                } else {
+                    lastNameValidation.textContent = '✗ Last name should contain only letters';
+                    lastNameValidation.style.color = 'red';
+                    lastNameInput.style.borderColor = 'red';
+                }
+            });
+
+            // Email validation
+            emailInput.addEventListener('input', function() {
+                const email = emailInput.value.trim();
+                
+                if (email === '') {
+                    emailValidation.textContent = '';
+                    emailInput.style.borderColor = '#ccc';
+                } else if (validateEmail(email)) {
+                    emailValidation.textContent = '✓ Valid email';
+                    emailValidation.style.color = 'green';
+                    emailInput.style.borderColor = 'green';
+                } else {
+                    emailValidation.textContent = '✗ Invalid email format';
+                    emailValidation.style.color = 'red';
+                    emailInput.style.borderColor = 'red';
+                }
+            });
+
+            // Phone validation
+            phoneInput.addEventListener('input', function() {
+                const phone = phoneInput.value.trim();
+                
+                if (phone === '') {
+                    phoneValidation.textContent = '';
+                    phoneInput.style.borderColor = '#ccc';
+                } else if (validatePhone(phone)) {
+                    phoneValidation.textContent = '✓ Valid phone number';
+                    phoneValidation.style.color = 'green';
+                    phoneInput.style.borderColor = 'green';
+                } else {
+                    phoneValidation.textContent = '✗ Phone number should have at least 10 digits';
+                    phoneValidation.style.color = 'red';
+                    phoneInput.style.borderColor = 'red';
+                }
+            });
+
+            // Password validation
+            passwordInput.onfocus = function() {
+                passwordMessage.style.display = "block";
+            }
+            
+            passwordInput.onblur = function() {
+                if (passwordInput.value === "") {
+                    passwordMessage.style.display = "none";
+                }
+            }
+            
+            passwordInput.onkeyup = function() {
+                const pwd = passwordInput.value;
+                const lowerCaseLetters = /[a-z]/g;
+                const upperCaseLetters = /[A-Z]/g;
+                const numbers = /[0-9]/g;
+                
+                // Validate lowercase letters
+                if (pwd.match(lowerCaseLetters)) {
+                    letter.classList.remove("invalid");
+                    letter.classList.add("valid");
+                    letter.style.color = "green";
+                } else {
+                    letter.classList.remove("valid");
+                    letter.classList.add("invalid");
+                    letter.style.color = "red";
+                }
+                
+                // Validate uppercase letters
+                if (pwd.match(upperCaseLetters)) {
+                    capital.classList.remove("invalid");
+                    capital.classList.add("valid");
+                    capital.style.color = "green";
+                } else {
+                    capital.classList.remove("valid");
+                    capital.classList.add("invalid");
+                    capital.style.color = "red";
+                }
+                
+                // Validate numbers
+                if (pwd.match(numbers)) {
+                    number.classList.remove("invalid");
+                    number.classList.add("valid");
+                    number.style.color = "green";
+                } else {
+                    number.classList.remove("valid");
+                    number.classList.add("invalid");
+                    number.style.color = "red";
+                }
+                
+                // Validate length
+                if (pwd.length >= 8) {
+                    length.classList.remove("invalid");
+                    length.classList.add("valid");
+                    length.style.color = "green";
+                } else {
+                    length.classList.remove("valid");
+                    length.classList.add("invalid");
+                    length.style.color = "red";
+                }
+            }
+
+            // Confirm password validation
+            confirmPasswordInput.addEventListener('input', function() {
+                const pwd = passwordInput.value;
+                const confirmPwd = confirmPasswordInput.value;
+                
+                if (confirmPwd === '') {
+                    confirmPasswordValidation.textContent = '';
+                    confirmPasswordInput.style.borderColor = '#ccc';
+                } else if (pwd === confirmPwd) {
+                    confirmPasswordValidation.textContent = '✓ Passwords match';
+                    confirmPasswordValidation.style.color = 'green';
+                    confirmPasswordInput.style.borderColor = 'green';
+                } else {
+                    confirmPasswordValidation.textContent = '✗ Passwords do not match';
+                    confirmPasswordValidation.style.color = 'red';
+                    confirmPasswordInput.style.borderColor = 'red';
+                }
+            });
+
+            // Real-time form validation for submit button
+            function checkFormValidity() {
+                const firstName = firstNameInput.value.trim();
+                const lastName = lastNameInput.value.trim();
+                const email = emailInput.value.trim();
+                const phone = phoneInput.value.trim();
+                const pwd = passwordInput.value;
+                const confirmPwd = confirmPasswordInput.value;
+                
+                const isFirstNameValid = firstName !== '' && validateName(firstName);
+                const isLastNameValid = lastName !== '' && validateName(lastName);
+                const isEmailValid = email !== '' && validateEmail(email);
+                const isPhoneValid = phone !== '' && validatePhone(phone);
+                
+                const hasLower = /[a-z]/g.test(pwd);
+                const hasUpper = /[A-Z]/g.test(pwd);
+                const hasNumber = /[0-9]/g.test(pwd);
+                const hasLength = pwd.length >= 8;
+                const isPasswordValid = hasLower && hasUpper && hasNumber && hasLength;
+                
+                const isConfirmValid = pwd === confirmPwd && confirmPwd !== '';
+                
+                if (isFirstNameValid && isLastNameValid && isEmailValid && isPhoneValid && 
+                    isPasswordValid && isConfirmValid && userTypeInput.value) {
+                    submitBtn.disabled = false;
+                    submitBtn.style.backgroundColor = "";
+                    submitBtn.style.cursor = "pointer";
+                } else {
+                    submitBtn.disabled = true;
+                    submitBtn.style.backgroundColor = "gray";
+                    submitBtn.style.cursor = "not-allowed";
+                }
+            }
+
+            // Add input event listeners for all fields
+            firstNameInput.addEventListener('input', checkFormValidity);
+            lastNameInput.addEventListener('input', checkFormValidity);
+            emailInput.addEventListener('input', checkFormValidity);
+            phoneInput.addEventListener('input', checkFormValidity);
+            passwordInput.addEventListener('keyup', checkFormValidity);
+            confirmPasswordInput.addEventListener('input', checkFormValidity);
+            
+            // Override selectUserType to check form validity
+            const originalSelectUserType = window.selectUserType;
+            window.selectUserType = function(type) {
+                if (typeof originalSelectUserType === 'function') {
+                    originalSelectUserType(type);
+                }
+                checkFormValidity();
+            };
+
+            // Initialize button state
+            submitBtn.disabled = true;
+            submitBtn.style.backgroundColor = "gray";
+            submitBtn.style.cursor = "not-allowed";
+        });
+    </script>
 </body>
 </html>
