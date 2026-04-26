@@ -1,12 +1,12 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Statistics - DarLink</title>
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <script src="js/i18n-dashboard.js"></script><script src="lang.js"></script>
+    <script src="js/i18n-dashboard.js"></script>`n    <script src="lang.js"></script>
     <script src="js/theme.js"></script>
     <style>
         body { margin: 0; background: var(--bg-gradient); min-height: 100vh; }
@@ -26,6 +26,7 @@
         }
         .side-nav-logo { padding: 24px 22px 20px; display: flex; align-items: center; gap: 12px; border-bottom: 1px solid var(--glass-border); }
         .side-nav-logo img { height: 42px; border-radius: 10px; }
+        .side-nav-logo span { font-size: 1.2rem; font-weight: 800; color: var(--primary); letter-spacing: -0.02em; }
         .side-nav-user { padding: 18px 22px; display: flex; align-items: center; gap: 12px; border-bottom: 1px solid var(--glass-border); background: rgba(10,132,255,0.04); }
         .side-user-avatar { width: 42px; height: 42px; border-radius: 50%; background: var(--primary); color: white; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 1.1rem; flex-shrink: 0; }
         .side-user-info .name { font-weight: 700; font-size: 0.95rem; color: var(--text-main); }
@@ -90,11 +91,15 @@
 
         @media (max-width: 900px) {
             .side-nav { transform: translateX(-100%); }
-            .side-nav.open { transform: translateX(0); }
+            [dir="rtl"] .side-nav { transform: translateX(100%); }
+            .side-nav.open, [dir="rtl"] .side-nav.open { transform: translateX(0); }
             .side-overlay.show { display: block; }
-            .dash-main { margin-left: 0; padding: 80px 20px 30px; }
+            .dash-main, [dir="rtl"] .dash-main { margin-left: 0; margin-right: 0; padding: 80px 20px 30px; }
             .sidebar-toggle { display: flex; }
         }
+        [dir="rtl"] .side-nav { left: auto; right: 0; border-right: none; border-left: 1px solid var(--glass-border); box-shadow: -4px 0 24px rgba(0,0,0,0.06); }
+        [dir="rtl"] .sidebar-toggle { left: auto; right: 16px; }
+        [dir="rtl"] .dash-main { margin-left: 0; margin-right: 270px; }
         [data-theme="dark"] .side-nav { background: rgba(28,28,30,0.92); border-right-color: rgba(255,255,255,0.08); }
         [data-theme="dark"] .side-link { color: rgba(255,255,255,0.6); }
         [data-theme="dark"] .side-link:hover { background: rgba(255,255,255,0.07); color: white; }
@@ -109,16 +114,16 @@
 
 <aside class="side-nav" id="sideNav">
     <div class="side-nav-logo">
-        <a class="logo" href="index.html" style="text-decoration:none;">
-            <svg width="36" height="32" viewBox="0 0 110 100" fill="none" aria-hidden="true">
-                <path d="M55 8 L98 42 L98 92 L12 92 L12 42 Z" fill="none" stroke="#00d4ff" stroke-width="6" stroke-linejoin="round"/>
-                <rect x="72" y="10" width="10" height="18" fill="none" stroke="#00d4ff" stroke-width="5.5"/>
-                <path d="M55 22 L88 50 L88 88 L22 88 L22 50 Z" fill="none" stroke="#5aa8c0" stroke-width="5" stroke-linejoin="round"/>
-                <path d="M32 88 L32 52 Q32 30 52 30 Q72 30 72 52 Q72 68 58 72 Q44 76 32 72" fill="none" stroke="#5aa8c0" stroke-width="5.5" stroke-linecap="round"/>
-                <line x1="32" y1="88" x2="75" y2="88" stroke="#5aa8c0" stroke-width="5.5" stroke-linecap="round"/>
-            </svg>
-            <span class="logo-word" data-i18n="nav_logo_text">DarLink</span>
-        </a>
+        <a class="darlink-logo blue small" href="index.html" style="display:flex; flex-direction:row; align-items:center; gap:8px; text-decoration:none;">
+  <svg width="36" height="32" viewBox="0 0 110 100" fill="none">
+    <path d="M55 8 L98 42 L98 92 L12 92 L12 42 Z" fill="none" stroke="#00d4ff" stroke-width="6" stroke-linejoin="round"/>
+    <rect x="72" y="10" width="10" height="18" fill="none" stroke="#00d4ff" stroke-width="5.5"/>
+    <path d="M55 22 L88 50 L88 88 L22 88 L22 50 Z" fill="none" stroke="#5aa8c0" stroke-width="5" stroke-linejoin="round"/>
+    <path d="M32 88 L32 52 Q32 30 52 30 Q72 30 72 52 Q72 68 58 72 Q44 76 32 72" fill="none" stroke="#5aa8c0" stroke-width="5.5" stroke-linecap="round"/>
+    <line x1="32" y1="88" x2="75" y2="88" stroke="#5aa8c0" stroke-width="5.5" stroke-linecap="round"/>
+  </svg>
+  <span style="color:#00d4ff; font-size:22px; font-weight:700;">DarLink</span>
+</a>
     </div>
     <div class="side-nav-user">
         <div class="side-user-avatar" id="userAvatarSide">U</div>

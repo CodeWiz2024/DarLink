@@ -1,54 +1,53 @@
 <!DOCTYPE html>
-<html lang="en">
-
+<html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Edit Property - DarLink</title>
     <link rel="stylesheet" href="styles.css">
     <style>
-        .form-container {
-            max-width: 900px;
-            margin: 40px auto;
-            padding: 30px;
-            background: white;
-            border-radius: 12px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        .form-container { 
+            max-width: 900px; 
+            margin: 40px auto; 
+            padding: 30px; 
+            background: white; 
+            border-radius: 12px; 
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1); 
         }
-
-        .form-group {
-            margin-bottom: 20px;
+        
+        .form-group { 
+            margin-bottom: 20px; 
         }
-
-        .form-group label {
-            display: block;
-            margin-bottom: 8px;
-            font-weight: 600;
+        
+        .form-group label { 
+            display: block; 
+            margin-bottom: 8px; 
+            font-weight: 600; 
             color: #333;
         }
-
-        .form-group input,
-        .form-group textarea,
-        .form-group select {
-            width: 100%;
-            padding: 12px;
-            border: 1px solid #ddd;
-            border-radius: 8px;
-            font-size: 1rem;
+        
+        .form-group input, 
+        .form-group textarea, 
+        .form-group select { 
+            width: 100%; 
+            padding: 12px; 
+            border: 1px solid #ddd; 
+            border-radius: 8px; 
+            font-size: 1rem; 
             font-family: inherit;
         }
-
-        .form-group textarea {
-            min-height: 100px;
+        
+        .form-group textarea { 
+            min-height: 100px; 
             resize: vertical;
         }
-
+        
         .form-row {
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 15px;
         }
-
+        
         /* IMAGE UPLOAD */
         .image-upload-section {
             border: 2px dashed #ddd;
@@ -58,27 +57,27 @@
             background: #f9f9f9;
             margin: 20px 0;
         }
-
+        
         .current-images {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
             gap: 15px;
             margin: 20px 0;
         }
-
+        
         .image-preview {
             position: relative;
             border-radius: 8px;
             overflow: hidden;
             aspect-ratio: 1;
         }
-
+        
         .image-preview img {
             width: 100%;
             height: 100%;
             object-fit: cover;
         }
-
+        
         .image-preview .remove-img {
             position: absolute;
             top: 5px;
@@ -92,7 +91,7 @@
             cursor: pointer;
             font-weight: bold;
         }
-
+        
         /* MAP */
         #map {
             width: 100%;
@@ -100,7 +99,7 @@
             border-radius: 12px;
             margin: 15px 0;
         }
-
+        
         /* FEATURES */
         .features-grid {
             display: grid;
@@ -108,7 +107,7 @@
             gap: 10px;
             margin: 15px 0;
         }
-
+        
         .feature-checkbox {
             display: flex;
             align-items: center;
@@ -119,39 +118,39 @@
             cursor: pointer;
             transition: all 0.2s;
         }
-
+        
         .feature-checkbox:hover {
             background: #f0f0f0;
         }
-
+        
         .feature-checkbox input[type="checkbox"] {
             width: auto;
             margin: 0;
         }
-
+        
         /* BUTTONS */
-        .btn-submit {
-            width: 100%;
-            padding: 16px;
-            background: #007AFF;
-            color: white;
-            border: none;
-            border-radius: 8px;
-            font-size: 1.1rem;
-            font-weight: 600;
-            cursor: pointer;
-            margin-top: 20px;
+        .btn-submit { 
+            width: 100%; 
+            padding: 16px; 
+            background: #007AFF; 
+            color: white; 
+            border: none; 
+            border-radius: 8px; 
+            font-size: 1.1rem; 
+            font-weight: 600; 
+            cursor: pointer; 
+            margin-top: 20px; 
         }
-
-        .btn-submit:hover {
-            background: #0056b3;
+        
+        .btn-submit:hover { 
+            background: #0056b3; 
         }
-
-        .btn-submit:disabled {
-            background: #ccc;
-            cursor: not-allowed;
+        
+        .btn-submit:disabled { 
+            background: #ccc; 
+            cursor: not-allowed; 
         }
-
+        
         .btn-danger {
             background: #FF4757;
             padding: 12px 24px;
@@ -162,11 +161,11 @@
             font-weight: 600;
             margin-top: 20px;
         }
-
+        
         .btn-danger:hover {
             background: #E63946;
         }
-
+        
         /* PROMOTION SECTION */
         .promo-section {
             background: linear-gradient(135deg, #00C851 0%, #007E33 100%);
@@ -175,53 +174,53 @@
             margin: 30px 0;
             color: white;
         }
-
+        
         .promo-section h2 {
             margin: 0 0 20px 0;
             font-size: 1.8rem;
         }
-
+        
         .promo-content {
             background: white;
             border-radius: 12px;
             padding: 25px;
             color: #333;
         }
-
+        
         .promo-status {
             padding: 20px;
             border-radius: 12px;
             margin-bottom: 20px;
         }
-
+        
         .promo-status.active {
-            background: rgba(0, 200, 81, 0.1);
+            background: rgba(0,200,81,0.1);
             border: 2px solid #00C851;
         }
-
+        
         .promo-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 15px;
             margin: 15px 0;
         }
-
+        
         .promo-item {
             display: flex;
             flex-direction: column;
         }
-
+        
         .promo-item strong {
             color: #666;
             font-size: 0.9rem;
             margin-bottom: 5px;
         }
-
+        
         .promo-item span {
             font-size: 1.1rem;
             font-weight: 600;
         }
-
+        
         .promo-btn {
             padding: 14px 28px;
             border: none;
@@ -231,30 +230,30 @@
             cursor: pointer;
             transition: all 0.2s;
         }
-
+        
         .promo-btn:hover {
             transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
         }
-
+        
         .promo-btn.create {
             background: #00C851;
             color: white;
         }
-
+        
         .promo-btn.create:hover {
             background: #00A844;
         }
-
+        
         .promo-btn.delete {
             background: #FF4757;
             color: white;
         }
-
+        
         .promo-btn.delete:hover {
             background: #E63946;
         }
-
+        
         .promo-preview {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
@@ -262,32 +261,32 @@
             border-radius: 12px;
             margin-top: 20px;
         }
-
+        
         .promo-preview h4 {
             margin: 0 0 15px 0;
         }
-
+        
         .price-breakdown {
-            background: rgba(255, 255, 255, 0.1);
+            background: rgba(255,255,255,0.1);
             padding: 15px;
             border-radius: 8px;
             margin: 10px 0;
         }
-
+        
         .price-row {
             display: flex;
             justify-content: space-between;
             padding: 8px 0;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+            border-bottom: 1px solid rgba(255,255,255,0.2);
         }
-
+        
         .price-row:last-child {
             border-bottom: none;
             font-weight: 700;
             font-size: 1.2rem;
             margin-top: 10px;
         }
-
+        
         .discount-badge {
             background: #FF4757;
             padding: 6px 12px;
@@ -299,7 +298,6 @@
         }
     </style>
 </head>
-
 <body>
     <div class="form-container">
         <h1>✏️ Edit Property</h1>
@@ -342,7 +340,7 @@
 
             <!-- LOCATION -->
             <h3 style="margin-top: 30px;">📍 Location</h3>
-
+            
             <div class="form-group">
                 <label>Address *</label>
                 <input type="text" id="address" required>
@@ -430,9 +428,9 @@
 
             <!-- IMAGES -->
             <h3 style="margin-top: 30px;">📷 Property Images</h3>
-
+            
             <div class="current-images" id="currentImages"></div>
-
+            
             <div class="image-upload-section">
                 <p>📤 Upload New Images (Optional)</p>
                 <input type="file" id="newImages" accept="image/*" multiple>
@@ -461,9 +459,9 @@
         <!-- PROMOTION MANAGEMENT SECTION -->
         <div class="promo-section">
             <h2>🔥 Promotion Management</h2>
-
+            
             <div id="promoStatus" style="display: none;"></div>
-
+            
             <div id="promoFormContainer" class="promo-content" style="display: none;">
                 <h3 style="margin-top: 0;">Create New Promotion</h3>
                 <form id="promoForm" onsubmit="savePromotion(event)">
@@ -484,19 +482,18 @@
                             </select>
                         </div>
                     </div>
-
+                    
                     <div class="form-row">
                         <div class="form-group">
                             <label>Discount Value</label>
-                            <input type="number" id="discountValue" min="1" required oninput="updatePromoPreview()"
-                                placeholder="e.g., 20">
+                            <input type="number" id="discountValue" min="1" required oninput="updatePromoPreview()" placeholder="e.g., 20">
                         </div>
                         <div class="form-group">
                             <label>Minimum Stay (Days)</label>
                             <input type="number" id="minStay" min="1" value="1" required>
                         </div>
                     </div>
-
+                    
                     <div class="form-row">
                         <div class="form-group">
                             <label>Start Date</label>
@@ -507,7 +504,7 @@
                             <input type="date" id="endDate" required>
                         </div>
                     </div>
-
+                    
                     <div id="pricePreview" class="promo-preview" style="display: none;">
                         <h4>📊 Price Calculation Breakdown</h4>
                         <div class="price-breakdown">
@@ -530,7 +527,7 @@
                         </div>
                         <div class="discount-badge" id="previewSavings">Renters save 0 DZD!</div>
                     </div>
-
+                    
                     <button type="submit" class="promo-btn create" style="margin-top: 20px;">
                         💾 Create Promotion
                     </button>
@@ -567,16 +564,16 @@
         // ==================== INITIALIZE MAP ====================
         function initMap(lat = 36.7538, lng = 3.0588) {
             map = L.map('map').setView([lat, lng], 13);
-
+            
             L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
                 attribution: '© OpenStreetMap contributors'
             }).addTo(map);
 
-            map.on('click', function (e) {
+            map.on('click', function(e) {
                 if (marker) {
                     map.removeLayer(marker);
                 }
-
+                
                 marker = L.marker([e.latlng.lat, e.latlng.lng]).addTo(map);
                 document.getElementById('latitude').value = e.latlng.lat;
                 document.getElementById('longitude').value = e.latlng.lng;
@@ -679,7 +676,7 @@
         }
 
         // ==================== UPDATE PROPERTY ====================
-        document.getElementById('editForm').addEventListener('submit', async function (e) {
+        document.getElementById('editForm').addEventListener('submit', async function(e) {
             e.preventDefault();
 
             const btn = document.querySelector('.btn-submit');
@@ -694,7 +691,7 @@
                 if (hasNewImages) {
                     // USE FORMDATA FOR IMAGE UPLOAD
                     const formData = new FormData();
-
+                    
                     formData.append('Title', document.getElementById('title').value);
                     formData.append('Description', document.getElementById('description').value);
                     formData.append('PropertyType', document.getElementById('propertyType').value);
@@ -705,14 +702,14 @@
                     formData.append('Wilaya', document.getElementById('wilaya').value);
                     formData.append('AvailabilityStatus', document.getElementById('status').value);
                     formData.append('OwnerId', parseInt(user.UserId));
-
+                    
                     const lat = document.getElementById('latitude').value;
                     const lng = document.getElementById('longitude').value;
                     if (lat) formData.append('Latitude', lat);
                     if (lng) formData.append('Longitude', lng);
-
+                    
                     formData.append('FeatureIds', JSON.stringify(selectedFeatures));
-
+                    
                     for (let i = 0; i < newImages.length; i++) {
                         formData.append('images', newImages[i]);
                     }
@@ -806,7 +803,7 @@
             try {
                 const response = await fetch(`${API_URL}/properties/${propertyId}/promotion`);
                 const data = await response.json();
-
+                
                 if (data.hasPromotion && data.promotion) {
                     currentPromotion = data.promotion;
                     showCurrentPromotion();
@@ -822,7 +819,7 @@
         function showCurrentPromotion() {
             const statusDiv = document.getElementById('promoStatus');
             const formDiv = document.getElementById('promoFormContainer');
-
+            
             statusDiv.style.display = 'block';
             statusDiv.className = 'promo-content promo-status active';
             statusDiv.innerHTML = `
@@ -855,7 +852,7 @@
         function showCreatePromoForm() {
             document.getElementById('promoStatus').style.display = 'none';
             document.getElementById('promoFormContainer').style.display = 'block';
-
+            
             const today = new Date().toISOString().split('T')[0];
             document.getElementById('startDate').min = today;
             document.getElementById('endDate').min = today;
@@ -865,33 +862,33 @@
             const discountType = document.getElementById('discountType').value;
             const discountValue = parseFloat(document.getElementById('discountValue').value) || 0;
             const basePrice = parseFloat(document.getElementById('price').value) || 0;
-
+            
             if (discountValue > 0 && basePrice > 0) {
                 document.getElementById('pricePreview').style.display = 'block';
-
+                
                 let priceAfterDiscount;
                 if (discountType === 'Percentage') {
                     priceAfterDiscount = basePrice * (1 - discountValue / 100);
                 } else {
                     priceAfterDiscount = basePrice - discountValue;
                 }
-
+                
                 const platformFee = priceAfterDiscount * 0.10;
                 const finalPrice = priceAfterDiscount + platformFee;
                 const normalPrice = basePrice * 1.1;
                 const savings = normalPrice - finalPrice;
-
+                
                 document.getElementById('previewBasePrice').textContent = Math.round(basePrice).toLocaleString() + ' DZD';
                 document.getElementById('previewAfterDiscount').textContent = Math.round(priceAfterDiscount).toLocaleString() + ' DZD';
                 document.getElementById('previewPlatformFee').textContent = Math.round(platformFee).toLocaleString() + ' DZD';
                 document.getElementById('previewFinalPrice').textContent = Math.round(finalPrice).toLocaleString() + ' DZD';
-
+                
                 if (discountType === 'Percentage') {
                     document.getElementById('previewDiscountPercent').textContent = discountValue + '%';
                 } else {
                     document.getElementById('previewDiscountPercent').textContent = discountValue + ' DZD';
                 }
-
+                
                 document.getElementById('previewSavings').textContent = `Renters save ${Math.round(savings).toLocaleString()} DZD!`;
             } else {
                 document.getElementById('pricePreview').style.display = 'none';
@@ -900,7 +897,7 @@
 
         async function savePromotion(event) {
             event.preventDefault();
-
+            
             const promoData = {
                 PromotionType: document.getElementById('promoType').value,
                 MinStayDays: parseInt(document.getElementById('minStay').value),
@@ -912,7 +909,7 @@
 
             const startDate = new Date(promoData.StartDate);
             const endDate = new Date(promoData.EndDate);
-
+            
             if (endDate <= startDate) {
                 alert('❌ End date must be after start date');
                 return;
@@ -970,5 +967,4 @@
         loadProperty();
     </script>
 </body>
-
 </html>

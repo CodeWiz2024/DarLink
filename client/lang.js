@@ -7,7 +7,7 @@
 
 (function () {
   const STORAGE_KEY = 'site_lang';
-  const DEFAULT_LANG = 'en';
+  const DEFAULT_LANG = 'ar';
 
   function getCurrentLang() {
     const stored = localStorage.getItem(STORAGE_KEY);
@@ -15,7 +15,7 @@
   }
 
   function setDirAndLang(lang) {
-    const dir = lang === 'ar' ? 'rtl' : 'ltr';
+    const dir = 'rtl'; // Direction fixed to RTL as per user request
     document.documentElement.setAttribute('lang', lang);
     document.documentElement.setAttribute('dir', dir);
   }
@@ -62,18 +62,6 @@
     setDirAndLang(lang);
     applyTranslations(lang);
     updateLangButtons(lang);
-
-    // Reset all carousels to position 0 and re-run update()
-    // so translateX direction is recalculated for the new dir (RTL/LTR)
-    if (window.carousels) {
-      Object.values(window.carousels).forEach(function(c) {
-        if (c && typeof c.reset === 'function') c.reset();
-        else if (c && typeof c.update === 'function') c.update();
-      });
-    }
-
-    // Notify page scripts that need to rebuild lang-sensitive content
-    if (typeof window.onLangChange === 'function') window.onLangChange(lang);
   }
 
   function handleLangButtonClicks() {

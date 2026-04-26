@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" dir="ltr">
+<html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -28,6 +28,7 @@
         }
         .side-nav-logo { padding: 24px 22px 20px; display: flex; align-items: center; gap: 12px; border-bottom: 1px solid var(--glass-border); }
         .side-nav-logo img { height: 42px; border-radius: 10px; }
+        .side-nav-logo span { font-size: 1.2rem; font-weight: 800; color: var(--primary); letter-spacing: -0.02em; }
         .side-nav-user { padding: 18px 22px; display: flex; align-items: center; gap: 12px; border-bottom: 1px solid var(--glass-border); background: rgba(10,132,255,0.04); }
         .side-user-avatar { width: 42px; height: 42px; border-radius: 50%; background: var(--primary); color: white; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 1.1rem; flex-shrink: 0; overflow: hidden; }
         .side-user-info .name { font-weight: 700; font-size: 0.95rem; color: var(--text-main); }
@@ -133,16 +134,16 @@
 
 <aside class="side-nav" id="sideNav">
     <div class="side-nav-logo">
-        <a class="logo" href="index.html" style="text-decoration:none;">
-            <svg width="36" height="32" viewBox="0 0 110 100" fill="none" aria-hidden="true">
-                <path d="M55 8 L98 42 L98 92 L12 92 L12 42 Z" fill="none" stroke="#00d4ff" stroke-width="6" stroke-linejoin="round"/>
-                <rect x="72" y="10" width="10" height="18" fill="none" stroke="#00d4ff" stroke-width="5.5"/>
-                <path d="M55 22 L88 50 L88 88 L22 88 L22 50 Z" fill="none" stroke="#5aa8c0" stroke-width="5" stroke-linejoin="round"/>
-                <path d="M32 88 L32 52 Q32 30 52 30 Q72 30 72 52 Q72 68 58 72 Q44 76 32 72" fill="none" stroke="#5aa8c0" stroke-width="5.5" stroke-linecap="round"/>
-                <line x1="32" y1="88" x2="75" y2="88" stroke="#5aa8c0" stroke-width="5.5" stroke-linecap="round"/>
-            </svg>
-            <span class="logo-word" data-i18n="nav_logo_text">DarLink</span>
-        </a>
+        <a class="darlink-logo blue small" href="index.html" style="display:flex; flex-direction:row; align-items:center; gap:8px; text-decoration:none;">
+  <svg width="36" height="32" viewBox="0 0 110 100" fill="none">
+    <path d="M55 8 L98 42 L98 92 L12 92 L12 42 Z" fill="none" stroke="#00d4ff" stroke-width="6" stroke-linejoin="round"/>
+    <rect x="72" y="10" width="10" height="18" fill="none" stroke="#00d4ff" stroke-width="5.5"/>
+    <path d="M55 22 L88 50 L88 88 L22 88 L22 50 Z" fill="none" stroke="#5aa8c0" stroke-width="5" stroke-linejoin="round"/>
+    <path d="M32 88 L32 52 Q32 30 52 30 Q72 30 72 52 Q72 68 58 72 Q44 76 32 72" fill="none" stroke="#5aa8c0" stroke-width="5.5" stroke-linecap="round"/>
+    <line x1="32" y1="88" x2="75" y2="88" stroke="#5aa8c0" stroke-width="5.5" stroke-linecap="round"/>
+  </svg>
+  <span style="color:#00d4ff; font-size:22px; font-weight:700;">DarLink</span>
+</a>
     </div>
     <div class="side-nav-user">
         <div class="side-user-avatar" id="userAvatarSide">R</div>
@@ -241,6 +242,8 @@
         total: { en: "Total", ar: "الإجمالي" },
         
         // Booking Status
+        awaiting_approval: { en: "Awaiting Owner Approval", ar: "في انتظار موافقة المالك" },
+        owner_approved: { en: "Owner Approved", ar: "موافق من المالك" },
         payment_pending: { en: "Payment Pending", ar: "في انتظار الدفع" },
         paid_confirmed: { en: "Paid & Confirmed", ar: "مدفوع ومؤكد" },
         status_pending: { en: "Pending", ar: "قيد الانتظار" },
@@ -278,7 +281,7 @@
 
     function setLanguage(lang) {
         localStorage.setItem('site_lang', lang);
-        document.documentElement.setAttribute('dir', lang === 'ar' ? 'rtl' : 'ltr');
+        document.documentElement.setAttribute('dir', 'rtl');
         document.documentElement.setAttribute('lang', lang);
         updatePageText();
         loadBookings(); // Reload bookings to translate content
@@ -345,7 +348,7 @@
 
     // Initialize language
     const savedLang = getCurrentLang();
-    document.documentElement.setAttribute('dir', savedLang === 'ar' ? 'rtl' : 'ltr');
+    document.documentElement.setAttribute('dir', 'rtl');
     document.documentElement.setAttribute('lang', savedLang);
     updatePageText();
     
@@ -427,6 +430,9 @@
                 if (status === 'Completed') {
                     return b.BookingStatus === 'Completed' || (b.BookingStatus === 'Confirmed' && new Date(b.EndDate) < new Date());
                 }
+                if (status === 'Pending') {
+                    return b.BookingStatus === 'Pending' || b.BookingStatus === 'Approved';
+                }
                 return b.BookingStatus === status;
             });
         }
@@ -451,7 +457,10 @@
             let statusClass, statusText;
             if (b.BookingStatus === 'Pending') {
                 statusClass = 'status-pending';
-                statusText = t('payment_pending');
+                statusText = t('awaiting_approval');
+            } else if (b.BookingStatus === 'Approved') {
+                statusClass = 'status-confirmed';
+                statusText = t('owner_approved');
             } else if (b.BookingStatus === 'Confirmed') {
                 statusClass = isCompleted ? 'status-completed' : 'status-confirmed';
                 statusText = isCompleted ? t('status_completed') : t('paid_confirmed');
@@ -492,8 +501,8 @@
                         </div>
                     </div>
                     <div class="booking-actions">
-                        ${b.BookingStatus === 'Pending' ? `<button class="btn btn-primary" onclick="retryPayment(${b.BookingId})"><i class="fa-solid fa-credit-card"></i> ${t('retry_payment')}</button>` : ''}
-                        ${b.BookingStatus === 'Confirmed' && !isCompleted ? `<button class="btn btn-danger" onclick="cancelBooking(${b.BookingId})"><i class="fa-solid fa-xmark"></i> ${t('cancel_booking')}</button>` : ''}
+                        ${b.BookingStatus === 'Approved' ? `<button class="btn btn-primary" onclick="retryPayment(${b.BookingId})"><i class="fa-solid fa-credit-card"></i> ${t('retry_payment')}</button>` : ''}
+                        ${(b.BookingStatus === 'Confirmed' || b.BookingStatus === 'Approved') && !isCompleted ? `<button class="btn btn-danger" onclick="cancelBooking(${b.BookingId})"><i class="fa-solid fa-xmark"></i> ${t('cancel_booking')}</button>` : ''}
                         ${isCompleted ? `<button class="btn btn-warning" onclick="window.location.href='property-review.html?propertyId=${b.PropertyId}'"><i class="fa-solid fa-star"></i> ${t('write_review')}</button>` : ''}
                     </div>
                 </div>

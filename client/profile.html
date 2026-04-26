@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" dir="ltr">
+<html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -27,6 +27,7 @@
         }
         .side-nav-logo { padding: 24px 22px 20px; display: flex; align-items: center; gap: 12px; border-bottom: 1px solid var(--glass-border); }
         .side-nav-logo img { height: 42px; border-radius: 10px; }
+        .side-nav-logo span { font-size: 1.2rem; font-weight: 800; color: var(--primary); letter-spacing: -0.02em; }
         .side-nav-user { padding: 18px 22px; display: flex; align-items: center; gap: 12px; border-bottom: 1px solid var(--glass-border); background: rgba(10,132,255,0.04); }
         .side-user-avatar { width: 42px; height: 42px; border-radius: 50%; background: var(--primary); color: white; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 1.1rem; flex-shrink: 0; overflow: hidden; }
         .side-user-info .name { font-weight: 700; font-size: 0.95rem; color: var(--text-main); }
@@ -120,6 +121,10 @@
             .dash-main { margin-left: 0; padding: 80px 20px 30px; }
             .sidebar-toggle { display: flex; }
         }
+        [dir="rtl"] .side-nav { left: auto; right: 0; border-right: none; border-left: 1px solid var(--glass-border); box-shadow: -4px 0 24px rgba(0,0,0,0.06); }
+        [dir="rtl"] .sidebar-toggle { left: auto; right: 16px; }
+        [dir="rtl"] .dash-main { margin-left: 0; margin-right: 270px; }
+
         [data-theme="dark"] .side-nav { background: rgba(28,28,30,0.92); border-right-color: rgba(255,255,255,0.08); }
         [data-theme="dark"] .side-link { color: rgba(255,255,255,0.6); }
         [data-theme="dark"] .side-link:hover { background: rgba(255,255,255,0.07); color: white; }
@@ -134,16 +139,16 @@
 
 <aside class="side-nav" id="sideNav">
     <div class="side-nav-logo">
-        <a class="logo" href="index.html" style="text-decoration:none;">
-            <svg width="36" height="32" viewBox="0 0 110 100" fill="none" aria-hidden="true">
-                <path d="M55 8 L98 42 L98 92 L12 92 L12 42 Z" fill="none" stroke="#00d4ff" stroke-width="6" stroke-linejoin="round"/>
-                <rect x="72" y="10" width="10" height="18" fill="none" stroke="#00d4ff" stroke-width="5.5"/>
-                <path d="M55 22 L88 50 L88 88 L22 88 L22 50 Z" fill="none" stroke="#5aa8c0" stroke-width="5" stroke-linejoin="round"/>
-                <path d="M32 88 L32 52 Q32 30 52 30 Q72 30 72 52 Q72 68 58 72 Q44 76 32 72" fill="none" stroke="#5aa8c0" stroke-width="5.5" stroke-linecap="round"/>
-                <line x1="32" y1="88" x2="75" y2="88" stroke="#5aa8c0" stroke-width="5.5" stroke-linecap="round"/>
-            </svg>
-            <span class="logo-word" data-i18n="nav_logo_text">DarLink</span>
-        </a>
+        <a class="darlink-logo blue small" href="index.html" style="display:flex; flex-direction:row; align-items:center; gap:8px; text-decoration:none;">
+  <svg width="36" height="32" viewBox="0 0 110 100" fill="none">
+    <path d="M55 8 L98 42 L98 92 L12 92 L12 42 Z" fill="none" stroke="#00d4ff" stroke-width="6" stroke-linejoin="round"/>
+    <rect x="72" y="10" width="10" height="18" fill="none" stroke="#00d4ff" stroke-width="5.5"/>
+    <path d="M55 22 L88 50 L88 88 L22 88 L22 50 Z" fill="none" stroke="#5aa8c0" stroke-width="5" stroke-linejoin="round"/>
+    <path d="M32 88 L32 52 Q32 30 52 30 Q72 30 72 52 Q72 68 58 72 Q44 76 32 72" fill="none" stroke="#5aa8c0" stroke-width="5.5" stroke-linecap="round"/>
+    <line x1="32" y1="88" x2="75" y2="88" stroke="#5aa8c0" stroke-width="5.5" stroke-linecap="round"/>
+  </svg>
+  <span style="color:#00d4ff; font-size:22px; font-weight:700;">DarLink</span>
+</a>
     </div>
     <div class="side-nav-user">
         <div class="side-user-avatar" id="userAvatarSide">U</div>
@@ -303,7 +308,7 @@
 
     function setLanguage(lang) {
         localStorage.setItem('site_lang', lang);
-        document.documentElement.setAttribute('dir', lang === 'ar' ? 'rtl' : 'ltr');
+        document.documentElement.setAttribute('dir', 'rtl');
         document.documentElement.setAttribute('lang', lang);
         updatePageText();
         
@@ -383,7 +388,8 @@
         window.location.href = 'login.html';
     } else {
         // Setup initial UI
-        document.getElementById('userNameSide').textContent = `${user.FirstName || ''} ${user.LastName || ''}`.trim() || 'User';
+        const initialName = user.FullName || `${user.FirstName || ''} ${user.LastName || ''}`.trim();
+        document.getElementById('userNameSide').textContent = initialName || 'User';
         
         // Generate Sidebar links dynamically
         const sidebarLinks = document.getElementById('sidebarLinks');
@@ -412,7 +418,7 @@
 
     // Initialize language
     const savedLang = getCurrentLang();
-    document.documentElement.setAttribute('dir', savedLang === 'ar' ? 'rtl' : 'ltr');
+    document.documentElement.setAttribute('dir', 'rtl');
     document.documentElement.setAttribute('lang', savedLang);
     updatePageText();
     
@@ -445,10 +451,23 @@
         try {
             const response = await fetch(`${API_URL}/users/${user.UserId}`);
             if (!response.ok) throw new Error("Failed to load profile");
-            const userData = await response.json();
+            let userData = await response.json();
+            
+            // Handle array response if necessary
+            if (Array.isArray(userData)) userData = userData[0];
+            if (!userData) throw new Error("User data not found");
 
-            const fullName = `${userData.FirstName || ''} ${userData.LastName || ''}`.trim();
-            const initials = (userData.FirstName?.[0] || 'U') + (userData.LastName?.[0] || '');
+            // Robust name handling (fallback to FullName)
+            let fName = userData.FirstName || '';
+            let lName = userData.LastName || '';
+            if (!fName && !lName && userData.FullName) {
+                const parts = userData.FullName.split(' ');
+                fName = parts[0] || '';
+                lName = parts.slice(1).join(' ') || '';
+            }
+
+            const fullName = userData.FullName || `${fName} ${lName}`.trim();
+            const initials = (fName?.[0] || fullName?.[0] || 'U') + (lName?.[0] || '');
 
             const setAvatar = (el) => {
                 if (userData.ProfilePicturePath) {
@@ -461,9 +480,10 @@
             setAvatar(document.getElementById('profileAvatarLg'));
 
             document.getElementById('profileNameLg').textContent = fullName;
+            document.getElementById('profileRoleLg').textContent = userData.UserType === 'Owner' ? t('property_owner') : t('renter');
 
-            document.getElementById('inp-firstName').value = userData.FirstName || '';
-            document.getElementById('inp-lastName').value = userData.LastName || '';
+            document.getElementById('inp-firstName').value = fName;
+            document.getElementById('inp-lastName').value = lName;
             document.getElementById('inp-email').value = userData.Email || '';
             document.getElementById('inp-phone').value = userData.PhoneNumber || '';
 
@@ -475,9 +495,10 @@
                     document.getElementById('idCardImage').style.display = 'block';
                     document.getElementById('noIdImage').style.display = 'none';
                 }
-                updatePageText(); // Update ID section translations after showing it
+                updatePageText();
             }
         } catch (error) {
+            console.error(error);
             document.getElementById('messageBox').innerHTML = `<div style="padding:16px; background:rgba(255,59,48,0.1); color:#c00; border-radius:12px; margin-bottom:20px; text-align:center;"><i class="fa-solid fa-triangle-exclamation"></i> ${t('profile_load_failed')}</div>`;
         }
     }
@@ -495,10 +516,13 @@
     }
 
     async function saveProfile() {
+        const fName = document.getElementById('inp-firstName').value.trim();
+        const lName = document.getElementById('inp-lastName').value.trim();
         const updatedData = {
             UserId: user.UserId,
-            FirstName: document.getElementById('inp-firstName').value.trim(),
-            LastName: document.getElementById('inp-lastName').value.trim(),
+            FullName: `${fName} ${lName}`.trim(),
+            FirstName: fName,
+            LastName: lName,
             Email: document.getElementById('inp-email').value.trim(),
             PhoneNumber: document.getElementById('inp-phone').value.trim()
         };
@@ -525,8 +549,9 @@
                     el.classList.remove('editable');
                 });
                 
-                document.getElementById('userNameSide').textContent = `${updatedData.FirstName} ${updatedData.LastName}`;
-                document.getElementById('profileNameLg').textContent = `${updatedData.FirstName} ${updatedData.LastName}`;
+                const displayFull = updatedData.FullName || `${updatedData.FirstName} ${updatedData.LastName}`;
+                document.getElementById('userNameSide').textContent = displayFull;
+                document.getElementById('profileNameLg').textContent = displayFull;
 
             } else {
                 alert(data.error || t('update_failed'));

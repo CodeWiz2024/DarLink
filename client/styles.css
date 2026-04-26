@@ -1,7 +1,8 @@
 /* Shared IHM - Vacation Rental | Premium iOS Glassmorphism */
-@import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Cairo:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700;800&display=swap');
 
 * { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
 :root {
     --primary: #0A84FF;
     --primary-dark: #0062D1;
@@ -11,8 +12,7 @@
     --card-hover-shadow: 0 16px 48px rgba(0,0,0,0.12);
     --radius: 16px;
     --radius-lg: 24px;
-    --font: 'Inter', 'Cairo', -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
-    --font-display: 'Syne', 'Inter', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+    --font: 'Cairo', 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
     --glass-bg: rgba(255, 255, 255, 0.75);
     --glass-border: rgba(255, 255, 255, 0.6);
     --text-main: #1d1d1f;
@@ -74,51 +74,9 @@ a:hover { text-decoration: underline; }
     z-index: 1000;
     transition: all 0.3s ease;
 }
+[dir="rtl"] .navbar { flex-direction: row-reverse; }
 .navbar:hover { background: rgba(255, 255, 255, 0.85); }
-.navbar .logo {
-    display: inline-flex;
-    align-items: center;
-    gap: 10px;
-    font-size: 1.5rem;
-    font-weight: 800;
-    color: var(--primary);
-    letter-spacing: -0.03em;
-    text-decoration: none;
-}
-.navbar .logo:hover { text-decoration: none; }
-.logo svg {
-    flex-shrink: 0;
-    display: block;
-    animation: logoPulse 3s ease-in-out infinite;
-}
-@keyframes logoPulse {
-    0%, 100% { opacity: 1; transform: scale(1); }
-    50% { opacity: 0.92; transform: scale(1.02); }
-}
-.logo-word {
-    color: #00d4ff;
-    font-size: 22px;
-    font-weight: 700;
-    font-family: var(--font-display);
-    letter-spacing: -0.02em;
-}
-/* Same cyan as index.html; beats parent .nav-logo / .navbar .logo color */
-.navbar .logo .logo-word,
-.side-nav-logo .logo .logo-word,
-.nav-logo .logo-word {
-    color: #00d4ff;
-}
-[data-theme="dark"] .navbar .logo .logo-word,
-[data-theme="dark"] .side-nav-logo .logo .logo-word {
-    color: #00d4ff;
-}
-.side-nav-logo .logo {
-    display: inline-flex;
-    align-items: center;
-    gap: 10px;
-    text-decoration: none;
-}
-.side-nav-logo .logo:hover { text-decoration: none; }
+.navbar .logo { display: inline-flex; align-items: center; gap: 10px; font-size: 1.5rem; font-weight: 800; color: var(--primary); letter-spacing: -0.03em; }
 .logo-icon { font-size: 1.4rem; }
 .navbar .links { display: flex; gap: 6px; align-items: center; }
 .navbar .links a, .navbar .links button {
@@ -142,6 +100,7 @@ a:hover { text-decoration: underline; }
     color: white;
 }
 .lang-switch { display: flex; gap: 4px; margin-left: 12px; }
+[dir="rtl"] .lang-switch { margin-left: 0; margin-right: 12px; }
 .lang-btn {
     padding: 6px 12px;
     border-radius: 10px;
@@ -878,8 +837,8 @@ a:hover { text-decoration: underline; }
 /* Cards grid */
 .cards-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-    gap: 24px;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 30px;
 }
 .card {
     background: var(--glass-bg);
@@ -889,7 +848,7 @@ a:hover { text-decoration: underline; }
     overflow: hidden;
     box-shadow: var(--card-shadow);
     border: 1px solid var(--glass-border);
-    transition: all 0.7s cubic-bezier(0.25, 0.8, 0.25, 1);
+    transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
     position: relative;
     display: flex;
     flex-direction: column;
@@ -1404,6 +1363,7 @@ a:hover { text-decoration: underline; }
     transition: transform 0.2s;
 }
 .property-card-list:hover { transform: translateX(4px); }
+[dir="rtl"] .property-card-list:hover { transform: translateX(-4px); }
 .property-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 14px; flex-wrap: wrap; gap: 10px; }
 .property-status {
     padding: 6px 14px;
@@ -1452,6 +1412,7 @@ a:hover { text-decoration: underline; }
     transition: transform 0.2s;
 }
 .booking-card:hover { transform: translateX(4px); }
+[dir="rtl"] .booking-card:hover { transform: translateX(-4px); }
 .booking-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 16px; flex-wrap: wrap; gap: 10px; }
 .booking-property { font-size: 1.2rem; font-weight: 600; color: #1d1d1f; }
 .booking-status {
@@ -1645,15 +1606,6 @@ a:hover { text-decoration: underline; }
     .info-row { grid-template-columns: 1fr; }
     .property-header { flex-direction: column; }
     .booking-header { flex-direction: column; }
-    
-    /* Mobile card adjustments - smaller and slower */
-    .cards-grid { grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 16px; }
-    .card { transition: all 0.9s cubic-bezier(0.25, 0.8, 0.25, 1); }
-    .card-img { height: 180px; }
-    .card-body { padding: 16px; }
-    .card-body h3 { font-size: 1.1rem; }
-    .card-body .price { font-size: 1.15rem; }
-    .card-body .features { gap: 8px; font-size: 0.8rem; }
 }
 
 /* Dark mode packages button */
@@ -1707,3 +1659,116 @@ a:hover { text-decoration: underline; }
     padding-left: 20px;
     background: rgba(10,132,255,0.07);
 }
+
+/* =========================================
+   Skeleton Screen & UI Enhancements
+   ========================================= */
+@keyframes skeleton-loading {
+    0% { background-color: rgba(150, 150, 150, 0.1); }
+    50% { background-color: rgba(150, 150, 150, 0.25); }
+    100% { background-color: rgba(150, 150, 150, 0.1); }
+}
+
+.skeleton {
+    animation: skeleton-loading 1.2s ease-in-out infinite alternate;
+    border-radius: var(--radius) !important;
+    color: transparent !important;
+    box-shadow: none !important;
+}
+
+[data-theme="dark"] .skeleton {
+    animation-name: skeleton-loading-dark;
+}
+
+@keyframes skeleton-loading-dark {
+    0% { background-color: rgba(255, 255, 255, 0.05); }
+    50% { background-color: rgba(255, 255, 255, 0.1); }
+    100% { background-color: rgba(255, 255, 255, 0.05); }
+}
+
+/* Prominent Price Strike-Through */
+.prop-card-price .old-price,
+del.old-price {
+    font-size: 0.8rem;
+    color: #ff3b30 !important;
+    text-decoration: line-through;
+    font-weight: 500;
+    margin-right: 6px;
+    opacity: 0.85;
+}
+
+/* =========================================
+   Mobile Global Responsive Fixes
+   ========================================= */
+@media (max-width: 768px) {
+    body {
+        padding-bottom: 85px !important;
+    }
+    .hero h1, .hero-title {
+        font-size: 28px !important;
+    }
+    .prop-card-title {
+        font-size: 16px !important;
+    }
+    button, .btn, .lang-btn, .theme-btn, .action-btn {
+        min-height: 44px;
+        min-width: 44px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+    }
+    .mobile-bottom-nav {
+        display: flex;
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        height: 65px;
+        background: var(--glass-bg, rgba(255, 255, 255, 0.95));
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+        border-top: 1px solid var(--glass-border, rgba(0,0,0,0.1));
+        z-index: 9999;
+        justify-content: space-around;
+        align-items: center;
+        box-shadow: 0 -4px 16px rgba(0,0,0,0.05);
+    }
+    .mobile-bottom-nav a {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        text-decoration: none;
+        color: var(--text-muted, #8e8e93);
+        font-size: 0.7rem;
+        font-weight: 600;
+        gap: 4px;
+        flex: 1;
+        height: 100%;
+        transition: color 0.2s;
+    }
+    .mobile-bottom-nav a i {
+        font-size: 1.2rem;
+        margin-bottom: 2px;
+    }
+    .mobile-bottom-nav a.active, .mobile-bottom-nav a:hover {
+        color: var(--primary, #0A84FF);
+    }
+    [data-theme="dark"] .mobile-bottom-nav {
+        background: rgba(28,28,30,0.95);
+        border-top: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    .site-footer {
+        padding-bottom: 80px !important; 
+    }
+    .dash-main, .page-body {
+        padding-bottom: 80px !important;
+    }
+}
+@media (min-width: 769px) {
+    .mobile-bottom-nav {
+        display: none !important;
+    }
+}
+[dir="rtl"] .mobile-close-btn { left: 16px; right: auto !important; }
+[dir="rtl"] .navbar .links.mobile-open { text-align: right; align-items: flex-start; }

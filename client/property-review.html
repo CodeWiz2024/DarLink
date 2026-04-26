@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -147,29 +147,19 @@
             justify-content: flex-end;
         }
         .back-btn {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
+            display: inline-block;
             padding: 10px 20px;
             background: rgba(255,255,255,0.9);
             color: var(--primary);
             text-decoration: none;
             border-radius: 8px;
             margin-bottom: 20px;
-            border: 2px solid var(--primary);
-            font-weight: 500;
-            transition: all 0.3s ease;
-        }
-        .back-btn:hover {
-            background: var(--primary);
-            color: white;
-            transform: translateX(-4px);
         }
     </style>
 </head>
 <body>
     <div class="review-container">
-        <a href="javascript:history.back()" class="back-btn"><i class="fa-solid fa-arrow-left"></i> Back</a>
+        <a href="javascript:history.back()" class="back-btn">? Back</a>
 
         <div class="property-header" id="propertyHeader">
             <!-- Will be filled by JavaScript -->

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" dir="ltr">
+<html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -26,14 +26,15 @@
             background: var(--glass-bg);
             backdrop-filter: saturate(180%) blur(24px);
             -webkit-backdrop-filter: saturate(180%) blur(24px);
-            border-right: 1px solid var(--glass-border);
+            border-left: 1px solid var(--glass-border);
             display: flex; flex-direction: column;
-            position: fixed; top: 0; left: 0; height: 100vh; z-index: 100;
+            position: fixed; top: 0; right: 0; height: 100vh; z-index: 100;
             transition: transform 0.3s ease;
-            box-shadow: 4px 0 24px rgba(0,0,0,0.06);
+            box-shadow: -4px 0 24px rgba(0,0,0,0.06);
         }
         .side-nav-logo { padding: 24px 22px 20px; display: flex; align-items: center; gap: 12px; border-bottom: 1px solid var(--glass-border); }
         .side-nav-logo img { height: 42px; border-radius: 10px; }
+        .side-nav-logo span { font-size: 1.2rem; font-weight: 800; color: var(--primary); letter-spacing: -0.02em; }
         .side-nav-user { padding: 18px 22px; display: flex; align-items: center; gap: 12px; border-bottom: 1px solid var(--glass-border); background: rgba(10,132,255,0.04); }
         .side-user-avatar { width: 42px; height: 42px; border-radius: 50%; background: var(--primary); color: white; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 1.1rem; flex-shrink: 0; overflow: hidden; }
         .side-user-info .name { font-weight: 700; font-size: 0.95rem; color: var(--text-main); }
@@ -59,7 +60,7 @@
         .side-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.4); backdrop-filter: blur(4px); z-index: 99; }
 
         /* MAIN CONTENT */
-        .dash-main { margin-left: 270px; flex: 1; padding: 32px 36px; min-height: 100vh; }
+        .dash-main { margin-right: 270px; flex: 1; padding: 32px 36px; min-height: 100vh; }
         .dash-topbar { margin-bottom: 28px; }
         .dash-page-title h1 { font-size: 1.8rem; font-weight: 800; color: var(--text-main); margin: 0 0 6px; }
         .dash-page-title p { color: var(--text-muted); font-size: 1rem; margin: 0; }
@@ -336,43 +337,113 @@
             border: 1px solid rgba(255,59,48,0.3);
         }
 
+        /* STEPPER */
+        .stepper {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 40px;
+            position: relative;
+        }
+        .stepper::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: var(--glass-border);
+            z-index: 1;
+            transform: translateY(-50%);
+        }
+        .step {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: var(--glass-bg);
+            border: 2px solid var(--glass-border);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 2;
+            font-weight: 700;
+            transition: all 0.3s;
+            color: var(--text-muted);
+        }
+        .step.active {
+            background: var(--primary);
+            border-color: var(--primary);
+            color: white;
+            box-shadow: 0 0 15px rgba(94, 93, 240, 0.4);
+        }
+        .step.completed {
+            background: #34C759;
+            border-color: #34C759;
+            color: white;
+        }
+
+        .form-step {
+            display: none;
+            animation: fadeIn 0.4s ease;
+        }
+        .form-step.active {
+            display: block;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .step-footer {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 30px;
+            gap: 15px;
+        }
+        .btn-step {
+            flex: 1;
+            padding: 14px;
+            border-radius: 12px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s;
+            border: none;
+        }
+        .btn-next { background: var(--primary); color: white; }
+        .btn-prev { background: rgba(0,0,0,0.05); color: var(--text-main); }
+        [data-theme="dark"] .btn-prev { background: rgba(255,255,255,0.05); }
+
         @media (max-width: 900px) {
             .side-nav { transform: translateX(-100%); }
-            .side-nav.open { transform: translateX(0); }
+            [dir="rtl"] .side-nav { transform: translateX(100%); }
+            .side-nav.open, [dir="rtl"] .side-nav.open { transform: translateX(0); }
             .side-overlay.show { display: block; }
-            .dash-main { margin-left: 0; padding: 80px 20px 30px; }
+            .dash-main, [dir="rtl"] .dash-main { margin-left: 0; margin-right: 0; padding: 80px 20px 30px; }
             .sidebar-toggle { display: flex; }
             .form-row { grid-template-columns: 1fr; }
         }
-
-        [data-theme="dark"] .side-nav { background: rgba(28,28,30,0.92); border-right-color: rgba(255,255,255,0.08); }
-        [data-theme="dark"] .side-link { color: rgba(255,255,255,0.6); }
-        [data-theme="dark"] .side-link:hover { background: rgba(255,255,255,0.07); color: white; }
-        [data-theme="dark"] .theme-toggle-side { color: rgba(255,255,255,0.6); }
-        [data-theme="dark"] .theme-toggle-side:hover { color: white; background: rgba(255,255,255,0.07); }
-        [data-theme="dark"] .form-card input,
-        [data-theme="dark"] .form-card textarea,
-        [data-theme="dark"] .form-card select { background: rgba(255,255,255,0.05); }
-        [data-theme="dark"] #selectedFeatures { background: rgba(255,255,255,0.05); }
+        [dir="rtl"] .side-nav { left: auto; right: 0; border-right: none; border-left: 1px solid var(--glass-border); box-shadow: -4px 0 24px rgba(0,0,0,0.06); }
+        [dir="rtl"] .sidebar-toggle { left: auto; right: 16px; }
+        [dir="rtl"] .dash-main { margin-left: 0; margin-right: 270px; }
     </style>
 </head>
 <body>
 
+<div class="dash-layout">
 <button class="sidebar-toggle" onclick="toggleSidebar()"><i class="fa-solid fa-bars"></i></button>
 <div class="side-overlay" id="sideOverlay" onclick="closeSidebar()"></div>
 
 <aside class="side-nav" id="sideNav">
     <div class="side-nav-logo">
-        <a class="logo" href="index.html" style="text-decoration:none;">
-            <svg width="36" height="32" viewBox="0 0 110 100" fill="none" aria-hidden="true">
-                <path d="M55 8 L98 42 L98 92 L12 92 L12 42 Z" fill="none" stroke="#00d4ff" stroke-width="6" stroke-linejoin="round"/>
-                <rect x="72" y="10" width="10" height="18" fill="none" stroke="#00d4ff" stroke-width="5.5"/>
-                <path d="M55 22 L88 50 L88 88 L22 88 L22 50 Z" fill="none" stroke="#5aa8c0" stroke-width="5" stroke-linejoin="round"/>
-                <path d="M32 88 L32 52 Q32 30 52 30 Q72 30 72 52 Q72 68 58 72 Q44 76 32 72" fill="none" stroke="#5aa8c0" stroke-width="5.5" stroke-linecap="round"/>
-                <line x1="32" y1="88" x2="75" y2="88" stroke="#5aa8c0" stroke-width="5.5" stroke-linecap="round"/>
-            </svg>
-            <span class="logo-word" data-i18n="nav_logo_text">DarLink</span>
-        </a>
+        <a class="darlink-logo blue small" href="index.html" style="display:flex; flex-direction:row; align-items:center; gap:8px; text-decoration:none;">
+  <svg width="36" height="32" viewBox="0 0 110 100" fill="none">
+    <path d="M55 8 L98 42 L98 92 L12 92 L12 42 Z" fill="none" stroke="#00d4ff" stroke-width="6" stroke-linejoin="round"/>
+    <rect x="72" y="10" width="10" height="18" fill="none" stroke="#00d4ff" stroke-width="5.5"/>
+    <path d="M55 22 L88 50 L88 88 L22 88 L22 50 Z" fill="none" stroke="#5aa8c0" stroke-width="5" stroke-linejoin="round"/>
+    <path d="M32 88 L32 52 Q32 30 52 30 Q72 30 72 52 Q72 68 58 72 Q44 76 32 72" fill="none" stroke="#5aa8c0" stroke-width="5.5" stroke-linecap="round"/>
+    <line x1="32" y1="88" x2="75" y2="88" stroke="#5aa8c0" stroke-width="5.5" stroke-linecap="round"/>
+  </svg>
+  <span style="color:#00d4ff; font-size:22px; font-weight:700;">DarLink</span>
+</a>
     </div>
     <div class="side-nav-user">
         <div class="side-user-avatar" id="userAvatarSide">O</div>
@@ -418,115 +489,135 @@
     <div class="form-card">
         <div id="message"></div>
 
+        <!-- Stepper -->
+        <div class="stepper">
+            <div class="step active" id="stepIndicator1">1</div>
+            <div class="step" id="stepIndicator2">2</div>
+            <div class="step" id="stepIndicator3">3</div>
+        </div>
+
         <form id="addPropertyForm">
-            <!-- Title -->
-            <label><span id="labelTitle">Title</span> <span class="required">*</span></label>
-            <input type="text" id="Title" required>
+            <!-- STEP 1: BASIC INFO -->
+            <div class="form-step active" id="step1">
+                <label><span id="labelTitle">Title</span> <span class="required">*</span></label>
+                <input type="text" id="Title" required>
 
-            <!-- Description -->
-            <label><span id="labelDescription">Description</span> <span class="required">*</span></label>
-            <textarea id="Description" required></textarea>
+                <label><span id="labelDescription">Description</span> <span class="required">*</span></label>
+                <textarea id="Description" required></textarea>
 
-            <!-- Address -->
-            <label><span id="labelAddress">Address</span> <span class="required">*</span></label>
-            <input type="text" id="Address" required>
-
-            <!-- City & Wilaya -->
-            <div class="form-row">
-                <div>
-                    <label><span id="labelCity">City</span> <span class="required">*</span></label>
-                    <input type="text" id="City" required>
+                <div class="form-row">
+                    <div>
+                        <label><span id="labelPropertyType">Property Type</span> <span class="required">*</span></label>
+                        <select id="PropertyType" required>
+                            <option value="" id="optionSelectType">Select type</option>
+                            <option value="Apartment" id="optionApartment">Apartment</option>
+                            <option value="House" id="optionHouse">House</option>
+                            <option value="Room" id="optionRoom">Room</option>
+                            <option value="Cottage" id="optionCottage">Cottage</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label><span id="labelRooms">Number of Rooms</span> <span class="required">*</span></label>
+                        <input type="number" id="NumofRooms" placeholder="3" min="1" required>
+                    </div>
                 </div>
-                <div>
-                    <label><span id="labelWilaya">Wilaya</span> <span class="required">*</span></label>
-                    <select id="Wilaya" required>
-                        <option value="" id="optionSelectWilaya">Select Wilaya</option>
+
+                <label>
+                    <span id="labelPrice">Price Per Night (DZD)</span> <span class="required">*</span>
+                    <small id="priceNote">(10% profit will be added automatically)</small>
+                </label>
+                <input type="number" id="PricePerNight" placeholder="5000" min="0" step="100" required>
+
+                <div class="step-footer">
+                    <button type="button" class="btn-step btn-next" onclick="goToStep(2)">
+                        <span data-i18n="next_btn">Next</span> <i class="fa-solid fa-chevron-right"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- STEP 2: LOCATION -->
+            <div class="form-step" id="step2">
+                <label><span id="labelAddress">Address</span> <span class="required">*</span></label>
+                <input type="text" id="Address" required>
+
+                <div class="form-row">
+                    <div>
+                        <label><span id="labelCity">City</span> <span class="required">*</span></label>
+                        <input type="text" id="City" required>
+                    </div>
+                    <div>
+                        <label><span id="labelWilaya">Wilaya</span> <span class="required">*</span></label>
+                        <select id="Wilaya" required>
+                            <option value="" id="optionSelectWilaya">Select Wilaya</option>
+                        </select>
+                    </div>
+                </div>
+
+                <label style="margin-top: 8px;"><span id="labelMap">Location on Map (Click to set location)</span> <span class="required">*</span></label>
+                <div id="map"></div>
+                <div class="form-row" style="margin-bottom: 20px;">
+                    <div>
+                        <input type="number" id="Latitude" placeholder="Latitude" step="0.000001" readonly style="background: rgba(0,0,0,0.03); opacity: 0.8;">
+                    </div>
+                    <div>
+                        <input type="number" id="Longitude" placeholder="Longitude" step="0.000001" readonly style="background: rgba(0,0,0,0.03); opacity: 0.8;">
+                    </div>
+                </div>
+
+                <div class="step-footer">
+                    <button type="button" class="btn-step btn-prev" onclick="goToStep(1)">
+                        <i class="fa-solid fa-chevron-left"></i> <span data-i18n="prev_btn">Back</span>
+                    </button>
+                    <button type="button" class="btn-step btn-next" onclick="goToStep(3)">
+                        <span data-i18n="next_btn">Next</span> <i class="fa-solid fa-chevron-right"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- STEP 3: FEATURES & MEDIA -->
+            <div class="form-step" id="step3">
+                <label id="labelFeatures">Features</label>
+                <div id="selectedFeatures">
+                    <p class="no-features-msg" id="noFeaturesMsg">No features selected</p>
+                </div>
+                <div class="feature-controls">
+                    <select id="featureSelect">
+                        <option value="" id="optionSelectFeature">Select a feature...</option>
                     </select>
+                    <button type="button" onclick="addFeature()" class="btn-primary" id="btnAddFeature">Add</button>
                 </div>
-            </div>
-
-            <!-- Property Type & Rooms -->
-            <div class="form-row">
-                <div>
-                    <label><span id="labelPropertyType">Property Type</span> <span class="required">*</span></label>
-                    <select id="PropertyType" required>
-                        <option value="" id="optionSelectType">Select type</option>
-                        <option value="Apartment" id="optionApartment">Apartment</option>
-                        <option value="House" id="optionHouse">House</option>
-                        <option value="Room" id="optionRoom">Room</option>
-                        <option value="Cottage" id="optionCottage">Cottage</option>
-                    </select>
+                <div class="features-label-text" id="customFeatureLabel">Or add a custom feature:</div>
+                <div class="feature-controls">
+                    <input type="text" id="customFeatureInput" placeholder="">
+                    <button type="button" onclick="addCustomFeature()" class="btn-secondary" id="btnAddCustomFeature">Add</button>
                 </div>
-                <div>
-                    <label><span id="labelRooms">Number of Rooms</span> <span class="required">*</span></label>
-                    <input type="number" id="NumofRooms" placeholder="3" min="1" required>
-                </div>
-            </div>
 
-            <!-- Price -->
-            <label>
-                <span id="labelPrice">Price Per Night (DZD)</span> <span class="required">*</span>
-                <small id="priceNote">(10% profit will be added automatically)</small>
-            </label>
-            <input type="number" id="PricePerNight" placeholder="5000" min="0" step="100" required>
-
-            <!-- Features Section -->
-            <label id="labelFeatures">Features</label>
-            
-            <!-- Selected features display -->
-            <div id="selectedFeatures">
-                <p class="no-features-msg" id="noFeaturesMsg">No features selected</p>
-            </div>
-            
-            <!-- Select from existing features -->
-            <div class="feature-controls">
-                <select id="featureSelect">
-                    <option value="" id="optionSelectFeature">Select a feature...</option>
+                <label id="labelAvailability">Availability Status</label>
+                <select id="AvailabilityStatus">
+                    <option value="Active" id="optionActive">Active</option>
+                    <option value="Inactive" id="optionInactive">Inactive</option>
                 </select>
-                <button type="button" onclick="addFeature()" class="btn-primary" id="btnAddFeature">Add</button>
-            </div>
-            
-            <!-- Add custom feature -->
-            <div class="features-label-text" id="customFeatureLabel">Or add a custom feature:</div>
-            <div class="feature-controls">
-                <input type="text" id="customFeatureInput" placeholder="">
-                <button type="button" onclick="addCustomFeature()" class="btn-secondary" id="btnAddCustomFeature">Add</button>
-            </div>
 
-            <!-- Map -->
-            <label style="margin-top: 8px;"><span id="labelMap">Location on Map (Click to set location)</span> <span class="required">*</span></label>
-            <div id="map"></div>
-            <div class="form-row" style="margin-bottom: 20px;">
-                <div>
-                    <input type="number" id="Latitude" placeholder="Latitude" step="0.000001" readonly style="background: rgba(0,0,0,0.03); opacity: 0.8;">
-                </div>
-                <div>
-                    <input type="number" id="Longitude" placeholder="Longitude" step="0.000001" readonly style="background: rgba(0,0,0,0.03); opacity: 0.8;">
+                <label>
+                    <span id="labelImages">Property Images</span> <span class="required">*</span>
+                    <small id="imagesNote">(At least 1 image required)</small>
+                </label>
+                <input type="file" id="PropertyImages" accept="image/*" multiple required>
+                <div id="imagePreview"></div>
+
+                <div class="step-footer">
+                    <button type="button" class="btn-step btn-prev" onclick="goToStep(2)">
+                        <i class="fa-solid fa-chevron-left"></i> <span data-i18n="prev_btn">Back</span>
+                    </button>
+                    <button type="submit" id="submitBtn" class="btn-step btn-next">
+                        <i class="fa-solid fa-plus-circle"></i> <span id="submitBtnText">Add Property</span>
+                    </button>
                 </div>
             </div>
-
-            <!-- Availability Status -->
-            <label id="labelAvailability">Availability Status</label>
-            <select id="AvailabilityStatus">
-                <option value="Active" id="optionActive">Active</option>
-                <option value="Inactive" id="optionInactive">Inactive</option>
-            </select>
-
-            <!-- Property Images -->
-            <label>
-                <span id="labelImages">Property Images</span> <span class="required">*</span>
-                <small id="imagesNote">(At least 1 image required)</small>
-            </label>
-            <input type="file" id="PropertyImages" accept="image/*" multiple required>
-            <div id="imagePreview"></div>
-
-            <!-- Submit Button -->
-            <button type="submit" id="submitBtn" class="btn-submit">
-                <i class="fa-solid fa-plus-circle"></i> <span id="submitBtnText">Add Property</span>
-            </button>
         </form>
     </div>
 </main>
+</div>
 
 <script>
     // ===== TRANSLATIONS =====
@@ -597,7 +688,10 @@
         upload_image: { en: "Please upload at least one image", ar: "يرجى رفع صورة واحدة على الأقل" },
         property_added: { en: "Property added successfully!", ar: "تمت إضافة العقار بنجاح!" },
         network_error: { en: "Network error. Please try again.", ar: "خطأ في الشبكة. حاول مرة أخرى." },
-        image_too_large: { en: "Image is too large (max 5MB)", ar: "الصورة كبيرة جداً (الحد الأقصى 5 ميجابايت)" }
+        image_too_large: { en: "Image is too large (max 5MB)", ar: "الصورة كبيرة جداً (الحد الأقصى 5 ميجابايت)" },
+        next_btn: { en: "Next", ar: "التالي" },
+        prev_btn: { en: "Back", ar: "السابق" },
+        fill_required: { en: "Please fill all required fields", ar: "يرجى ملء جميع الحقول المطلوبة" },
     };
 
     // ===== LANGUAGE FUNCTIONS =====
@@ -607,7 +701,7 @@
 
     function setLanguage(lang) {
         localStorage.setItem('site_lang', lang);
-        document.documentElement.setAttribute('dir', lang === 'ar' ? 'rtl' : 'ltr');
+        document.documentElement.setAttribute('dir', 'rtl');
         document.documentElement.setAttribute('lang', lang);
         updatePageText();
         
@@ -701,7 +795,7 @@
 
     // Initialize language
     const savedLang = getCurrentLang();
-    document.documentElement.setAttribute('dir', savedLang === 'ar' ? 'rtl' : 'ltr');
+    document.documentElement.setAttribute('dir', 'rtl');
     document.documentElement.setAttribute('lang', savedLang);
     updatePageText();
     
@@ -740,6 +834,58 @@
     function logout() {
         localStorage.removeItem('user');
         window.location.href = 'index.html';
+    }
+
+    // ===== MULTI-STEP LOGIC =====
+    let currentStep = 1;
+
+    function goToStep(step) {
+        // Basic validation before going forward
+        if (step > currentStep) {
+            if (currentStep === 1) {
+                const title = document.getElementById('Title').value;
+                const desc = document.getElementById('Description').value;
+                const type = document.getElementById('PropertyType').value;
+                const rooms = document.getElementById('NumofRooms').value;
+                const price = document.getElementById('PricePerNight').value;
+                
+                if (!title || !desc || !type || !rooms || !price) {
+                    alert(t('fill_required'));
+                    return;
+                }
+            }
+            if (currentStep === 2) {
+                const addr = document.getElementById('Address').value;
+                const city = document.getElementById('City').value;
+                const wilaya = document.getElementById('Wilaya').value;
+                
+                if (!addr || !city || !wilaya) {
+                    alert(t('fill_required'));
+                    return;
+                }
+            }
+        }
+
+        // Update UI
+        document.querySelectorAll('.form-step').forEach(s => s.classList.remove('active'));
+        document.getElementById('step' + step).classList.add('active');
+        
+        document.querySelectorAll('.step').forEach((s, idx) => {
+            const sNum = idx + 1;
+            s.classList.remove('active', 'completed');
+            if (sNum < step) s.classList.add('completed');
+            if (sNum === step) s.classList.add('active');
+        });
+
+        currentStep = step;
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+
+        // Fix map display when step 2 opens
+        if (step === 2 && map) {
+            setTimeout(() => {
+                map.invalidateSize();
+            }, 200);
+        }
     }
 
     // ===== FEATURES MANAGEMENT =====

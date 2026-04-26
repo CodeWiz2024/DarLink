@@ -1,227 +1,276 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>User Profile & Reviews</title>
-    <link rel="stylesheet" href="styles.css">
+    <title>User Profile & Reviews - DarLink Premium</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
+    <script src="js/i18n-dashboard.js"></script><script src="lang.js"></script>
+    <script src="js/theme.js"></script>
     <style>
-        .profile-container {
-            max-width: 900px;
-            margin: 40px auto;
-            padding: 24px;
+        :root {
+            --primary: #5E5DF0;
+            --primary-dark: #3F3EE8;
+            --primary-light: rgba(94, 93, 240, 0.1);
+            --accent: #FF5A5F;
+            --gold: #FFB400;
+            --text-main: #0F172A;
+            --text-muted: #64748B;
+            --bg-color: #F8FAFC;
+            --glass-bg: rgba(255, 255, 255, 0.85);
+            --glass-border: rgba(255, 255, 255, 0.5);
+            --glass-shadow: 0 10px 40px rgba(0,0,0,0.05);
+            --card-r: 24px;
         }
-        .profile-card {
-            background: rgba(255, 255, 255, 0.85);
-            backdrop-filter: blur(20px);
-            border-radius: 16px;
-            padding: 40px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-            text-align: center;
-            margin-bottom: 30px;
+
+        [data-theme="dark"] {
+            --primary: #5E5DF0;
+            --text-main: #F8FAFC;
+            --text-muted: #94A3B8;
+            --bg-color: #0B0F19;
+            --glass-bg: rgba(15, 23, 42, 0.75);
+            --glass-border: rgba(255, 255, 255, 0.05);
+            --glass-shadow: 0 10px 40px rgba(0,0,0,0.4);
+            --primary-light: rgba(94, 93, 240, 0.2);
         }
-        .profile-avatar {
-            width: 120px;
-            height: 120px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 3rem;
-            font-weight: 700;
-            margin: 0 auto 20px;
-            box-shadow: 0 8px 24px rgba(0,0,0,0.2);
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: 'Tajawal', sans-serif;
+            background: var(--bg-color);
+            color: var(--text-main);
+            transition: all 0.3s;
+            overflow-x: hidden;
+            background-image: radial-gradient(circle at top right, var(--primary-light) 0%, transparent 40%);
         }
-        .profile-name {
-            font-size: 2rem;
-            font-weight: 700;
-            color: #333;
-            margin-bottom: 8px;
+        [dir="rtl"] body { background-image: radial-gradient(circle at top left, var(--primary-light) 0%, transparent 40%); }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 40px 20px;
+            animation: fadeUp 0.6s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
         }
-        .profile-type {
-            display: inline-block;
-            padding: 8px 20px;
-            background: var(--primary);
-            color: white;
-            border-radius: 20px;
-            font-weight: 600;
-            margin-bottom: 20px;
+
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
         }
-        .rating-overview {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 20px;
-            margin-top: 30px;
-        }
-        .rating-stat {
-            background: #f8f9fa;
-            padding: 20px;
-            border-radius: 12px;
-            text-align: center;
-        }
-        .rating-number {
-            font-size: 2.5rem;
-            font-weight: 700;
-            color: var(--primary);
-        }
-        .rating-stars {
-            color: #ffc107;
-            font-size: 1.5rem;
-            margin: 10px 0;
-        }
-        .rating-label {
-            color: #666;
-            font-size: 0.9rem;
-        }
-        .reviews-section {
-            background: rgba(255, 255, 255, 0.85);
-            backdrop-filter: blur(20px);
-            border-radius: 16px;
-            padding: 30px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-        }
-        .section-title {
-            font-size: 1.5rem;
-            font-weight: 700;
-            color: #333;
-            margin-bottom: 20px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        .review-card {
-            background: white;
-            border: 1px solid #eee;
-            border-radius: 12px;
-            padding: 20px;
-            margin-bottom: 16px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-        }
-        .review-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: start;
-            margin-bottom: 12px;
-        }
-        .reviewer-info {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-        .reviewer-avatar {
-            width: 45px;
-            height: 45px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
-            color: white;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: 700;
-            font-size: 1.1rem;
-        }
-        .reviewer-name {
-            font-weight: 600;
-            color: #333;
-            font-size: 1.05rem;
-        }
-        .reviewer-type {
-            display: inline-block;
-            padding: 3px 10px;
-            background: #e3f2fd;
-            color: #1976d2;
-            border-radius: 12px;
-            font-size: 0.75rem;
-            margin-top: 4px;
-        }
-        .review-rating {
-            color: #ffc107;
-            font-size: 1.3rem;
-        }
-        .review-comment {
-            color: #555;
-            line-height: 1.6;
-            margin: 12px 0;
-        }
-        .review-meta {
-            color: #999;
-            font-size: 0.85rem;
-            margin-top: 12px;
-            display: flex;
-            align-items: center;
-            gap: 15px;
-        }
-        .property-link {
-            color: var(--primary);
-            text-decoration: none;
-            font-weight: 500;
-        }
-        .property-link:hover {
-            text-decoration: underline;
-        }
+
         .back-btn {
-            display: inline-block;
-            padding: 10px 20px;
-            background: var(--primary);
-            color: white;
+            display: inline-flex; align-items: center; gap: 10px;
+            padding: 12px 24px;
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            color: var(--text-main);
             text-decoration: none;
-            border-radius: 8px;
-            font-weight: 600;
-            margin-bottom: 20px;
+            border-radius: 100px;
+            font-weight: 700;
+            margin-bottom: 30px;
+            backdrop-filter: blur(20px);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            transition: all 0.3s;
         }
-        .back-btn:hover { background: var(--primary-dark); }
-        .empty-reviews {
+        .back-btn:hover { background: var(--primary); color: #fff; transform: translateY(-3px); border-color: var(--primary); }
+
+        /* HERO CARD */
+        .hero-card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--card-r);
+            padding: 50px 30px;
             text-align: center;
-            padding: 60px 20px;
-            color: #666;
+            box-shadow: var(--glass-shadow);
+            margin-bottom: 40px;
+            position: relative;
+            overflow: hidden;
         }
-        .empty-reviews i {
-            font-size: 4rem;
-            color: #ddd;
-            margin-bottom: 20px;
+        .hero-card::before {
+            content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%;
+            background: radial-gradient(circle, var(--primary-light) 0%, transparent 60%);
+            z-index: 0; pointer-events: none; opacity: 0.5;
         }
-        .verified-badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 5px;
-            padding: 4px 10px;
-            background: #4caf50;
-            color: white;
-            border-radius: 12px;
-            font-size: 0.8rem;
-            margin-left: 10px;
+
+        .avatar-wrap {
+            position: relative; z-index: 1;
+            width: 140px; height: 140px;
+            margin: 0 auto 24px;
+            border-radius: 50%;
+            padding: 8px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--cyan, #00d4ff) 100%);
+            box-shadow: 0 10px 25px rgba(94, 93, 240, 0.4);
         }
+        .avatar-inner {
+            width: 100%; height: 100%;
+            background: var(--bg-color);
+            border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 3.5rem; font-family: 'Cairo', sans-serif; font-weight: 800;
+            color: var(--text-main);
+            overflow: hidden;
+        }
+        .hero-name {
+            position: relative; z-index: 1;
+            font-family: 'Cairo', sans-serif; font-size: 2.2rem; font-weight: 800; color: var(--text-main); margin-bottom: 12px;
+        }
+        .hero-badge {
+            position: relative; z-index: 1;
+            display: inline-flex; align-items: center; gap: 8px;
+            padding: 8px 24px;
+            background: var(--primary-light);
+            color: var(--primary);
+            border-radius: 100px;
+            font-weight: 700; font-size: 1rem;
+            border: 1px solid rgba(94, 93, 240, 0.2);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+        }
+
+        /* STATS */
+        .stats-grid {
+            position: relative; z-index: 1;
+            display: flex; justify-content: center; gap: 30px; margin-top: 40px;
+            flex-wrap: wrap;
+        }
+        .stat-box {
+            background: var(--bg-color);
+            padding: 24px 40px;
+            border-radius: 20px;
+            border: 1px solid var(--glass-border);
+            text-align: center;
+            min-width: 220px;
+            transition: all 0.3s;
+        }
+        .stat-box:hover { transform: translateY(-5px); box-shadow: 0 15px 35px rgba(0,0,0,0.08); border-color: var(--primary-light); }
+        .stat-num { font-family: 'Cairo', sans-serif; font-size: 2.5rem; font-weight: 800; color: var(--text-main); line-height: 1.1; margin-bottom: 5px; }
+        .stat-stars { color: var(--gold); font-size: 1.2rem; margin-bottom: 8px; filter: drop-shadow(0 2px 4px rgba(255, 180, 0, 0.4)); }
+        .stat-label { font-size: 0.95rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em; }
+
+        /* REVIEWS LIST SECTION */
+        .reviews-header {
+            display: flex; align-items: center; gap: 15px; margin-bottom: 30px;
+        }
+        .reviews-header i { font-size: 2rem; color: var(--gold); }
+        .reviews-header h2 { font-family: 'Cairo', sans-serif; font-size: 1.8rem; font-weight: 800; color: var(--text-main); }
+
+        .reviews-grid {
+            display: grid; grid-template-columns: 1fr; gap: 20px;
+        }
+        
+        .review-card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.03);
+            transition: all 0.3s;
+            position: relative;
+        }
+        .review-card:hover { transform: translateY(-4px); box-shadow: var(--glass-shadow); border-color: rgba(94, 93, 240, 0.3); }
+        
+        .rev-top { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 15px; flex-wrap: wrap; gap: 10px; }
+        .rev-user { display: flex; align-items: center; gap: 15px; }
+        .rev-avatar {
+            width: 50px; height: 50px; border-radius: 50%;
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: #fff; font-size: 1.2rem; font-weight: 700;
+            display: flex; align-items: center; justify-content: center;
+            box-shadow: 0 4px 10px rgba(240, 147, 251, 0.4);
+        }
+        .rev-name { font-weight: 700; font-size: 1.1rem; color: var(--text-main); font-family: 'Cairo', sans-serif; }
+        .rev-type {
+            display: inline-block; padding: 4px 12px; margin-top: 4px;
+            background: rgba(10, 132, 255, 0.1); color: var(--primary);
+            border-radius: 8px; font-size: 0.8rem; font-weight: 700;
+        }
+        .rev-rating { color: var(--gold); font-size: 1.1rem; letter-spacing: 2px; }
+        
+        .rev-body { font-size: 1.05rem; line-height: 1.7; color: var(--text-main); margin-bottom: 20px; position: relative; z-index: 1; }
+        .rev-body::before {
+            content: '\f10d'; font-family: 'Font Awesome 6 Free'; font-weight: 900;
+            position: absolute; top: -10px; right: -10px;
+            font-size: 3rem; color: var(--text-muted); opacity: 0.1; z-index: -1;
+        }
+        [dir="rtl"] .rev-body::before { right: auto; left: -10px; transform: scaleX(-1); }
+
+        .rev-meta {
+            display: flex; align-items: center; gap: 20px; flex-wrap: wrap;
+            padding-top: 15px; border-top: 1px solid var(--glass-border);
+            font-size: 0.9rem; font-weight: 600; color: var(--text-muted);
+        }
+        .rev-meta .prop-link { color: var(--primary); text-decoration: none; display: flex; align-items: center; gap: 6px; transition: 0.2s; }
+        .rev-meta .prop-link:hover { color: var(--primary-dark); transform: translateX(-3px); }
+        [dir="ltr"] .rev-meta .prop-link:hover { transform: translateX(3px); }
+
+        .empty-state { text-align: center; padding: 60px 20px; }
+        .empty-state i { font-size: 4rem; color: var(--text-muted); opacity: 0.3; margin-bottom: 20px; }
+        .empty-state h3 { font-family: 'Cairo', sans-serif; font-size: 1.5rem; color: var(--text-main); }
+        .loader { text-align: center; padding: 60px; font-size: 1.5rem; color: var(--primary); }
+
+        @media (max-width: 768px) {
+            .container { padding: 20px 15px; }
+            .hero-card { padding: 40px 20px; }
+            .stats-grid { gap: 15px; flex-direction: column; }
+            .stat-box { min-width: 100%; padding: 20px; }
+            .review-card { padding: 20px; }
+        }
+
+        /* Property Cards in Profile */
+        .owner-properties-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 25px;
+            margin-top: 20px;
+        }
+        .prop-card {
+            background: var(--glass-bg);
+            border-radius: 20px;
+            overflow: hidden;
+            border: 1px solid var(--glass-border);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            transition: transform 0.3s;
+            cursor: pointer;
+        }
+        .prop-card:hover { transform: translateY(-5px); }
+        .prop-img { width: 100%; height: 180px; object-fit: cover; }
+        .prop-info { padding: 20px; }
+        .prop-title { font-weight: 800; font-size: 1.1rem; margin-bottom: 5px; }
+        .prop-price { color: var(--primary); font-weight: 700; font-size: 1.2rem; }
     </style>
 </head>
 <body>
-    <div class="profile-container">
+    <div class="container">
         <a href="javascript:history.back()" class="back-btn">
-            <i class="fa-solid fa-arrow-left"></i> Back
+            <i class="fa-solid fa-arrow-right"></i> <span data-i18n="back_btn">عودة</span>
         </a>
 
-        <div class="profile-card" id="profileCard">
-            <!-- Profile info will be loaded here -->
-        </div>
-
-        <div class="reviews-section">
-            <div class="section-title">
-                <i class="fa-solid fa-star"></i>
-                <span>Reviews</span>
+        <div id="loader" class="loader"><i class="fa-solid fa-circle-notch fa-spin"></i></div>
+        
+        <div id="profileContent" style="display: none;">
+            <div class="hero-card" id="profileHtml"></div>
+            
+            <div class="reviews-header">
+                <i class="fa-solid fa-crown"></i>
+                <h2 data-i18n="reviews_title">تقييمات الضيوف والنشاط</h2>
             </div>
             
-            <div id="loading" style="text-align: center; padding: 40px; color: #666;">
-                <i class="fa-solid fa-spinner fa-spin"></i> Loading reviews...
+            <div class="reviews-grid" id="reviewsList"></div>
+            
+            <div id="emptyReviews" class="empty-state" style="display: none;">
+                <i class="fa-regular fa-star"></i>
+                <h3 data-i18n="no_reviews">لا توجد تقييمات حتى الآن</h3>
             </div>
 
-            <div id="reviewsList"></div>
-
-            <div id="emptyReviews" class="empty-reviews" style="display: none;">
-                <i class="fa-regular fa-star"></i>
-                <h3>No Reviews Yet</h3>
-                <p>This user hasn't received any reviews yet.</p>
+            <!-- OWNER PROPERTIES SECTION -->
+            <div id="ownerPropertiesSection" style="display: none; margin-top: 50px;">
+                <div class="reviews-header">
+                    <i class="fa-solid fa-house"></i>
+                    <h2 data-i18n="owner_properties_title">العقارات المعروضة</h2>
+                </div>
+                <div class="owner-properties-grid" id="ownerPropertiesList"></div>
             </div>
         </div>
     </div>
@@ -238,121 +287,127 @@
 
         async function loadUserProfile() {
             try {
-                // Load user info
                 const userRes = await fetch(`${API_URL}/users/${userId}`);
                 const userData = await userRes.json();
-
-                console.log('User data:', userData);
-
-                const firstLetter = userData.FirstName ? userData.FirstName.charAt(0).toUpperCase() : '?';
-                const fullName = `${userData.FirstName} ${userData.LastName}`;
-
-                // Load reviews about this user
+                
                 const reviewsRes = await fetch(`${API_URL}/reviews/user/${userId}`);
                 const reviewsData = await reviewsRes.json();
 
-                console.log('Reviews data:', reviewsData);
+                const firstLetter = userData.FirstName ? userData.FirstName.charAt(0).toUpperCase() : '?';
+                const fullName = `${userData.FirstName} ${userData.LastName}`;
+                
+                const isOwner = userData.UserType === 'Owner';
+                const utypeLabel = isOwner ? 'مالك عقارات' : 'مستأجر';
+                const utypeIcon = isOwner ? 'house-user' : 'user-check';
 
-                // Display profile
-                document.getElementById('profileCard').innerHTML = `
-                    <div class="profile-avatar">${firstLetter}</div>
-                    <div class="profile-name">${fullName}</div>
-                    <div class="profile-type">
-                        <i class="fa-solid fa-${userData.UserType === 'Owner' ? 'home' : 'user'}"></i>
-                        ${userData.UserType}
-                    </div>
-
-                    <div class="rating-overview">
-                        <div class="rating-stat">
-                            <div class="rating-number">${reviewsData.averageRating ? reviewsData.averageRating.toFixed(1) : '0.0'}</div>
-                            <div class="rating-stars">${getStars(reviewsData.averageRating || 0)}</div>
-                            <div class="rating-label">Average Rating</div>
+                document.getElementById('profileHtml').innerHTML = `
+                    <div class="avatar-wrap"><div class="avatar-inner">${firstLetter}</div></div>
+                    <div class="hero-name">${fullName}</div>
+                    <div class="hero-badge"><i class="fa-solid fa-${utypeIcon}"></i> ${utypeLabel}</div>
+                    
+                    <div class="stats-grid">
+                        <div class="stat-box">
+                            <div class="stat-num">${reviewsData.averageRating ? reviewsData.averageRating.toFixed(1) : '0.0'}</div>
+                            <div class="stat-stars">${getStars(reviewsData.averageRating || 0)}</div>
+                            <div class="stat-label">متوسط التقييم</div>
                         </div>
-                        <div class="rating-stat">
-                            <div class="rating-number">${reviewsData.totalReviews || 0}</div>
-                            <div class="rating-stars">
-                                <i class="fa-solid fa-comment"></i>
-                            </div>
-                            <div class="rating-label">Total Reviews</div>
+                        <div class="stat-box">
+                            <div class="stat-num">${reviewsData.totalReviews || 0}</div>
+                            <div class="stat-stars"><i class="fa-solid fa-comment-dots" style="color:var(--primary)"></i></div>
+                            <div class="stat-label">عدد التقييمات</div>
                         </div>
                     </div>
                 `;
 
-                // Display reviews
-                document.getElementById('loading').style.display = 'none';
+                document.getElementById('loader').style.display = 'none';
+                document.getElementById('profileContent').style.display = 'block';
 
                 if (!reviewsData.reviews || reviewsData.reviews.length === 0) {
                     document.getElementById('emptyReviews').style.display = 'block';
                     return;
                 }
 
-                document.getElementById('reviewsList').innerHTML = reviewsData.reviews.map(review => {
-                    const reviewerLetter = review.ReviewerName ? review.ReviewerName.charAt(0).toUpperCase() : '?';
-                    
-                    return `
-                        <div class="review-card">
-                            <div class="review-header">
-                                <div class="reviewer-info">
-                                    <div class="reviewer-avatar">${reviewerLetter}</div>
-                                    <div>
-                                        <div class="reviewer-name">${review.ReviewerName}</div>
-                                        <span class="reviewer-type">
-                                            ${review.ReviewerType === 'Owner' ? '<i class="fa-solid fa-home"></i> Property Owner' : '<i class="fa-solid fa-user"></i> Renter'}
-                                        </span>
+                if (reviewsData.reviews && reviewsData.reviews.length > 0) {
+                    document.getElementById('reviewsList').innerHTML = reviewsData.reviews.map(review => {
+                        const reviewerLetter = review.ReviewerName ? review.ReviewerName.charAt(0).toUpperCase() : '?';
+                        const rTypeLabel = review.ReviewerType === 'Owner' ? 'مالك عقار' : 'ضيف';
+                        
+                        return `
+                            <div class="review-card">
+                                <div class="rev-top">
+                                    <div class="rev-user">
+                                        <div class="rev-avatar">${reviewerLetter}</div>
+                                        <div>
+                                            <div class="rev-name">${review.ReviewerName}</div>
+                                            <div class="rev-type">${rTypeLabel}</div>
+                                        </div>
                                     </div>
+                                    <div class="rev-rating">${getStars(review.Rating)}</div>
                                 </div>
-                                <div class="review-rating">
-                                    ${getStars(review.Rating)}
+                                <div class="rev-body">${review.Comment || 'تم ترك تقييم بالنجوم فقط بدون كتابة تعليق.'}</div>
+                                <div class="rev-meta">
+                                    <span><i class="fa-regular fa-calendar-days"></i> ${new Date(review.ReviewDate).toLocaleDateString('ar-EG', { year:'numeric', month:'long', day:'numeric' })}</span>
+                                    ${review.PropertyTitle ? `<a href="property-detail.html?id=${review.PropertyId}" class="prop-link"><i class="fa-solid fa-building"></i> ${review.PropertyTitle}</a>` : ''}
                                 </div>
                             </div>
-                            <div class="review-comment">${review.Comment || 'No comment provided'}</div>
-                            <div class="review-meta">
-                                <span>
-                                    <i class="fa-regular fa-clock"></i>
-                                    ${new Date(review.ReviewDate).toLocaleDateString('en-US', { 
-                                        year: 'numeric', 
-                                        month: 'long', 
-                                        day: 'numeric' 
-                                    })}
-                                </span>
-                                ${review.PropertyTitle ? `
-                                    <span>
-                                        <i class="fa-solid fa-home"></i>
-                                        <a href="property-review.html?propertyId=${review.PropertyId}" class="property-link">
-                                            ${review.PropertyTitle}
-                                        </a>
-                                    </span>
-                                ` : ''}
-                            </div>
-                        </div>
-                    `;
-                }).join('');
+                        `;
+                    }).join('');
+                }
+
+                // ✅ NEW: Load Owner Properties
+                if (isOwner) {
+                    loadOwnerProperties();
+                }
 
             } catch (error) {
-                console.error('Error loading profile:', error);
-                document.getElementById('loading').style.display = 'none';
-                document.getElementById('reviewsList').innerHTML = `
-                    <div style="text-align: center; padding: 40px; color: #c00;">
-                        <p>Failed to load user profile. Please try again.</p>
-                    </div>
-                `;
+                console.error('Error loading:', error);
+                document.getElementById('loader').innerHTML = `<p style="color:var(--accent)">حدث خطأ أثناء تحميل الحساب.</p>`;
             }
         }
 
         function getStars(rating) {
             let stars = '';
             for (let i = 1; i <= 5; i++) {
-                if (i <= Math.floor(rating)) {
-                    stars += '<i class="fa-solid fa-star"></i>';
-                } else if (i - 0.5 <= rating) {
-                    stars += '<i class="fa-solid fa-star-half-stroke"></i>';
-                } else {
-                    stars += '<i class="fa-regular fa-star"></i>';
-                }
+                if (i <= Math.floor(rating)) stars += '<i class="fa-solid fa-star"></i>';
+                else if (i - 0.5 <= rating) stars += '<i class="fa-solid fa-star-half-stroke"></i>';
+                else stars += '<i class="fa-regular fa-star"></i>';
             }
             return stars;
         }
 
+        async function loadOwnerProperties() {
+            try {
+                const res = await fetch(`${API_URL}/properties`);
+                const all = await res.json();
+                const ownerProps = all.filter(p => p.OwnerId == userId);
+                
+                if (ownerProps.length > 0) {
+                    document.getElementById('ownerPropertiesSection').style.display = 'block';
+                    document.getElementById('ownerPropertiesList').innerHTML = ownerProps.map(p => {
+                        const imgUrl = p.MainImage ? (p.MainImage.startsWith('http') ? p.MainImage : 'https://darlink-production.up.railway.app' + p.MainImage) : null;
+                        return `
+                            <div class="prop-card" onclick="window.location.href='property-detail.html?id=${p.PropertyId}'">
+                                ${imgUrl ? `<img src="${imgUrl}" class="prop-img">` : `<div class="prop-img" style="background:#eee; display:flex; align-items:center; justify-content:center;"><i class="fa-solid fa-image" style="font-size:2rem; color:#ccc;"></i></div>`}
+                                <div class="prop-info">
+                                    <div class="prop-title">${p.Title}</div>
+                                    <div style="font-size:0.9rem; color:var(--text-muted); margin-bottom:10px;"><i class="fa-solid fa-location-dot"></i> ${p.City}, ${p.Wilaya}</div>
+                                    <div class="prop-price">${Math.round(p.PricePerNight).toLocaleString()} DZD <span style="font-size:0.8rem; font-weight:400;">/ ليلة</span></div>
+                                </div>
+                            </div>
+                        `;
+                    }).join('');
+                }
+            } catch (e) {
+                console.error('Error loading properties:', e);
+            }
+        }
+
+        const l = window.I18N ? window.I18N.getCurrentLang() : 'ar';
+        if(l==='en') {
+            document.documentElement.dir = 'rtl';
+            document.querySelector('.back-btn i').className = 'fa-solid fa-arrow-left';
+        }
+        
         loadUserProfile();
     </script>
 </body>

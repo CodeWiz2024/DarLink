@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" dir="ltr">
+<html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -28,6 +28,7 @@
         }
         .side-nav-logo { padding: 24px 22px 20px; display: flex; align-items: center; gap: 12px; border-bottom: 1px solid var(--glass-border); }
         .side-nav-logo img { height: 42px; border-radius: 10px; }
+        .side-nav-logo span { font-size: 1.2rem; font-weight: 800; color: var(--primary); letter-spacing: -0.02em; }
         .side-nav-user { padding: 18px 22px; display: flex; align-items: center; gap: 12px; border-bottom: 1px solid var(--glass-border); background: rgba(10,132,255,0.04); }
         .side-user-avatar { width: 42px; height: 42px; border-radius: 50%; background: var(--primary); color: white; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 1.1rem; flex-shrink: 0; overflow: hidden; }
         .side-user-info .name { font-weight: 700; font-size: 0.95rem; color: var(--text-main); }
@@ -52,8 +53,13 @@
         .sidebar-toggle { display: none; position: fixed; top: 16px; left: 16px; z-index: 200; width: 44px; height: 44px; border-radius: 12px; background: var(--primary); color: white; border: none; cursor: pointer; font-size: 1.1rem; box-shadow: 0 4px 14px rgba(10,132,255,0.4); align-items: center; justify-content: center; }
         .side-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.4); backdrop-filter: blur(4px); z-index: 99; }
 
+        /* RTL Sidebar Overrides */
+        [dir="rtl"] .side-nav { left: auto; right: 0; border-right: none; border-left: 1px solid var(--glass-border); box-shadow: -4px 0 24px rgba(0,0,0,0.06); }
+        [dir="rtl"] .sidebar-toggle { left: auto; right: 16px; }
+
         /* MAIN CONTENT */
         .dash-main { margin-left: 270px; flex: 1; padding: 32px 36px; min-height: 100vh; }
+        [dir="rtl"] .dash-main { margin-left: 0; margin-right: 270px; }
         .dash-topbar { margin-bottom: 32px; }
         .dash-page-title h1 { font-size: 1.8rem; font-weight: 800; color: var(--text-main); margin: 0 0 6px; }
         .dash-page-title p { color: var(--text-muted); font-size: 1rem; margin: 0; }
@@ -143,9 +149,10 @@
 
         @media (max-width: 900px) {
             .side-nav { transform: translateX(-100%); }
-            .side-nav.open { transform: translateX(0); }
+            [dir="rtl"] .side-nav { transform: translateX(100%); }
+            .side-nav.open, [dir="rtl"] .side-nav.open { transform: translateX(0); }
             .side-overlay.show { display: block; }
-            .dash-main { margin-left: 0; padding: 80px 20px 30px; }
+            .dash-main, [dir="rtl"] .dash-main { margin-left: 0; margin-right: 0; padding: 80px 20px 30px; }
             .sidebar-toggle { display: flex; }
             .stats-grid { grid-template-columns: 1fr; }
         }
@@ -164,16 +171,16 @@
 
 <aside class="side-nav" id="sideNav">
     <div class="side-nav-logo">
-        <a class="logo" href="index.html" style="text-decoration:none;">
-            <svg width="36" height="32" viewBox="0 0 110 100" fill="none" aria-hidden="true">
-                <path d="M55 8 L98 42 L98 92 L12 92 L12 42 Z" fill="none" stroke="#00d4ff" stroke-width="6" stroke-linejoin="round"/>
-                <rect x="72" y="10" width="10" height="18" fill="none" stroke="#00d4ff" stroke-width="5.5"/>
-                <path d="M55 22 L88 50 L88 88 L22 88 L22 50 Z" fill="none" stroke="#5aa8c0" stroke-width="5" stroke-linejoin="round"/>
-                <path d="M32 88 L32 52 Q32 30 52 30 Q72 30 72 52 Q72 68 58 72 Q44 76 32 72" fill="none" stroke="#5aa8c0" stroke-width="5.5" stroke-linecap="round"/>
-                <line x1="32" y1="88" x2="75" y2="88" stroke="#5aa8c0" stroke-width="5.5" stroke-linecap="round"/>
-            </svg>
-            <span class="logo-word" data-i18n="nav_logo_text">DarLink</span>
-        </a>
+        <a class="darlink-logo blue small" href="index.html" style="display:flex; flex-direction:row; align-items:center; gap:8px; text-decoration:none;">
+  <svg width="36" height="32" viewBox="0 0 110 100" fill="none">
+    <path d="M55 8 L98 42 L98 92 L12 92 L12 42 Z" fill="none" stroke="#00d4ff" stroke-width="6" stroke-linejoin="round"/>
+    <rect x="72" y="10" width="10" height="18" fill="none" stroke="#00d4ff" stroke-width="5.5"/>
+    <path d="M55 22 L88 50 L88 88 L22 88 L22 50 Z" fill="none" stroke="#5aa8c0" stroke-width="5" stroke-linejoin="round"/>
+    <path d="M32 88 L32 52 Q32 30 52 30 Q72 30 72 52 Q72 68 58 72 Q44 76 32 72" fill="none" stroke="#5aa8c0" stroke-width="5.5" stroke-linecap="round"/>
+    <line x1="32" y1="88" x2="75" y2="88" stroke="#5aa8c0" stroke-width="5.5" stroke-linecap="round"/>
+  </svg>
+  <span style="color:#00d4ff; font-size:22px; font-weight:700;">DarLink</span>
+</a>
     </div>
     <div class="side-nav-user">
         <div class="side-user-avatar" id="userAvatarSide">R</div>
@@ -342,7 +349,7 @@
 
     function setLanguage(lang) {
         localStorage.setItem('site_lang', lang);
-        document.documentElement.setAttribute('dir', lang === 'ar' ? 'rtl' : 'ltr');
+        document.documentElement.setAttribute('dir', 'rtl');
         document.documentElement.setAttribute('lang', lang);
         updatePageText();
         
@@ -415,7 +422,7 @@
 
     // Initialize language
     const savedLang = getCurrentLang();
-    document.documentElement.setAttribute('dir', savedLang === 'ar' ? 'rtl' : 'ltr');
+    document.documentElement.setAttribute('dir', 'rtl');
     document.documentElement.setAttribute('lang', savedLang);
     updatePageText();
     
@@ -470,10 +477,10 @@
 
             // Calculate stats
             const totalBookings = bookings.length;
-            const confirmedBookings = bookings.filter(b => b.BookingStatus === 'Confirmed').length;
-            const pendingBookings = bookings.filter(b => b.BookingStatus === 'Pending').length;
+            const confirmedBookings = bookings.filter(b => b.BookingStatus === 'Confirmed' || b.BookingStatus === 'Completed').length;
+            const pendingBookings = bookings.filter(b => b.BookingStatus === 'Pending' || b.BookingStatus === 'Requested').length;
             const totalSpent = bookings
-                .filter(b => b.BookingStatus === 'Confirmed')
+                .filter(b => b.BookingStatus === 'Confirmed' || b.BookingStatus === 'Completed')
                 .reduce((sum, b) => sum + parseFloat(b.TotalPrice || 0), 0);
 
             // Update stats
@@ -498,7 +505,7 @@
                     
                     return `
                         <div class="booking-item">
-                            <div class="booking-img" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);"></div>
+                            <div class="booking-img" style="background: url('https://images.unsplash.com/photo-1554995207-c18c203602cb?ixlib=rb-1.2.1&auto=format&fit=crop&w=300&q=80') center/cover;"></div>
                             <div class="booking-info">
                                 <div class="booking-title">${booking.PropertyTitle || 'Property'}</div>
                                 <div class="booking-dates">

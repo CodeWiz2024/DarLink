@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -12,7 +12,7 @@
             margin: 60px auto;
             text-align: center;
             padding: 40px;
-            background: rgba(255, 255, 255, 0.8);
+            background: rgba(255, 255, 255, 0.9);
             backdrop-filter: blur(20px);
             border-radius: 20px;
             box-shadow: 0 8px 32px rgba(0,0,0,0.1);
@@ -101,7 +101,7 @@
             document.getElementById('bookingId').textContent = '#' + bookingId;
 
             // Fetch booking details
-            fetch(`https://darlink-production.up.railway.app/api/payment/booking-status/${bookingId}`)
+            fetch(`${API_URL}/payment/booking-status/${bookingId}`)
                 .then(res => res.json())
                 .then(data => {
                     document.getElementById('totalAmount').textContent = 
