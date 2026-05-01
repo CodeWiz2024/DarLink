@@ -121,9 +121,9 @@
             .dash-main { margin-left: 0; padding: 80px 20px 30px; }
             .sidebar-toggle { display: flex; }
         }
-        [dir="rtl"] .side-nav { left: auto; right: 0; border-right: none; border-left: 1px solid var(--glass-border); box-shadow: -4px 0 24px rgba(0,0,0,0.06); }
+        /* Sidebar always on left */
+        /* RTL override removed to keep sidebar on left side */
         [dir="rtl"] .sidebar-toggle { left: auto; right: 16px; }
-        [dir="rtl"] .dash-main { margin-left: 0; margin-right: 270px; }
 
         [data-theme="dark"] .side-nav { background: rgba(28,28,30,0.92); border-right-color: rgba(255,255,255,0.08); }
         [data-theme="dark"] .side-link { color: rgba(255,255,255,0.6); }

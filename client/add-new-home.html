@@ -421,7 +421,8 @@
             .sidebar-toggle { display: flex; }
             .form-row { grid-template-columns: 1fr; }
         }
-        [dir="rtl"] .side-nav { left: auto; right: 0; border-right: none; border-left: 1px solid var(--glass-border); box-shadow: -4px 0 24px rgba(0,0,0,0.06); }
+        /* Sidebar always on left */
+        /* RTL override removed to keep sidebar on left side */
         [dir="rtl"] .sidebar-toggle { left: auto; right: 16px; }
         [dir="rtl"] .dash-main { margin-left: 0; margin-right: 270px; }
     </style>

@@ -227,7 +227,8 @@
         }
 
         /* RTL Sidebar Overrides */
-        [dir="rtl"] .side-nav { left: auto; right: 0; border-right: none; border-left: 1px solid var(--glass-border); box-shadow: -4px 0 24px rgba(0,0,0,0.06); }
+        /* Sidebar always on left */
+        /* RTL override removed to keep sidebar on left side */
         .dash-layout .side-nav { position: fixed; }
 
         /* ===== MAIN CONTENT ===== */
@@ -236,9 +237,6 @@
             padding: 32px 36px;
             min-height: 100vh;
             margin-left: 270px;
-        }
-        [dir="rtl"] .dash-main {
-            margin-left: 0; margin-right: 270px;
         }
 
         .dash-topbar {
