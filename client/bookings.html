@@ -19,11 +19,11 @@
             background: var(--glass-bg);
             backdrop-filter: saturate(180%) blur(24px);
             -webkit-backdrop-filter: saturate(180%) blur(24px);
-            border-right: 1px solid var(--glass-border);
+            border-left: 1px solid var(--glass-border);
             display: flex; flex-direction: column;
-            position: fixed; top: 0; left: 0; height: 100vh; z-index: 100;
+            position: fixed; top: 0; right: 0; height: 100vh; z-index: 100;
             transition: transform 0.3s ease;
-            box-shadow: 4px 0 24px rgba(0,0,0,0.06);
+            box-shadow: -4px 0 24px rgba(0,0,0,0.06);
         }
         .side-nav-logo { padding: 24px 22px 20px; display: flex; align-items: center; gap: 12px; border-bottom: 1px solid var(--glass-border); }
         .side-nav-logo span { font-size: 1.2rem; font-weight: 800; color: var(--primary); letter-spacing: -0.02em; }
@@ -42,12 +42,16 @@
 
         .side-nav-section-label { font-size: 0.74rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--text-muted); padding: 12px 16px 4px; }
         .side-nav-footer { padding: 16px 12px; border-top: 1px solid var(--glass-border); display: flex; flex-direction: column; gap: 8px; }
-        .theme-toggle-side { display: flex; align-items: center; gap: 10px; padding: 10px 14px; border-radius: 12px; border: 1px solid var(--glass-border); background: transparent; color: var(--text-muted); font-size: 0.88rem; font-weight: 500; cursor: pointer; transition: all 0.2s; width: 100%; }
-        .btn-logout-side { display: flex; align-items: center; gap: 10px; padding: 10px 14px; border-radius: 12px; background: rgba(255,59,48,0.08); color: #ff3b30; font-size: 0.88rem; font-weight: 600; cursor: pointer; border: none; transition: all 0.2s; text-decoration: none; width: 100%; }
+        .lang-side { display: flex; gap: 4px; }
+        .lang-side button { padding: 8px 12px; border: 1px solid var(--glass-border); border-radius: 10px; background: transparent; color: var(--text-muted); font-size: 0.82rem; font-weight: 600; cursor: pointer; transition: all 0.2s; }
+        .lang-side button:hover, .lang-side button.active { background: var(--primary); color: white; border-color: var(--primary); }
+        .theme-toggle-side { display: flex; align-items: center; gap: 10px; padding: 10px 14px; border-radius: 12px; border: 1px solid var(--glass-border); background: transparent; color: var(--text-muted); font-size: 0.88rem; font-weight: 500; cursor: pointer; transition: all 0.2s; }
+        .theme-toggle-side:hover { background: rgba(0,0,0,0.05); color: var(--text-main); }
+        .btn-logout-side { display: flex; align-items: center; gap: 10px; padding: 10px 14px; border-radius: 12px; background: rgba(255,59,48,0.08); color: #ff3b30; font-size: 0.88rem; font-weight: 600; cursor: pointer; border: none; transition: all 0.2s; text-decoration: none; }
         .btn-logout-side:hover { background: #ff3b30; color: white; }
 
         /* ===== MAIN CONTENT ===== */
-        .dash-main { margin-left: 270px; flex: 1; padding: 32px 36px; min-height: 100vh; }
+        .dash-main { margin-right: 270px; flex: 1; padding: 32px 36px; min-height: 100vh; }
         .dash-topbar { margin-bottom: 32px; }
         .dash-page-title h1 { font-size: 1.8rem; font-weight: 800; color: var(--text-main); margin: 0 0 6px; }
         .dash-page-title p { color: var(--text-muted); font-size: 1rem; margin: 0; }
@@ -128,10 +132,10 @@
         .side-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.4); backdrop-filter: blur(4px); z-index: 99; }
 
         @media (max-width: 1024px) {
-            .side-nav { transform: translateX(-100%); }
+            .side-nav { transform: translateX(100%); }
             .side-nav.open { transform: translateX(0); }
             .side-overlay.show { display: block; }
-            .dash-main { margin-left: 0; padding: 80px 20px 30px; }
+            .dash-main { margin-right: 0; padding: 80px 20px 30px; }
             .sidebar-toggle { display: flex; }
         }
 
@@ -188,9 +192,9 @@
             <a href="AddHome.html" class="side-link" id="linkDashboard"><i class="fa-solid fa-gauge"></i> <span>Dashboard</span></a>
         </nav>
         <div class="side-nav-footer">
-            <div class="lang-switch" style="margin-bottom: 8px; display: flex; background: rgba(0,0,0,0.05); padding: 4px; border-radius: 12px; justify-content: space-between;">
-                <button class="lang-btn" onclick="changeLang('en')" id="btnLangEn" style="flex:1; border:none; padding:8px; border-radius:8px; cursor:pointer; font-weight:600; background:transparent;">EN</button>
-                <button class="lang-btn active" onclick="changeLang('ar')" id="btnLangAr" style="flex:1; border:none; padding:8px; border-radius:8px; cursor:pointer; font-weight:600; background:white; color:var(--primary); box-shadow:0 2px 8px rgba(0,0,0,0.1);">عربي</button>
+            <div class="lang-side">
+                <button onclick="changeLang('en')" id="btnLangEn">EN</button>
+                <button onclick="changeLang('ar')" id="btnLangAr" class="active">ع</button>
             </div>
             <button class="theme-toggle-side" onclick="toggleTheme()">
                 <i class="fa-regular fa-moon" id="themeIcon"></i> <span id="themeLabel">Dark Mode</span>
@@ -373,15 +377,15 @@
         document.documentElement.setAttribute('lang', lang);
         updatePageText();
         
-        // Update styling of the buttons
+        // Update styling of the buttons using classes
         const btnEn = document.getElementById('btnLangEn');
         const btnAr = document.getElementById('btnLangAr');
         if (lang === 'en') {
-            btnEn.style.background = 'white'; btnEn.style.color = 'var(--primary)'; btnEn.style.boxShadow = '0 2px 8px rgba(0,0,0,0.1)';
-            btnAr.style.background = 'transparent'; btnAr.style.color = ''; btnAr.style.boxShadow = 'none';
+            btnEn.classList.add('active');
+            btnAr.classList.remove('active');
         } else {
-            btnAr.style.background = 'white'; btnAr.style.color = 'var(--primary)'; btnAr.style.boxShadow = '0 2px 8px rgba(0,0,0,0.1)';
-            btnEn.style.background = 'transparent'; btnEn.style.color = ''; btnEn.style.boxShadow = 'none';
+            btnAr.classList.add('active');
+            btnEn.classList.remove('active');
         }
         
         // Apply translations for elements that have data-i18n tags
@@ -664,15 +668,15 @@
         document.documentElement.setAttribute('lang', savedLang);
         updatePageText();
         
-        // Set initial state of language buttons
+        // Set initial state of language buttons using classes
         const btnEn = document.getElementById('btnLangEn');
         const btnAr = document.getElementById('btnLangAr');
         if (savedLang === 'en') {
-            btnEn.style.background = 'white'; btnEn.style.color = 'var(--primary)'; btnEn.style.boxShadow = '0 2px 8px rgba(0,0,0,0.1)';
-            btnAr.style.background = 'transparent'; btnAr.style.color = ''; btnAr.style.boxShadow = 'none';
+            btnEn.classList.add('active');
+            btnAr.classList.remove('active');
         } else {
-            btnAr.style.background = 'white'; btnAr.style.color = 'var(--primary)'; btnAr.style.boxShadow = '0 2px 8px rgba(0,0,0,0.1)';
-            btnEn.style.background = 'transparent'; btnEn.style.color = ''; btnEn.style.boxShadow = 'none';
+            btnAr.classList.add('active');
+            btnEn.classList.remove('active');
         }
         
         // Translate data-i18n elements initially
