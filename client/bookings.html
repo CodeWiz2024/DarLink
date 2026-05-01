@@ -587,15 +587,19 @@
     }
 
     window.updateBookingStatus = async function(bookingId, status) {
-        if (!confirm(status === 'Approved' ? 'Confirm this booking?' : 'Reject this booking?')) return;
+        if (!confirm(status === 'Approved' ? 'Approve this booking?' : 'Reject this booking?')) return;
         try {
             const response = await fetch(`${API_URL}/bookings/${bookingId}`, {
                 method: 'PUT',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ BookingStatus: status, UserId: user.UserId })
+                body: JSON.stringify({ 
+                    BookingStatus: status, 
+                    UserId: user.UserId,
+                    OwnerId: user.UserId
+                })
             });
             if (response.ok) {
-                showToast(status === 'Approved' ? 'Booking approved successfully!' : 'Booking rejected successfully!', 'success');
+                showToast(status === 'Approved' ? 'Booking approved! Renter will receive payment link.' : 'Booking rejected successfully!', 'success');
                 loadBookings();
             } else {
                 showToast('Action failed. Please try again.', 'error');

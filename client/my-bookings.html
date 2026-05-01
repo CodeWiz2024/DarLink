@@ -253,6 +253,7 @@
         
         // Buttons
         retry_payment: { en: "Retry Payment", ar: "إعادة الدفع" },
+        pay_now: { en: "Pay Now", ar: "ادفع الآن" },
         cancel_booking: { en: "Cancel Booking", ar: "إلغاء الحجز" },
         write_review: { en: "Write Review", ar: "كتابة تقييم" },
         
@@ -501,7 +502,7 @@
                         </div>
                     </div>
                     <div class="booking-actions">
-                        ${b.BookingStatus === 'Approved' ? `<button class="btn btn-primary" onclick="retryPayment(${b.BookingId})"><i class="fa-solid fa-credit-card"></i> ${t('retry_payment')}</button>` : ''}
+                        ${b.BookingStatus === 'Approved' ? `<button class="btn btn-primary" onclick="retryPayment(${b.BookingId})"><i class="fa-solid fa-credit-card"></i> ${t('pay_now')}</button>` : ''}
                         ${(b.BookingStatus === 'Confirmed' || b.BookingStatus === 'Approved') && !isCompleted ? `<button class="btn btn-danger" onclick="cancelBooking(${b.BookingId})"><i class="fa-solid fa-xmark"></i> ${t('cancel_booking')}</button>` : ''}
                         ${isCompleted ? `<button class="btn btn-warning" onclick="window.location.href='property-review.html?propertyId=${b.PropertyId}'"><i class="fa-solid fa-star"></i> ${t('write_review')}</button>` : ''}
                     </div>
@@ -538,18 +539,22 @@
             const response = await fetch(`${API_URL}/payment/create-booking-payment`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ bookingId: bookingId })
+                body: JSON.stringify({ 
+                    bookingId: bookingId,
+                    userId: user.UserId
+                })
             });
 
             const data = await response.json();
 
             if (response.ok) {
+                // Redirect to Chargily checkout
                 window.location.href = data.checkoutUrl;
             } else {
-                alert(t('payment_failed') + ': ' + (data.error || ''));
+                alert(t('payment_failed') + ': ' + (data.error || 'Unknown error'));
             }
         } catch (error) {
-            console.error('Payment retry error:', error);
+            console.error('Payment error:', error);
             alert(t('network_error'));
         }
     }
