@@ -782,7 +782,10 @@ app.put('/api/bookings/:id', async (req, res) => {
         const { BookingStatus, UserId } = req.body;
 
         const [existing] = await pool.query(
-            'SELECT UserId FROM Booking WHERE BookingId = ?',
+            `SELECT b.UserId as RenterId, p.OwnerId 
+             FROM Booking b
+             JOIN Property p ON b.PropertyId = p.PropertyId
+             WHERE b.BookingId = ?`,
             [id]
         );
 
@@ -790,7 +793,7 @@ app.put('/api/bookings/:id', async (req, res) => {
             return res.status(404).json({ error: 'Booking not found' });
         }
 
-        if (existing[0].UserId !== UserId) {
+        if (existing[0].RenterId !== UserId && existing[0].OwnerId !== UserId) {
             return res.status(403).json({ error: 'You can only modify your own bookings' });
         }
 

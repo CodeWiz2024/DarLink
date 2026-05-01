@@ -1,8 +1,8 @@
 /* DARLINK PREMIUM AI-ENHANCED UI */
 :root {
-    --primary: #5E5DF0;
-    --primary-dark: #3F3EE8;
-    --primary-light: rgba(94, 93, 240, 0.1);
+    --primary: #0A84FF;
+    --primary-dark: #0062D1;
+    --primary-light: rgba(10, 132, 255, 0.1);
     --accent: #FF5A5F;
     --gold: #FFB400;
     --success: #34C759;
@@ -31,7 +31,7 @@
     --text: #F8FAFC;
     --muted: #94A3B8;
     --card-bg: #1E293B;
-    --primary-light: rgba(94, 93, 240, 0.2);
+    --primary-light: rgba(10, 132, 255, 0.2);
 }
 
 *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
