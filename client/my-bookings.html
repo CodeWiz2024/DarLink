@@ -432,7 +432,7 @@
                     return b.BookingStatus === 'Completed' || (b.BookingStatus === 'Confirmed' && new Date(b.EndDate) < new Date());
                 }
                 if (status === 'Pending') {
-                    return b.BookingStatus === 'Pending' || b.BookingStatus === 'Approved';
+                    return b.BookingStatus === 'Pending';
                 }
                 return b.BookingStatus === status;
             });
@@ -459,9 +459,6 @@
             if (b.BookingStatus === 'Pending') {
                 statusClass = 'status-pending';
                 statusText = t('awaiting_approval');
-            } else if (b.BookingStatus === 'Approved') {
-                statusClass = 'status-confirmed';
-                statusText = t('owner_approved');
             } else if (b.BookingStatus === 'Confirmed') {
                 statusClass = isCompleted ? 'status-completed' : 'status-confirmed';
                 statusText = isCompleted ? t('status_completed') : t('paid_confirmed');
@@ -502,8 +499,7 @@
                         </div>
                     </div>
                     <div class="booking-actions">
-                        ${b.BookingStatus === 'Approved' ? `<button class="btn btn-primary" onclick="retryPayment(${b.BookingId})"><i class="fa-solid fa-credit-card"></i> ${t('pay_now')}</button>` : ''}
-                        ${(b.BookingStatus === 'Confirmed' || b.BookingStatus === 'Approved') && !isCompleted ? `<button class="btn btn-danger" onclick="cancelBooking(${b.BookingId})"><i class="fa-solid fa-xmark"></i> ${t('cancel_booking')}</button>` : ''}
+                        ${(b.BookingStatus === 'Confirmed') && !isCompleted ? `<button class="btn btn-danger" onclick="cancelBooking(${b.BookingId})"><i class="fa-solid fa-xmark"></i> ${t('cancel_booking')}</button>` : ''}
                         ${isCompleted ? `<button class="btn btn-warning" onclick="window.location.href='property-review.html?propertyId=${b.PropertyId}'"><i class="fa-solid fa-star"></i> ${t('write_review')}</button>` : ''}
                     </div>
                 </div>

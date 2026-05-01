@@ -378,10 +378,10 @@
 
     function updateBadges() {
         const pendingCount   = allBookings.filter(b => b.BookingStatus === 'Pending').length;
-        // "Approved" = owner said yes, renter hasn't paid yet
-        const approvedCount  = allBookings.filter(b => b.BookingStatus === 'Approved').length;
-        // "Confirmed" = renter paid via Chargily
-        const paidCount      = allBookings.filter(b => b.BookingStatus === 'Confirmed').length;
+        // "Confirmed" = owner approved and renter paid via Chargily
+        const approvedCount  = allBookings.filter(b => b.BookingStatus === 'Confirmed').length;
+        // "Completed" = booking finished
+        const paidCount      = allBookings.filter(b => b.BookingStatus === 'Completed').length;
 
         const setBadge = (id, count) => {
             const el = document.getElementById(id);
@@ -400,11 +400,11 @@
         if (currentTab === 'pending') {
             filtered = allBookings.filter(b => b.BookingStatus === 'Pending');
         } else if (currentTab === 'confirmed') {
-            // "Approved" tab = owner approved, waiting for renter payment
-            filtered = allBookings.filter(b => b.BookingStatus === 'Approved');
-        } else if (currentTab === 'paid') {
-            // "Paid" tab = renter paid, booking confirmed by Chargily webhook
+            // "Confirmed" tab = owner approved and renter paid
             filtered = allBookings.filter(b => b.BookingStatus === 'Confirmed');
+        } else if (currentTab === 'paid') {
+            // "Completed" tab = booking completed
+            filtered = allBookings.filter(b => b.BookingStatus === 'Completed');
         } else {
             filtered = allBookings.filter(b => b.BookingStatus === 'Completed' || b.BookingStatus === 'Cancelled');
         }
@@ -418,8 +418,7 @@
     function getStatusLabel(status) {
         const labels = {
             'Pending':   'Awaiting Approval',
-            'Approved':  'Approved — Awaiting Payment',
-            'Confirmed': 'Paid & Confirmed',
+            'Confirmed': 'Approved & Paid',
             'Completed': 'Completed',
             'Cancelled': 'Cancelled'
         };
@@ -434,7 +433,6 @@
         // Map status to CSS class
         const statusClassMap = {
             'Pending':   'status-pending',
-            'Approved':  'status-approved',
             'Confirmed': 'status-confirmed',
             'Completed': 'status-completed',
             'Cancelled': 'status-cancelled'
@@ -449,17 +447,17 @@
                 <button class="btn-action btn-reject" onclick="updateBookingStatus(${b.BookingId}, 'Cancelled')">
                     <i class="fa-solid fa-xmark"></i> Reject
                 </button>
-                <button class="btn-action btn-approve" onclick="updateBookingStatus(${b.BookingId}, 'Approved')">
+                <button class="btn-action btn-approve" onclick="updateBookingStatus(${b.BookingId}, 'Confirmed')">
                     <i class="fa-solid fa-check"></i> Approve
                 </button>
             `;
         }
 
-        if (b.BookingStatus === 'Approved') {
-            // Show info that renter needs to pay — owner can still cancel
+        if (b.BookingStatus === 'Confirmed') {
+            // Show info that booking is confirmed and paid
             actionButtons = `
                 <span class="badge-awaiting-payment">
-                    <i class="fa-solid fa-clock"></i> Waiting for renter payment
+                    <i class="fa-solid fa-check-circle"></i> Confirmed & Paid
                 </span>
                 <button class="btn-action btn-reject" onclick="updateBookingStatus(${b.BookingId}, 'Cancelled')">
                     <i class="fa-solid fa-xmark"></i> Cancel
@@ -539,7 +537,7 @@
     // ===== APPROVE / REJECT =====
     window.updateBookingStatus = async function(bookingId, status) {
         const confirmMsg = {
-            'Approved':  'Approve this booking? The renter will be notified to complete payment.',
+            'Confirmed': 'Approve this booking? The renter will be notified to complete payment.',
             'Cancelled': 'Cancel / reject this booking?'
         };
         if (!confirm(confirmMsg[status] || `Set booking to ${status}?`)) return;

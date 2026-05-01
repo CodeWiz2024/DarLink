@@ -550,7 +550,7 @@
             }
 
             document.getElementById('statBookings').textContent = allBookings.length;
-            const confirmed = allBookings.filter(b => b.BookingStatus === 'Confirmed' || b.BookingStatus === 'Completed' || b.BookingStatus === 'Approved').length;
+            const confirmed = allBookings.filter(b => b.BookingStatus === 'Confirmed' || b.BookingStatus === 'Completed').length;
             const pending = allBookings.filter(b => b.BookingStatus === 'Pending').length;
             
             document.getElementById('statBookingsSub').textContent = `${confirmed} confirmed`;
