@@ -34,7 +34,7 @@
 
     function initAll() {
         applyTheme(getTheme());
-        injectMobileNav();
+        // Mobile bottom navigation removed
     }
 
     function injectMobileNav() {

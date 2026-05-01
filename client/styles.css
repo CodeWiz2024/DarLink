@@ -1718,20 +1718,7 @@ del.old-price {
         justify-content: center;
     }
     .mobile-bottom-nav {
-        display: flex;
-        position: fixed;
-        bottom: 0;
-        left: 0;
-        right: 0;
-        height: 65px;
-        background: var(--glass-bg, rgba(255, 255, 255, 0.95));
-        backdrop-filter: blur(20px);
-        -webkit-backdrop-filter: blur(20px);
-        border-top: 1px solid var(--glass-border, rgba(0,0,0,0.1));
-        z-index: 9999;
-        justify-content: space-around;
-        align-items: center;
-        box-shadow: 0 -4px 16px rgba(0,0,0,0.05);
+        display: none !important;
     }
     .mobile-bottom-nav a {
         display: flex;
@@ -1759,10 +1746,10 @@ del.old-price {
         border-top: 1px solid rgba(255, 255, 255, 0.1);
     }
     .site-footer {
-        padding-bottom: 80px !important; 
+        padding-bottom: 20px !important; 
     }
     .dash-main, .page-body {
-        padding-bottom: 80px !important;
+        padding-bottom: 20px !important;
     }
 }
 @media (min-width: 769px) {
