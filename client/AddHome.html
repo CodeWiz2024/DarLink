@@ -542,7 +542,7 @@
                     const withTitle = bookings.map(b => ({ ...b, PropertyTitle: property.Title }));
                     allBookings = allBookings.concat(withTitle);
                     bookings.forEach(b => {
-                        if (b.BookingStatus === 'Completed' || b.BookingStatus === 'Confirmed') {
+                        if (b.BookingStatus === 'Completed') {
                             totalRevenue += Number(b.TotalPrice) || 0;
                         }
                     });
