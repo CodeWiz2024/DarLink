@@ -19,11 +19,11 @@
             background: var(--glass-bg);
             backdrop-filter: saturate(180%) blur(24px);
             -webkit-backdrop-filter: saturate(180%) blur(24px);
-            border-left: 1px solid var(--glass-border);
+            border-right: 1px solid var(--glass-border);
             display: flex; flex-direction: column;
-            position: fixed; top: 0; right: 0; height: 100vh; z-index: 100;
+            position: fixed; top: 0; left: 0; height: 100vh; z-index: 100;
             transition: transform 0.3s ease;
-            box-shadow: -4px 0 24px rgba(0,0,0,0.06);
+            box-shadow: 4px 0 24px rgba(0,0,0,0.06);
         }
         .side-nav-logo { padding: 24px 22px 20px; display: flex; align-items: center; gap: 12px; border-bottom: 1px solid var(--glass-border); }
         .side-nav-logo span { font-size: 1.2rem; font-weight: 800; color: var(--primary); letter-spacing: -0.02em; }
@@ -51,7 +51,7 @@
         .btn-logout-side:hover { background: #ff3b30; color: white; }
 
         /* ===== MAIN CONTENT ===== */
-        .dash-main { margin-right: 270px; flex: 1; padding: 32px 36px; min-height: 100vh; }
+        .dash-main { margin-left: 270px; flex: 1; padding: 32px 36px; min-height: 100vh; }
         .dash-topbar { margin-bottom: 32px; }
         .dash-page-title h1 { font-size: 1.8rem; font-weight: 800; color: var(--text-main); margin: 0 0 6px; }
         .dash-page-title p { color: var(--text-muted); font-size: 1rem; margin: 0; }
@@ -132,10 +132,10 @@
         .side-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.4); backdrop-filter: blur(4px); z-index: 99; }
 
         @media (max-width: 1024px) {
-            .side-nav { transform: translateX(100%); }
+            .side-nav { transform: translateX(-100%); }
             .side-nav.open { transform: translateX(0); }
             .side-overlay.show { display: block; }
-            .dash-main { margin-right: 0; padding: 80px 20px 30px; }
+            .dash-main { margin-left: 0; padding: 80px 20px 30px; }
             .sidebar-toggle { display: flex; }
         }
 
