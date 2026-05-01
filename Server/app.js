@@ -1880,7 +1880,7 @@ app.post('/api/payment/webhook', async (req, res) => {
                 console.log('🏠 Booking payment detected');
 
                 await pool.query(
-                    `UPDATE Booking SET BookingStatus = 'Confirmed', PaymentDate = NOW() WHERE BookingId = ?`,
+                    `UPDATE Booking SET BookingStatus = 'Completed', PaymentDate = NOW() WHERE BookingId = ?`,
                     [booking.BookingId]
                 );
 

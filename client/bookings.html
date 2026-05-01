@@ -553,10 +553,10 @@
             });
 
             if (response.ok) {
-                const toastMsg = status === 'Approved'
+                const toastMsg = status === 'Confirmed'
                     ? '✅ Booking approved! Renter can now pay.'
                     : '❌ Booking cancelled.';
-                showToast(toastMsg, status === 'Approved' ? 'success' : 'error');
+                showToast(toastMsg, status === 'Confirmed' ? 'success' : 'error');
                 loadBookings();
             } else {
                 const data = await response.json();

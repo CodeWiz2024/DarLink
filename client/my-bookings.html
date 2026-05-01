@@ -254,6 +254,7 @@
         // Buttons
         retry_payment: { en: "Retry Payment", ar: "إعادة الدفع" },
         pay_now: { en: "Pay Now", ar: "ادفع الآن" },
+        pay_with_chargily: { en: "Pay with Chargily", ar: "ادفع عبر Chargily" },
         cancel_booking: { en: "Cancel Booking", ar: "إلغاء الحجز" },
         write_review: { en: "Write Review", ar: "كتابة تقييم" },
         
@@ -453,15 +454,18 @@
 
         const list = document.getElementById('bookingsList');
         list.innerHTML = bookings.map(b => {
-            const isCompleted = b.BookingStatus === 'Completed' || (b.BookingStatus === 'Confirmed' && new Date(b.EndDate) < new Date());
+            const isCompleted = b.BookingStatus === 'Completed';
             
             let statusClass, statusText;
             if (b.BookingStatus === 'Pending') {
                 statusClass = 'status-pending';
                 statusText = t('awaiting_approval');
             } else if (b.BookingStatus === 'Confirmed') {
-                statusClass = isCompleted ? 'status-completed' : 'status-confirmed';
-                statusText = isCompleted ? t('status_completed') : t('paid_confirmed');
+                statusClass = 'status-confirmed';
+                statusText = t('paid_confirmed');
+            } else if (b.BookingStatus === 'Completed') {
+                statusClass = 'status-completed';
+                statusText = t('status_completed');
             } else if (b.BookingStatus === 'Cancelled') {
                 statusClass = 'status-cancelled';
                 statusText = t('status_cancelled');
@@ -499,6 +503,7 @@
                         </div>
                     </div>
                     <div class="booking-actions">
+                        ${(b.BookingStatus === 'Confirmed') && !isCompleted ? `<button class="btn btn-primary" onclick="retryPayment(${b.BookingId})"><i class="fa-solid fa-credit-card"></i> ${t('pay_with_chargily')}</button>` : ''}
                         ${(b.BookingStatus === 'Confirmed') && !isCompleted ? `<button class="btn btn-danger" onclick="cancelBooking(${b.BookingId})"><i class="fa-solid fa-xmark"></i> ${t('cancel_booking')}</button>` : ''}
                         ${isCompleted ? `<button class="btn btn-warning" onclick="window.location.href='property-review.html?propertyId=${b.PropertyId}'"><i class="fa-solid fa-star"></i> ${t('write_review')}</button>` : ''}
                     </div>
