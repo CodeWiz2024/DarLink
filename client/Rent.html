@@ -478,7 +478,7 @@
             const confirmedBookings = bookings.filter(b => b.BookingStatus === 'Confirmed' || b.BookingStatus === 'Completed').length;
             const pendingBookings = bookings.filter(b => b.BookingStatus === 'Pending' || b.BookingStatus === 'Requested').length;
             const totalSpent = bookings
-                .filter(b => b.BookingStatus === 'Confirmed' || b.BookingStatus === 'Completed')
+                .filter(b => b.BookingStatus === 'Completed')
                 .reduce((sum, b) => sum + parseFloat(b.TotalPrice || 0), 0);
 
             // Update stats
