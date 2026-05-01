@@ -289,6 +289,72 @@
         setTimeout(() => { toast.style.opacity = '0'; toast.style.transform = 'translateY(-20px)'; setTimeout(() => toast.remove(), 300); }, 3500);
     }
 
+    // ===== TRANSLATIONS =====
+    window.I18N_MESSAGES = {
+        management_label: { en: 'Management', ar: 'الإدارة' },
+        add_property: { en: 'Add New Property', ar: 'إضافة عقار جديد' },
+        my_properties: { en: 'My Properties', ar: 'عقاراتي' },
+        bookings: { en: 'Bookings', ar: 'الحجوزات' },
+        statistics: { en: 'Statistics', ar: 'الإحصائيات' },
+        account_label: { en: 'Account', ar: 'الحساب' },
+        back_home: { en: 'Back to Home', ar: 'العودة للرئيسية' },
+        profile_settings: { en: 'Profile Settings', ar: 'إعدادات الملف الشخصي' },
+        dashboard: { en: 'Dashboard', ar: 'لوحة التحكم' },
+        dark_mode: { en: 'Dark Mode', ar: 'الوضع الداكن' },
+        light_mode: { en: 'Light Mode', ar: 'الوضع المضيء' },
+        logout: { en: 'Log Out', ar: 'تسجيل الخروج' },
+        page_title: { en: 'Bookings Management', ar: 'إدارة الحجوزات' },
+        page_subtitle: { en: 'Review and manage your property booking requests', ar: 'راجع وأدر طلبات حجز عقاراتك' },
+        requests: { en: 'Requests', ar: 'الطلبات' },
+        approved: { en: 'Approved', ar: 'موافق عليه' },
+        paid: { en: 'Paid', ar: 'مدفوع' },
+        history: { en: 'History', ar: 'السجل' },
+        no_bookings: { en: 'No bookings found', ar: 'لم يتم العثور على حجوزات' },
+        no_bookings_text: { en: 'There are no bookings in this category at the moment.', ar: 'لا توجد حجوزات في هذه الفئة في الوقت الحالي.' },
+        review_renter: { en: 'Review Renter', ar: 'تقييم المستأجر' },
+        cancel_btn: { en: 'Cancel', ar: 'إلغاء' },
+        submit_review: { en: 'Submit Review', ar: 'إرسال التقييم' },
+        how_was_experience: { en: 'How was your experience with this renter?', ar: 'كيف كانت تجربتك مع هذا المستأجر؟' }
+    };
+
+    // Update page text when language changes
+    function updatePageText() {
+        const lang = localStorage.getItem('site_lang') || 'ar';
+        
+        document.getElementById('managementLabel').textContent = window.I18N_MESSAGES.management_label[lang];
+        document.getElementById('linkAddProperty').querySelector('span').textContent = window.I18N_MESSAGES.add_property[lang];
+        document.getElementById('linkMyProperties').querySelector('span').textContent = window.I18N_MESSAGES.my_properties[lang];
+        document.getElementById('linkBookings').querySelector('span').textContent = window.I18N_MESSAGES.bookings[lang];
+        document.getElementById('linkStatistics').querySelector('span').textContent = window.I18N_MESSAGES.statistics[lang];
+        document.getElementById('accountLabel').textContent = window.I18N_MESSAGES.account_label[lang];
+        document.getElementById('linkBackHome').querySelector('span').textContent = window.I18N_MESSAGES.back_home[lang];
+        document.getElementById('linkProfile').querySelector('span').textContent = window.I18N_MESSAGES.profile_settings[lang];
+        document.getElementById('linkDashboard').querySelector('span').textContent = window.I18N_MESSAGES.dashboard[lang];
+        document.getElementById('themeLabel').textContent = (document.documentElement.getAttribute('data-theme') || 'light') === 'dark' ? window.I18N_MESSAGES.light_mode[lang] : window.I18N_MESSAGES.dark_mode[lang];
+        document.getElementById('logoutText').textContent = window.I18N_MESSAGES.logout[lang];
+        
+        document.getElementById('pageTitle').textContent = window.I18N_MESSAGES.page_title[lang];
+        document.getElementById('pageSubtitle').textContent = window.I18N_MESSAGES.page_subtitle[lang];
+        
+        document.getElementById('tabPending').querySelector('span').textContent = window.I18N_MESSAGES.requests[lang];
+        document.getElementById('tabConfirmed').querySelector('span').textContent = window.I18N_MESSAGES.approved[lang];
+        document.getElementById('tabPaid').querySelector('span').textContent = window.I18N_MESSAGES.paid[lang];
+        document.getElementById('tabHistory').querySelector('span').textContent = window.I18N_MESSAGES.history[lang];
+        
+        document.getElementById('emptyTitle').textContent = window.I18N_MESSAGES.no_bookings[lang];
+        document.getElementById('emptySubtitle').textContent = window.I18N_MESSAGES.no_bookings_text[lang];
+        
+        document.querySelector('.modal-title').textContent = window.I18N_MESSAGES.review_renter[lang];
+        document.getElementById('reviewComment').placeholder = window.I18N_MESSAGES.how_was_experience[lang];
+    }
+
+    // Listen for language changes
+    document.addEventListener('click', (e) => {
+        if (e.target.closest('.lang-btn')) {
+            setTimeout(updatePageText, 100);
+        }
+    });
+
     // ===== INIT =====
     const SERVER_URL = 'https://darlink-production.up.railway.app';
     const API_URL = `${SERVER_URL}/api`;
@@ -320,14 +386,10 @@
     function closeSidebar() { document.getElementById('sideNav').classList.remove('open'); document.getElementById('sideOverlay').classList.remove('show'); }
     function logout() { localStorage.removeItem('user'); window.location.href = 'index.html'; }
 
-    // Lang buttons
+    // Lang buttons - use lang.js global handler
     document.querySelectorAll('.lang-btn').forEach(btn => {
         const saved = localStorage.getItem('site_lang') || 'ar';
         btn.classList.toggle('active', btn.dataset.lang === saved);
-        btn.addEventListener('click', () => {
-            localStorage.setItem('site_lang', btn.dataset.lang);
-            document.querySelectorAll('.lang-btn').forEach(b => b.classList.toggle('active', b.dataset.lang === btn.dataset.lang));
-        });
     });
 
     // ===== BOOKINGS LOGIC =====
@@ -606,7 +668,7 @@
         } catch (e) { showToast('Network error', 'error'); }
     }
 
-    document.addEventListener('DOMContentLoaded', () => { loadBookings(); });
+    document.addEventListener('DOMContentLoaded', () => { updatePageText(); loadBookings(); });
 </script>
 </body>
 </html>
