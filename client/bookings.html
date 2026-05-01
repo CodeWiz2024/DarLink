@@ -13,7 +13,6 @@
         body { margin: 0; background: var(--bg-gradient); min-height: 100vh; }
         .dash-layout { display: flex; min-height: 100vh; }
 
-        /* ===== SIDEBAR (Standardized) ===== */
         .side-nav {
             width: 270px; flex-shrink: 0;
             background: var(--glass-bg);
@@ -27,19 +26,16 @@
         }
         .side-nav-logo { padding: 24px 22px 20px; display: flex; align-items: center; gap: 12px; border-bottom: 1px solid var(--glass-border); }
         .side-nav-logo span { font-size: 1.2rem; font-weight: 800; color: var(--primary); letter-spacing: -0.02em; }
-        
         .side-nav-user { padding: 18px 22px; display: flex; align-items: center; gap: 12px; border-bottom: 1px solid var(--glass-border); background: rgba(10,132,255,0.04); }
         .side-user-avatar { width: 42px; height: 42px; border-radius: 50%; background: var(--primary); color: white; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 1.1rem; flex-shrink: 0; overflow: hidden; }
         .side-user-info .name { font-weight: 700; font-size: 0.95rem; color: var(--text-main); }
         .side-user-info .role { font-size: 0.8rem; color: var(--text-muted); margin-top: 2px; }
-
         .side-nav-links { flex: 1; overflow-y: auto; padding: 16px 12px; display: flex; flex-direction: column; gap: 4px; }
         .side-link { display: flex; align-items: center; gap: 13px; padding: 13px 16px; border-radius: 14px; text-decoration: none; color: var(--text-muted); font-weight: 500; font-size: 0.95rem; transition: all 0.2s ease; }
         .side-link i { width: 22px; text-align: center; font-size: 1rem; }
         .side-link:hover { background: rgba(10,132,255,0.07); color: var(--primary); transform: translateX(-3px); }
         .side-link.active { background: var(--primary); color: white; box-shadow: 0 4px 14px rgba(10,132,255,0.35); }
         .side-link.active i { color: white; }
-
         .side-nav-section-label { font-size: 0.74rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--text-muted); padding: 12px 16px 4px; }
         .side-nav-footer { padding: 16px 12px; border-top: 1px solid var(--glass-border); display: flex; flex-direction: column; gap: 8px; }
         .side-footer-actions { display: flex; gap: 8px; align-items: center; }
@@ -51,20 +47,14 @@
         .btn-logout-side { display: flex; align-items: center; gap: 10px; padding: 10px 14px; border-radius: 12px; background: rgba(255,59,48,0.08); color: #ff3b30; font-size: 0.88rem; font-weight: 600; cursor: pointer; border: none; transition: all 0.2s; text-decoration: none; }
         .btn-logout-side:hover { background: #ff3b30; color: white; }
 
-        /* ===== MAIN CONTENT ===== */
         .dash-main { margin-left: 270px; flex: 1; padding: 32px 36px; min-height: 100vh; }
         .dash-topbar { margin-bottom: 32px; }
         .dash-page-title h1 { font-size: 1.8rem; font-weight: 800; color: var(--text-main); margin: 0 0 6px; }
         .dash-page-title p { color: var(--text-muted); font-size: 1rem; margin: 0; }
 
-        /* ===== TABS ===== */
-        .booking-tabs {
-            display: flex; gap: 8px; background: rgba(0,0,0,0.03); padding: 6px; border-radius: 16px; margin-bottom: 28px; width: fit-content;
-        }
+        .booking-tabs { display: flex; gap: 8px; background: rgba(0,0,0,0.03); padding: 6px; border-radius: 16px; margin-bottom: 28px; width: fit-content; }
         [data-theme="dark"] .booking-tabs { background: rgba(255,255,255,0.05); }
-        .tab-btn {
-            padding: 10px 24px; border-radius: 12px; border: none; background: transparent; color: var(--text-muted); font-weight: 700; font-size: 0.95rem; cursor: pointer; transition: all 0.3s; display: flex; align-items: center; gap: 8px;
-        }
+        .tab-btn { padding: 10px 24px; border-radius: 12px; border: none; background: transparent; color: var(--text-muted); font-weight: 700; font-size: 0.95rem; cursor: pointer; transition: all 0.3s; display: flex; align-items: center; gap: 8px; }
         .tab-btn i { font-size: 0.9rem; }
         .tab-btn.active { background: white; color: var(--primary); box-shadow: 0 4px 12px rgba(0,0,0,0.05); }
         [data-theme="dark"] .tab-btn.active { background: var(--primary); color: white; }
@@ -72,21 +62,18 @@
         .tab-btn.active .tab-badge { background: var(--primary-light); color: var(--primary); }
         [data-theme="dark"] .tab-btn.active .tab-badge { background: white; color: var(--primary); }
 
-        /* ===== BOOKING CARDS ===== */
         .bookings-grid { display: grid; gap: 20px; }
         .booking-card {
             background: var(--glass-bg);
             backdrop-filter: saturate(180%) blur(20px);
             -webkit-backdrop-filter: saturate(180%) blur(20px);
-            border-radius: 24px;
-            padding: 24px;
-            box-shadow: var(--card-shadow);
-            border: 1px solid var(--glass-border);
+            border-radius: 24px; padding: 24px;
+            box-shadow: var(--card-shadow); border: 1px solid var(--glass-border);
             display: flex; flex-direction: column; gap: 20px;
             transition: all 0.3s ease;
         }
         .booking-card:hover { transform: translateY(-3px); box-shadow: 0 12px 30px rgba(0,0,0,0.08); }
-        
+
         .bk-header { display: flex; justify-content: space-between; align-items: flex-start; }
         .bk-property-info { display: flex; align-items: center; gap: 14px; }
         .bk-prop-icon { width: 50px; height: 50px; border-radius: 14px; background: var(--primary-light); color: var(--primary); display: flex; align-items: center; justify-content: center; font-size: 1.4rem; }
@@ -97,6 +84,7 @@
         .bk-status { padding: 6px 16px; border-radius: 20px; font-size: 0.8rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.02em; }
         .status-pending { background: rgba(255,149,0,0.12); color: #ff9500; }
         .status-approved { background: rgba(52,199,89,0.12); color: #34c759; }
+        .status-confirmed { background: rgba(10,132,255,0.12); color: #0a84ff; }
         .status-completed { background: rgba(10,132,255,0.12); color: #0a84ff; }
         .status-cancelled { background: rgba(255,59,48,0.12); color: #ff3b30; }
 
@@ -113,7 +101,7 @@
         .bk-user-link { font-size: 0.8rem; color: var(--primary); text-decoration: none; font-weight: 600; display: block; margin-top: 2px; }
         .bk-user-link:hover { text-decoration: underline; }
 
-        .bk-actions { display: flex; gap: 10px; }
+        .bk-actions { display: flex; gap: 10px; flex-wrap: wrap; }
         .btn-action { padding: 10px 20px; border-radius: 12px; border: none; font-weight: 700; font-size: 0.9rem; cursor: pointer; transition: all 0.2s; display: flex; align-items: center; gap: 8px; }
         .btn-approve { background: var(--primary); color: white; box-shadow: 0 4px 12px rgba(10,132,255,0.3); }
         .btn-approve:hover { transform: translateY(-2px); box-shadow: 0 6px 16px rgba(10,132,255,0.4); }
@@ -122,13 +110,19 @@
         .btn-review { background: var(--card-bg); color: var(--text-main); border: 1px solid var(--glass-border); }
         .btn-review:hover { background: var(--primary); color: white; border-color: var(--primary); }
 
-        /* ===== STATES ===== */
+        /* ── Approved badge shown in confirmed tab ── */
+        .badge-awaiting-payment {
+            display: inline-flex; align-items: center; gap: 6px;
+            padding: 6px 14px; border-radius: 12px;
+            background: rgba(255,149,0,0.1); color: #ff9500;
+            font-size: 0.85rem; font-weight: 600;
+        }
+
         .loading-state { text-align: center; padding: 80px; color: var(--text-muted); }
         .empty-state { text-align: center; padding: 80px; background: var(--glass-bg); border-radius: 24px; border: 1px dashed var(--glass-border); }
         .empty-state i { font-size: 3.5rem; color: var(--text-muted); margin-bottom: 20px; display: block; opacity: 0.5; }
         .empty-state h3 { font-size: 1.4rem; color: var(--text-main); margin-bottom: 8px; }
 
-        /* ===== MOBILE ===== */
         .sidebar-toggle { display: none; position: fixed; top: 16px; left: 16px; z-index: 200; width: 44px; height: 44px; border-radius: 12px; background: var(--primary); color: white; border: none; cursor: pointer; font-size: 1.1rem; box-shadow: 0 4px 14px rgba(10,132,255,0.4); align-items: center; justify-content: center; }
         .side-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.4); backdrop-filter: blur(4px); z-index: 99; }
 
@@ -140,7 +134,6 @@
             .sidebar-toggle { display: flex; }
         }
 
-        /* Modal */
         .review-modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.5); backdrop-filter: blur(8px); z-index: 2000; align-items: center; justify-content: center; padding: 20px; }
         .modal-content { background: var(--bg-gradient); border: 1px solid var(--glass-border); border-radius: 24px; width: 100%; max-width: 500px; padding: 32px; box-shadow: 0 24px 60px rgba(0,0,0,0.2); }
         .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; }
@@ -152,6 +145,12 @@
         .review-text { width: 100%; padding: 16px; border-radius: 16px; border: 1px solid var(--glass-border); background: var(--glass-bg); color: var(--text-main); font-family: inherit; font-size: 1rem; min-height: 120px; margin-bottom: 24px; resize: vertical; }
         .modal-footer { display: flex; gap: 12px; }
         .modal-footer button { flex: 1; padding: 14px; border-radius: 12px; font-weight: 700; cursor: pointer; border: none; }
+
+        [data-theme="dark"] .side-nav { background: rgba(28,28,30,0.92); border-right-color: rgba(255,255,255,0.08); }
+        [data-theme="dark"] .side-link { color: rgba(255,255,255,0.6); }
+        [data-theme="dark"] .side-link:hover { background: rgba(255,255,255,0.07); color: white; }
+        [data-theme="dark"] .theme-toggle-side { color: rgba(255,255,255,0.6); }
+        [data-theme="dark"] .theme-toggle-side:hover { color: white; background: rgba(255,255,255,0.07); }
     </style>
 </head>
 <body>
@@ -160,10 +159,9 @@
 <div class="side-overlay" id="sideOverlay" onclick="closeSidebar()"></div>
 
 <div class="dash-layout">
-    <!-- SIDEBAR -->
     <aside class="side-nav" id="sideNav">
         <div class="side-nav-logo">
-            <a class="darlink-logo blue small" href="index.html" style="display:flex; flex-direction:row; align-items:center; gap:8px; text-decoration:none;">
+            <a class="darlink-logo blue small" href="index.html" style="display:flex;flex-direction:row;align-items:center;gap:8px;text-decoration:none;">
                 <svg width="36" height="32" viewBox="0 0 110 100" fill="none">
                     <path d="M55 8 L98 42 L98 92 L12 92 L12 42 Z" fill="none" stroke="#00d4ff" stroke-width="6" stroke-linejoin="round"/>
                     <rect x="72" y="10" width="10" height="18" fill="none" stroke="#00d4ff" stroke-width="5.5"/>
@@ -171,7 +169,7 @@
                     <path d="M32 88 L32 52 Q32 30 52 30 Q72 30 72 52 Q72 68 58 72 Q44 76 32 72" fill="none" stroke="#5aa8c0" stroke-width="5.5" stroke-linecap="round"/>
                     <line x1="32" y1="88" x2="75" y2="88" stroke="#5aa8c0" stroke-width="5.5" stroke-linecap="round"/>
                 </svg>
-                <span style="color:#00d4ff; font-size:22px; font-weight:700;">DarLink</span>
+                <span style="color:#00d4ff;font-size:22px;font-weight:700;">DarLink</span>
             </a>
         </div>
         <div class="side-nav-user">
@@ -187,7 +185,7 @@
             <a href="my-property.html" class="side-link" id="linkMyProperties"><i class="fa-solid fa-list"></i> <span>My Properties</span></a>
             <a href="bookings.html" class="side-link active" id="linkBookings"><i class="fa-regular fa-calendar-check"></i> <span>Bookings</span></a>
             <a href="Statistics.html" class="side-link" id="linkStatistics"><i class="fa-solid fa-chart-line"></i> <span>Statistics</span></a>
-            <div class="side-nav-section-label" style="margin-top: 8px;" id="accountLabel">Account</div>
+            <div class="side-nav-section-label" style="margin-top:8px;" id="accountLabel">Account</div>
             <a href="index.html" class="side-link" id="linkBackHome"><i class="fa-solid fa-house"></i> <span>Back to Home</span></a>
             <a href="profile.html" class="side-link" id="linkProfile"><i class="fa-solid fa-user"></i> <span>Profile Settings</span></a>
             <a href="AddHome.html" class="side-link" id="linkDashboard"><i class="fa-solid fa-gauge"></i> <span>Dashboard</span></a>
@@ -199,7 +197,7 @@
                 </button>
                 <div class="lang-side">
                     <button class="lang-btn" data-lang="en">EN</button>
-                    <button class="lang-btn" data-lang="ar" class="active">ع</button>
+                    <button class="lang-btn" data-lang="ar">ع</button>
                 </div>
             </div>
             <button class="btn-logout-side" onclick="logout()">
@@ -208,7 +206,6 @@
         </div>
     </aside>
 
-    <!-- MAIN CONTENT -->
     <main class="dash-main">
         <header class="dash-topbar">
             <div class="dash-page-title">
@@ -219,29 +216,33 @@
 
         <div class="booking-tabs">
             <button class="tab-btn active" onclick="switchTab('pending')" id="tabPending">
-                <i class="fa-solid fa-clock-rotate-left"></i> <span data-i18n="tab_pending">Requests</span>
-                <span class="tab-badge" id="countPending">0</span>
+                <i class="fa-solid fa-clock-rotate-left"></i> <span>Requests</span>
+                <span class="tab-badge" id="countPending" style="display:none;">0</span>
             </button>
             <button class="tab-btn" onclick="switchTab('confirmed')" id="tabConfirmed">
-                <i class="fa-solid fa-circle-check"></i> <span data-i18n="tab_confirmed">Confirmed</span>
-                <span class="tab-badge" id="countConfirmed">0</span>
+                <i class="fa-solid fa-circle-check"></i> <span>Approved</span>
+                <span class="tab-badge" id="countConfirmed" style="display:none;">0</span>
+            </button>
+            <button class="tab-btn" onclick="switchTab('paid')" id="tabPaid">
+                <i class="fa-solid fa-credit-card"></i> <span>Paid</span>
+                <span class="tab-badge" id="countPaid" style="display:none;">0</span>
             </button>
             <button class="tab-btn" onclick="switchTab('history')" id="tabHistory">
-                <i class="fa-solid fa-history"></i> <span data-i18n="tab_history">History</span>
+                <i class="fa-solid fa-history"></i> <span>History</span>
             </button>
         </div>
 
         <div id="loading" class="loading-state">
-            <i class="fa-solid fa-spinner fa-spin" style="font-size: 2.5rem; color: var(--primary); margin-bottom: 16px; display: block;"></i>
-            <span data-i18n="loading">Loading bookings...</span>
+            <i class="fa-solid fa-spinner fa-spin" style="font-size:2.5rem;color:var(--primary);margin-bottom:16px;display:block;"></i>
+            <span>Loading bookings...</span>
         </div>
 
         <div id="bookingsList" class="bookings-grid"></div>
 
-        <div id="emptyState" class="empty-state" style="display: none;">
+        <div id="emptyState" class="empty-state" style="display:none;">
             <i class="fa-regular fa-calendar-xmark"></i>
             <h3 id="emptyTitle">No bookings found</h3>
-            <p id="emptySubtitle" style="color: var(--text-muted);">There are no bookings in this category at the moment.</p>
+            <p id="emptySubtitle" style="color:var(--text-muted);">There are no bookings in this category at the moment.</p>
         </div>
     </main>
 </div>
@@ -253,7 +254,7 @@
             <h2 class="modal-title">Review Renter</h2>
             <button class="close-modal" onclick="closeReviewModal()">&times;</button>
         </div>
-        <div id="renterInfo" style="margin-bottom: 20px;"></div>
+        <div id="renterInfo" style="margin-bottom:20px;"></div>
         <div class="star-rating" id="starRating">
             <i class="fa-solid fa-star" data-rating="1"></i>
             <i class="fa-solid fa-star" data-rating="2"></i>
@@ -263,177 +264,71 @@
         </div>
         <textarea class="review-text" id="reviewComment" placeholder="How was your experience with this renter?"></textarea>
         <div class="modal-footer">
-            <button style="background: rgba(0,0,0,0.05); color: var(--text-main);" onclick="closeReviewModal()">Cancel</button>
-            <button style="background: var(--primary); color: white;" onclick="submitRenterReview()">Submit Review</button>
+            <button style="background:rgba(0,0,0,0.05);color:var(--text-main);" onclick="closeReviewModal()">Cancel</button>
+            <button style="background:var(--primary);color:white;" onclick="submitRenterReview()">Submit Review</button>
         </div>
     </div>
 </div>
 
 <script>
-    // ===== NOTIFICATIONS =====
+    // ===== TOAST =====
     function showToast(message, type = 'success') {
         let container = document.getElementById('toast-container');
         if (!container) {
             container = document.createElement('div');
             container.id = 'toast-container';
-            container.style.position = 'fixed';
-            container.style.top = '20px';
-            container.style.right = '20px';
-            container.style.zIndex = '9999';
-            container.style.display = 'flex';
-            container.style.flexDirection = 'column';
-            container.style.gap = '10px';
+            Object.assign(container.style, { position:'fixed', top:'20px', right:'20px', zIndex:'9999', display:'flex', flexDirection:'column', gap:'10px' });
             document.body.appendChild(container);
         }
-
         const toast = document.createElement('div');
         toast.className = `message ${type}`;
         toast.textContent = message;
         toast.style.margin = '0';
         toast.style.boxShadow = '0 4px 12px rgba(0,0,0,0.1)';
-        toast.style.transition = 'all 0.3s ease';
-        
-        // Add dark mode support for toast background
-        const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
-        if (isDark) {
-            toast.style.backgroundColor = type === 'success' ? 'rgba(52, 199, 89, 0.2)' : 'rgba(255, 59, 48, 0.2)';
-            toast.style.color = type === 'success' ? '#4cd964' : '#ff453a';
-            toast.style.backdropFilter = 'blur(10px)';
-            toast.style.border = type === 'success' ? '1px solid rgba(52, 199, 89, 0.3)' : '1px solid rgba(255, 59, 48, 0.3)';
-        }
-
         container.appendChild(toast);
-
-        setTimeout(() => {
-            toast.style.opacity = '0';
-            toast.style.transform = 'translateY(-20px)';
-            setTimeout(() => toast.remove(), 300);
-        }, 3000);
+        setTimeout(() => { toast.style.opacity = '0'; toast.style.transform = 'translateY(-20px)'; setTimeout(() => toast.remove(), 300); }, 3500);
     }
 
-    // ===== TRANSLATIONS =====
-    window.I18N_MESSAGES = {
-        management: { en: "Management", ar: "الإدارة" },
-        add_property: { en: "Add New Property", ar: "إضافة عقار جديد" },
-        my_properties: { en: "My Properties", ar: "عقاراتي" },
-        bookings: { en: "Bookings", ar: "الحجوزات" },
-        statistics: { en: "Statistics", ar: "الإحصائيات" },
-        account: { en: "Account", ar: "الحساب" },
-        back_to_home: { en: "Back to Home", ar: "العودة للرئيسية" },
-        profile_settings: { en: "Profile Settings", ar: "إعدادات الملف الشخصي" },
-        dashboard: { en: "Dashboard", ar: "لوحة التحكم" },
-        log_out: { en: "Log Out", ar: "تسجيل الخروج" },
-        dark_mode: { en: "Dark Mode", ar: "الوضع الداكن" },
-        light_mode: { en: "Light Mode", ar: "الوضع الفاتح" },
-        property_owner: { en: "Property Owner", ar: "مالك عقار" },
-        page_title: { en: "Bookings Management", ar: "إدارة الحجوزات" },
-        page_subtitle: { en: "Review and manage your property booking requests", ar: "مراجعة وإدارة طلبات حجز عقاراتك" },
-        tab_pending: { en: "Requests", ar: "الطلبات" },
-        tab_confirmed: { en: "Confirmed", ar: "المؤكدة" },
-        tab_history: { en: "History", ar: "السجل" },
-        loading: { en: "Loading bookings...", ar: "جاري تحميل الحجوزات..." },
-        no_bookings: { en: "No bookings found", ar: "لا توجد حجوزات" },
-        no_bookings_desc: { en: "There are no bookings in this category at the moment.", ar: "لا توجد حجوزات في هذا القسم حالياً." },
-        check_in: { en: "Check-in", ar: "موعد الدخول" },
-        check_out: { en: "Check-out", ar: "موعد الخروج" },
-        nights: { en: "Nights", ar: "الليالي" },
-        total_price: { en: "Total Price", ar: "السعر الإجمالي" },
-        view_profile: { en: "View Profile", ar: "عرض الملف الشخصي" },
-        approve: { en: "Approve", ar: "موافقة" },
-        reject: { en: "Reject", ar: "رفض" },
-        review: { en: "Review Renter", ar: "تقييم المستأجر" },
-        reviewed: { en: "Reviewed", ar: "تم التقييم" },
-        phone: { en: "Phone", ar: "الهاتف" }
-    };
-
-    function t(key) {
-        const lang = localStorage.getItem('site_lang') || 'en';
-        return window.I18N_MESSAGES[key] ? window.I18N_MESSAGES[key][lang] : key;
-    }
-
-    function updatePageText() {
-        document.getElementById('managementLabel').textContent = t('management').toUpperCase();
-        document.getElementById('linkAddProperty').querySelector('span').textContent = t('add_property');
-        document.getElementById('linkMyProperties').querySelector('span').textContent = t('my_properties');
-        document.getElementById('linkBookings').querySelector('span').textContent = t('bookings');
-        document.getElementById('linkStatistics').querySelector('span').textContent = t('statistics');
-        document.getElementById('accountLabel').textContent = t('account').toUpperCase();
-        document.getElementById('linkBackHome').querySelector('span').textContent = t('back_to_home');
-        document.getElementById('linkProfile').querySelector('span').textContent = t('profile_settings');
-        document.getElementById('linkDashboard').querySelector('span').textContent = t('dashboard');
-        document.getElementById('logoutText').textContent = t('log_out');
-        document.getElementById('userRoleSide').textContent = t('property_owner');
-        document.getElementById('pageTitle').textContent = t('page_title');
-        document.getElementById('pageSubtitle').textContent = t('page_subtitle');
-        document.getElementById('emptyTitle').textContent = t('no_bookings');
-        document.getElementById('emptySubtitle').textContent = t('no_bookings_desc');
-        
-        const currentTheme = document.documentElement.getAttribute('data-theme') || 'light';
-        document.getElementById('themeLabel').textContent = currentTheme === 'dark' ? t('light_mode') : t('dark_mode');
-        
-        // Re-render bookings to update labels inside cards
-        if (allBookings.length > 0) renderBookings();
-    }
-
-    function changeLang(lang) {
-        localStorage.setItem('site_lang', lang);
-        document.documentElement.setAttribute('lang', lang);
-        updatePageText();
-        
-        // Update styling of the buttons using classes
-        document.querySelectorAll('.lang-btn').forEach(btn => {
-            btn.classList.toggle('active', btn.getAttribute('data-lang') === lang);
-        });
-        
-        // Apply translations for elements that have data-i18n tags
-        if (window.I18N && window.I18N.applyTranslations) {
-            window.I18N.applyTranslations();
-        } else {
-            // Fallback for data-i18n items in bookings.html manually
-            document.querySelectorAll('[data-i18n]').forEach((el) => {
-                const key = el.getAttribute('data-i18n');
-                if (window.I18N_MESSAGES[key] && window.I18N_MESSAGES[key][lang]) {
-                    if (el.tagName === 'SPAN') {
-                        // Some elements like tabs have icons inside button, so we target the span
-                        el.textContent = window.I18N_MESSAGES[key][lang];
-                    } else {
-                        el.textContent = window.I18N_MESSAGES[key][lang];
-                    }
-                }
-            });
-        }
-    }
-
-    // ===== INITIALIZATION =====
+    // ===== INIT =====
     const SERVER_URL = 'https://darlink-production.up.railway.app';
     const API_URL = `${SERVER_URL}/api`;
     const user = JSON.parse(localStorage.getItem('user') || 'null');
 
-    if (!user || user.UserType !== 'Owner') {
-        window.location.href = 'login.html';
-    } else {
+    if (!user || user.UserType !== 'Owner') { window.location.href = 'login.html'; }
+    else {
         const fullName = user.FullName || `${user.FirstName || ''} ${user.LastName || ''}`.trim() || 'Owner';
         document.getElementById('userNameSide').textContent = fullName;
-        const initials = (user.FirstName?.[0] || fullName?.[0] || 'O');
-        document.getElementById('userAvatarSide').textContent = initials.toUpperCase();
+        document.getElementById('userAvatarSide').textContent = (user.FirstName?.[0] || fullName?.[0] || 'O').toUpperCase();
     }
 
-    // Theme & Sidebar
     function toggleTheme() {
         const current = document.documentElement.getAttribute('data-theme') || 'light';
         const newTheme = current === 'dark' ? 'light' : 'dark';
         document.documentElement.setAttribute('data-theme', newTheme);
         localStorage.setItem('site_theme', newTheme);
         document.getElementById('themeIcon').className = newTheme === 'dark' ? 'fa-solid fa-sun' : 'fa-regular fa-moon';
-        updatePageText();
+        document.getElementById('themeLabel').textContent = newTheme === 'dark' ? 'Light Mode' : 'Dark Mode';
     }
     const savedTheme = localStorage.getItem('site_theme') || 'light';
     document.documentElement.setAttribute('data-theme', savedTheme);
-    if (savedTheme === 'dark') document.getElementById('themeIcon').className = 'fa-solid fa-sun';
+    if (savedTheme === 'dark') {
+        document.getElementById('themeIcon').className = 'fa-solid fa-sun';
+        document.getElementById('themeLabel').textContent = 'Light Mode';
+    }
 
     function toggleSidebar() { document.getElementById('sideNav').classList.toggle('open'); document.getElementById('sideOverlay').classList.toggle('show'); }
     function closeSidebar() { document.getElementById('sideNav').classList.remove('open'); document.getElementById('sideOverlay').classList.remove('show'); }
     function logout() { localStorage.removeItem('user'); window.location.href = 'index.html'; }
+
+    // Lang buttons
+    document.querySelectorAll('.lang-btn').forEach(btn => {
+        const saved = localStorage.getItem('site_lang') || 'ar';
+        btn.classList.toggle('active', btn.dataset.lang === saved);
+        btn.addEventListener('click', () => {
+            localStorage.setItem('site_lang', btn.dataset.lang);
+            document.querySelectorAll('.lang-btn').forEach(b => b.classList.toggle('active', b.dataset.lang === btn.dataset.lang));
+        });
+    });
 
     // ===== BOOKINGS LOGIC =====
     let allBookings = [];
@@ -446,14 +341,10 @@
             document.getElementById('bookingsList').innerHTML = '';
             document.getElementById('emptyState').style.display = 'none';
 
-            // Fetch owner's properties first
             const propsRes = await fetch(`${API_URL}/properties/owner/${user.UserId}`);
             const properties = await propsRes.json();
-            
-            if (!properties || properties.length === 0) {
-                showEmpty();
-                return;
-            }
+
+            if (!properties || properties.length === 0) { showEmpty(); return; }
 
             let tempBookings = [];
             for (const prop of properties) {
@@ -468,15 +359,16 @@
                 })));
             }
 
-            // Fetch reviews to identify which completed bookings are reviewed
             const reviewsRes = await fetch(`${API_URL}/reviews/by-user/${user.UserId}`);
             const reviewsData = await reviewsRes.json();
-            reviewedCombos = new Set(reviewsData.reviews?.filter(r => r.ReviewedRole === 'Renter').map(r => `${r.ReviewedUserId}-${r.BookingId}`) || []);
+            reviewedCombos = new Set(
+                reviewsData.reviews?.filter(r => r.ReviewedRole === 'Renter')
+                    .map(r => `${r.ReviewedUserId}-${r.BookingId}`) || []
+            );
 
             allBookings = tempBookings.sort((a, b) => new Date(b.StartDate) - new Date(a.StartDate));
             updateBadges();
             renderBookings();
-            
             document.getElementById('loading').style.display = 'none';
         } catch (err) {
             console.error(err);
@@ -485,12 +377,20 @@
     }
 
     function updateBadges() {
-        const pendingCount = allBookings.filter(b => b.BookingStatus === 'Pending').length;
-        const confirmedCount = allBookings.filter(b => b.BookingStatus === 'Approved' || b.BookingStatus === 'Paid').length;
-        document.getElementById('countPending').textContent = pendingCount;
-        document.getElementById('countConfirmed').textContent = confirmedCount;
-        document.getElementById('countPending').style.display = pendingCount > 0 ? 'inline' : 'none';
-        document.getElementById('countConfirmed').style.display = confirmedCount > 0 ? 'inline' : 'none';
+        const pendingCount   = allBookings.filter(b => b.BookingStatus === 'Pending').length;
+        // "Approved" = owner said yes, renter hasn't paid yet
+        const approvedCount  = allBookings.filter(b => b.BookingStatus === 'Approved').length;
+        // "Confirmed" = renter paid via Chargily
+        const paidCount      = allBookings.filter(b => b.BookingStatus === 'Confirmed').length;
+
+        const setBadge = (id, count) => {
+            const el = document.getElementById(id);
+            el.textContent = count;
+            el.style.display = count > 0 ? 'inline' : 'none';
+        };
+        setBadge('countPending',  pendingCount);
+        setBadge('countConfirmed', approvedCount);
+        setBadge('countPaid',     paidCount);
     }
 
     function renderBookings() {
@@ -500,25 +400,82 @@
         if (currentTab === 'pending') {
             filtered = allBookings.filter(b => b.BookingStatus === 'Pending');
         } else if (currentTab === 'confirmed') {
-            filtered = allBookings.filter(b => b.BookingStatus === 'Approved' || b.BookingStatus === 'Paid');
+            // "Approved" tab = owner approved, waiting for renter payment
+            filtered = allBookings.filter(b => b.BookingStatus === 'Approved');
+        } else if (currentTab === 'paid') {
+            // "Paid" tab = renter paid, booking confirmed by Chargily webhook
+            filtered = allBookings.filter(b => b.BookingStatus === 'Confirmed');
         } else {
             filtered = allBookings.filter(b => b.BookingStatus === 'Completed' || b.BookingStatus === 'Cancelled');
         }
 
-        if (filtered.length === 0) {
-            showEmpty();
-            return;
-        }
+        if (filtered.length === 0) { showEmpty(); return; }
 
         document.getElementById('emptyState').style.display = 'none';
         list.innerHTML = filtered.map(b => createBookingCard(b)).join('');
     }
 
+    function getStatusLabel(status) {
+        const labels = {
+            'Pending':   'Awaiting Approval',
+            'Approved':  'Approved — Awaiting Payment',
+            'Confirmed': 'Paid & Confirmed',
+            'Completed': 'Completed',
+            'Cancelled': 'Cancelled'
+        };
+        return labels[status] || status;
+    }
+
     function createBookingCard(b) {
         const renterName = b.RenterName || 'Guest';
-        const renterId = b.RenterId || b.UserId;
+        const renterId   = b.RenterId || b.UserId;
         const isReviewed = reviewedCombos.has(`${renterId}-${b.BookingId}`);
-        const statusClass = `status-${b.BookingStatus.toLowerCase()}`;
+
+        // Map status to CSS class
+        const statusClassMap = {
+            'Pending':   'status-pending',
+            'Approved':  'status-approved',
+            'Confirmed': 'status-confirmed',
+            'Completed': 'status-completed',
+            'Cancelled': 'status-cancelled'
+        };
+        const statusClass = statusClassMap[b.BookingStatus] || 'status-pending';
+
+        // Build action buttons based on status
+        let actionButtons = '';
+
+        if (b.BookingStatus === 'Pending') {
+            actionButtons = `
+                <button class="btn-action btn-reject" onclick="updateBookingStatus(${b.BookingId}, 'Cancelled')">
+                    <i class="fa-solid fa-xmark"></i> Reject
+                </button>
+                <button class="btn-action btn-approve" onclick="updateBookingStatus(${b.BookingId}, 'Approved')">
+                    <i class="fa-solid fa-check"></i> Approve
+                </button>
+            `;
+        }
+
+        if (b.BookingStatus === 'Approved') {
+            // Show info that renter needs to pay — owner can still cancel
+            actionButtons = `
+                <span class="badge-awaiting-payment">
+                    <i class="fa-solid fa-clock"></i> Waiting for renter payment
+                </span>
+                <button class="btn-action btn-reject" onclick="updateBookingStatus(${b.BookingId}, 'Cancelled')">
+                    <i class="fa-solid fa-xmark"></i> Cancel
+                </button>
+            `;
+        }
+
+        if (b.BookingStatus === 'Completed') {
+            actionButtons = isReviewed
+                ? `<span class="status-approved" style="padding:8px 16px;border-radius:12px;display:inline-flex;align-items:center;gap:6px;">
+                       <i class="fa-solid fa-check"></i> Reviewed
+                   </span>`
+                : `<button class="btn-action btn-review" onclick="openReviewModal(${b.BookingId}, ${renterId}, ${b.PropertyId}, '${renterName.replace(/'/g, "\\'")}')">
+                       <i class="fa-solid fa-star"></i> Review Renter
+                   </button>`;
+        }
 
         return `
             <div class="booking-card">
@@ -530,23 +487,23 @@
                             <div class="bk-prop-loc">${b.City}, ${b.Wilaya}</div>
                         </div>
                     </div>
-                    <span class="bk-status ${statusClass}">${t('status_' + b.BookingStatus.toLowerCase()) || b.BookingStatus}</span>
+                    <span class="bk-status ${statusClass}">${getStatusLabel(b.BookingStatus)}</span>
                 </div>
                 <div class="bk-content">
                     <div class="bk-info-item">
-                        <span class="bk-label">${t('check_in')}</span>
+                        <span class="bk-label">Check-in</span>
                         <span class="bk-value"><i class="fa-regular fa-calendar"></i> ${new Date(b.StartDate).toLocaleDateString()}</span>
                     </div>
                     <div class="bk-info-item">
-                        <span class="bk-label">${t('check_out')}</span>
+                        <span class="bk-label">Check-out</span>
                         <span class="bk-value"><i class="fa-regular fa-calendar-check"></i> ${new Date(b.EndDate).toLocaleDateString()}</span>
                     </div>
                     <div class="bk-info-item">
-                        <span class="bk-label">${t('nights')}</span>
+                        <span class="bk-label">Nights</span>
                         <span class="bk-value">${b.LengthOfStay}</span>
                     </div>
                     <div class="bk-info-item">
-                        <span class="bk-label">${t('total_price')}</span>
+                        <span class="bk-label">Total Price</span>
                         <span class="bk-value" style="color:var(--primary);">${Number(b.TotalPrice).toLocaleString()} DZD</span>
                     </div>
                 </div>
@@ -555,20 +512,11 @@
                         <div class="bk-user-avatar">${renterName[0].toUpperCase()}</div>
                         <div>
                             <div class="bk-user-name">${renterName}</div>
-                            <div style="font-size:0.8rem; color:var(--text-muted);">${t('phone')}: ${b.PhoneNumber || '---'}</div>
-                            <a href="public-user-profile.html?userId=${renterId}" class="bk-user-link">${t('view_profile')}</a>
+                            <div style="font-size:0.8rem;color:var(--text-muted);">Phone: ${b.PhoneNumber || '---'}</div>
+                            <a href="public-user-profile.html?userId=${renterId}" class="bk-user-link">View Profile</a>
                         </div>
                     </div>
-                    <div class="bk-actions">
-                        ${b.BookingStatus === 'Pending' ? `
-                            <button class="btn-action btn-reject" onclick="updateBookingStatus(${b.BookingId}, 'Cancelled')">${t('reject')}</button>
-                            <button class="btn-action btn-approve" onclick="updateBookingStatus(${b.BookingId}, 'Approved')">${t('approve')}</button>
-                        ` : ''}
-                        ${b.BookingStatus === 'Completed' ? (isReviewed 
-                            ? `<span class="status-approved" style="padding:8px 16px; border-radius:12px;"><i class="fa-solid fa-check"></i> ${t('reviewed')}</span>`
-                            : `<button class="btn-action btn-review" onclick="openReviewModal(${b.BookingId}, ${renterId}, ${b.PropertyId}, '${renterName}')">${t('review')}</button>`
-                        ) : ''}
-                    </div>
+                    <div class="bk-actions">${actionButtons}</div>
                 </div>
             </div>
         `;
@@ -583,35 +531,47 @@
     function switchTab(tab) {
         currentTab = tab;
         document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
-        document.getElementById('tab' + tab.charAt(0).toUpperCase() + tab.slice(1)).classList.add('active');
+        const tabId = 'tab' + tab.charAt(0).toUpperCase() + tab.slice(1);
+        document.getElementById(tabId).classList.add('active');
         renderBookings();
     }
 
+    // ===== APPROVE / REJECT =====
     window.updateBookingStatus = async function(bookingId, status) {
-        if (!confirm(status === 'Approved' ? 'Approve this booking?' : 'Reject this booking?')) return;
+        const confirmMsg = {
+            'Approved':  'Approve this booking? The renter will be notified to complete payment.',
+            'Cancelled': 'Cancel / reject this booking?'
+        };
+        if (!confirm(confirmMsg[status] || `Set booking to ${status}?`)) return;
+
         try {
             const response = await fetch(`${API_URL}/bookings/${bookingId}`, {
                 method: 'PUT',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ 
-                    BookingStatus: status, 
-                    UserId: user.UserId,
-                    OwnerId: user.UserId
+                body: JSON.stringify({
+                    BookingStatus: status,
+                    UserId: user.UserId   // backend checks OwnerId via JOIN
                 })
             });
+
             if (response.ok) {
-                showToast(status === 'Approved' ? 'Booking approved! Renter will receive payment link.' : 'Booking rejected successfully!', 'success');
+                const toastMsg = status === 'Approved'
+                    ? '✅ Booking approved! Renter can now pay.'
+                    : '❌ Booking cancelled.';
+                showToast(toastMsg, status === 'Approved' ? 'success' : 'error');
                 loadBookings();
             } else {
-                showToast('Action failed. Please try again.', 'error');
+                const data = await response.json();
+                showToast('Failed: ' + (data.error || 'Please try again.'), 'error');
             }
         } catch (e) {
             showToast('Network error.', 'error');
         }
     };
 
-    // Review Modal Logic
+    // ===== REVIEW MODAL =====
     let currentBkId, currentRntId, currentPropId, selectedRating = 0;
+
     function openReviewModal(bkId, rntId, prpId, name) {
         currentBkId = bkId; currentRntId = rntId; currentPropId = prpId;
         document.getElementById('renterInfo').innerHTML = `<b style="font-size:1.1rem;">${name}</b><br><span style="color:var(--text-muted);">Booking #${bkId}</span>`;
@@ -626,61 +586,29 @@
     document.querySelectorAll('.star-rating i').forEach(star => {
         star.onclick = function() {
             selectedRating = parseInt(this.dataset.rating);
-            document.querySelectorAll('.star-rating i').forEach(s => {
-                s.classList.toggle('active', parseInt(s.dataset.rating) <= selectedRating);
-            });
+            document.querySelectorAll('.star-rating i').forEach(s => s.classList.toggle('active', parseInt(s.dataset.rating) <= selectedRating));
         };
     });
     async function submitRenterReview() {
-        if (!selectedRating) { showToast('Select stars!', 'error'); return; }
+        if (!selectedRating) { showToast('Please select a star rating.', 'error'); return; }
         const comment = document.getElementById('reviewComment').value.trim();
         try {
             const res = await fetch(`${API_URL}/reviews`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
-                    reviewerId: user.UserId,
-                    reviewedUserId: currentRntId,
-                    propertyId: currentPropId,
-                    bookingId: currentBkId,
-                    rating: selectedRating,
-                    comment,
-                    reviewerType: 'Owner',
-                    reviewedRole: 'Renter'
+                    reviewerId: user.UserId, reviewedUserId: currentRntId,
+                    propertyId: currentPropId, bookingId: currentBkId,
+                    rating: selectedRating, comment,
+                    reviewerType: 'Owner', reviewedRole: 'Renter'
                 })
             });
-            if (res.ok) { 
-                closeReviewModal(); 
-                showToast('Review submitted successfully!', 'success');
-                loadBookings(); 
-            }
+            if (res.ok) { closeReviewModal(); showToast('Review submitted!', 'success'); loadBookings(); }
             else showToast('Failed to submit review', 'error');
         } catch (e) { showToast('Network error', 'error'); }
     }
 
-    // Init
-    document.addEventListener('DOMContentLoaded', () => {
-        const savedLang = localStorage.getItem('site_lang') || 'ar';
-        document.documentElement.setAttribute('dir', 'rtl');
-        document.documentElement.setAttribute('lang', savedLang);
-        updatePageText();
-        
-        // Set initial state of language buttons using classes and data-lang attributes
-        document.querySelectorAll('.lang-btn').forEach(btn => {
-            btn.classList.toggle('active', btn.getAttribute('data-lang') === savedLang);
-            btn.addEventListener('click', () => changeLang(btn.getAttribute('data-lang')));
-        });
-        
-        // Translate data-i18n elements initially
-        document.querySelectorAll('[data-i18n]').forEach((el) => {
-            const key = el.getAttribute('data-i18n');
-            if (window.I18N_MESSAGES[key] && window.I18N_MESSAGES[key][savedLang]) {
-                el.textContent = window.I18N_MESSAGES[key][savedLang];
-            }
-        });
-        
-        loadBookings();
-    });
+    document.addEventListener('DOMContentLoaded', () => { loadBookings(); });
 </script>
 </body>
 </html>
