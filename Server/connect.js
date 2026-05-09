@@ -3,10 +3,10 @@ import dotenv from 'dotenv';
 dotenv.config(); // Load environment variables from the .env file
 // import mysql labrary to connect to the database 
 const pool = mysql.createPool({
-    host: process.env.DB_HOST, // Database host from environment variables
+    host: process.env.HOST, // Database host from environment variables
     user: process.env.DB_USER, // Database username from environment variables
     password: process.env.DB_PASSWORD, // Database password from environment variables
-    database: process.env.DB_NAME, // Database name from environment variables
+    database: process.env.DATABASE, // Database name from environment variables
     port: process.env.DB_PORT, // Database port from environment variables
 }).promise();
 // create a connection pool to the database with the specified host, user, password, and database name
