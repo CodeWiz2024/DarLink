@@ -208,19 +208,14 @@
             <button class="theme-btn" onclick="toggleTheme()" aria-label="Theme">
             <i class="fa-regular fa-moon" id="themeIcon"></i>
             </button>
-            <a href="index.html" data-i18n="nav_home" onclick="closeMobileNav()">
-                <i class="fa-solid fa-house" style="margin-right:8px;"></i> Home
-            </a>
-            <a href="login.html" data-i18n="nav_login" onclick="closeMobileNav()">
-                <i class="fa-solid fa-right-to-bracket" style="margin-right:8px;"></i> Login
-            </a>
-            <a href="Register.html" class="primary" data-i18n="nav_register" onclick="closeMobileNav()">
-                <i class="fa-solid fa-user-plus" style="margin-right:8px;"></i> Register
-            </a>
+            <a href="index.html" data-i18n="nav_home" onclick="closeMobileNav()"><i class="fa-solid fa-house"></i> Home</a>
+            <a href="login.html" id="loginLink" data-i18n="nav_login" onclick="closeMobileNav()"><i class="fa-solid fa-right-to-bracket"></i> Login</a>
+            <a href="Register.html" id="registerLink" class="primary" data-i18n="nav_register" onclick="closeMobileNav()"><i class="fa-solid fa-bolt"></i> Get Started</a>
             <div class="lang-switch">
-                <button type="button" class="lang-btn" data-lang="en">EN</button>
-                <button type="button" class="lang-btn" data-lang="ar">عربي</button>
+                <button class="lang-btn" data-lang="en">EN</button>
+                <button class="lang-btn" data-lang="ar">عربي</button>
             </div>
+            <span id="userGreeting"></span>
         </div>
     </nav>
 
