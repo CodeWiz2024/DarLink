@@ -18,23 +18,22 @@
         .nav-hamburger {
             display: none;
             flex-direction: column;
-            gap: 6px;
+            gap: 5px;
             cursor: pointer;
-            padding: 10px;
-            border-radius: 12px;
+            padding: 8px;
+            border-radius: 10px;
             border: none;
-            background: var(--glass, rgba(255,255,255,0.85));
-            box-shadow: 0 8px 32px 0 rgba(31,38,135,0.05);
+            background: transparent;
         }
         .nav-hamburger span {
             display: block;
-            width: 24px; height: 2px;
-            background: var(--text, #1d1d1f);
+            width: 22px; height: 2px;
+            background: var(--text-main, #1d1d1f);
             border-radius: 2px;
-            transition: all 0.3s;
+            transition: all 0.3s ease;
         }
 
-        /* Close button: hidden until mobile */
+        /* ── Close button: always hidden until mobile ── */
         .mobile-close-btn { display: none !important; }
 
         /* ══════════ DESKTOP ══════════ */
@@ -53,7 +52,6 @@
                 padding: 0;
                 z-index: auto;
                 overflow: visible;
-                box-shadow: none;
             }
             .navbar .links a,
             .navbar .links button:not(.nav-hamburger) {
@@ -68,100 +66,108 @@
 
         /* ══════════ MOBILE ══════════ */
         @media (max-width: 768px) {
+            /* show hamburger */
             .nav-hamburger { display: flex; }
 
-            /* side-panel close button */
+            /* show close button only in mobile context */
             .mobile-close-btn {
-                display: block !important;
+                display: flex !important;
                 position: absolute;
-                top: 20px; right: 20px;
-                background: transparent;
+                top: 18px; right: 18px;
+                width: 42px; height: 42px;
+                border-radius: 50%;
+                background: rgba(0,0,0,0.06);
                 border: none;
-                font-size: 1.5rem;
+                font-size: 1.1rem;
                 cursor: pointer;
-                color: var(--text, #1d1d1f);
-                width: auto; height: auto;
-                border-radius: 0;
-                padding: 0;
-                transition: color 0.2s;
+                color: var(--text-muted, #8e8e93);
+                align-items: center;
+                justify-content: center;
+                transition: all 0.2s;
                 z-index: 10;
             }
-            .mobile-close-btn:hover { color: var(--primary, #0A84FF); background: transparent; }
+            .mobile-close-btn:hover { background: rgba(255,59,48,0.12); color: #ff3b30; }
 
-            /* 280px side panel sliding from right */
+            /* full-screen overlay menu */
             .navbar .links {
-                display: flex;
+                display: none;
                 position: fixed;
-                top: 0; right: -100%;
-                width: 280px;
-                height: 100vh;
-                background: var(--glass, rgba(255,255,255,0.95));
-                backdrop-filter: blur(30px);
-                -webkit-backdrop-filter: blur(30px);
+                top: 0; left: 0;
+                width: 100%; height: 100vh;
+                background: var(--glass-bg, rgba(255,255,255,0.97));
+                backdrop-filter: saturate(180%) blur(28px);
+                -webkit-backdrop-filter: saturate(180%) blur(28px);
                 flex-direction: column;
-                align-items: flex-start;
-                justify-content: flex-start;
-                gap: 6px;
+                justify-content: center;
+                align-items: center;
+                gap: 10px;
                 z-index: 1050;
-                padding: 80px 30px 40px;
+                padding: 80px 28px 40px;
                 overflow-y: auto;
-                box-shadow: -10px 0 30px rgba(0,0,0,0.1);
-                transition: 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
             }
-            .navbar .links.mobile-open { right: 0; }
+            .navbar .links.mobile-open { display: flex; }
 
-            /* nav links — left-aligned */
+            /* individual link pills */
             .navbar .links a {
                 display: flex;
                 align-items: center;
-                justify-content: flex-start;
-                width: 100%; max-width: 100%;
-                padding: 12px 16px;
-                font-size: 1rem;
+                justify-content: center;
+                width: 100%; max-width: 320px;
+                padding: 15px 24px;
+                font-size: 1.05rem;
                 font-weight: 600;
-                border-radius: 12px;
-                border: none;
-                background: transparent;
-                color: var(--text, #1d1d1f);
+                border-radius: 16px;
+                border: 1px solid rgba(0,0,0,0.07);
+                background: rgba(255,255,255,0.7);
+                color: var(--text-main, #1d1d1f);
                 text-decoration: none;
                 transition: all 0.2s;
-                box-shadow: none;
+                box-shadow: 0 2px 8px rgba(0,0,0,0.04);
             }
-            .navbar .links a:hover { background: rgba(10,132,255,0.08); color: var(--primary, #0A84FF); transform: translateX(4px); }
-            .navbar .links a.primary { background: var(--primary, #0A84FF); color: white; box-shadow: 0 4px 16px rgba(10,132,255,0.35); }
-            .navbar .links a.primary:hover { background: var(--primary-dark, #0062D1); transform: translateX(4px); }
+            .navbar .links a:hover {
+                background: rgba(10,132,255,0.08);
+                color: var(--primary, #0A84FF);
+                border-color: rgba(10,132,255,0.2);
+                transform: translateY(-1px);
+            }
+            .navbar .links a.primary {
+                background: var(--primary, #0A84FF);
+                color: white;
+                border-color: transparent;
+                box-shadow: 0 4px 16px rgba(10,132,255,0.35);
+            }
+            .navbar .links a.primary:hover { background: var(--primary-dark, #0062D1); transform: translateY(-1px); }
 
-            /* theme button */
+            /* theme button on mobile */
             .navbar .links button.theme-btn {
-                width: 42px; height: 42px;
-                border-radius: 12px;
-                border: 1px solid rgba(0,0,0,0.1);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                gap: 10px;
+                width: 100%; max-width: 320px;
+                padding: 15px 24px;
+                font-size: 1.05rem;
+                font-weight: 600;
+                border-radius: 16px;
+                border: 1px solid rgba(0,0,0,0.07);
                 background: rgba(255,255,255,0.7);
-                color: var(--text, #1d1d1f);
-                font-size: 1.1rem;
-                display: flex; align-items: center; justify-content: center;
+                color: var(--text-main, #1d1d1f);
+                box-shadow: 0 2px 8px rgba(0,0,0,0.04);
                 cursor: pointer;
-                box-shadow: 0 4px 8px rgba(0,0,0,0.05);
-                transition: all 0.3s;
-                padding: 0;
-                max-width: none;
+                transition: all 0.2s;
             }
-            .navbar .links button.theme-btn:hover { background: var(--primary, #0A84FF); color: #fff; border-color: var(--primary, #0A84FF); }
+            .navbar .links button.theme-btn:hover { background: rgba(0,0,0,0.05); }
 
             /* lang switch */
             .navbar .links .lang-switch {
                 display: flex;
-                gap: 6px;
-                margin-top: 8px;
-                background: rgba(255,255,255,0.5);
-                padding: 4px;
-                border-radius: 12px;
-                border: 1px solid rgba(0,0,0,0.07);
+                gap: 10px;
+                margin-top: 4px;
             }
             .navbar .links .lang-switch .lang-btn {
-                padding: 6px 14px;
-                border-radius: 8px;
-                font-size: 0.9rem;
+                padding: 12px 28px;
+                border-radius: 14px;
+                font-size: 0.95rem;
                 font-weight: 700;
             }
 
@@ -172,36 +178,37 @@
             .form-box input, .form-box select { font-size: 16px; }
         }
 
-        /* RTL: panel slides from left */
-        [dir="rtl"] .navbar .links { right: auto; left: -100%; }
-        [dir="rtl"] .navbar .links.mobile-open { left: 0; right: auto; }
-        [dir="rtl"] .mobile-close-btn { right: auto; left: 20px; }
-        [dir="rtl"] .navbar { flex-direction: row-reverse; }
-
-        /* dark mode */
-        [data-theme="dark"] .navbar .links { background: rgba(11,15,25,0.95); }
-        [data-theme="dark"] .navbar .links a { color: #f5f5f7; }
-        [data-theme="dark"] .navbar .links a:hover { background: rgba(10,132,255,0.15); color: #fff; }
+        /* dark mode overrides */
+        [data-theme="dark"] .navbar .links { background: rgba(20,20,22,0.97); }
+        [data-theme="dark"] .navbar .links a {
+            background: rgba(255,255,255,0.06);
+            border-color: rgba(255,255,255,0.08);
+            color: #f5f5f7;
+        }
+        [data-theme="dark"] .navbar .links a:hover { background: rgba(255,255,255,0.12); color: #fff; }
         [data-theme="dark"] .navbar .links a.primary { background: #0A84FF; color: white; }
-        [data-theme="dark"] .navbar .links button.theme-btn { background: rgba(255,255,255,0.06); border-color: rgba(255,255,255,0.08); color: #f5f5f7; }
-        [data-theme="dark"] .mobile-close-btn { color: #f5f5f7; background: transparent; }
-        [data-theme="dark"] .mobile-close-btn:hover { color: #0A84FF; background: transparent; }
-        [data-theme="dark"] .nav-hamburger { background: rgba(255,255,255,0.06); }
-        [data-theme="dark"] .nav-hamburger span { background: #f5f5f7; }
+        [data-theme="dark"] .navbar .links button.theme-btn {
+            background: rgba(255,255,255,0.06);
+            border-color: rgba(255,255,255,0.08);
+            color: #f5f5f7;
+        }
+        [data-theme="dark"] .mobile-close-btn { background: rgba(255,255,255,0.08); color: #8e8e93; }
+                [data-theme="dark"] .mobile-close-btn:hover { background: rgba(255,59,48,0.2); color: #ff453a; }
+        [dir="rtl"] .navbar { flex-direction: row-reverse; }
     </style>
 </head>
 <body>
     <nav class="navbar">
         <a class="darlink-logo blue small" href="index.html" style="display:flex; flex-direction:row; align-items:center; gap:8px; text-decoration:none;">
-            <svg width="36" height="32" viewBox="0 0 110 100" fill="none">
-                <path d="M55 8 L98 42 L98 92 L12 92 L12 42 Z" fill="none" stroke="#00d4ff" stroke-width="6" stroke-linejoin="round"/>
-                <rect x="72" y="10" width="10" height="18" fill="none" stroke="#00d4ff" stroke-width="5.5"/>
-                <path d="M55 22 L88 50 L88 88 L22 88 L22 50 Z" fill="none" stroke="#5aa8c0" stroke-width="5" stroke-linejoin="round"/>
-                <path d="M32 88 L32 52 Q32 30 52 30 Q72 30 72 52 Q72 68 58 72 Q44 76 32 72" fill="none" stroke="#5aa8c0" stroke-width="5.5" stroke-linecap="round"/>
-                <line x1="32" y1="88" x2="75" y2="88" stroke="#5aa8c0" stroke-width="5.5" stroke-linecap="round"/>
-            </svg>
-            <span style="color:#00d4ff; font-size:22px; font-weight:700;">DarLink</span>
-        </a>
+  <svg width="36" height="32" viewBox="0 0 110 100" fill="none">
+    <path d="M55 8 L98 42 L98 92 L12 92 L12 42 Z" fill="none" stroke="#00d4ff" stroke-width="6" stroke-linejoin="round"/>
+    <rect x="72" y="10" width="10" height="18" fill="none" stroke="#00d4ff" stroke-width="5.5"/>
+    <path d="M55 22 L88 50 L88 88 L22 88 L22 50 Z" fill="none" stroke="#5aa8c0" stroke-width="5" stroke-linejoin="round"/>
+    <path d="M32 88 L32 52 Q32 30 52 30 Q72 30 72 52 Q72 68 58 72 Q44 76 32 72" fill="none" stroke="#5aa8c0" stroke-width="5.5" stroke-linecap="round"/>
+    <line x1="32" y1="88" x2="75" y2="88" stroke="#5aa8c0" stroke-width="5.5" stroke-linecap="round"/>
+  </svg>
+  <span style="color:#00d4ff; font-size:22px; font-weight:700;">DarLink</span>
+</a>
         <button class="nav-hamburger" id="navHamburger" onclick="toggleMobileNav()" aria-label="Menu">
             <span></span><span></span><span></span>
         </button>
@@ -210,11 +217,11 @@
                 <i class="fa-solid fa-times"></i>
             </button>
             <button class="theme-btn" onclick="toggleTheme()" aria-label="Theme">
-                <i class="fa-regular fa-moon" id="themeIcon"></i>
+            <i class="fa-regular fa-moon" id="themeIcon"></i>
             </button>
-            <a href="index.html" data-i18n="nav_home" onclick="closeMobileNav()"><i class="fa-solid fa-house" style="margin-inline-end:8px"></i> Home</a>
-            <a href="login.html" id="loginLink" class="primary" data-i18n="nav_login" onclick="closeMobileNav()"><i class="fa-solid fa-right-to-bracket" style="margin-inline-end:8px"></i> Login</a>
-            <a href="Register.html" id="registerLink" data-i18n="nav_register" onclick="closeMobileNav()"><i class="fa-solid fa-bolt" style="margin-inline-end:8px"></i> Get Started</a>
+            <a href="index.html" data-i18n="nav_home" onclick="closeMobileNav()"><i class="fa-solid fa-house"></i> Home</a>
+            <a href="login.html" id="loginLink" class="primary" data-i18n="nav_login" onclick="closeMobileNav()"><i class="fa-solid fa-right-to-bracket"></i> Login</a>
+            <a href="Register.html" id="registerLink" data-i18n="nav_register" onclick="closeMobileNav()"><i class="fa-solid fa-bolt"></i> Get Started</a>
             <div class="lang-switch">
                 <button class="lang-btn" data-lang="en">EN</button>
                 <button class="lang-btn" data-lang="ar">عربي</button>
@@ -238,6 +245,7 @@
                         <i id="passwordToggleIcon" class="fa fa-eye" aria-hidden="true"></i>
                     </span>
                 </div>
+
 
                 <button type="submit" id="submitBtn" data-i18n="login_submit">Login</button>
             </form>
