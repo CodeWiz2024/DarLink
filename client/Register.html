@@ -242,6 +242,7 @@
         <!-- STEP 3: Verification (Optional OCR ID) -->
         <div class="wizard-step" id="step3" style="display: none;">
             <label><span data-i18n="register_id_images_label">ID Card Image (Front Side)</span><span class="required-star">*</span></label>
+            
             <div class="note" data-i18n="register_id_note">Upload a clear photo of the front of your ID card</div>
             <div class="id-upload">
                 <div class="upload-box" id="frontBox">
@@ -257,7 +258,9 @@
                 <div class="progress" style="margin-bottom: 0px;"><div class="progress-bar" id="progressBar"></div></div>
             </div>
 
+
             <label><span data-i18n="register_id_number_label">ID Card Number</span><span class="required-star">*</span></label>
+
             <div class="note" data-i18n="register_id_number_note">Will be extracted automatically from front image</div>
             <input type="text" id="IDCardNumber" placeholder="18 digits" data-i18n-placeholder="register_id_number_placeholder" required readonly>
             <button type="button" id="manualBtn" data-i18n="register_manual_btn">✏️ Edit Manually</button>
