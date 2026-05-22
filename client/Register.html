@@ -448,7 +448,7 @@
             formData.append('IDCardNumber', IDCardNumber.value.trim());
             formData.append('Password', pwd);
             formData.append('UserType', UserType.value);
-            if (frontFile) { formData.append('IDCardFront', frontFile); formData.append('IDCardBack', frontFile); }
+            if (frontFile) { formData.append('IDCardFront', frontFile); }
 
             try {
                 const res = await fetch(API_URL + '/users/register', { method: 'POST', body: formData });
