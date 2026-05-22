@@ -369,13 +369,19 @@
 
         function extractID(text) {
             const clean = text.replace(/[\s\-_\.]/g, '');
-            const patterns = [ /\b\d{18}\b/, /\b1\d{17}\b/, /(?:^|\D)(\d{18})(?:\D|$)/, /\b\d{2}0+\d{13,15}\b/ ];
-            for (let pattern of patterns) {
-                const match = clean.match(pattern);
-                if (match) return (match[1] || match[0]).replace(/\D/g, '');
+            
+            // First try: exact 18 digits
+            const exact = clean.match(/\b\d{18}\b/);
+            if (exact) return exact[0];
+            
+            // Second try: find all sequences of 15+ digits, return closest to 18
+            const allNumbers = clean.match(/\d{15,20}/g);
+            if (allNumbers) {
+                // Pick the one closest in length to 18
+                return allNumbers.reduce((best, curr) => {
+                    return Math.abs(curr.length - 18) < Math.abs(best.length - 18) ? curr : best;
+                }).substring(0, 18); // trim to 18 if longer
             }
-            const allNumbers = clean.match(/\d{15,}/g);
-            if (allNumbers && allNumbers.length > 0) return allNumbers.reduce((a, b) => a.length > b.length ? a : b);
             return null;
         }
 

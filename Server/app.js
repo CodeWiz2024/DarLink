@@ -205,15 +205,12 @@ app.post('/api/users/register', idUpload.single('IDCardFront'), async (req, res)
         }
 
         // Validation guard: if (!validateAlgerianID(IDCardNumber)) {
-        if (!validateAlgerianID(IDCardNumber)) {
-            // HTTP response
-            return res.status(400).json({ 
-                // L120: error: 'Invalid Algerian ID card number format (must be 18 digits)'
-                error: 'Invalid Algerian ID card number format (must be 18 digits)' 
-            // End handler/callback
-            });
-        // End block
-        }
+            const cleanID = IDCardNumber.replace(/[\s-]/g, '').trim();
+            if (!/^\d{18}$/.test(cleanID)) {
+                return res.status(400).json({ 
+                    error: 'Invalid Algerian ID card number format (must be 18 digits)' 
+                });
+            }
 
         // Cloudinary returns full HTTPS URL in req.file.path
         let frontImagePath = null;
