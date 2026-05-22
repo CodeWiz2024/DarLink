@@ -50,11 +50,12 @@
         .btn-logout-side { display: flex; align-items: center; gap: 10px; padding: 10px 14px; border-radius: 12px; background: rgba(255,59,48,0.08); color: #ff3b30; font-size: 0.88rem; font-weight: 600; cursor: pointer; border: none; transition: all 0.2s; text-decoration: none; }
         .btn-logout-side:hover { background: #ff3b30; color: white; }
 
-        .sidebar-toggle { display: none; position: fixed; top: 16px; left: 16px; z-index: 200; width: 44px; height: 44px; border-radius: 12px; background: var(--primary); color: white; border: none; cursor: pointer; font-size: 1.1rem; box-shadow: 0 4px 14px rgba(10,132,255,0.4); align-items: center; justify-content: center; }
+        .sidebar-toggle { display: none; position: fixed; top: 16px; left: 16px; right: auto; z-index: 200; width: 44px; height: 44px; border-radius: 12px; background: var(--primary); color: white; border: none; cursor: pointer; font-size: 1.1rem; box-shadow: 0 4px 14px rgba(10,132,255,0.4); align-items: center; justify-content: center; }
         .side-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.4); backdrop-filter: blur(4px); z-index: 99; }
 
-        /* Sidebar always on the left, even in RTL */
+        /* Sidebar and menu button always on the left, even in RTL */
         [dir="rtl"] .side-nav { left: 0; right: auto; }
+        [dir="rtl"] .sidebar-toggle { left: 16px; right: auto; }
         [dir="rtl"] .dash-main { margin-left: 270px; margin-right: 0; }
 
         /* MAIN CONTENT */
@@ -149,17 +150,21 @@
         @media (max-width: 900px) {
             .side-nav,
             [dir="rtl"] .side-nav {
-                transform: translateX(0);
+                transform: translateX(-100%);
                 left: 0;
                 right: auto;
             }
-            .sidebar-toggle { display: none; }
-            .side-overlay { display: none !important; }
+            .side-nav.open,
+            [dir="rtl"] .side-nav.open {
+                transform: translateX(0);
+            }
+            .side-overlay.show { display: block; }
+            .sidebar-toggle { display: flex; }
             .dash-main,
             [dir="rtl"] .dash-main {
-                margin-left: 270px;
+                margin-left: 0;
                 margin-right: 0;
-                padding: 24px 16px 30px;
+                padding: 80px 20px 30px;
             }
             .stats-grid { grid-template-columns: 1fr; }
         }
