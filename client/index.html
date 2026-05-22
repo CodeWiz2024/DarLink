@@ -323,9 +323,16 @@ function getStarIcons(r){
     return s+` (${rating.toFixed(1)})`;
 }
 
+function isActivePromotion(p){
+    return !!(p.HasPromotion && (
+        parseFloat(p.DiscountPercentage) > 0 ||
+        parseFloat(p.DiscountAmount) > 0
+    ));
+}
+
 function calcDisplayPrice(p){
     const priceInDB = parseFloat(p.PricePerNight);
-    if(!p.HasPromotion) return {display: priceInDB, original: null, label:null};
+    if(!isActivePromotion(p)) return {display: priceInDB, original: null, label:null};
     const base = priceInDB / 1.1;
     let after = base, label = '';
     if(p.DiscountType==='Percentage' && parseFloat(p.DiscountPercentage)>0){
@@ -337,27 +344,32 @@ function calcDisplayPrice(p){
         after = base - d;
         label = `${d.toLocaleString()} DZD OFF`;
     }
-    return {display: after*1.1, original: priceInDB, label};
+    return {display: Math.max(after, 0)*1.1, original: priceInDB, label};
 }
 
-function buildCard(p){
+function buildCard(p, tier){
     const isOwner = currentUser && currentUser.UserType==='Owner' && currentUser.UserId===p.OwnerId;
     const isMine = isOwner;
     const imgUrl = p.MainImage ? (p.MainImage.startsWith('http') ? p.MainImage : SERVER_URL+p.MainImage) : null;
     const {display, original, label} = calcDisplayPrice(p);
+    const showPromo = tier === 'promo' || isActivePromotion(p);
 
     let labelHtml = '';
     const topLabels = [];
-    if(p.IsFeatured) topLabels.push(`<span class="card-label label-featured"><i class="fa-solid fa-crown"></i> Premium</span>`);
-    if(p.IsBoosted && !p.IsFeatured) topLabels.push(`<span class="card-label label-boosted"><i class="fa-solid fa-bolt"></i> Boosted</span>`);
-    if(p.HasPromotion && label) topLabels.push(`<span class="card-label label-promo"><i class="fa-solid fa-percent"></i> ${label}</span>`);
+    if(showPromo && label){
+        topLabels.push(`<span class="card-label label-promo"><i class="fa-solid fa-tag"></i> Promotion · ${label}</span>`);
+    } else if(tier === 'featured' || (p.IsFeatured && tier !== 'boosted')){
+        topLabels.push(`<span class="card-label label-featured"><i class="fa-solid fa-crown"></i> Premium</span>`);
+    } else if(tier === 'boosted' || p.IsBoosted){
+        topLabels.push(`<span class="card-label label-boosted"><i class="fa-solid fa-bolt"></i> Boosted</span>`);
+    }
     
     labelHtml = `<div class="card-labels"><div style="display:flex;gap:6px;flex-wrap:wrap">` + topLabels.join('') + `</div>`;
     if(isMine) labelHtml += `<span class="card-label" style="background:var(--text);color:var(--bg)"><i class="fa-solid fa-house-user"></i> Mine</span>`;
     labelHtml += `</div>`;
 
     const priceHtml = original
-        ? `${Math.round(display).toLocaleString()} <span class="old-price">${Math.round(original).toLocaleString()}</span>`
+        ? `<span class="price-promo-stack"><span class="old-price">${Math.round(original).toLocaleString()}</span><span class="new-price">${Math.round(display).toLocaleString()}</span></span>`
         : Math.round(display).toLocaleString();
 
     const actionBtn = isMine
@@ -395,7 +407,7 @@ function buildCard(p){
     </div>`;
 }
 
-function buildSection(id, icon, title, badgeCount, badgeColor, cards){
+function buildSection(id, icon, title, badgeCount, badgeColor, cards, tier){
     return `
     <div class="section-block">
         <div class="section-header">
@@ -405,7 +417,7 @@ function buildSection(id, icon, title, badgeCount, badgeColor, cards){
             </div>
         </div>
         <div class="properties-grid" id="${id}-track">
-            ${cards.map(buildCard).join('')}
+            ${cards.map(p => buildCard(p, tier)).join('')}
         </div>
     </div>`;
 }
@@ -445,19 +457,19 @@ async function loadProperties(){
             return;
         }
 
-        const promo     = all.filter(p=>p.HasPromotion && (parseFloat(p.DiscountPercentage)>0 || parseFloat(p.DiscountAmount)>0));
-        const featured  = all.filter(p=>p.IsFeatured && !p.HasPromotion);
-        const boosted   = all.filter(p=>p.IsBoosted && !p.IsFeatured && !p.HasPromotion);
-        const sorted    = [...all].sort((a,b)=>(b.ViewCount||0)-(a.ViewCount||0));
-        const popular   = sorted.slice(0,8).filter(p=>!p.IsFeatured&&!p.IsBoosted&&!p.HasPromotion);
-        const regular   = all.filter(p=>!p.IsFeatured&&!p.IsBoosted&&!p.HasPromotion&&!popular.includes(p));
+        const byViews = (a, b) => (b.ViewCount || 0) - (a.ViewCount || 0);
+        const promo = all.filter(isActivePromotion).sort(byViews);
+        const featured = all.filter(p => !!p.IsFeatured && !isActivePromotion(p)).sort(byViews);
+        const boosted = all.filter(p => !!p.IsBoosted && !p.IsFeatured && !isActivePromotion(p)).sort(byViews);
+        const popular = all
+            .filter(p => !p.IsFeatured && !p.IsBoosted && !isActivePromotion(p))
+            .sort(byViews);
 
         let html = '';
-        if(promo.length)    html += buildSection('promo',   '🔥','Special Promotions', promo.length,   '#34C759', promo);
-        if(featured.length) html += buildSection('featured','⭐','Premium Listings',   featured.length, '#F5A623', featured);
-        if(boosted.length)  html += buildSection('boosted', '🚀','Boosted Properties', boosted.length,  '#FF3B30', boosted);
-        if(popular.length)  html += buildSection('popular', '📈','Most Popular',        popular.length,  '#0A84FF', popular);
-        if(regular.length)  html += buildSection('regular', '🏠','All Properties',      regular.length,  '#6B7280', regular);
+        if(promo.length)    html += buildSection('promo',   '🔥', 'Promotions',         promo.length,    '#34C759', promo,    'promo');
+        if(featured.length) html += buildSection('featured','⭐', 'Premium',            featured.length, '#F5A623', featured, 'featured');
+        if(boosted.length)  html += buildSection('boosted', '🚀', 'Boosted',            boosted.length,  '#FF3B30', boosted,  'boosted');
+        if(popular.length)  html += buildSection('popular', '📈', 'Most Famous',        popular.length,  '#0A84FF', popular,  'popular');
 
         content.innerHTML = html;
 
