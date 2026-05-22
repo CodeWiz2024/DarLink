@@ -479,7 +479,8 @@
                     submitBtn.style.opacity = '1';
                 }
             } catch (error) {
-                message.innerHTML = '<div class="message error">' + ((dict.register_network_error && dict.register_network_error[lang]) || '❌ Network error') + '</div>';
+                console.log('REAL ERROR:', error); 
+                message.innerHTML = '<div class="message error">❌ ' + error.message + '</div>';
                 submitBtn.disabled = false;
                 submitBtn.textContent = originalSubBtnTxt;
                 submitBtn.style.opacity = '1';
