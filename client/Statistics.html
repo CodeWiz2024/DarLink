@@ -91,10 +91,9 @@
 
         @media (max-width: 900px) {
             .side-nav { transform: translateX(-100%); }
-            [dir="rtl"] .side-nav { transform: translateX(100%); }
-            .side-nav.open, [dir="rtl"] .side-nav.open { transform: translateX(0); }
+            .side-nav.open { transform: translateX(0); }
             .side-overlay.show { display: block; }
-            .dash-main, [dir="rtl"] .dash-main { margin-left: 0; margin-right: 0; padding: 80px 20px 30px; }
+            .dash-main { margin-left: 0; margin-right: 0; padding: 80px 20px 30px; }
             .sidebar-toggle { display: flex; }
             .dash-page-title h1 { font-size: 1.4rem; }
             .dash-page-title p { font-size: 0.85rem; }
@@ -119,8 +118,6 @@
             .type-count { font-size: 0.75rem; padding: 3px 10px; }
         }
         /* Sidebar always on left */
-        /* RTL override removed to keep sidebar on left side */
-        [dir="rtl"] .sidebar-toggle { left: auto; right: 16px; }
         [data-theme="dark"] .side-nav { background: rgba(28,28,30,0.92); border-right-color: rgba(255,255,255,0.08); }
         [data-theme="dark"] .side-link { color: rgba(255,255,255,0.6); }
         [data-theme="dark"] .side-link:hover { background: rgba(255,255,255,0.07); color: white; }
