@@ -55,8 +55,8 @@
         /* MAIN */
         .dash-main { margin-left: 270px; flex: 1; padding: 32px 36px; min-height: 100vh; }
         .dash-topbar { margin-bottom: 28px; }
-        .dash-page-title h1 { font-size: 1.7rem; font-weight: 800; color: var(--text-main); margin: 0 0 4px; }
-        .dash-page-title p { color: var(--text-muted); font-size: 0.95rem; margin: 0; }
+        .dash-page-title h1 { font-size: 1.7rem; font-weight: 800; color: var(--text-main); margin: 0 0 4px; word-wrap: break-word; overflow-wrap: break-word; }
+        .dash-page-title p { color: var(--text-muted); font-size: 0.95rem; margin: 0; word-wrap: break-word; overflow-wrap: break-word; }
 
         /* PROFILE SPECIFIC */
         .profile-wrapper { display: grid; gap: 24px; max-width: 800px; }
@@ -120,11 +120,27 @@
             .side-overlay.show { display: block; }
             .dash-main { margin-left: 0; padding: 80px 20px 30px; }
             .sidebar-toggle { display: flex; }
+            .dash-page-title h1 { font-size: 1.4rem; }
+            .dash-page-title p { font-size: 0.85rem; }
+        }
+
+        @media (max-width: 640px) {
+            .dash-main { padding: 70px 16px 20px; }
+            .dash-page-title h1 { font-size: 1.1rem; margin-bottom: 4px; }
+            .dash-page-title p { font-size: 0.75rem; }
+            .profile-card-main { padding: 24px 16px; }
+            .profile-avatar-large { width: 80px; height: 80px; font-size: 2rem; }
+            .profile-name-large { font-size: 1.2rem; }
+            .profile-role-large { font-size: 0.85rem; }
+            .profile-section { padding: 20px 16px; }
+            .section-header { font-size: 1rem; margin-bottom: 18px; }
+            .info-grid { grid-template-columns: 1fr; gap: 16px; }
+            .info-label { font-size: 0.75rem; }
+            .info-val { font-size: 0.95rem; padding: 10px 12px; }
+            .btn-group { flex-direction: column; gap: 10px; margin-top: 24px; }
+            .btn, .btn-save { width: 100%; justify-content: center; font-size: 0.85rem; padding: 10px; }
         }
         /* Sidebar always on left */
-        /* RTL override removed to keep sidebar on left side */
-        [dir="rtl"] .sidebar-toggle { left: auto; right: 16px; }
-
         [data-theme="dark"] .side-nav { background: rgba(28,28,30,0.92); border-right-color: rgba(255,255,255,0.08); }
         [data-theme="dark"] .side-link { color: rgba(255,255,255,0.6); }
         [data-theme="dark"] .side-link:hover { background: rgba(255,255,255,0.07); color: white; }
