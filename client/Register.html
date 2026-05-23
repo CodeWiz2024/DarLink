@@ -391,7 +391,7 @@
             const dict = window.I18N_MESSAGES || {};
             ocrText.textContent = (dict.register_scanning && dict.register_scanning[lang]) || 'Scanning...';
             try {
-                const { data: { text } } = await Tesseract.recognize(file, 'eng+fra', {
+                const { data: { text } } = await Tesseract.recognize(file, 'eng+ara', {
                     logger: info => { if (info.status === 'recognizing text') { progressBar.style.width = Math.round(info.progress * 100) + '%'; ocrText.textContent = `Scanning... ${Math.round(info.progress * 100)}%`; } }
                 });
                 const idNumber = extractID(text);
